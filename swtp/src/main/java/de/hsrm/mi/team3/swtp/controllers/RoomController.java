@@ -35,14 +35,13 @@ public class RoomController {
         if (roomBoxService.getRoomsFromRoomBox().size() < 1) {
 
             Room room = roomBoxService.addRoom();
-            User user = new User(session.getId(), room.getRoomNumber(), "Raus-Aus-Meinem-Kopf-1");
+            User user = new User(session.getId(), room.getRoomNumber(), "Seit-wann-bist-du-po?");
             roomService.addNewUserToRoom(room, user);
     
             logger.info("user = {}", user.getSessionID());
             logger.info("room = {}", room.getRoomNumber());
-    
-            m.put("user", user);
-            m.put("room", room);            
+            
+            m.addAttribute("user", user).addAttribute("room", room);    
         } else {      
             User user = new User(session.getId(), 1, "Raus-Aus-Meinem-Kopf-2");
             Room room = roomBoxService.getSpecificRoom(1);
@@ -57,7 +56,7 @@ public class RoomController {
     }
 
     @GetMapping()
-    public String showRoom() {
+    public String showRoom(ModelMap m) {
         return "roomview";
     }
 }
