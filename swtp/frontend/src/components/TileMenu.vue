@@ -2,10 +2,10 @@
 import { ref } from "vue";
 
 const tiles = ref([
-  { id: 1, title: "1", list: 1 },
-  { id: 2, title: "2", list: 1 },
-  { id: 3, title: "3", list: 2 },
-  { id: 4, title: "4", list: 2 },
+  { id: 1, title: "kreuzung"},
+  { id: 2, title: "kurve"},
+  { id: 3, title: "straß"},
+  { id: 4, title: "sackgasse"},
 ]);
 
 const playground = ref([]);
@@ -15,6 +15,7 @@ const startDrag = (event, tile) => {
   event.dataTransfer.dropEffect = "copy";
   event.dataTransfer.effectAllowed = "copy";
   event.dataTransfer.setData('tileID', tile.id);
+  console.log("Ziehe dies: " + tile.title)
 };
 
 const onDrop = (event) => {
@@ -43,16 +44,17 @@ function deleteTiles() {
         :key="tile"
         class="tile-el"
         draggable="true"
+        id="Dragme"
         @dragstart="startDrag($event, tile)"
       >
-        {{ tile.title }}
+        {{ tile.id }}
       </div>
     </div>
 
   </div>
 
-  <div class="sidebar">
-    <h2>SIDEBAR</h2>
+  <footer class="navbar">
+    <h2>MENÜ</h2>
 
     <div class="dropzone">
       <div
@@ -60,46 +62,33 @@ function deleteTiles() {
         :key="tile"
         class="tile-el"
         draggable="true"
+        id="Dragme"
         @dragstart="startDrag($event, tile)"
       >
-        {{ tile.title }}
+        {{ tile.id }}
       </div>
     </div>
 
     <button class="Bagger" @click = "deleteTiles()">yeet</button>
-  </div>
+</footer>
 </div>
 </template>
 
 <style scoped>
 
 .wrapper {
-    width: 500px;
-    border: 1px solid black;
-    overflow: auto;
+    background-color: beige;
 }
 
 .main {
   background-color: grey;
-  height: 100vh;
-  width: 400px;
-  display: block;
-  float: left;
-  overflow: hidden;
-  left: 200px;
-  position: absolute;
 }
 
-.sidebar {
-  background-color: lightgray;
-  display: block;
-  color: darkslategrey;
-  height: 100vh;
-  width: 200px;
-  position: sticky;
-  float: left;
-  overflow: hidden;
-  /*visibility: hidden;*/
+.navbar {
+    background-color: lightgray;
+    color: darkslategrey;
+    height: 27em;
+    width: 90em;
 }
 
 .tile-el {
@@ -117,6 +106,14 @@ function deleteTiles() {
   padding: 1em;
   color: white;
   background-color: aquamarine;
+}
+
+#Dragme:hover {
+  cursor: -webkit-grab;
+}
+
+#Dragme:active {
+  cursor: none;
 }
 
 </style>
