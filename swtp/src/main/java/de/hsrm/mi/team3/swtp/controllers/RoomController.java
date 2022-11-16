@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
+import de.hsrm.mi.team3.swtp.services.BackendInfoService;
 import de.hsrm.mi.team3.swtp.services.RoomBoxServiceImplementation;
 import de.hsrm.mi.team3.swtp.services.RoomServiceImplementation;
 
@@ -26,6 +27,7 @@ public class RoomController {
 
     @Autowired RoomBoxServiceImplementation roomBoxService;
     @Autowired RoomServiceImplementation roomService;
+    @Autowired BackendInfoService backservice; 
 
     Logger logger = LoggerFactory.getLogger(RoomController.class);    
 
@@ -42,6 +44,7 @@ public class RoomController {
             logger.info("room = {}", room.getRoomNumber());
             
             m.addAttribute("user", user).addAttribute("room", room);    
+            backservice.sendInfo("room", null, 0);
         } else {      
             User user = new User(session.getId(), 1, "Raus-Aus-Meinem-Kopf-2");
             Room room = roomBoxService.getSpecificRoom(1);
@@ -52,6 +55,8 @@ public class RoomController {
 
             logger.info("users = {}", room.getUserList());
             logger.info("rooms = {}", roomBoxService.getRoomsFromRoomBox());
+            backservice.sendInfo("room", null, 0);
+
         }
     }
 

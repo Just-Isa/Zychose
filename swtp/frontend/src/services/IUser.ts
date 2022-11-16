@@ -7,14 +7,14 @@ export interface IUser{
 }
 
 export class user implements IUser{
-    username = "";
-    sessionid = "";
-    roomnr = -1;
+    username: string;
+    sessionid: string;
+    roomnr: number;
     
     constructor(username: string, sessionid: string, roomnr:number){
         this.username = username;
         this.sessionid = sessionid;
-        roomnr = roomnr;
+        this.roomnr = roomnr;
     }
 
 }
