@@ -1,19 +1,19 @@
 import type { IUser } from "./IUser";
 
 export interface IRoom{
-    roomname: String,
-    roomnumber: number,
-    userlist : IUser[]
+    roomName: String,
+    roomNumber: number,
+    userList : IUser[]
 }
 
 export class Room implements IRoom{
-    roomname: String;
-    roomnumber: number;
-    userlist : IUser[];
+    roomName: String;
+    roomNumber: number;
+    userList : IUser[];
     
-    constructor(roomname: string, roomnumber: number, userlist:IUser[]){
-        this.roomname = roomname;
-        this.roomnumber = roomnumber;
-        this.userlist = userlist;
+    constructor(roomName: string, roomNumber: number, userList:IUser[]){
+        this.roomName = roomName;
+        this.roomNumber = roomNumber;
+        this.userList = userList;
     }
 }

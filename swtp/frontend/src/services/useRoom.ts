@@ -14,22 +14,7 @@ const roomstate = reactive<IRoomState>({
 });
 
 export function useRoom(){
-    return {room:readonly(roomstate), updateRoom, receiveRoom}
-}
-
-function updateRoom(){
-    const url = 'api/room';
-
-    fetch(url).then(resp =>{
-        if(!resp.ok){
-            throw new Error(resp.statusText);
-        }
-        return resp.json();
-    }).then((jsondata:IRoom)=>{
-        roomstate.room = jsondata;
-    }).catch(fehler =>{
-        roomstate.errormessage="Raum konnten nicht geladen werden";
-    });
+    return {room:readonly(roomstate), receiveRoom}
 }
 
 function receiveRoom(){
@@ -43,30 +28,17 @@ function receiveRoom(){
         console.log("connected", frame);
         stompclient.subscribe(DEST, (message) =>{
             console.log("stomp client subscribe");
-
-            console.log(message.body);
-
-            message = JSON.parse(message.body);
-            console.log(message)
+            roomstate.room = JSON.parse(message.body);
+            console.log("room"+roomstate.room)
         });
-        try {
-            stompclient.publish({ 
-                destination: DEST,
-                headers:{},
-                body:'"test"'
-            // ... oder body: "irgendein String"
-            });
-        } catch (fehler) {
-            // Problem beim Senden
-            console.log("Es gab ein fehler", fehler);
-        }
     }
     stompclient.activate();
     stompclient.onDisconnect = () => { /* Verbindung abgebaut*/ }
     
-
-    
 }
 
+function mouseMovement(){
+
+}
 
 

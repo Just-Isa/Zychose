@@ -1,67 +1,61 @@
 package de.hsrm.mi.team3.swtp.controllers;
 
-
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
+import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
 import de.hsrm.mi.team3.swtp.services.BackendInfoService;
 import de.hsrm.mi.team3.swtp.services.RoomBoxServiceImplementation;
 import de.hsrm.mi.team3.swtp.services.RoomServiceImplementation;
 
-
 @Controller
-@SessionAttributes(names = {"user", "room"})
-@RequestMapping("room")
 public class RoomController {
-
+    
     @Autowired RoomBoxServiceImplementation roomBoxService;
     @Autowired RoomServiceImplementation roomService;
     @Autowired BackendInfoService backservice; 
-
     Logger logger = LoggerFactory.getLogger(RoomController.class);    
 
-    @ModelAttribute("user")
-    public void init(ModelMap m, HttpSession session) {
+
+    public void init(ModelMap m) {
         // in this case it makes a new room and leaves that room as the only one
         if (roomBoxService.getRoomsFromRoomBox().size() < 1) {
 
             Room room = roomBoxService.addRoom();
-            User user = new User(session.getId(), room.getRoomNumber(), "Seit-wann-bist-du-po?");
-            roomService.addNewUserToRoom(room, user);
     
-            logger.info("user = {}", user.getSessionID());
-            logger.info("room = {}", room.getRoomNumber());
-            
-            m.addAttribute("user", user).addAttribute("room", room);    
-            backservice.sendInfo("room", null, 0);
-        } else {      
-            User user = new User(session.getId(), 1, "Raus-Aus-Meinem-Kopf-2");
-            Room room = roomBoxService.getSpecificRoom(1);
-            roomService.addNewUserToRoom(room, user);
-
-            m.put("user", user);
-            m.put("room", room);       
-
-            logger.info("users = {}", room.getUserList());
-            logger.info("rooms = {}", roomBoxService.getRoomsFromRoomBox());
-            backservice.sendInfo("room", null, 0);
-
+            logger.info("room = {}", room.getRoomNumber());            
         }
     }
 
-    @GetMapping()
-    public String showRoom(ModelMap m) {
-        return "roomview";
+    @MessageMapping("/topic/room")
+    public void sendroom(@Payload String test, ModelMap m){
+        logger.info("----------------------"+ test+ "-------------------------");
+        
+    }
+
+    @MessageMapping("/topic/user")
+    public void getUser(@Payload User newUser){
+        logger.info("User: (" +newUser.getSessionID()+", "+ newUser.getUserName()+ ", "+ newUser.getCurrentRoomNumber()+")");
+        Room room;
+        if (roomBoxService.getRoomsFromRoomBox().size() < 1) {
+            room = roomBoxService.addRoom();
+        }
+        else{
+            room = roomBoxService.getSpecificRoom(1);
+        }
+        if(newUser.getUserName() == null){
+            newUser.setUserName("Raus aus meinem Kopf");
+        }
+        newUser.setCurrentRoomNumber(room.getRoomNumber());
+        roomService.addNewUserToRoom(room, newUser);
+    
+        backservice.sendRoom("room", BackendOperation.CREATE, room);
     }
 }

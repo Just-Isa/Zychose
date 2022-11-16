@@ -19,7 +19,7 @@ public class BackendInfoServiceImpl implements BackendInfoService{
         messaging.convertAndSend("/topic/"+topicname, new BackendInfoMessage(topicname,operation,id));
     }
 
-    public void sendRoom(String topicname, Room room){
+    public void sendRoom(String topicname,BackendOperation operation, Room room){
         messaging.convertAndSend("/topic/"+topicname, room);
     }
 }

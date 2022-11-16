@@ -20,6 +20,7 @@ public class Room {
         this.roomNumber = roomNumber;
         this.userList = new ArrayList<User>();
     }
+    
 
     public String getRoomName() {
         return roomName;

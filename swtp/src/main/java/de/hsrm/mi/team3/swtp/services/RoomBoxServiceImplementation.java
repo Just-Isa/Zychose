@@ -18,14 +18,15 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("scopes.xml");
 
     public int nextRoomNumber() {
-        RoomBox roomBox = (RoomBox) applicationContext.getBean("roomBoxSingleton");
+        RoomBox roomBox = getRoomBoxSingelton();
         return roomBox.getRooms().size() + 1;
     }
 
     public Room addRoom() {
-        RoomBox roomBox = (RoomBox) applicationContext.getBean("roomBoxSingleton");
+        RoomBox roomBox = getRoomBoxSingelton();
 
         int newRoomNumber = this.nextRoomNumber();
+        logger.info("-------"+newRoomNumber+"---------");
         Room existentRoom = this.getRoomsFromRoomBox().get(newRoomNumber);
         if (existentRoom != null) {
             return existentRoom;
@@ -38,7 +39,7 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
     }
 
     public boolean roomExistsByNumber(int roomNumber) {
-        RoomBox roomBox = (RoomBox) applicationContext.getBean("roomBoxSingleton");
+        RoomBox roomBox = getRoomBoxSingelton();
         Room room = roomBox.getRooms().get(roomNumber);
         if (room != null) {
             return true;
@@ -48,12 +49,16 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
 
     @Override
     public Map<Integer, Room> getRoomsFromRoomBox() {
-        RoomBox roomBox = (RoomBox) applicationContext.getBean("roomBoxSingleton");
+        RoomBox roomBox = getRoomBoxSingelton();
         return roomBox.getRooms();       
     }
 
     public Room getSpecificRoom(int roomNumber) {
         return this.getRoomsFromRoomBox().get(roomNumber);
+    }
+
+    public RoomBox getRoomBoxSingelton(){
+        return (RoomBox) applicationContext.getBean("roomBoxSingleton");
     }
 
 }
