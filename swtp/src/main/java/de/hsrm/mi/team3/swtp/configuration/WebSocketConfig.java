@@ -16,6 +16,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
       // Prefix für alle zugehörigen Destinations,
       // z.B. /topic/news, /topic/offers usw.
       registry.enableSimpleBroker("/topic");
+      //registry.setApplicationDestinationPrefixes("/app");
+
     }
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {

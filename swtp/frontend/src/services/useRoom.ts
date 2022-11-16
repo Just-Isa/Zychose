@@ -49,18 +49,23 @@ function receiveRoom(){
             message = JSON.parse(message.body);
             console.log(message)
         });
+        try {
+            stompclient.publish({ 
+                destination: DEST,
+                headers:{},
+                body:'"test"'
+            // ... oder body: "irgendein String"
+            });
+        } catch (fehler) {
+            // Problem beim Senden
+            console.log("Es gab ein fehler", fehler);
+        }
     }
     stompclient.activate();
     stompclient.onDisconnect = () => { /* Verbindung abgebaut*/ }
-    try {
-        stompclient.publish({ destination: DEST, headers: {},
-        body: "Bongo"
-        // ... oder body: "irgendein String"
-        });
-    } catch (fehler) {
-        // Problem beim Senden
-        console.log("Es gab ein fehler", fehler);
-    }
+    
+
+    
 }
 
 
