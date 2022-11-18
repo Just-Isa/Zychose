@@ -13,6 +13,9 @@ public class User {
         this.currentRoomNumber = currentRoomNumber;
         this.userName = userName;
     }
+    public User(){
+        
+    }
 
     public String getSessionID() {
         return sessionID;

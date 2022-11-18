@@ -1,0 +1,17 @@
+package de.hsrm.mi.team3.swtp.api.dtos;
+
+import de.hsrm.mi.team3.swtp.domain.User;
+
+public record GetUserResponseDTO (
+    String sessionID,
+    int currentRoomNumber,
+    String userName
+) {
+    public static GetUserResponseDTO from(User u) {
+        GetUserResponseDTO dto = new GetUserResponseDTO(
+            u.getSessionID(),
+            u.getCurrentRoomNumber(),
+            u.getUserName());
+        return dto;
+    }
+}

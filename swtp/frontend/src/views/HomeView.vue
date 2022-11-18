@@ -1,9 +1,10 @@
+<template>
+  <h1>hallo</h1>
+  <Info />
+</template>
+
 <script setup lang="ts">
-import TheWelcome from "../components/TheWelcome.vue";
+import Info from "../components/Info.vue";
 </script>
 
-<template>
-  <main>
-    <TheWelcome />
-  </main>
-</template>
+
