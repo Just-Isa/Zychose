@@ -23,7 +23,9 @@ public class RoomController {
     @Autowired BackendInfoService backservice; 
     Logger logger = LoggerFactory.getLogger(RoomController.class);    
 
-
+    /*
+     * Dont know if we do need it, but creates a room if none in RoomBox
+     */
     public void init(ModelMap m) {
         // in this case it makes a new room and leaves that room as the only one
         if (roomBoxService.getRoomsFromRoomBox().size() < 1) {
@@ -34,16 +36,24 @@ public class RoomController {
         }
     }
 
+    /*
+     * was for testing, but can be used late for updating a room, or something like that.
+     */
     @MessageMapping("/topic/room")
     public void sendroom(@Payload String test, ModelMap m){
         logger.info("----------------------"+ test+ "-------------------------");
         
     }
-
+    /*
+     * Gets a newUser from the client, adds him to room and sends the room to the client 
+     */
     @MessageMapping("/topic/user")
     public void getUser(@Payload User newUser){
+        //to do's check if user in Room or roombox
+        
         logger.info("User: (" +newUser.getSessionID()+", "+ newUser.getUserName()+ ", "+ newUser.getCurrentRoomNumber()+")");
         Room room;
+        
         if (roomBoxService.getRoomsFromRoomBox().size() < 1) {
             room = roomBoxService.addRoom();
         }
@@ -55,7 +65,8 @@ public class RoomController {
         }
         newUser.setCurrentRoomNumber(room.getRoomNumber());
         roomService.addNewUserToRoom(room, newUser);
-    
+        
+        //sends room to Client
         backservice.sendRoom("room", BackendOperation.CREATE, room);
     }
 }

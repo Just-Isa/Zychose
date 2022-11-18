@@ -2,10 +2,13 @@ import { Client } from "@stomp/stompjs";
 import type { IUser } from "./IUser";
 
 
+//zugreifbar gemacht
 export function useUser(){
     return {sendUser}
 }
 
+
+//um einen User zum Server zu schicken.
 function sendUser(user:IUser){
     const wsurl =`ws://${window.location.host}/stompbroker`;
     const DEST = "/topic/user";

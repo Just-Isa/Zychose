@@ -13,10 +13,12 @@ const roomstate = reactive<IRoomState>({
     errormessage:""
 });
 
+//function to get access to the room and the functions with stomp
 export function useRoom(){
     return {room:readonly(roomstate), receiveRoom}
 }
 
+//function for receiving a room.
 function receiveRoom(){
     const wsurl =`ws://${window.location.host}/stompbroker`;
     const DEST = "/topic/room";
@@ -25,20 +27,13 @@ function receiveRoom(){
     stompclient.onStompError = (frame) => { console.log("STOMP-error")/* STOMP-Error */ }
     stompclient.onConnect = (frame)=> {
         
-        console.log("connected", frame);
         stompclient.subscribe(DEST, (message) =>{
-            console.log("stomp client subscribe");
             roomstate.room = JSON.parse(message.body);
-            console.log("room"+roomstate.room)
+            console.log("room: "+roomstate.room)
         });
     }
     stompclient.activate();
     stompclient.onDisconnect = () => { /* Verbindung abgebaut*/ }
     
 }
-
-function mouseMovement(){
-
-}
-
 
