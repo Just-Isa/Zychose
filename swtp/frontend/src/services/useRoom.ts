@@ -9,7 +9,7 @@ export interface IRoomState{
 }
 
 const roomstate = reactive<IRoomState>({
-    room: new Room("", 0, []),
+    room: new Room("", 1, []),
     errormessage:""
 });
 
@@ -34,6 +34,6 @@ function receiveRoom(){
     }
     stompclient.activate();
     stompclient.onDisconnect = () => { /* Verbindung abgebaut*/ }
-    
 }
+
 

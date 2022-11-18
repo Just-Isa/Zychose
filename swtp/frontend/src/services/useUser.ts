@@ -12,15 +12,14 @@ export function useUser(){
 function sendUser(user:IUser){
     const wsurl =`ws://${window.location.host}/stompbroker`;
     const DEST = "/topic/user";
-    const stompclient = new Client({brokerURL:wsurl})
-    stompclient.onWebSocketError = (event) => { console.log("WS-error")/* WS-Error */ } 
-    stompclient.onStompError = (frame) => { console.log("STOMP-error")/* STOMP-Error */ }
-    stompclient.onConnect = (frame)=> {
+    const userClient = new Client({brokerURL:wsurl})
+    userClient.onWebSocketError = (event) => { console.log("WS-error")/* WS-Error */ } 
+    userClient.onStompError = (frame) => { console.log("STOMP-error")/* STOMP-Error */ }
+    userClient.onConnect = (frame)=> {
         
         console.log("connected", frame);
-        console.log(user)
         try {
-            stompclient.publish({ 
+            userClient.publish({ 
                 destination: DEST,
                 headers:{},
                 body:JSON.stringify(user)
@@ -30,6 +29,6 @@ function sendUser(user:IUser){
             console.log("Es gab ein fehler", fehler);
         }
     }
-    stompclient.activate();
-    stompclient.onDisconnect = () => { /* Verbindung abgebaut*/ }
+    userClient.activate();
+    userClient.onDisconnect = () => { /* Verbindung abgebaut*/ }
 }

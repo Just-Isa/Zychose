@@ -1,5 +1,7 @@
 package de.hsrm.mi.team3.swtp.controllers;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,4 +71,5 @@ public class RoomController {
         //sends room to Client
         backservice.sendRoom("room", BackendOperation.CREATE, room);
     }
+    
 }
