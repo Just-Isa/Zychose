@@ -45,10 +45,7 @@ public class RoomController {
     @MessageMapping("/topic/room")
     public void sendroom(@Payload String test, ModelMap m){
         logger.info("----------------------"+ test+ "-------------------------");
-        
-    }
-
-    
+    }    
 
     /**
      * 
