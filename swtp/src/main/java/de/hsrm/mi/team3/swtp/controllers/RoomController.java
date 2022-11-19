@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
+import de.hsrm.mi.team3.swtp.domain.messaging.BackendMouseMessage;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
 import de.hsrm.mi.team3.swtp.services.BackendInfoService;
 import de.hsrm.mi.team3.swtp.services.RoomBoxServiceImplementation;
@@ -46,6 +47,18 @@ public class RoomController {
         logger.info("----------------------"+ test+ "-------------------------");
         
     }
+
+    
+
+    /**
+     * 
+     * @param mouse Mouse that is sent to all subscribers
+     */
+    @MessageMapping("/topic/mouse")
+    public void sendMouseToClients(@Payload BackendMouseMessage mouse){
+        backservice.sendMouse("mouse", mouse);
+    }
+
     /*
      * Gets a newUser from the client, adds him to room and sends the room to the client 
      */
