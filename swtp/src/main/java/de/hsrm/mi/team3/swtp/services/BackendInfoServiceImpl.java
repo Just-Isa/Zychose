@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
+import de.hsrm.mi.team3.swtp.domain.messaging.BackendMouseMessage;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendRoomMessage;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendUserMessage;
@@ -25,5 +26,11 @@ public class BackendInfoServiceImpl implements BackendInfoService{
     @Override
     public void sendUser(String topicname, BackendOperation operation, User user) {
         messaging.convertAndSend("/topic/"+topicname, new BackendUserMessage(operation, user));        
+    }
+
+
+    @Override
+    public void sendMouse(String topicname, BackendMouseMessage mouse) {
+        messaging.convertAndSend("/topic/"+topicname, mouse);          
     }
 }

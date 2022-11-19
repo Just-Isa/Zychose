@@ -9,13 +9,13 @@ export interface IRoomState{
 }
 
 const roomstate = reactive<IRoomState>({
-    room: new Room("", 0, []),
+    room: new Room("", 1, []),
     errormessage:""
 });
 
 //function to get access to the room and the functions with stomp
 export function useRoom(){
-    return {room:readonly(roomstate), receiveRoom}
+    return {roomState:readonly(roomstate), receiveRoom}
 }
 
 //function for receiving a room.
@@ -29,11 +29,11 @@ function receiveRoom(){
         
         stompclient.subscribe(DEST, (message) =>{
             roomstate.room = JSON.parse(message.body);
-            console.log("room: "+roomstate.room)
+            console.log("room-number: "+roomstate.room.roomNumber);
         });
     }
     stompclient.activate();
     stompclient.onDisconnect = () => { /* Verbindung abgebaut*/ }
-    
 }
+
 
