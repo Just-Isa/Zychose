@@ -1,19 +1,64 @@
+
+<template>
+<div class="wrapper">
+
+
+  <div class="main">
+    <div class="baggercontainer">
+      <BaggerButton id="baggercursor"></BaggerButton>
+    </div>
+
+    <h1>MAIN</h1>
+
+    <div class="dropzone">
+      <div>
+       <DropZone></DropZone>
+      </div>
+    </div>
+  </div>
+
+
+  <footer class="navcontainer">
+    <div class="navbar">
+    <h2>MENÜ</h2>
+
+
+
+
+
+    <button class="Bagger" @click="deleteTiles()">yeet</button>
+  </div>
+</footer>
+</div>
+</template>
+
+
+
+
+
 <script setup lang="ts">
 import { ref } from "vue";
+import BaggerButton from "./BaggerButton.vue";
+import DropZone from "./DropZone.vue";
+
+
 
 const tiles = ref([
   { id: 1, title: "kreuzung"},
-  { id: 2, title: "kurve"},
-  { id: 3, title: "straß"},
-  { id: 4, title: "sackgasse"},
-]);
+  { id: 2, title: "straß"},
+  { id: 3, title: "sackgasse"},
+  { id: 4, title: "kurva"},
+])
+
+let uid = 0;
+
 
 const playground = ref([]);
 
 
 const startDrag = (event, tile) => {
-  event.dataTransfer.dropEffect = "copy";
-  event.dataTransfer.effectAllowed = "copy";
+  event.dataTransfer.dropEffect = "move";
+  event.dataTransfer.effectAllowed = "move";
   event.dataTransfer.setData('tileID', tile.id);
   console.log("Ziehe dies: " + tile.title)
 };
@@ -29,66 +74,62 @@ function deleteTiles() {
     playground.value = []
 }
 
-
 </script>
 
 
-<template>
-<div class="wrapper">
-  <div class="main">
-    <h1>MAIN</h1>
 
-    <div class="dropzone" @drop="onDrop($event)" @dragenter.prevent @dragover.prevent>
-      <div
-        v-for="tile in playground"
-        :key="tile"
-        class="tile-el"
-        draggable="true"
-        id="Dragme"
-        @dragstart="startDrag($event, tile)"
-      >
-        {{ tile.id }}
-      </div>
-    </div>
-
-  </div>
-
-  <footer class="navbar">
-    <h2>MENÜ</h2>
-
-    <div class="dropzone">
-      <div
-        v-for="tile in tiles"
-        :key="tile"
-        class="tile-el"
-        draggable="true"
-        id="Dragme"
-        @dragstart="startDrag($event, tile)"
-      >
-        {{ tile.id }}
-      </div>
-    </div>
-
-    <button class="Bagger" @click = "deleteTiles()">yeet</button>
-</footer>
-</div>
-</template>
 
 <style scoped>
 
+html {
+    position: relative;
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
+body {
+    margin: 0 0 14em;
+    padding: 25px;
+}
+
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 100px;
+    width: 100%;
+    overflow: hidden;
+}
 .wrapper {
     background-color: beige;
+    width:100vw;
+    height:100vh;
+}
+
+.baggercontainer {
+  position: absolute;
+  right: 50px;
+  top: 30px
+}
+
+#baggercursor {
+  padding: 2em;
 }
 
 .main {
   background-color: grey;
+  margin: 0 auto;
+  height: 100vh;
+}
+
+.navcontainer {
+  width: 100vw;
+  height: 14em;
 }
 
 .navbar {
     background-color: lightgray;
     color: darkslategrey;
-    height: 27em;
-    width: 90em;
 }
 
 .tile-el {
@@ -97,6 +138,7 @@ function deleteTiles() {
   margin: 1em;
   width: 50px;
   height: 50px;
+  display: inline-block;
 }
 
 .dropzone {
@@ -106,6 +148,17 @@ function deleteTiles() {
   padding: 1em;
   color: white;
   background-color: aquamarine;
+  
+}
+
+.dropzoneTest {
+  width: 50%;
+  margin: 1em auto;
+  min-height: 50px;
+  padding: 1em;
+  color: white;
+  background-color: aquamarine;
+  visibility: hidden;
 }
 
 #Dragme:hover {
