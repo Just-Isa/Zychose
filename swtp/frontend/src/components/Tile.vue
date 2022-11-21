@@ -1,7 +1,5 @@
 <template>
-  <span class="tile-ele">
-    {{tile.name}} TYPEID {{tile.id}}
-  </span>
+  <span class="tile-ele"></span>
 </template>
   
 <script setup lang="ts">
@@ -15,17 +13,16 @@ const props = defineProps<{
 }>();
 
 
-
 </script>
 
 
 <style scoped>
 .tile-ele {
   background-color: blue;
-  padding: 4em;
+  height: 6em;
+  width: 6em;
+  padding: 1em;
   margin: 1em;
-  width: 50px;
-  height: 50px;
   display: inline-block;
 }
 

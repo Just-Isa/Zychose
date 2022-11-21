@@ -1,17 +1,14 @@
 <template>
     <footer>
-        <div class="tilemenuwrapper">
-            <div class="tilecontainer" id="tileContainer">
-                <Tile id="street" :tile="streetTile" :imgurl="street"></Tile>
-                <Tile id="cross" :tile="crossTile" :imgurl="street"></Tile>
-                <Tile id="curve" :tile="curveTile" :imgurl="street"></Tile>
-                <Tile id="tcross" :tile="tcrossTile" :imgurl="street"></Tile>
-            </div>
 
-            <div class="baggercontainer">
-                <button id="baggercursor" @click="toggle()"></button>
-            </div>
+        <div class="tilemenuwrapper">
+            <Tile @click="setStreetType()" id="street" :tile="streetTile" :imgurl="street"></Tile>
+            <Tile @click="setCrossType()" id="cross" :tile="crossTile" :imgurl="street"></Tile>
+            <Tile @click="setCurveType()" id="curve" :tile="curveTile" :imgurl="street"></Tile>
+            <Tile @click="setTCrossType()" id="tcross" :tile="tcrossTile" :imgurl="street"></Tile>
+            <button id="baggercursor" @click="toggle()"></button>
         </div>
+
     </footer>
 </template>
 
@@ -21,13 +18,6 @@ import { getBasicTiles } from '@/services/useTileList';
 import { computed, ref } from "vue";
 import Tile from './Tile.vue';
 import street from './icons/street.png';
-
-const singleTile = document.getElementById("tileContainer");
-
-console.log(singleTile)
-if (singleTile != null){
-  singleTile.style.backgroundImage = street;
-}
 
 
 let currentType = ref("")
@@ -50,28 +40,28 @@ function toggle() {
 
 function setStreetType(){
     if (baggerStatus.value == true){
-        currentType.value = 'STREET'
+        currentType.value = streetTile.name
         console.log("CURRENT TYPE: " + currentType.value)
     }
 }
 
 function setCrossType(){
     if (baggerStatus.value == true){
-        currentType.value = 'CROSS'
+        currentType.value = crossTile.name
         console.log("CURRENT TYPE: " + currentType.value)
     }
 }
 
 function setTCrossType(){
     if (baggerStatus.value == true){
-        currentType.value = 'TCROSS'
+        currentType.value = tcrossTile.name
         console.log("CURRENT TYPE: " + currentType.value)
     }
 }
 
 function setCurveType(){
     if (baggerStatus.value == true){
-        currentType.value = 'CURVE'
+        currentType.value = curveTile.name
         console.log("CURRENT TYPE: " + currentType.value)
     }
 }
@@ -80,14 +70,29 @@ function setCurveType(){
 </script>
 
 <style scoped>
-.baggercontainer {
-  position: absolute;
-  right: 50px;
-  top: 30px;
+
+
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+.tilemenuwrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 #baggercursor {
-  padding: 2em;
+    background-image: url('https://thumbs.dreamstime.com/b/alter-gebrochener-verlassener-rostiger-bagger-meinen-63444262.jpg');
+    background-size: cover;
+    height: 7em;
+    width: 7em;
+    padding: 1em;
+    margin: 1em;
 }
 
 #street {
@@ -111,11 +116,6 @@ function setCurveType(){
     background-size: cover;
 }
 
-#baggercursor {
-    background-image: url('https://thumbs.dreamstime.com/b/alter-gebrochener-verlassener-rostiger-bagger-meinen-63444262.jpg');
-    background-size: cover;
-    padding: 5em;
 
-}
 
 </style>
