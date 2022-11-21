@@ -22,9 +22,11 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
         return roomBox.getRooms().size() + 1;
     }
 
+    /*
+     * No functionality to add specific rooms yet
+     */
     public Room addRoom() {
         RoomBox roomBox = getRoomBoxSingelton();
-
         int newRoomNumber = this.nextRoomNumber();
         logger.info("-------"+newRoomNumber+"---------");
         Room existentRoom = this.getRoomsFromRoomBox().get(newRoomNumber);
@@ -32,9 +34,6 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
             return existentRoom;
         }
         roomBox.addRoom(newRoomNumber, new Room(newRoomNumber));
-        for (Room logRoom: roomBox.getRooms().values()) {
-            logger.info("ROOM = {}", logRoom.getRoomName());
-        }
         return this.getRoomsFromRoomBox().get(newRoomNumber);
     }
 
