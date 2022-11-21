@@ -1,6 +1,6 @@
 <template>
   <span class="tile-ele">
-    NAME {{tile.name}} TYPE {{tile.typeid}} UUID {{uuid}}
+    {{tile.name}} TYPEID {{tile.id}}
   </span>
 </template>
   
@@ -10,10 +10,10 @@ import type { ITileItem } from '@/services/ITileItem';
 
 
 const props = defineProps<{ 
+    imgurl: string;
     tile: ITileItem;
 }>();
 
-let uuid = computed(() => Math.floor(Math.random() * 100));
 
 
 </script>

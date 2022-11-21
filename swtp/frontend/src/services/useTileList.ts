@@ -11,9 +11,10 @@ const tiles = ref<ITileItem[]>([])
 // Liste mit hardcodierten Angeboten (aber echten Geo-Koordinaten)
 function basicTiles(): ITileItem[] {
     const tiles: ITileItem[] = [
-        new TileEle(1, "Straße"),
-        new TileEle(2, "Kreuzung"),
-        new TileEle(3, "Kurve")
+        new TileEle(1, "STREET"),
+        new TileEle(2, "CROSS"),
+        new TileEle(3, "CURVE"),
+        new TileEle(4, "TCROSS")
     ]
     return tiles
 }
@@ -21,7 +22,6 @@ function basicTiles(): ITileItem[] {
 
 
 tiles.value = basicTiles()
-
 
 
 export function getBasicTiles() {
