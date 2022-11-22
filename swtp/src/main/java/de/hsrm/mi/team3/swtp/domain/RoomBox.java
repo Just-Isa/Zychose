@@ -6,6 +6,10 @@ import java.util.Map;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 
+/*
+ * The RoomBox class handles all rooms. The class itself exists only once. 
+ * Rooms can be added and are handled in HashMaps.
+ */
 public class RoomBox {
 
     public RoomBox() {
@@ -13,7 +17,7 @@ public class RoomBox {
     }
 
     private Map<Integer, Room> rooms;
-    
+
     public Map<Integer, Room> getRooms() {
         return this.rooms;
     }

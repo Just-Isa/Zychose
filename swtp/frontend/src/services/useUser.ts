@@ -13,13 +13,13 @@ const mouseState = reactive<IMouseState>({
     errormessage:""
 });
 
-//zugreifbar gemacht
+//provides access to the user and functions with stomp.
 export function useUser(){
     return {sendUser, sendMouse, receiveMouse, mouseState:readonly(mouseState)}
 }
 
 
-//um einen User zum Server zu schicken.
+//function sends user to a server.
 function sendUser(user:IUser){
     const wsurl =`ws://${window.location.host}/stompbroker`;
     const DEST = "/topic/user";
@@ -36,14 +36,14 @@ function sendUser(user:IUser){
                 body:JSON.stringify(user)
             });
         } catch (fehler) {
-            // Problem beim Senden
+            // in case of an error
             console.log("Es gab ein fehler", fehler);
         }
     }
     userClient.activate();
     userClient.onDisconnect = () => { /* Verbindung abgebaut*/ }
 }
-
+//function sends Mouse to a server.
 function sendMouse(mouse: IMouse) {
     const wsurl =`ws://${window.location.host}/stompbroker`;
     const DEST = "/topic/mouse";
@@ -58,14 +58,14 @@ function sendMouse(mouse: IMouse) {
                 body:JSON.stringify(mouse)
             });
         } catch (fehler) {
-            // Problem beim Senden
+            // In case of an error
             console.log("Es gab ein fehler", fehler);
         }
     }
     userClient.activate();
     userClient.onDisconnect = () => { /* Verbindung abgebaut*/ }
 }
-
+//function to receive a mouse, so movement can be available to others.
 function receiveMouse(){
     const wsurl =`ws://${window.location.host}/stompbroker`;
     const DEST = "/topic/mouse";

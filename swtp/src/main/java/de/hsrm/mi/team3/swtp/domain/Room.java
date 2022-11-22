@@ -3,12 +3,16 @@ package de.hsrm.mi.team3.swtp.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Room class that is used within the RoomBox. 
+ * This class has two different constructors.
+ */
 public class Room {
 
     private String roomName;
     private int roomNumber;
     private List<User> userList;
-    
+
     public Room(int roomNumber) {
         this.roomName = "default-name";
         this.roomNumber = roomNumber;
@@ -20,7 +24,6 @@ public class Room {
         this.roomNumber = roomNumber;
         this.userList = new ArrayList<User>();
     }
-    
 
     public String getRoomName() {
         return roomName;
