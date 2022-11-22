@@ -7,15 +7,15 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 /*
- * Konfiguration der Websocket.
- * Implementiert den WebSocketMessageBrokerConfigurer.
+ * Websocket Configuration. 
+ * WebSocketMessageBrokerConfigurer is implemented. 
  */
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   /**
-   * Methode setzt Adresse für alle Destinations.
+   * Method sets configuration for all destinations in the registry.
    * 
    * @param registry
    */
@@ -29,7 +29,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   }
 
   /**
-   * Methode setzt den Endpunkt für Stomp.
+   * Method sets configuration for stomp ending point.
    * 
    * @param registry
    */
