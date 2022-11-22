@@ -12,9 +12,16 @@ import de.hsrm.mi.team3.swtp.domain.User;
 public class RoomServiceImplementation implements RoomService {
 
     Logger logger = LoggerFactory.getLogger(RoomServiceImplementation.class);
-    
-    @Autowired RoomBoxServiceImplementation roomBoxService;
 
+    @Autowired
+    RoomBoxServiceImplementation roomBoxService;
+
+    /**
+     * This method adds a new user to a room.
+     * 
+     * @param room
+     * @param user
+     */
     @Override
     public void addNewUserToRoom(Room room, User user) {
         room.addUserToList(user);
@@ -23,6 +30,12 @@ public class RoomServiceImplementation implements RoomService {
         }
     }
 
+    /**
+     * This method provides a certain room by number.
+     * 
+     * @param roomNumber
+     * @return Room
+     */
     @Override
     public Room getRoomByRoomNumber(int roomNumber) {
         return roomBoxService.getRoomsFromRoomBox().get(roomNumber);
