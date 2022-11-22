@@ -13,8 +13,11 @@ public class User {
         this.currentRoomNumber = currentRoomNumber;
         this.userName = userName;
     }
+
     public User(){
-        
+        this.sessionID = "";
+        this.currentRoomNumber = 0;
+        this.userName = "";        
     }
 
     public String getSessionID() {
@@ -40,6 +43,9 @@ public class User {
     public void setUserName(String userName) {
         this.userName = userName;
     }
-
-    
+    @Override
+    public String toString() {
+        return "User [sessionID=" + sessionID + ", currentRoomNumber=" + currentRoomNumber + ", userName=" + userName
+                + "]";
+    }
 }
