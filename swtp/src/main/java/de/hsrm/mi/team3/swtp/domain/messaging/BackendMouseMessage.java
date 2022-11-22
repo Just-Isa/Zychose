@@ -7,12 +7,12 @@ public record BackendMouseMessage(
         int y) {
 
     /**
-     * Parameter für Mouse Message.
+     * Parameter for Mouse Message.
      * 
-     * @param sid
+     * @param sid sessionID
      * @param roomNumber
-     * @param x
-     * @param y
+     * @param x x-coordinate
+     * @param y y-coordinate
      * @return BackendMouseMessage
      */
     public static BackendMouseMessage from(String sid, int roomNumber, int x, int y) {
