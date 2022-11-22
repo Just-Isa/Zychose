@@ -1,5 +1,6 @@
-
-
+/**
+ * Interface für States der Tiles
+ */
 export interface ITileItem {
     id: number,
     name: string,

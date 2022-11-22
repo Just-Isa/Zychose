@@ -18,12 +18,15 @@ const props = defineProps<{
 
 <style scoped>
 .tile-ele {
-  background-color: blue;
-  height: 6em;
-  width: 6em;
-  padding: 1em;
+  height: 6.1em;
+  width: 6.1em;
   margin: 1em;
   display: inline-block;
+}
+
+.tile-ele:active {
+  background-color: #95E8FF;
+  border-radius: 1em;
 }
 
 
