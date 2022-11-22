@@ -32,7 +32,7 @@ class DomainTest {
     RoomBox roomBox = null;
 
     @BeforeEach
-    public void benutzerprofil_init() {
+    public void benutzerprofilInit() {
         userOne = new User();
         userOne.setSessionID(SESSIONID);
         userOne.setUserName(USERNAME);
@@ -49,7 +49,7 @@ class DomainTest {
 
     @Test
     @DisplayName("User: toString()")
-    public void user_toString() {
+    public void userToString() {
         String toStr = userOne.toString();
         String toStrTwo = userTwo.toString();
         

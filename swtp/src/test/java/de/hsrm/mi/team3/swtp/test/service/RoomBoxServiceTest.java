@@ -1,5 +1,7 @@
 package de.hsrm.mi.team3.swtp.test.service;
 
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,6 +38,9 @@ class RoomBoxServiceTest{
     private final int NEXTROOMNUMBERBEFOREADDITION = 1;
     private final int NEXTROOMNUMBERAFTERADDITION = 2;
 
+    private final int ROOMNUMBERAFTERFIRSTADDITION = 1;
+    private final int ROOMNUMBERAFTERSECONDADDITION = 2;
+
     User userOne = null;
     User userTwo = null;
 
@@ -68,5 +73,23 @@ class RoomBoxServiceTest{
         assertThat(roomBoxService.nextRoomNumber()).isEqualTo(NEXTROOMNUMBERBEFOREADDITION);
         roomBoxService.addRoom();
         assertThat(roomBoxService.nextRoomNumber()).isEqualTo(NEXTROOMNUMBERAFTERADDITION);
+    }
+
+    @Test
+    @DisplayName("RoomBoxService: getSpecificRoom")
+    public void getSpecificRoom() {
+        Room room = roomBoxService.addRoom();
+        assertThat(roomBoxService.getSpecificRoom(ROOMNUMBERAFTERFIRSTADDITION)).isEqualTo(room);
+    }
+
+    @Test
+    @DisplayName("RoomBoxService: getRoomsFromRoomBox")
+    public void getRoomsFromRoomBox() {
+        Room roomOne = roomBoxService.addRoom();
+        Room roomTwo = roomBoxService.addRoom();
+        Map<Integer, Room> rooms = new HashMap<Integer, Room>();
+        rooms.put(ROOMNUMBERAFTERFIRSTADDITION, roomOne);
+        rooms.put(ROOMNUMBERAFTERSECONDADDITION, roomTwo);
+        assertThat(roomBoxService.getRoomsFromRoomBox()).isEqualTo(rooms);
     }
 }
