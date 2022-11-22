@@ -6,22 +6,36 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
-
+/*
+ * Konfiguration der Websocket.
+ * Implementiert den WebSocketMessageBrokerConfigurer.
+ */
 @Configuration
 @EnableWebSocketMessageBroker
-public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
-    
-    @Override
-    public void configureMessageBroker(MessageBrokerRegistry registry) {
-      // Prefix für alle zugehörigen Destinations,
-      // z.B. /topic/news, /topic/offers usw.
-      registry.enableSimpleBroker("/topic");
-      //registry.setApplicationDestinationPrefixes("/app");
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    }
-    @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
-                registry.addEndpoint("/stompbroker")
-                .setAllowedOrigins("*");
-    }
+  /**
+   * Methode setzt Adresse für alle Destinations.
+   * 
+   * @param registry
+   */
+  @Override
+  public void configureMessageBroker(MessageBrokerRegistry registry) {
+    // Prefix für alle zugehörigen Destinations,
+    // z.B. /topic/news, /topic/offers usw.
+    registry.enableSimpleBroker("/topic");
+    // registry.setApplicationDestinationPrefixes("/app");
+
+  }
+
+  /**
+   * Methode setzt den Endpunkt für Stomp.
+   * 
+   * @param registry
+   */
+  @Override
+  public void registerStompEndpoints(StompEndpointRegistry registry) {
+    registry.addEndpoint("/stompbroker")
+        .setAllowedOrigins("*");
+  }
 }
