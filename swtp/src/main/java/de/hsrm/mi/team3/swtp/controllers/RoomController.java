@@ -40,8 +40,11 @@ public class RoomController {
         }
     }
 
-    /*
+    /**
      * Further along, this method can be used for updating a room.
+     * 
+     * @param test
+     * @param m
      */
     @MessageMapping("/topic/room")
     public void sendroom(@Payload String test, ModelMap m) {
@@ -61,13 +64,11 @@ public class RoomController {
     /*
      * Gets a newUser from the client, adds this user to the room and sends the room
      * to the client.
-     */
-    /**
+     * 
      * @param newUser
      */
     @MessageMapping("/topic/user")
     public void getUser(@Payload User newUser) {
-        // ToDo: check if user in Room or roombox
 
         logger.info("User: (" + newUser.getSessionID() + ", " + newUser.getUserName() + ", "
                 + newUser.getCurrentRoomNumber() + ")");
