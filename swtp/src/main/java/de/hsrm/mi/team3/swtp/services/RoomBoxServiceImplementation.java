@@ -91,5 +91,5 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
     public RoomBox getRoomBoxSingelton() {
         return (RoomBox) applicationContext.getBean("roomBoxSingleton");
     }
-
+    
 }

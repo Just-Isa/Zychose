@@ -12,7 +12,8 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
  */
 @Configuration
 @EnableWebSocketMessageBroker
-public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
+    
 
   /**
    * Method sets configuration for all destinations in the registry.
@@ -24,7 +25,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     // Prefix für alle zugehörigen Destinations,
     // z.B. /topic/news, /topic/offers usw.
     registry.enableSimpleBroker("/topic");
-    // registry.setApplicationDestinationPrefixes("/app");
 
   }
 

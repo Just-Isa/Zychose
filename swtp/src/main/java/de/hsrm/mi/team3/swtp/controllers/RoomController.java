@@ -12,6 +12,7 @@ import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendMouseMessage;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
+import de.hsrm.mi.team3.swtp.domain.messaging.BackendUserMessage;
 import de.hsrm.mi.team3.swtp.services.BackendInfoService;
 import de.hsrm.mi.team3.swtp.services.RoomBoxServiceImplementation;
 import de.hsrm.mi.team3.swtp.services.RoomServiceImplementation;
@@ -68,10 +69,12 @@ public class RoomController {
      * @param newUser
      */
     @MessageMapping("/topic/user")
-    public void getUser(@Payload User newUser) {
+    public void getUser(@Payload BackendUserMessage userMessage){
+        
+        User newUser = userMessage.user();
+        BackendOperation operation = userMessage.operation();
 
-        logger.info("User: (" + newUser.getSessionID() + ", " + newUser.getUserName() + ", "
-                + newUser.getCurrentRoomNumber() + ")");
+        logger.info("User: (" +newUser.getSessionID()+", "+ newUser.getUserName()+ ", "+ newUser.getCurrentRoomNumber()+")");
         Room room;
 
         if (roomBoxService.getRoomsFromRoomBox().size() < 1) {
@@ -82,10 +85,10 @@ public class RoomController {
         if (newUser.getUserName() == null) {
             newUser.setUserName("Raus aus meinem Kopf");
         }
-        newUser.setCurrentRoomNumber(room.getRoomNumber());
-        roomService.addNewUserToRoom(room, newUser);
-
-        // sends room to Client
+        if(operation == BackendOperation.CREATE){
+            newUser.setCurrentRoomNumber(room.getRoomNumber());
+            roomService.addNewUserToRoom(room, newUser);
+        }
         backservice.sendRoom("room", BackendOperation.CREATE, room);
     }
 

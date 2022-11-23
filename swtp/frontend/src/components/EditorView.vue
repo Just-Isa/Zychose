@@ -24,6 +24,7 @@ import { Mouse } from "@/services/IMouse";
 // https://vueuse.org/core/usemouse/
 import { useMouse } from '@vueuse/core';
 import { computed } from "@vue/reactivity";
+import { MessageOperator } from "@/services/MessageOperators";
 
 const colors = ref(["#A9E5BB", "#FCF6B1", "#F72C25", "#F4989C", "#DAC4F7","#A9E5BB", "#FCF6B1", "#F72C25", "#F4989C", "#DAC4F7","#A9E5BB", "#FCF6B1", "#F72C25", "#F4989C", "#DAC4F7"]);
 
@@ -52,7 +53,7 @@ function createUser()
   {
       document.cookie = "sid="+crypto.randomUUID();
       const user = new User(document.cookie.split("=")[1], 1, document.cookie.split("=")[1]);
-      publishUser(user);
+      publishUser(MessageOperator.CREATE ,user);
   }
 }
 
