@@ -30,7 +30,7 @@ class RoomBoxServiceTest{
 
     private final String SESSIONIDTWO = "session-id-test-2";
     private final int USERROOMNUMBERTWO = 1;
-    private final String USERNAMETWO= "User-Twoe";
+    private final String USERNAMETWO= "User-Two";
 
     private final int ROOMBOXSIZEBEFOREADDITION = 0;
     private final int ROOMBOXSIZEAFTERADDITION = 1;

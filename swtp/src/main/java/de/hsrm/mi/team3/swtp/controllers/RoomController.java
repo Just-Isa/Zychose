@@ -1,7 +1,5 @@
 package de.hsrm.mi.team3.swtp.controllers;
 
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,8 +59,6 @@ public class RoomController {
      */
     @MessageMapping("/topic/user")
     public void getUser(@Payload User newUser){
-        //to do's check if user in Room or roombox
-        
         logger.info("User: (" +newUser.getSessionID()+", "+ newUser.getUserName()+ ", "+ newUser.getCurrentRoomNumber()+")");
         Room room;
         
@@ -78,7 +74,6 @@ public class RoomController {
         newUser.setCurrentRoomNumber(room.getRoomNumber());
         roomService.addNewUserToRoom(room, newUser);
         
-        //sends room to Client
         backservice.sendRoom("room", BackendOperation.CREATE, room);
     }
     

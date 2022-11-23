@@ -31,7 +31,7 @@ class RoomServiceTest {
 
     private final String SESSIONIDTWO = "session-id-test-2";
     private final int USERROOMNUMBERTWO = 1;
-    private final String USERNAMETWO= "User-Twoe";
+    private final String USERNAMETWO= "User-Two";
 
     private final int USERLISTSIZEBEFOREADDITION = 0;
     private final int USERLISTSIZEMIDADDITON = 1;

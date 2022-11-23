@@ -15,12 +15,12 @@ const mouseState = reactive<IMouseState>({
 
 //zugreifbar gemacht
 export function useUser(){
-    return {sendUser, sendMouse, receiveMouse, mouseState:readonly(mouseState)}
+    return {publishUser, publishMouse, receiveMouse, mouseState:readonly(mouseState)}
 }
 
 
 //um einen User zum Server zu schicken.
-function sendUser(user:IUser){
+function publishUser(user:IUser){
     const wsurl =`ws://${window.location.host}/stompbroker`;
     const DEST = "/topic/user";
     const userClient = new Client({brokerURL:wsurl})
@@ -44,7 +44,7 @@ function sendUser(user:IUser){
     userClient.onDisconnect = () => { /* Verbindung abgebaut*/ }
 }
 
-function sendMouse(mouse: IMouse) {
+function publishMouse(mouse: IMouse) {
     const wsurl =`ws://${window.location.host}/stompbroker`;
     const DEST = "/topic/mouse";
     const userClient = new Client({brokerURL:wsurl})

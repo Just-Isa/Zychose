@@ -8,11 +8,12 @@ import org.springframework.context.annotation.Scope;
 
 public class RoomBox {
 
+    private Map<Integer, Room> rooms;
+
     public RoomBox() {
         this.rooms = new HashMap<Integer, Room>();
     }
 
-    private Map<Integer, Room> rooms;
     
     public Map<Integer, Room> getRooms() {
         return this.rooms;

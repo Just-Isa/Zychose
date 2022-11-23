@@ -12,9 +12,6 @@
       />
     </svg>
 
-    <button v-on:click="createUser">test</button>
-    Name <input type="text" v-model="name">
-
 </template>
 
 <script setup lang="ts">
@@ -31,48 +28,48 @@ import { computed } from "@vue/reactivity";
 const colors = ref(["#A9E5BB", "#FCF6B1", "#F72C25", "#F4989C", "#DAC4F7","#A9E5BB", "#FCF6B1", "#F72C25", "#F4989C", "#DAC4F7","#A9E5BB", "#FCF6B1", "#F72C25", "#F4989C", "#DAC4F7"]);
 
 const {x, y} = useMouse({touch: false});
-let name = ref("");
-
 let lastXsent = 0;
 let lastYsent = 0;
-let lastTimeSent = Date.now();
 
 //const mouseMap = reactive(new Map<string, number[]>());
 let mouseDict: {[sessionID:string]:number[]} = reactive({});
 
-let mouseDictWithoutSelf = computed(() => mouseDict)
 
 const {roomState, receiveRoom} = useRoom();
-const {sendMouse, mouseState, receiveMouse} = useUser();
-const {sendUser} = useUser();
+const {publishMouse, mouseState, receiveMouse} = useUser();
+const {publishUser} = useUser();
 
 onMounted(()=>{
     receiveRoom();
     receiveMouse();
+    createUser();
 })
 
-function createUser(){
-    if (document.cookie.split("=")[0] != 'sid') {
-        document.cookie = "sid="+crypto.randomUUID();
-        const user = new User(document.cookie.split("=")[1], 1, name.value);
-        sendUser(user);
-    }
+
+function createUser()
+{
+  if (document.cookie.split("=")[0] != 'sid') 
+  {
+      document.cookie = "sid="+crypto.randomUUID();
+      const user = new User(document.cookie.split("=")[1], 1, document.cookie.split("=")[1]);
+      publishUser(user);
+  }
 }
 
 setInterval(function() 
     {
-            if ((Math.abs(lastXsent-x.value) > 10) || (Math.abs(lastYsent-y.value) > 10) ) 
-            {
-                lastXsent = x.value;
-                lastYsent = y.value;
-                sendMouse(new Mouse(document.cookie.split("=")[1], roomState.room.roomNumber, x.value, y.value));
-            }
-            lastTimeSent = Date.now();
-            //mouseMap.set(mouseState.mouse.sessionID, [x.value, y.value]);
-            if (mouseState.mouse.sessionID != "" && mouseState.mouse.sessionID != null && mouseState.mouse.sessionID != document.cookie.split("=")[1]) {
-                mouseDict[mouseState.mouse.sessionID] = [mouseState.mouse.x, mouseState.mouse.y];
-            }
-        } 
+      if ((Math.abs(lastXsent-x.value) > 10) || (Math.abs(lastYsent-y.value) > 10) ) 
+      {
+          lastXsent = x.value;
+          lastYsent = y.value;
+          publishMouse(new Mouse(document.cookie.split("=")[1], roomState.room.roomNumber, x.value, y.value));
+      }
+      //mouseMap.set(mouseState.mouse.sessionID, [x.value, y.value]);
+      if (mouseState.mouse.sessionID != "" && mouseState.mouse.sessionID != null && mouseState.mouse.sessionID != document.cookie.split("=")[1]) 
+      {
+          mouseDict[mouseState.mouse.sessionID] = [mouseState.mouse.x, mouseState.mouse.y];
+      }
+  } 
 , 300);
 
 </script>
@@ -83,6 +80,5 @@ setInterval(function()
   transition: transform 120ms linear;
   top: 0;
   left: 0;
-  color: red;
 }
 </style>
