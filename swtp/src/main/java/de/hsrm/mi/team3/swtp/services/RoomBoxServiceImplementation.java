@@ -11,15 +11,18 @@ import org.springframework.stereotype.Service;
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.RoomBox;
 
-/** implementation of RoomBoxService
+/**
+ * implementation of RoomBoxService
  */
 @Service
 public class RoomBoxServiceImplementation implements RoomBoxService {
-    
-    Logger logger = LoggerFactory.getLogger(RoomBoxServiceImplementation.class);   
+
+    Logger logger = LoggerFactory.getLogger(RoomBoxServiceImplementation.class);
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("scopes.xml");
 
-    /** determines next room number
+    /**
+     * determines next room number
+     * 
      * @return next valid room number
      */
     public int nextRoomNumber() {
@@ -27,26 +30,26 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
         return roomBox.getRooms().size() + 1;
     }
 
-    /** checks if room already exists or creates new room 
+    /**
+     * checks if room already exists or creates new room
+     * 
      * @return existing or new room
      */
     public Room addRoom() {
         RoomBox roomBox = getRoomBoxSingelton();
-
         int newRoomNumber = this.nextRoomNumber();
-        logger.info("-------"+newRoomNumber+"---------");
+        logger.info("-------" + newRoomNumber + "---------");
         Room existentRoom = this.getRoomsFromRoomBox().get(newRoomNumber);
         if (existentRoom != null) {
             return existentRoom;
         }
         roomBox.addRoom(newRoomNumber, new Room(newRoomNumber));
-        for (Room logRoom: roomBox.getRooms().values()) {
-            logger.info("ROOM = {}", logRoom.getRoomName());
-        }
         return this.getRoomsFromRoomBox().get(newRoomNumber);
     }
 
-    /** checks if room number is already taken
+    /**
+     * checks if room number is already taken
+     * 
      * @param roomNumber requested room number
      * @return true or false
      */
@@ -59,16 +62,20 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
         return false;
     }
 
-    /** get map with all existing romms
+    /**
+     * get map with all existing romms
+     * 
      * @return map with all existing romms
      */
     @Override
     public Map<Integer, Room> getRoomsFromRoomBox() {
         RoomBox roomBox = getRoomBoxSingelton();
-        return roomBox.getRooms();       
+        return roomBox.getRooms();
     }
 
-    /** get room by roomnumber
+    /**
+     * get room by roomnumber
+     * 
      * @param roomNumber requested room number
      * @return requested room according to roomnumber
      */
@@ -76,10 +83,12 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
         return this.getRoomsFromRoomBox().get(roomNumber);
     }
 
-    /** get RoomBox Singelton instance
+    /**
+     * get RoomBox Singelton instance
+     * 
      * @return RoomBox Singelton
      */
-    public RoomBox getRoomBoxSingelton(){
+    public RoomBox getRoomBoxSingelton() {
         return (RoomBox) applicationContext.getBean("roomBoxSingleton");
     }
 

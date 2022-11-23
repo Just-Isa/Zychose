@@ -1,5 +1,7 @@
 package de.hsrm.mi.team3.swtp.services;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +27,6 @@ public class RoomServiceImplementation implements RoomService {
     @Override
     public void addNewUserToRoom(Room room, User user) {
         room.addUserToList(user);
-        for (User users : this.getRoomByRoomNumber(room.getRoomNumber()).getUserList()) {
-            logger.info("User = {}, SessionID = {}", users.getUserName(), users.getSessionID());
-        }
     }
 
     /**
@@ -37,7 +36,7 @@ public class RoomServiceImplementation implements RoomService {
      * @return Room
      */
     @Override
-    public Room getRoomByRoomNumber(int roomNumber) {
-        return roomBoxService.getRoomsFromRoomBox().get(roomNumber);
+    public List<User> getUserList(Room room) {
+        return room.getUserList();
     }
 }

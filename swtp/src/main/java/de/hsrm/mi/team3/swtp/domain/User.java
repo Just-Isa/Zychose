@@ -18,7 +18,9 @@ public class User {
     }
 
     public User() {
-
+        this.sessionID = "";
+        this.currentRoomNumber = 0;
+        this.userName = "";
     }
 
     public String getSessionID() {
@@ -45,4 +47,9 @@ public class User {
         this.userName = userName;
     }
 
+    @Override
+    public String toString() {
+        return "User [sessionID=" + sessionID + ", currentRoomNumber=" + currentRoomNumber + ", userName=" + userName
+                + "]";
+    }
 }

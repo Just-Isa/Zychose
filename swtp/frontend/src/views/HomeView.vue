@@ -1,9 +1,9 @@
 <template>
-  <Info />
+  <EditorView />
 </template>
 
 <script setup lang="ts">
-import Info from "../components/Info.vue";
+import EditorView from "../components/EditorView.vue";
 </script>
 
 
