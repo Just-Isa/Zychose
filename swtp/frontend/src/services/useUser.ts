@@ -49,14 +49,14 @@ function publishUser(operator:MessageOperator,  user:IUser){
                 body:JSON.stringify(userDto)
             });
         } catch (fehler) {
-            // Problem beim Senden
+            // in case of an error
             console.log("Es gab ein fehler", fehler);
         }
     }
     userClient.activate();
     userClient.onDisconnect = () => { /* Verbindung abgebaut*/ }
 }
-
+//function sends Mouse to a server.
 function publishMouse(mouse: IMouse) {
     const wsurl =`ws://${window.location.host}/stompbroker`;
     const DEST = "/topic/mouse";
@@ -71,14 +71,14 @@ function publishMouse(mouse: IMouse) {
                 body:JSON.stringify(mouse)
             });
         } catch (fehler) {
-            // Problem beim Senden
+            // In case of an error
             console.log("Es gab ein fehler", fehler);
         }
     }
     userClient.activate();
     userClient.onDisconnect = () => { /* Verbindung abgebaut*/ }
 }
-
+//function to receive a mouse, so movement can be available to others.
 function receiveMouse(){
     const wsurl =`ws://${window.location.host}/stompbroker`;
     const DEST = "/topic/mouse";

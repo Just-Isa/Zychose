@@ -19,44 +19,54 @@ import de.hsrm.mi.team3.swtp.services.RoomServiceImplementation;
 
 @Controller
 public class RoomController {
-    
-    @Autowired RoomBoxServiceImplementation roomBoxService;
-    @Autowired RoomServiceImplementation roomService;
-    @Autowired BackendInfoService backservice; 
-    Logger logger = LoggerFactory.getLogger(RoomController.class);    
+
+    @Autowired
+    RoomBoxServiceImplementation roomBoxService;
+    @Autowired
+    RoomServiceImplementation roomService;
+    @Autowired
+    BackendInfoService backservice;
+    Logger logger = LoggerFactory.getLogger(RoomController.class);
 
     /*
-     * Dont know if we do need it, but creates a room if none in RoomBox
+     * This method creates a new room, if there is no room in the RoomBox.
      */
     public void init(ModelMap m) {
-        // in this case it makes a new room and leaves that room as the only one
+        // In this case it creates a new room and leaves that room as the only one.
         if (roomBoxService.getRoomsFromRoomBox().size() < 1) {
 
             Room room = roomBoxService.addRoom();
-    
-            logger.info("room = {}", room.getRoomNumber());            
+
+            logger.info("room = {}", room.getRoomNumber());
         }
     }
 
-    /*
-     * was for testing, but can be used late for updating a room, or something like that.
+    /**
+     * Further along, this method can be used for updating a room.
+     * 
+     * @param test
+     * @param m
      */
     @MessageMapping("/topic/room")
-    public void sendroom(@Payload String test, ModelMap m){
-        logger.info("----------------------"+ test+ "-------------------------");
-    }    
+    public void sendroom(@Payload String test, ModelMap m) {
+        logger.info("----------------------" + test + "-------------------------");
+    }
 
     /**
+     * This mapping send the mouse to all other subscribers.
      * 
-     * @param mouse Mouse that is sent to all subscribers
+     * @param mouse
      */
     @MessageMapping("/topic/mouse")
-    public void sendMouseToClients(@Payload BackendMouseMessage mouse){
+    public void sendMouseToClients(@Payload BackendMouseMessage mouse) {
         backservice.sendMouse("mouse", mouse);
     }
 
     /*
-     * Gets a newUser from the client, adds him to room and sends the room to the client 
+     * Gets a newUser from the client, adds this user to the room and sends the room
+     * to the client.
+     * 
+     * @param newUser
      */
     @MessageMapping("/topic/user")
     public void getUser(@Payload BackendUserMessage userMessage){
@@ -66,14 +76,13 @@ public class RoomController {
 
         logger.info("User: (" +newUser.getSessionID()+", "+ newUser.getUserName()+ ", "+ newUser.getCurrentRoomNumber()+")");
         Room room;
-        
+
         if (roomBoxService.getRoomsFromRoomBox().size() < 1) {
             room = roomBoxService.addRoom();
-        }
-        else{
+        } else {
             room = roomBoxService.getSpecificRoom(1);
         }
-        if(newUser.getUserName() == null){
+        if (newUser.getUserName() == null) {
             newUser.setUserName("Raus aus meinem Kopf");
         }
         if(operation == BackendOperation.CREATE){
@@ -82,5 +91,5 @@ public class RoomController {
         }
         backservice.sendRoom("room", BackendOperation.CREATE, room);
     }
-    
+
 }

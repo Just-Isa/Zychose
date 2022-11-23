@@ -1,5 +1,8 @@
 package de.hsrm.mi.team3.swtp.domain;
 
+/*
+ * The users who can be signed in. 
+ */
 public class User {
 
     private String sessionID;
@@ -14,10 +17,10 @@ public class User {
         this.userName = userName;
     }
 
-    public User(){
+    public User() {
         this.sessionID = "";
         this.currentRoomNumber = 0;
-        this.userName = "";        
+        this.userName = "";
     }
 
     public String getSessionID() {
@@ -43,6 +46,7 @@ public class User {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
     @Override
     public String toString() {
         return "User [sessionID=" + sessionID + ", currentRoomNumber=" + currentRoomNumber + ", userName=" + userName
