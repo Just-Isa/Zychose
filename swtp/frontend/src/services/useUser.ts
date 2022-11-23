@@ -2,6 +2,7 @@ import { Client } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
 import { Mouse, type IMouse } from "./IMouse";
 import type { IUser } from "./IUser";
+import type { MessageOperator } from "./MessageOperators";
 
 export interface IMouseState{
     mouse : IMouse,
@@ -13,6 +14,12 @@ const mouseState = reactive<IMouseState>({
     errormessage:""
 });
 
+interface UserDTO{
+    operator : MessageOperator,
+    user: IUser
+}
+
+
 //zugreifbar gemacht
 export function useUser(){
     return {publishUser, publishMouse, receiveMouse, mouseState:readonly(mouseState)}
@@ -20,7 +27,13 @@ export function useUser(){
 
 
 //um einen User zum Server zu schicken.
-function publishUser(user:IUser){
+function publishUser(operator:MessageOperator,  user:IUser){
+    const userDto:UserDTO = {
+        operator: operator,
+        user: user
+    }
+    
+    
     const wsurl =`ws://${window.location.host}/stompbroker`;
     const DEST = "/topic/user";
     const userClient = new Client({brokerURL:wsurl})
@@ -33,7 +46,7 @@ function publishUser(user:IUser){
             userClient.publish({ 
                 destination: DEST,
                 headers:{},
-                body:JSON.stringify(user)
+                body:JSON.stringify(userDto)
             });
         } catch (fehler) {
             // Problem beim Senden

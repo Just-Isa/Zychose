@@ -16,12 +16,12 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
     
     Logger logger = LoggerFactory.getLogger(RoomBoxServiceImplementation.class);   
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("scopes.xml");
-
+    
     public int nextRoomNumber() {
         RoomBox roomBox = getRoomBoxSingelton();
         return roomBox.getRooms().size() + 1;
     }
-
+    
     /*
      * No functionality to add specific rooms yet
      */
@@ -36,7 +36,7 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
         roomBox.addRoom(newRoomNumber, new Room(newRoomNumber));
         return this.getRoomsFromRoomBox().get(newRoomNumber);
     }
-
+    
     public boolean roomExistsByNumber(int roomNumber) {
         RoomBox roomBox = getRoomBoxSingelton();
         Room room = roomBox.getRooms().get(roomNumber);
@@ -45,19 +45,19 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
         }
         return false;
     }
-
+    
     @Override
     public Map<Integer, Room> getRoomsFromRoomBox() {
         RoomBox roomBox = getRoomBoxSingelton();
         return roomBox.getRooms();       
     }
-
+    
     public Room getSpecificRoom(int roomNumber) {
         return this.getRoomsFromRoomBox().get(roomNumber);
     }
-
+    
     public RoomBox getRoomBoxSingelton(){
         return (RoomBox) applicationContext.getBean("roomBoxSingleton");
     }
-
+    
 }
