@@ -4,38 +4,38 @@ import { Room, type IRoom } from "./IRoom";
 
 export interface IRoomState {
   room: IRoom;
-  errormessage: string;
+  errorMessage: string;
 }
 
-const roomstate = reactive<IRoomState>({
+const roomState = reactive<IRoomState>({
   room: new Room("", 1, []),
-  errormessage: "",
+  errorMessage: "",
 });
 
 //function to get access to the room and the functions with stomp
 export function useRoom() {
-  return { roomState: readonly(roomstate), receiveRoom };
+  return { roomState: readonly(roomState), receiveRoom };
 }
 
 //function for receiving a room.
 function receiveRoom() {
-  const wsurl = `ws://${window.location.host}/stompbroker`;
+  const webSocketUrl = `ws://${window.location.host}/stompbroker`;
   const DEST = "/topic/room";
-  const stompclient = new Client({ brokerURL: wsurl });
-  stompclient.onWebSocketError = (event) => {
+  const stompClient = new Client({ brokerURL: webSocketUrl });
+  stompClient.onWebSocketError = () => {
     console.log("WS-error"); /* WS-Error */
   };
-  stompclient.onStompError = (frame) => {
+  stompClient.onStompError = () => {
     console.log("STOMP-error"); /* STOMP-Error */
   };
-  stompclient.onConnect = (frame) => {
-    stompclient.subscribe(DEST, (message) => {
-      roomstate.room = JSON.parse(message.body);
-      console.log("room-number: " + roomstate.room.roomNumber);
+  stompClient.onConnect = () => {
+    stompClient.subscribe(DEST, (message) => {
+      roomState.room = JSON.parse(message.body);
+      console.log("room-number: " + roomState.room.roomNumber);
     });
   };
-  stompclient.activate();
-  stompclient.onDisconnect = () => {
+  stompClient.activate();
+  stompClient.onDisconnect = () => {
     /* Verbindung abgebaut*/
   };
 }
