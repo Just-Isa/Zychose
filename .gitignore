@@ -75,7 +75,6 @@ Desktop.ini
 $RECYCLE.BIN/
 
 ### Linux ###
-.*
 !.gitignore
 !.git*
 *~
@@ -99,7 +98,6 @@ Icon
 *.class
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
