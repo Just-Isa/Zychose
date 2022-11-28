@@ -47,6 +47,7 @@ class RoomBoxServiceTest{
 
     @BeforeEach
     public void benutzerprofil_init() {
+        roomBoxService.clearRoombox();
         assertThat(roomBoxService).isNotNull();
         userOne = new User();
         userOne.setSessionID(SESSIONID);

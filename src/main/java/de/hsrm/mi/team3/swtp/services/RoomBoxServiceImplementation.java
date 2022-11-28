@@ -84,6 +84,16 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
     }
 
     /**
+     * 
+     * clears the roombox
+     * 
+     */
+    public void clearRoombox(){
+        RoomBox roomBox = getRoomBoxSingelton();
+        roomBox.getRooms().clear();
+    }
+
+    /**
      * get RoomBox Singelton instance
      * 
      * @return RoomBox Singelton
