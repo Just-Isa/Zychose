@@ -1,7 +1,11 @@
-<template>
-  <EditorView />
-</template>
-
 <script setup lang="ts">
-import EditorView from "../components/MultiplayerCursors.vue";
+import MultiplayerCursors from "../components/MultiplayerCursors.vue";
+import GridComponent from "@/components/grid/GridComponent.vue";
 </script>
+
+<template>
+  <main>
+    <MultiplayerCursors />
+    <GridComponent v-bind:gridSize="100"></GridComponent>
+  </main>
+</template>
