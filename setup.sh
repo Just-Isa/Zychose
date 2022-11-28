@@ -1,5 +1,5 @@
 # Enable executing of husky scripts
-sudo chown -R $USER /usr/local/lib/node_modules
+chmod +x ./node_modules/.bin/husky
 chmod ug+x .husky/*
 chmod +x ./gradlew
 
