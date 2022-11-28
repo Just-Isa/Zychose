@@ -1,21 +1,17 @@
-
-export interface IUser{
-    sessionID: string,
-    currentRoomNumber: number,
-    userName: string
-
+export interface IUser {
+  sessionID: string;
+  currentRoomNumber: number;
+  userName: string;
 }
 
-export class User implements IUser{
+export class User implements IUser {
+  sessionID: string;
+  currentRoomNumber: number;
+  userName: string;
 
-    sessionID: string;
-    currentRoomNumber: number;
-    userName: string;
-    
-    constructor(sessionID: string,currentRoomNumber:number, userName: string){
-        this.userName = userName;
-        this.sessionID = sessionID;
-        this.currentRoomNumber = currentRoomNumber;
-    }
-
+  constructor(sessionID: string, currentRoomNumber: number, userName: string) {
+    this.userName = userName;
+    this.sessionID = sessionID;
+    this.currentRoomNumber = currentRoomNumber;
+  }
 }

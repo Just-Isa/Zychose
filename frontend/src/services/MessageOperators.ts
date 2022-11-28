@@ -1,3 +1,5 @@
 export enum MessageOperator {
-    CREATE, UPDATE, DELETE
+  CREATE,
+  UPDATE,
+  DELETE,
 }
