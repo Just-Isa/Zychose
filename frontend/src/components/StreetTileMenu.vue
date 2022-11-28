@@ -5,92 +5,114 @@ Template ist als Footer angelegt, da das Menü unten liegt.
 -->
 <template>
   <footer>
-
-      <div class="tilemenuwrapper">
-          <div class="tilemenu">
-              <StreetTile @click="setTileResetBagger(tileTypes[1])" class="cross"></StreetTile>
-              <StreetTile @click="setTileResetBagger(tileTypes[3])" class="curve"></StreetTile>
-              <StreetTile @click="setTileResetBagger(tileTypes[2])" class="tcross"></StreetTile>
-              <StreetTile @click="setTileResetBagger(tileTypes[0])" class="street"></StreetTile>
-          </div>
+    <div class="tilemenuwrapper">
+      <div class="tilemenu">
+        <StreetTile
+          @click="setTileResetBagger(tileTypes[1])"
+          id="cross-road"
+        ></StreetTile>
+        <StreetTile
+          @click="setTileResetBagger(tileTypes[3])"
+          id="curve-road"
+        ></StreetTile>
+        <StreetTile
+          @click="setTileResetBagger(tileTypes[2])"
+          id="t-cross-road"
+        ></StreetTile>
+        <StreetTile
+          @click="setTileResetBagger(tileTypes[0])"
+          id="street-road"
+        ></StreetTile>
       </div>
+    </div>
 
-      <a id="baggercursor" @click="setBaggerToDelete()"></a>
-      
+    <a id="baggercursor" @click="setBaggerToDelete()"></a>
   </footer>
-
 </template>
 
 
 
 <script setup lang="ts">
-import { useTile } from '@/services/useTileState';
+import { useTile } from "@/services/useTileState";
 import { ref } from "vue";
-import StreetTile from './StreetTile.vue';
+import StreetTile from "./StreetTile.vue";
 
 const tileTypes = [
-  "STREET",
-  "CROSS",
-  "TCROSS",
-  "CURVE"
-]
-
+  "street-road", "cross-road", "t-cross-road", "curve-road"
+];
 
 /**
-* Basic Tiles werden aus den Interfaces geholt & zugewiesen
-*/
+ * Basic Tiles werden aus den Interfaces geholt & zugewiesen
+ */
 
-const { tile, getTileType, setTileType } = useTile();
+const { tile, getTileType, setTileType, getActive, setActive } = useTile();
 
 /**
-* Baggerbutton: Einfacher Toggle, falls TRUE, wird Tiletyp geloggt.
-*/
+ * Baggerbutton: Einfacher Toggle, falls TRUE, wird Tiletyp geloggt.
+ */
 
-const baggerStatus = ref(false);
-
+const baggerStatus = ref(true);
 
 function setBaggerToDelete() {
   const baggerStatusId = document.getElementById("baggercursor");
 
-  if (baggerStatus.value == false){
-      
-      if (baggerStatusId){
-          baggerStatusId.style.backgroundColor = "yellow";
-          setTileType("DELETE")
-      }
-     
-      baggerStatus.value = !baggerStatus.value;
+  if (baggerStatus.value == false) {
+    if (baggerStatusId) {
+      baggerStatusId.style.backgroundColor = "yellow";
+      setTileType("DELETE");
+    }
 
+    baggerStatus.value = !baggerStatus.value;
   } else {
-      
-      if (baggerStatusId){
-          baggerStatusId.style.backgroundColor = "grey";
-      }
+    if (baggerStatusId) {
+      baggerStatusId.style.backgroundColor = "white";
+    }
 
-      baggerStatus.value = !baggerStatus.value;
+    baggerStatus.value = !baggerStatus.value;
   }
 }
 
-function setTileResetBagger(s: string){
+
+function setTileResetBagger(s: string) {
+  const previousTile = document.getElementById(getTileType())
+
+  if(getTileType() != s && previousTile){
+    previousTile.style.backgroundColor = "#E4F9FF";
+    setActive(false);
+  }
+
   baggerStatus.value = false;
+
   const baggerStatusId = document.getElementById("baggercursor");
-  
-  if (baggerStatusId){
-      baggerStatusId.style.backgroundColor = "yellow";
+  const currentTile = document.getElementById(s);
+
+  if (baggerStatusId) {
+    baggerStatusId.style.backgroundColor = "yellow";
   }
 
   setTileType(s);
+  console.log(currentTile);
+
+  if (!getActive()){
+    
+    if (currentTile){
+      currentTile.style.backgroundColor = "#95E8FF";
+    }
+
+    setActive(true);
+
+  } else {
+    
+    if (currentTile){
+      currentTile.style.backgroundColor = "#E4F9FF";
+    }
+
+    setActive(false);
+  }
+    
+  const dies = document.documentElement;
+  dies.style.cursor = "url('../assets/img/bull-dozer.png'), auto";
 }
-
-function highlightCurrentTile(s: string){
-  console.log(s)
-}
-
-/**
-* Jeweiliger Straßentyp wird geloggt (noch hardgecodet, geht mit durchreichen bestimmt noch eleganter)
-*/
-
-
 
 </script>
 
@@ -109,18 +131,18 @@ footer {
 }
 
 .tilemenuwrapper {
-  background-color: #5B6569;
-  border-radius: 25px;
+  background-color: #5b6569;
+  border-radius: 1em;
+  height: 7.6em;
 }
 
 .tilemenu {
   padding: 5px;
-  display:flex;
+  display: flex;
 }
 
-
 .baggerhighlight {
-  position:relative;
+  position: relative;
   display: inline-block;
   height: 3em;
   width: 3em;
@@ -129,47 +151,45 @@ footer {
 }
 
 #baggercursor {
-  background-image: url('./assets/img/bull-dozer.png');
+  background-image: url("../assets/img/bull-dozer.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-color: #FFD941;
-  height: 3em;
-  width: 3em;
-  padding: 2em;
-  margin: 2.5em;
+  background-color: #ffd941;
+  height: 5em;
+  width: 5em;
+  margin-left: 2em;
+  margin-top: 1.5em;
   border-radius: 2.5em;
 }
 
-#baggercursor:active {
-  background-color: white;
-}
 
-.street {
-  background-image: url('./assets/img/straight-road.png');
+#street-road {
+  background-image: url("../assets/img/straight-road.png");
   background-repeat: no-repeat;
   background-position: center;
 }
 
-.curve {
-  background-image: url('./assets/img/curve-road.png');
+
+
+#curve-road {
+  background-image: url("../assets/img/curve-road.png");
   background-size: 80%;
   background-repeat: no-repeat;
   background-position: center;
 }
 
-.cross {
-  background-image: url('./assets/img/cross-road.png');
+#cross-road {
+  background-image: url("../assets/img/cross-road.png");
   background-size: 80%;
   background-repeat: no-repeat;
   background-position: center;
 }
 
-.tcross {
-  background-image: url('./assets/img/t-cross-road.png');
+#t-cross-road {
+  background-image: url("../assets/img/t-cross-road.png");
   background-size: 80%;
   background-repeat: no-repeat;
   background-position: center;
 }
-
 
 </style>

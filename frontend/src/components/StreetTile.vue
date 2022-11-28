@@ -14,12 +14,11 @@
   margin: 0.5em;
   display: inline-block;
   background-color: #E4F9FF;
-  border-radius: 1em;
+  border-radius: 0.5em;
 }
 
-.tile-ele:active {
-  background-color: #95E8FF;
-  border-radius: 1em;
+.tile-ele:hover {
+  cursor: url("../assets/img/bull-dozer.png"), auto;
 }
 
 

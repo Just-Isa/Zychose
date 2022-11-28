@@ -5,14 +5,14 @@ import { readonly, ref } from "vue";
  * Tiles werden mit Interface erstellt, durchgereicht mit Export Function
  */
 const state = ref<ITileItem>({
-    type: ""
+    type: "",
+    active: false
 }); 
 
 
 
 export function useTile() {
     function getTileType() {
-        console.log(state.value.type);
         return state.value.type;
     }
 
@@ -22,10 +22,20 @@ export function useTile() {
         console.log("STATE NACHHER: "+ state.value.type)
     }
 
+    function getActive(){
+        return state.value.active;
+    }
+
+    function setActive(b: boolean){
+        state.value.active = b;
+    }
+
     return {
         tile: readonly(state),
         getTileType,
-        setTileType
+        setTileType,
+        getActive,
+        setActive
     }
 }
 
