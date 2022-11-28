@@ -1,5 +1,6 @@
 <template>
   <EditorView />
+  <p class="text-lg text-red-600">This is a tailwind Test!</p>
 </template>
 
 <script setup lang="ts">
