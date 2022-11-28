@@ -8,10 +8,10 @@ Template ist als Footer angelegt, da das Menü unten liegt.
 
       <div class="tilemenuwrapper">
           <div class="tilemenu">
-              <Tile @click="setTileResetBagger(tileTypes[1])" class="cross"></Tile>
-              <Tile @click="setTileResetBagger(tileTypes[3])" class="curve"></Tile>
-              <Tile @click="setTileResetBagger(tileTypes[2])" class="tcross"></Tile>
-              <Tile @click="setTileResetBagger(tileTypes[0])" class="street"></Tile>
+              <StreetTile @click="setTileResetBagger(tileTypes[1])" class="cross"></StreetTile>
+              <StreetTile @click="setTileResetBagger(tileTypes[3])" class="curve"></StreetTile>
+              <StreetTile @click="setTileResetBagger(tileTypes[2])" class="tcross"></StreetTile>
+              <StreetTile @click="setTileResetBagger(tileTypes[0])" class="street"></StreetTile>
           </div>
       </div>
 
@@ -26,7 +26,7 @@ Template ist als Footer angelegt, da das Menü unten liegt.
 <script setup lang="ts">
 import { useTile } from '@/services/useTileState';
 import { ref } from "vue";
-import Tile from './Tile.vue';
+import StreetTile from './StreetTile.vue';
 
 const tileTypes = [
   "STREET",
@@ -129,7 +129,7 @@ footer {
 }
 
 #baggercursor {
-  background-image: url('./icons/bull-dozer.png');
+  background-image: url('./assets/img/bull-dozer.png');
   background-repeat: no-repeat;
   background-position: center;
   background-color: #FFD941;
@@ -145,27 +145,27 @@ footer {
 }
 
 .street {
-  background-image: url('./icons/straight-road.png');
+  background-image: url('./assets/img/straight-road.png');
   background-repeat: no-repeat;
   background-position: center;
 }
 
 .curve {
-  background-image: url('./icons/curve-road.png');
+  background-image: url('./assets/img/curve-road.png');
   background-size: 80%;
   background-repeat: no-repeat;
   background-position: center;
 }
 
 .cross {
-  background-image: url('./icons/cross-road.png');
+  background-image: url('./assets/img/cross-road.png');
   background-size: 80%;
   background-repeat: no-repeat;
   background-position: center;
 }
 
 .tcross {
-  background-image: url('./icons/t-cross-road.png');
+  background-image: url('./assets/img/t-cross-road.png');
   background-size: 80%;
   background-repeat: no-repeat;
   background-position: center;

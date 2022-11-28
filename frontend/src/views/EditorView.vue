@@ -1,9 +1,9 @@
 <template>
   <main>
-    <TileMenu />
+    <StreetTileMenu />
   </main>
 </template>
 
 <script setup lang="ts">
-import TileMenu from "@/components/TileMenu.vue";
+import StreetTileMenu from "@/components/StreetTileMenu.vue";
 </script>
