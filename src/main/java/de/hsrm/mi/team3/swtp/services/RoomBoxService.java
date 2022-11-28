@@ -15,4 +15,5 @@ public interface RoomBoxService {
     public Map<Integer, Room> getRoomsFromRoomBox();
     public RoomBox getRoomBoxSingelton();
     public Room getSpecificRoom(int roomNumber);
+    public void clearRoombox();
 }
