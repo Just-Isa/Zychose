@@ -5,91 +5,93 @@ Template ist als Footer angelegt, da das Menü unten liegt.
 -->
 <template>
   <footer>
-    <div class="tilemenuwrapper">
-      <div class="highlightwrapper">
-        <a href="#" class="highlight"></a>
-        <a href="#" class="highlight"></a>
-        <a href="#" class="highlight"></a>
-        <a href="#" class="highlight"></a>
+
+      <div class="tilemenuwrapper">
+          <div class="tilemenu">
+              <Tile @click="setTileResetBagger(tileTypes[1])" class="cross"></Tile>
+              <Tile @click="setTileResetBagger(tileTypes[3])" class="curve"></Tile>
+              <Tile @click="setTileResetBagger(tileTypes[2])" class="tcross"></Tile>
+              <Tile @click="setTileResetBagger(tileTypes[0])" class="street"></Tile>
+          </div>
       </div>
 
-      <div class="tilemenu">
-        <Tile @click="setStreetType()" class="street" :tile="streetTile"></Tile>
-        <Tile @click="setCrossType()" class="cross" :tile="crossTile"></Tile>
-        <Tile @click="setCurveType()" class="curve" :tile="curveTile"></Tile>
-        <Tile @click="setTCrossType()" class="tcross" :tile="tcrossTile"></Tile>
-      </div>
-    </div>
-
-    <button id="baggercursor" @click="toggle()"></button>
+      <a id="baggercursor" @click="setBaggerToDelete()"></a>
+      
   </footer>
+
 </template>
 
+
+
 <script setup lang="ts">
-import { getBasicTiles } from "@/services/useTileList";
+import { useTile } from '@/services/useTileState';
 import { ref } from "vue";
+import Tile from './Tile.vue';
+
+const tileTypes = [
+  "STREET",
+  "CROSS",
+  "TCROSS",
+  "CURVE"
+]
+
 
 /**
-import t-cross from './icons/t-cross-road.png';
-import curve from './icons/curve-road.png';
-import cross from './icons/cross-road.png';
+* Basic Tiles werden aus den Interfaces geholt & zugewiesen
+*/
 
- */
-
-/**
- * Basic Tiles werden aus den Interfaces geholt & zugewiesen
- */
-const { tiles } = getBasicTiles();
-
-const streetTile = tiles.value[0];
-const crossTile = tiles.value[1];
-const curveTile = tiles.value[2];
-const tcrossTile = tiles.value[3];
+const { tile, getTileType, setTileType } = useTile();
 
 /**
- * Baggerbutton: Einfacher Toggle, falls TRUE, wird Tiletyp geloggt.
- */
+* Baggerbutton: Einfacher Toggle, falls TRUE, wird Tiletyp geloggt.
+*/
 
 const baggerStatus = ref(false);
 
-function toggle() {
-  baggerStatus.value = !baggerStatus.value;
-  console.log("TOGGLE " + baggerStatus.value);
+
+function setBaggerToDelete() {
+  const baggerStatusId = document.getElementById("baggercursor");
+
+  if (baggerStatus.value == false){
+      
+      if (baggerStatusId){
+          baggerStatusId.style.backgroundColor = "yellow";
+          setTileType("DELETE")
+      }
+     
+      baggerStatus.value = !baggerStatus.value;
+
+  } else {
+      
+      if (baggerStatusId){
+          baggerStatusId.style.backgroundColor = "grey";
+      }
+
+      baggerStatus.value = !baggerStatus.value;
+  }
+}
+
+function setTileResetBagger(s: string){
+  baggerStatus.value = false;
+  const baggerStatusId = document.getElementById("baggercursor");
+  
+  if (baggerStatusId){
+      baggerStatusId.style.backgroundColor = "yellow";
+  }
+
+  setTileType(s);
+}
+
+function highlightCurrentTile(s: string){
+  console.log(s)
 }
 
 /**
- * Jeweiliger Straßentyp wird geloggt (noch hardgecodet, geht mit durchreichen bestimmt noch eleganter)
- */
+* Jeweiliger Straßentyp wird geloggt (noch hardgecodet, geht mit durchreichen bestimmt noch eleganter)
+*/
 
-let currentType = ref("");
 
-function setStreetType() {
-  if (baggerStatus.value == true) {
-    currentType.value = streetTile.name;
-    console.log("CURRENT TYPE: " + currentType.value);
-  }
-}
 
-function setCrossType() {
-  if (baggerStatus.value == true) {
-    currentType.value = crossTile.name;
-    console.log("CURRENT TYPE: " + currentType.value);
-  }
-}
-
-function setTCrossType() {
-  if (baggerStatus.value == true) {
-    currentType.value = tcrossTile.name;
-    console.log("CURRENT TYPE: " + currentType.value);
-  }
-}
-
-function setCurveType() {
-  if (baggerStatus.value == true) {
-    currentType.value = curveTile.name;
-    console.log("CURRENT TYPE: " + currentType.value);
-  }
-}
 </script>
 
 <style scoped>
@@ -106,35 +108,19 @@ footer {
   justify-content: center;
 }
 
+.tilemenuwrapper {
+  background-color: #5B6569;
+  border-radius: 25px;
+}
+
 .tilemenu {
   padding: 5px;
-  display: flex;
+  display:flex;
 }
 
-.highlightwrapper {
-  padding: 5px;
-  border-radius: 25px;
-  background-color: #5b6569;
-  position: absolute;
-}
-
-.highlight {
-  height: 6.1em;
-  width: 6.1em;
-  padding: 2em;
-  margin: 1em;
-  display: inline-block;
-  position: relative;
-  border-radius: 10px;
-  background-color: white;
-}
-.highlight:hover {
-  background-color: #95e8ff;
-  z-index: 50;
-}
 
 .baggerhighlight {
-  position: relative;
+  position:relative;
   display: inline-block;
   height: 3em;
   width: 3em;
@@ -143,10 +129,10 @@ footer {
 }
 
 #baggercursor {
-  background-image: url("../assets/img/bull-dozer.png");
+  background-image: url('./icons/bull-dozer.png');
   background-repeat: no-repeat;
   background-position: center;
-  background-color: #ffd941;
+  background-color: #FFD941;
   height: 3em;
   width: 3em;
   padding: 2em;
@@ -159,29 +145,31 @@ footer {
 }
 
 .street {
-  background-image: url("../assets/img/straight-road.png");
+  background-image: url('./icons/straight-road.png');
   background-repeat: no-repeat;
   background-position: center;
 }
 
 .curve {
-  background-image: url("../assets/img/curve-road.png");
+  background-image: url('./icons/curve-road.png');
   background-size: 80%;
   background-repeat: no-repeat;
   background-position: center;
 }
 
 .cross {
-  background-image: url("../assets/img/cross-road.png");
+  background-image: url('./icons/cross-road.png');
   background-size: 80%;
   background-repeat: no-repeat;
   background-position: center;
 }
 
 .tcross {
-  background-image: url("../assets/img/t-cross-road.png");
+  background-image: url('./icons/t-cross-road.png');
   background-size: 80%;
   background-repeat: no-repeat;
   background-position: center;
 }
+
+
 </style>

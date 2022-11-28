@@ -1,25 +1,26 @@
 <template>
   <span class="tile-ele"></span>
 </template>
-
+  
 <script setup lang="ts">
-import type { ITileItem } from "@/services/ITileItem";
 
-defineProps<{
-  tile: ITileItem;
-}>();
 </script>
+
 
 <style scoped>
 .tile-ele {
-  height: 6.1em;
-  width: 6.1em;
-  margin: 1em;
+  height: 6em;
+  width: 6em;
+  margin: 0.5em;
   display: inline-block;
+  background-color: #E4F9FF;
+  border-radius: 1em;
 }
 
 .tile-ele:active {
-  background-color: #95e8ff;
+  background-color: #95E8FF;
   border-radius: 1em;
 }
+
+
 </style>
