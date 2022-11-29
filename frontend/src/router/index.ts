@@ -6,7 +6,7 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      name: "Editor View",
+      name: "editor",
       component: EditorView,
     },
   ],
