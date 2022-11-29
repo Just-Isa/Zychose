@@ -12,8 +12,8 @@ export enum TypeStreet {
 }
 /**
  * Interface to save street information
- * @param {TypeStreet} streettype - Type of Street
- * @param {number} rotation - street rotation -----> 0 => 0°, 1 => 90°, 2 => 180°, 3 => 270°
+ * @param {TypeStreet} streetType - Type of Street
+ * @param {number} rotation - street rotation in degree
  * @param {number} posX - Position on x axis
  * @param {number} posY - Position on y axis
  */

@@ -1,12 +1,12 @@
 <template>
-  <div class="wrapper" id="wrapper">
+  <div id="wrapper">
     <table id="gridTable">
-      <tr v-for="i in props.gridSize" v-bind:key="i" class="gridRow">
+      <tr v-for="row in props.gridSize" v-bind:key="row" class="gridRow">
         <td
-          v-for="j in props.gridSize"
+          v-for="col in props.gridSize"
           class="gridCell"
-          v-bind:key="j"
-          v-on:click="logCoordinates(i, j)"
+          v-bind:key="col"
+          v-on:click="cellClicked(row, col)"
         ></td>
       </tr>
     </table>
@@ -21,22 +21,12 @@ const props = defineProps<{
   gridSize: number;
 }>();
 // const { streets, handleClick, TypeStreet } = useStreets(); useStreets delivers all information we need about the placed streets
-function logCoordinates(posX: number, posY: number): void {
+function cellClicked(posX: number, posY: number): void {
   console.log("(posX,posY): ", [posX, posY]);
-  // TODO implement logic to handleClick
-  /*
-    handleClick(INPUT)
-
-    sobald alle UI-Komponenten fertig sind und gemerged werden, wird der Input aus der Tile-Komponente entgegengenommen
-    und dann wird dieser Input in handleClick gesteckt und dort ausgewertet.
-    Der Input fuer handleClick besteht aus der Information über die gewuenschste Strasse, sowie die Rotation.
-    Alles weitere regelt die handleClick function. Damit werden alle Strassen in einem State gespeichert und koennen dort
-    easy eingesehn werden und später dann auch in eine JSON geschrieben werden.
-  */
 }
 
 /*
-    two EventListeners on the wheel-scrool to prevent the default browser-zoom functionality and
+    two EventListeners on the wheel-scrool to prevent the default browser functionalities and
     instead scale the component independently with CSS, so no other ui parts are effected.
 */
 let scale = 1;
