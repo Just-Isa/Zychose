@@ -7,6 +7,7 @@
           class="gridCell"
           v-bind:key="col"
           v-on:click="cellClicked(row, col)"
+          v-on:dblclick="clearCell(row, col)"
         ></td>
       </tr>
     </table>
@@ -14,15 +15,58 @@
 </template>
 
 <script setup lang="ts">
+import { TypeStreet, useStreets, type IStreetInformation } from "./useStreets";
+
 /**
  * @param {number} gridSize defines the size of the grid component
  */
 const props = defineProps<{
   gridSize: number;
 }>();
-// const { streets, handleClick, TypeStreet } = useStreets(); useStreets delivers all information we need about the placed streets
+const { handleClick } = useStreets();
+
+/**
+ * Sobald der Input von Malte, Lara und Antonia eingelesen werden kann, wird diese Methode angepasst.
+ * Hier wird der Input(strassentyp und rotation) aus dem anderen state geholt und zusammen mit den Positionen fuer die Achsen im state fuer den grid gespeichert.
+ */
 function cellClicked(posX: number, posY: number): void {
   console.log("(posX,posY): ", [posX, posY]);
+  const tabelle = document.getElementById("gridTable") as HTMLTableElement;
+  const cell = tabelle.rows[posX - 1].cells[posY - 1];
+  let testInput: IStreetInformation = {
+    streettype: TypeStreet.straight,
+    rotation: 90,
+    posX: posX,
+    posY: posY,
+  };
+  if (testInput.streettype !== TypeStreet.delete) {
+    cell.style.backgroundImage = 'url("/src/assets/straight-road.svg")';
+    cell.style.backgroundSize = "cover";
+    cell.style.backgroundRepeat = "no-repeat";
+    cell.style.transform = `rotate(${testInput.rotation}deg)`;
+    handleClick(testInput);
+  } else {
+    console.log("DELETE!");
+  }
+}
+/**
+ * Sobald der Input von Malte, Lara und Antonia eingelesen werden kann, wird diese Methode nicht mehr gebraucht.
+ * Diese Methode ist nur zum testen gedacht, um zu sehen, ob Strassen richtig aus dem state geloescht werden.
+ */
+function clearCell(posX: number, posY: number): void {
+  console.log("clearCell aufgerufen!");
+  let neuerInput: IStreetInformation = {
+    streettype: TypeStreet.delete,
+    rotation: 90,
+    posX: posX,
+    posY: posY,
+  };
+  const tabelle = document.getElementById("gridTable") as HTMLTableElement;
+  handleClick(neuerInput);
+  const cell = tabelle.rows[posX - 1].cells[posY - 1];
+  cell.style.backgroundImage = "";
+  cell.style.backgroundSize = "cover";
+  cell.style.backgroundRepeat = "no-repeat";
 }
 
 /*
