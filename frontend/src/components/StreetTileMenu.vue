@@ -30,16 +30,12 @@ Template ist als Footer angelegt, da das Menü unten liegt.
   </footer>
 </template>
 
-
-
 <script setup lang="ts">
 import { useTile } from "@/services/useTileState";
 import { ref } from "vue";
 import StreetTile from "./StreetTile.vue";
 
-const tileTypes = [
-  "street-road", "cross-road", "t-cross-road", "curve-road"
-];
+const tileTypes = ["street-road", "cross-road", "t-cross-road", "curve-road"];
 
 /**
  * Basic Tiles werden aus den Interfaces geholt & zugewiesen
@@ -72,11 +68,10 @@ function setBaggerToDelete() {
   }
 }
 
-
 function setTileResetBagger(s: string) {
-  const previousTile = document.getElementById(getTileType())
+  const previousTile = document.getElementById(getTileType());
 
-  if(getTileType() != s && previousTile){
+  if (getTileType() != s && previousTile) {
     previousTile.style.backgroundColor = "#E4F9FF";
     setActive(false);
   }
@@ -93,27 +88,23 @@ function setTileResetBagger(s: string) {
   setTileType(s);
   console.log(currentTile);
 
-  if (!getActive()){
-    
-    if (currentTile){
+  if (!getActive()) {
+    if (currentTile) {
       currentTile.style.backgroundColor = "#95E8FF";
     }
 
     setActive(true);
-
   } else {
-    
-    if (currentTile){
+    if (currentTile) {
       currentTile.style.backgroundColor = "#E4F9FF";
     }
 
     setActive(false);
   }
-    
+
   const dies = document.documentElement;
   dies.style.cursor = "url('../assets/img/bull-dozer.png'), auto";
 }
-
 </script>
 
 <style scoped>
@@ -162,14 +153,11 @@ footer {
   border-radius: 2.5em;
 }
 
-
 #street-road {
   background-image: url("../assets/img/straight-road.png");
   background-repeat: no-repeat;
   background-position: center;
 }
-
-
 
 #curve-road {
   background-image: url("../assets/img/curve-road.png");
@@ -191,5 +179,4 @@ footer {
   background-repeat: no-repeat;
   background-position: center;
 }
-
 </style>

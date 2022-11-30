@@ -1,0 +1,11 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <h1>RaumView</h1>
+    <h2>RaumName</h2>
+    <div style="padding-left: 30px;" th:text="${room.roomName}"></div>
+    <h2>Alle User im Raum:</h2>
+    <div style="padding-left: 30px;">
+        <tr th:each="u: ${room.getUserList()}">
+            <p th:text="${u.userName}"></p>
+        </tr>
+    </div>
+</html>
