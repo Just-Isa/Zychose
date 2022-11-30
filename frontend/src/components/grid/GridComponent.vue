@@ -1,6 +1,6 @@
 <template>
   <div id="wrapper">
-    <table id="gridTable">
+    <table id="gridTable" class="border-separate">
       <tr v-for="row in props.gridSize" v-bind:key="row" class="gridRow">
         <td
           v-for="col in props.gridSize"
@@ -24,8 +24,8 @@ const props = defineProps<{
   gridSize: number;
 }>();
 const { handleClick } = useStreets();
-
 /**
+ * //TODO
  * Sobald der Input von Malte, Lara und Antonia eingelesen werden kann, wird diese Methode angepasst.
  * Hier wird der Input(strassentyp und rotation) aus dem anderen state geholt und zusammen mit den Positionen fuer die Achsen im state fuer den grid gespeichert.
  */
@@ -39,17 +39,39 @@ function cellClicked(posX: number, posY: number): void {
     posX: posX,
     posY: posY,
   };
-  if (testInput.streettype !== TypeStreet.delete) {
-    cell.style.backgroundImage = 'url("/src/assets/straight-road.svg")';
-    cell.style.backgroundSize = "cover";
-    cell.style.backgroundRepeat = "no-repeat";
-    cell.style.transform = `rotate(${testInput.rotation}deg)`;
-    handleClick(testInput);
-  } else {
-    console.log("DELETE!");
+  cell.style.backgroundSize = "cover";
+  cell.style.backgroundRepeat = "no-repeat";
+  cell.style.backgroundPosition = "center";
+  switch (testInput.streettype) {
+    case TypeStreet.straight: {
+      cell.style.backgroundImage = 'url("/src/assets/straight-road.svg")';
+      cell.style.transform = `rotate(${testInput.rotation}deg)`;
+      break;
+    }
+    case TypeStreet.delete: {
+      cell.style.backgroundImage = "";
+      break;
+    }
+    case TypeStreet.curve: {
+      cell.style.backgroundImage = 'url("/src/assets/curve-road.svg")';
+      cell.style.transform = `rotate(${testInput.rotation}deg)`;
+      break;
+    }
+    case TypeStreet.crossing: {
+      cell.style.backgroundImage = 'url("/src/assets/cross-road.svg")';
+      cell.style.transform = `rotate(${testInput.rotation}deg)`;
+      break;
+    }
+    case TypeStreet.tCrossing: {
+      cell.style.backgroundImage = 'url("/src/assets/t-road.svg")';
+      cell.style.transform = `rotate(${testInput.rotation}deg)`;
+      break;
+    }
   }
+  handleClick(testInput);
 }
 /**
+ * //TODO
  * Sobald der Input von Malte, Lara und Antonia eingelesen werden kann, wird diese Methode nicht mehr gebraucht.
  * Diese Methode ist nur zum testen gedacht, um zu sehen, ob Strassen richtig aus dem state geloescht werden.
  */
@@ -68,7 +90,6 @@ function clearCell(posX: number, posY: number): void {
   cell.style.backgroundSize = "cover";
   cell.style.backgroundRepeat = "no-repeat";
 }
-
 /*
     two EventListeners on the wheel-scrool to prevent the default browser functionalities and
     instead scale the component independently with CSS, so no other ui parts are effected.
@@ -106,7 +127,6 @@ html::-webkit-scrollbar {
   width: 100%;
 }
 table {
-  border-collapse: separate;
   border-spacing: 0;
   table-layout: fixed;
   width: 100%;
