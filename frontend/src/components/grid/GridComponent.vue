@@ -78,6 +78,12 @@ function cellClicked(posX: number, posY: number): void {
   handleClick(testInput);
 }
 
+/**
+* getting the hovered cell and changing the backgroundImage to 50% opaque "new" road.
+* the image is hardcoded right now, but it will change as soon as we get the streets from the state
+* @param {number} x position on x axis (click)
+* @param {number} y position on y axis (click)
+*/
 function onHover(x: number, y: number): void {
   const tabelle = document.getElementById("gridTable") as HTMLTableElement;
   const cell = tabelle.rows[x - 1].cells[y - 1];
@@ -85,6 +91,14 @@ function onHover(x: number, y: number): void {
   cell.style.opacity = "0.5";
 }
 
+/**
+* when the mouse exits the previously hovered cell, we check, if a street was placed.
+* if yes: call cellClicked, which changes the backgroundImage to the right streetType
+* if no: reset the backgroundImage to nothing
+* either way the opacity gets resetted to default (=1)
+* @param {number} x position on x axis (click)
+* @param {number} y position on y axis (click)
+*/
 function onEndHover(x: number, y: number): void {
   const tabelle = document.getElementById("gridTable") as HTMLTableElement;
   const cell = tabelle.rows[x - 1].cells[y - 1];
@@ -93,7 +107,6 @@ function onEndHover(x: number, y: number): void {
   } else {
     cell.style.backgroundImage = "";
   }
-
   cell.style.opacity = "1";
 }
 
