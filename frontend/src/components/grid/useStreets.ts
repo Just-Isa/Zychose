@@ -44,7 +44,6 @@ export function useStreets() {
    * @param {IStreetInformation} onGridClickObject - IStreetInformation Object that needs to be saved or deleted
    */
   function handleClick(onGridClickObject: IStreetInformation): void {
-    //const finished = false;
     if (onGridClickObject.streettype === TypeStreet.delete) {
       state.streets = state.streets.filter(
         (street) =>
@@ -63,21 +62,6 @@ export function useStreets() {
       } else {
         state.streets.push(onGridClickObject);
       }
-      /*
-      for (const street of state.streets) {
-        if (
-          street.posX === onGridClickObject.posX &&
-          street.posY === onGridClickObject.posY
-        ) {
-          street.rotation = onGridClickObject.rotation;
-          street.streettype = onGridClickObject.streettype;
-          finished = true;
-          break;
-        }
-      }
-      if (!finished) {
-        state.streets.push(onGridClickObject);
-      }*/
     }
     console.log("STATE: ", state.streets);
     console.log("#####################################################");

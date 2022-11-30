@@ -26,10 +26,15 @@ const props = defineProps<{
   gridSize: number;
 }>();
 const { handleClick, isStreetPlaced } = useStreets();
+//TODO
+//Sobald der Input von Malte, Lara und Antonia eingelesen werden kann, wird diese Methode angepasst.
+//Hier wird der Input(strassentyp und rotation) aus dem anderen state geholt und zusammen mit den Positionen fuer die Achsen im state fuer den grid gespeichert.
 /**
- * //TODO
- * Sobald der Input von Malte, Lara und Antonia eingelesen werden kann, wird diese Methode angepasst.
- * Hier wird der Input(strassentyp und rotation) aus dem anderen state geholt und zusammen mit den Positionen fuer die Achsen im state fuer den grid gespeichert.
+ * cellClicked handles the click event for cells.
+ * Data like Typestreet and rotation of the selected Street are passed in through a state.
+ * Changes the backgroundImage of the cell. The Cell will be saved in the state.
+ * @param {number} posX position on x axis (click)
+ * @param {number} posY position on y axis (click)
  */
 function cellClicked(posX: number, posY: number): void {
   console.log("(posX,posY): ", [posX, posY]);
@@ -96,6 +101,8 @@ function onEndHover(x: number, y: number): void {
  * //TODO
  * Sobald der Input von Malte, Lara und Antonia eingelesen werden kann, wird diese Methode nicht mehr gebraucht.
  * Diese Methode ist nur zum testen gedacht, um zu sehen, ob Strassen richtig aus dem state geloescht werden.
+ * Sie wird entfernt, sobald der Strassentyp und die Rotation ueber einen weiteren State ausgelesen werden koennen.
+ * Dann wird das loeschen der Zelle ueber die cellClicked Methode gemacht.
  */
 function clearCell(posX: number, posY: number): void {
   console.log("clearCell aufgerufen!");
