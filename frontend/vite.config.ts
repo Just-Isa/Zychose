@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { fileURLToPath, URL } from "node:url";
 
 import { defineConfig } from "vite";
@@ -9,6 +10,21 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
+    },
+  },
+  test: {
+    globals: true,
+    passWithNoTests: true,
+  },
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:8080",
+      },
+      "/stompbroker": {
+        target: "http://localhost:8080",
+        ws: true,
+      },
     },
   },
 });

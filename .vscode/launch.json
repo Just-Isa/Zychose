@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-SwtpApplication<swtp>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "de.hsrm.mi.team3.swtp.SwtpApplication",
+      "projectName": "swtp",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ],
+}
