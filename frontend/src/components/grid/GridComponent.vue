@@ -41,49 +41,21 @@ function cellClicked(posX: number, posY: number): void {
   const tabelle = document.getElementById("gridTable") as HTMLTableElement;
   const cell = tabelle.rows[posX - 1].cells[posY - 1];
   let testInput: IStreetInformation = {
-    streettype: TypeStreet.straight,
+    streetType: TypeStreet.straight,
     rotation: 90,
     posX: posX,
     posY: posY,
   };
-  cell.style.backgroundSize = "cover";
-  cell.style.backgroundRepeat = "no-repeat";
-  cell.style.backgroundPosition = "center";
-  switch (testInput.streettype) {
-    case TypeStreet.straight: {
-      cell.style.backgroundImage = 'url("/src/assets/straight-road.svg")';
-      cell.style.transform = `rotate(${testInput.rotation}deg)`;
-      break;
-    }
-    case TypeStreet.delete: {
-      cell.style.backgroundImage = "";
-      break;
-    }
-    case TypeStreet.curve: {
-      cell.style.backgroundImage = 'url("/src/assets/curve-road.svg")';
-      cell.style.transform = `rotate(${testInput.rotation}deg)`;
-      break;
-    }
-    case TypeStreet.crossing: {
-      cell.style.backgroundImage = 'url("/src/assets/cross-road.svg")';
-      cell.style.transform = `rotate(${testInput.rotation}deg)`;
-      break;
-    }
-    case TypeStreet.tCrossing: {
-      cell.style.backgroundImage = 'url("/src/assets/t-road.svg")';
-      cell.style.transform = `rotate(${testInput.rotation}deg)`;
-      break;
-    }
-  }
+  setCellStyle(cell, testInput);
   handleClick(testInput);
 }
 
 /**
-* getting the hovered cell and changing the backgroundImage to 50% opaque "new" road.
-* the image is hardcoded right now, but it will change as soon as we get the streets from the state
-* @param {number} x position on x axis (click)
-* @param {number} y position on y axis (click)
-*/
+ * getting the hovered cell and changing the backgroundImage to 50% opaque "new" road.
+ * the image is hardcoded right now, but it will change as soon as we get the streets from the state
+ * @param {number} x position on x axis (click)
+ * @param {number} y position on y axis (click)
+ */
 function onHover(x: number, y: number): void {
   const tabelle = document.getElementById("gridTable") as HTMLTableElement;
   const cell = tabelle.rows[x - 1].cells[y - 1];
@@ -92,13 +64,13 @@ function onHover(x: number, y: number): void {
 }
 
 /**
-* when the mouse exits the previously hovered cell, we check, if a street was placed.
-* if yes: call cellClicked, which changes the backgroundImage to the right streetType
-* if no: reset the backgroundImage to nothing
-* either way the opacity gets resetted to default (=1)
-* @param {number} x position on x axis (click)
-* @param {number} y position on y axis (click)
-*/
+ * when the mouse exits the previously hovered cell, we check, if a street was placed.
+ * if yes: call cellClicked, which changes the backgroundImage to the right streetType
+ * if no: reset the backgroundImage to nothing
+ * either way the opacity gets resetted to default (=1)
+ * @param {number} x position on x axis (click)
+ * @param {number} y position on y axis (click)
+ */
 function onEndHover(x: number, y: number): void {
   const tabelle = document.getElementById("gridTable") as HTMLTableElement;
   const cell = tabelle.rows[x - 1].cells[y - 1];
@@ -112,6 +84,58 @@ function onEndHover(x: number, y: number): void {
 
 /**
  * //TODO
+ * Function to display the streets that are saved in the state.
+ */
+/*
+ function stateToGrid():void{
+  const tabelle = document.getElementById("gridTable") as HTMLTableElement;
+  for(const street of streets){
+    const cell = tabelle.rows[street.posX - 1].cells[street.posY - 1];
+    setCellStyle(cell, street);
+  }
+}*/
+/**
+ * Function that sets the style of the given Cell. The given street is needed for information about the streetType and rotation.
+ * @param {HTMLTableCellElement} cell cell object which style should be set
+ * @param {IStreetInformation} street information about the street
+ */
+function setCellStyle(
+  cell: HTMLTableCellElement,
+  street: IStreetInformation
+): void {
+  cell.style.backgroundSize = "cover";
+  cell.style.backgroundRepeat = "no-repeat";
+  cell.style.backgroundPosition = "center";
+  switch (street.streetType) {
+    case TypeStreet.straight: {
+      cell.style.backgroundImage = 'url("/src/assets/straight-road.svg")';
+      cell.style.transform = `rotate(${street.rotation}deg)`;
+      break;
+    }
+    case TypeStreet.delete: {
+      cell.style.backgroundImage = "";
+      break;
+    }
+    case TypeStreet.curve: {
+      cell.style.backgroundImage = 'url("/src/assets/curve-road.svg")';
+      cell.style.transform = `rotate(${street.rotation}deg)`;
+      break;
+    }
+    case TypeStreet.crossing: {
+      cell.style.backgroundImage = 'url("/src/assets/cross-road.svg")';
+      cell.style.transform = `rotate(${street.rotation}deg)`;
+      break;
+    }
+    case TypeStreet.tCrossing: {
+      cell.style.backgroundImage = 'url("/src/assets/t-road.svg")';
+      cell.style.transform = `rotate(${street.rotation}deg)`;
+      break;
+    }
+  }
+}
+
+/**
+ * //TODO
  * Sobald der Input von Malte, Lara und Antonia eingelesen werden kann, wird diese Methode nicht mehr gebraucht.
  * Diese Methode ist nur zum testen gedacht, um zu sehen, ob Strassen richtig aus dem state geloescht werden.
  * Sie wird entfernt, sobald der Strassentyp und die Rotation ueber einen weiteren State ausgelesen werden koennen.
@@ -120,7 +144,7 @@ function onEndHover(x: number, y: number): void {
 function clearCell(posX: number, posY: number): void {
   console.log("clearCell aufgerufen!");
   let neuerInput: IStreetInformation = {
-    streettype: TypeStreet.delete,
+    streetType: TypeStreet.delete,
     rotation: 90,
     posX: posX,
     posY: posY,
