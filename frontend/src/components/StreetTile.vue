@@ -18,7 +18,7 @@
 }
 
 .tile-ele:hover {
-  cursor: url("../assets/img/bull-dozer.png"), auto;
+  cursor: url("../assets/img/street-road.png"), auto;
 }
 
 
