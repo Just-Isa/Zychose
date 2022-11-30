@@ -83,9 +83,17 @@ export function useStreets() {
     console.log("#####################################################");
   }
 
+  function isStreetPlaced(row: number, col: number) {
+    const streetFound = state.streets.filter(
+      (street) => street.posX === row && street.posY === col
+    );
+    return streetFound.length > 0;
+  }
+
   return {
     streets: readonly(state.streets),
     handleClick,
     TypeStreet,
+    isStreetPlaced,
   };
 }

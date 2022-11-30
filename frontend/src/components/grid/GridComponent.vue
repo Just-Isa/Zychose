@@ -8,6 +8,8 @@
           v-bind:key="col"
           v-on:click="cellClicked(row, col)"
           v-on:dblclick="clearCell(row, col)"
+          v-on:mouseover="onHover(row, col)"
+          v-on:mouseleave="onEndHover(row, col)"
         ></td>
       </tr>
     </table>
@@ -23,7 +25,7 @@ import { TypeStreet, useStreets, type IStreetInformation } from "./useStreets";
 const props = defineProps<{
   gridSize: number;
 }>();
-const { handleClick } = useStreets();
+const { handleClick, isStreetPlaced } = useStreets();
 /**
  * //TODO
  * Sobald der Input von Malte, Lara und Antonia eingelesen werden kann, wird diese Methode angepasst.
@@ -70,6 +72,26 @@ function cellClicked(posX: number, posY: number): void {
   }
   handleClick(testInput);
 }
+
+function onHover(x: number, y: number): void {
+  const tabelle = document.getElementById("gridTable") as HTMLTableElement;
+  const cell = tabelle.rows[x - 1].cells[y - 1];
+  cell.style.backgroundImage = 'url("/src/assets/cross-road.svg")';
+  cell.style.opacity = "0.5";
+}
+
+function onEndHover(x: number, y: number): void {
+  const tabelle = document.getElementById("gridTable") as HTMLTableElement;
+  const cell = tabelle.rows[x - 1].cells[y - 1];
+  if (isStreetPlaced(x, y)) {
+    cellClicked(x, y);
+  } else {
+    cell.style.backgroundImage = "";
+  }
+
+  cell.style.opacity = "1";
+}
+
 /**
  * //TODO
  * Sobald der Input von Malte, Lara und Antonia eingelesen werden kann, wird diese Methode nicht mehr gebraucht.
