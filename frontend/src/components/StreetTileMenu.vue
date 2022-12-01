@@ -4,8 +4,7 @@ Geben beim Anklicken den Typ durch, Bild kann per URL / Icon(props) weitergereic
 Template ist als Footer angelegt, da das Menü unten liegt. 
 -->
 <template>
-  <footer>
-    <div class="tilemenuwrapper">
+    <div class="tilemenuwrapper" >
       <div class="tilemenu">
         <StreetTile
           @click="setTileResetBagger(tileTypes[1])"
@@ -27,7 +26,6 @@ Template ist als Footer angelegt, da das Menü unten liegt.
     </div>
 
     <a id="baggercursor" @click="setBaggerToDelete()"></a>
-  </footer>
 </template>
 
 <script setup lang="ts">
