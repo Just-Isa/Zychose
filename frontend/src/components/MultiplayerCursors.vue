@@ -51,7 +51,7 @@ let lastYsent = 0;
 let mouseDict: { [sessionID: string]: number[] } = reactive({});
 
 const { roomState, receiveRoom } = useRoom();
-const { publishMouse, mouseState, receiveMouse } = useUser();
+const { publishMouse, mouseState, receiveMouse, createUser} = useUser();
 const { publishUser } = useUser();
 
 onMounted(() => {
@@ -59,18 +59,6 @@ onMounted(() => {
   receiveMouse();
   createUser();
 });
-
-function createUser() {
-  if (document.cookie.split("=")[0] != "sid") {
-    document.cookie = "sid=" + crypto.randomUUID();
-    const user = new User(
-      document.cookie.split("=")[1],
-      1,
-      document.cookie.split("=")[1]
-    );
-    publishUser(MessageOperator.CREATE, user);
-  }
-}
 
 setInterval(function () {
   if (

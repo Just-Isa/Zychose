@@ -69,26 +69,22 @@ public class RoomController {
      * @param newUser
      */
     @MessageMapping("/topic/user")
-    public void getUser(@Payload BackendUserMessage userMessage){
-        
-        User newUser = userMessage.user();
-        BackendOperation operation = userMessage.operation();
-
-        logger.info("User: (" +newUser.getSessionID()+", "+ newUser.getUserName()+ ", "+ newUser.getCurrentRoomNumber()+")");
+    public void getUser(@Payload User user) {
+        logger.info("User: (" + user.getSessionID() + ", " + user.getUserName() + ", "
+                + user.getCurrentRoomNumber() + ")");
         Room room;
 
-        if (roomBoxService.getRoomsFromRoomBox().size() < 1) {
-            room = roomBoxService.addRoom();
-        } else {
-            room = roomBoxService.getSpecificRoom(1);
+        if (roomBoxService.getRoomsFromRoomBox().size() <= 5) {
+            while (roomBoxService.getRoomsFromRoomBox().size() <= 5) {
+                roomBoxService.addRoom();
+            }
         }
-        if (newUser.getUserName() == null) {
-            newUser.setUserName("Raus aus meinem Kopf");
+        room = roomBoxService.getSpecificRoom(1);
+
+        if (user.getUserName() == null) {
+            user.setUserName("Raus aus meinem Kopf");
         }
-        if(operation == BackendOperation.CREATE){
-            newUser.setCurrentRoomNumber(room.getRoomNumber());
-            roomService.addNewUserToRoom(room, newUser);
-        }
+        roomService.addNewUserToRoom(room, user);
         backservice.sendRoom("room", BackendOperation.CREATE, room);
     }
 

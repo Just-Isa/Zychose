@@ -39,10 +39,6 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
         RoomBox roomBox = getRoomBoxSingelton();
         int newRoomNumber = this.nextRoomNumber();
         logger.info("-------" + newRoomNumber + "---------");
-        Room existentRoom = this.getRoomsFromRoomBox().get(newRoomNumber);
-        if (existentRoom != null) {
-            return existentRoom;
-        }
         roomBox.addRoom(newRoomNumber, new Room(newRoomNumber));
         return this.getRoomsFromRoomBox().get(newRoomNumber);
     }
@@ -88,7 +84,7 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
      * clears the roombox
      * 
      */
-    public void clearRoombox(){
+    public void clearRoombox() {
         RoomBox roomBox = getRoomBoxSingelton();
         roomBox.getRooms().clear();
     }
@@ -101,5 +97,5 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
     public RoomBox getRoomBoxSingelton() {
         return (RoomBox) applicationContext.getBean("roomBoxSingleton");
     }
-    
+
 }

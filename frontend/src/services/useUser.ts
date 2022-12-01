@@ -1,8 +1,8 @@
 import { Client } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
 import { Mouse, type IMouse } from "./IMouse";
-import type { IUser } from "./IUser";
-import type { MessageOperator } from "./MessageOperators";
+import { User, type IUser } from "./IUser";
+import { MessageOperator } from "./MessageOperators";
 
 export interface IMouseState {
   mouse: IMouse;
@@ -15,7 +15,6 @@ const mouseState = reactive<IMouseState>({
 });
 
 interface UserDTO {
-  operator: MessageOperator;
   user: IUser;
 }
 
@@ -25,17 +24,17 @@ export function useUser() {
     publishUser,
     publishMouse,
     receiveMouse,
+    createUser,
     mouseState: readonly(mouseState),
   };
 }
 
 //um einen User zum Server zu schicken.
-function publishUser(operator: MessageOperator, user: IUser) {
+function publishUser(operator: string, user: IUser) {
   const userDto: UserDTO = {
-    operator: operator,
     user: user,
   };
-
+  console.log(userDto);
   const webSocketUrl = `ws://${window.location.host}/stompbroker`;
   const DEST = "/topic/user";
   const userClient = new Client({ brokerURL: webSocketUrl });
@@ -51,7 +50,7 @@ function publishUser(operator: MessageOperator, user: IUser) {
       userClient.publish({
         destination: DEST,
         headers: {},
-        body: JSON.stringify(userDto),
+        body: JSON.stringify(user),
       });
     } catch (err) {
       // in case of an error
@@ -119,4 +118,16 @@ function receiveMouse() {
   stompClient.onDisconnect = () => {
     /* Verbindung abgebaut*/
   };
+}
+
+function createUser() {
+  if (document.cookie.split("=")[0] != "sid") {
+    document.cookie = "sid=" + crypto.randomUUID();
+    const user = new User(
+      document.cookie.split("=")[1],
+      1,
+      document.cookie.split("=")[1]
+    );
+    publishUser("CREATE", user);
+  }
 }

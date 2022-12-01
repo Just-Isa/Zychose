@@ -1,6 +1,8 @@
 package de.hsrm.mi.team3.swtp.services;
 
+import java.lang.StackWalker.Option;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +21,8 @@ public class RoomServiceImplementation implements RoomService {
     RoomBoxServiceImplementation roomBoxService;
 
     /**
-     * This method adds a new user to a room.
+     * This method adds a new user to a room,
+     * and changed the users currentRoomNumber respectively.
      * 
      * @param room
      * @param user
@@ -27,6 +30,11 @@ public class RoomServiceImplementation implements RoomService {
     @Override
     public void addNewUserToRoom(Room room, User user) {
         room.addUserToList(user);
+        user.setCurrentRoomNumber(room.getRoomNumber());
+    }
+
+    public void removeUserFromRoom(Room room, User user) {
+        room.removeUserFromList(user);
     }
 
     /**
@@ -38,5 +46,16 @@ public class RoomServiceImplementation implements RoomService {
     @Override
     public List<User> getUserList(Room room) {
         return room.getUserList();
+    }
+
+    public User getUserBySessionID(String sessionID) {
+        for (Room room : this.roomBoxService.getRoomsFromRoomBox().values()) {
+            for (User user : room.getUserList()) {
+                if (user.getSessionID().contains(sessionID)) {
+                    return user;
+                }
+            }
+        }
+        return null;
     }
 }
