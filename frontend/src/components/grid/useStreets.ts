@@ -1,3 +1,4 @@
+import { gridToJson } from "@/services/JSONparser";
 import { reactive, readonly } from "vue";
 /**
  * @enum {TypeStreet}  Different types of Streets and delete.
@@ -79,8 +80,11 @@ export function useStreets() {
         state.streets.push(onGridClickObject);
       }*/
     }
+    // let stringed: JsonTile = JSON.parse(JSON.stringify(state.streets));
     console.log("STATE: ", state.streets);
     console.log("#####################################################");
+    console.log("OWN FUNC: ");
+    gridToJson(state.streets);
   }
 
   return {
