@@ -42,14 +42,16 @@ public class RoomRestController {
         return roomDTOList;
     }
 
-    @PostMapping(value = "/rooms/{number}")
+    @PostMapping(value = "/room/{number}")
     public void changeRoomOfUser(@PathVariable("number") int number, @RequestBody String sessionId) {
         String sId = sessionId.split(":")[1].replace("\"", "").replace("}", "");
+
         Room room = roomBoxService.getSpecificRoom(number);
         User userOpt = roomService.getUserBySessionID(sId);
         Room oldRoom = roomBoxService.getRoomsFromRoomBox().get(userOpt.getCurrentRoomNumber());
-        roomService.addNewUserToRoom(room, userOpt);
+
         roomService.removeUserFromRoom(oldRoom, userOpt);
+        roomService.addNewUserToRoom(room, userOpt);
 
         logger.info("ROOM = {}", room.getUserList());
     }

@@ -3,15 +3,24 @@ import { reactive, readonly } from "vue";
 import { Mouse, type IMouse } from "./IMouse";
 import { User, type IUser } from "./IUser";
 import { MessageOperator } from "./MessageOperators";
+import { useRoom } from "./useRoom";
 
 export interface IMouseState {
   mouse: IMouse;
   errorMessage: string;
 }
 
+export interface IUserState {
+  user: IUser
+}
+
 const mouseState = reactive<IMouseState>({
   mouse: new Mouse("", 0, 0, 0),
   errorMessage: "",
+});
+
+const userState = reactive<IUserState>({
+  user: new User("", 0, "")
 });
 
 interface UserDTO {
@@ -26,6 +35,7 @@ export function useUser() {
     receiveMouse,
     createUser,
     mouseState: readonly(mouseState),
+    userState: readonly(userState)
   };
 }
 
@@ -63,9 +73,9 @@ function publishUser(operator: string, user: IUser) {
   };
 }
 //function sends Mouse to a server.
-function publishMouse(mouse: IMouse) {
+function publishMouse(mouse: IMouse, roomNumber: number) {
   const webSocketUrl = `ws://${window.location.host}/stompbroker`;
-  const DEST = "/topic/mouse";
+  const DEST = "/topic/mouse/"+roomNumber;
   const userClient = new Client({ brokerURL: webSocketUrl });
   userClient.onWebSocketError = () => {
     console.log("WS-error-mouse"); /* WS-Error */
@@ -91,9 +101,9 @@ function publishMouse(mouse: IMouse) {
   };
 }
 //function to receive a mouse, so movement can be available to others.
-function receiveMouse() {
+function receiveMouse(roomNumber: number) {
   const WebSocketUrl = `ws://${window.location.host}/stompbroker`;
-  const DEST = "/topic/mouse";
+  const DEST = "/topic/mouse/"+roomNumber;
   const stompClient = new Client({ brokerURL: WebSocketUrl });
   stompClient.onWebSocketError = () => {
     console.log("WS-error"); /* WS-Error */
@@ -115,19 +125,18 @@ function receiveMouse() {
     });
   };
   stompClient.activate();
+  console.log("Activated: " + DEST);
   stompClient.onDisconnect = () => {
-    /* Verbindung abgebaut*/
+    stompClient.unsubscribe(DEST);
   };
 }
 
 function createUser() {
   if (document.cookie.split("=")[0] != "sid") {
     document.cookie = "sid=" + crypto.randomUUID();
-    const user = new User(
-      document.cookie.split("=")[1],
-      1,
-      document.cookie.split("=")[1]
-    );
-    publishUser("CREATE", user);
+    userState.user.currentRoomNumber = 0;
+    userState.user.sessionID = document.cookie.split("=")[1];
+    userState.user.userName = document.cookie.split("=")[1];
+    publishUser("CREATE", userState.user);
   }
 }

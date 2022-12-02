@@ -3,6 +3,7 @@ package de.hsrm.mi.team3.swtp.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
@@ -57,9 +58,9 @@ public class RoomController {
      * 
      * @param mouse
      */
-    @MessageMapping("/topic/mouse")
-    public void sendMouseToClients(@Payload BackendMouseMessage mouse) {
-        backservice.sendMouse("mouse", mouse);
+    @MessageMapping("/topic/mouse/{roomNumber}")
+    public void sendMouseToClients(@Payload BackendMouseMessage mouse, @DestinationVariable int roomNumber) {
+        backservice.sendMouse("mouse/" + roomNumber, mouse);
     }
 
     /*

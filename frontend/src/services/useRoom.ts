@@ -14,7 +14,7 @@ const roomState = reactive<IRoomState>({
 
 //function to get access to the room and the functions with stomp
 export function useRoom() {
-  return { roomState: readonly(roomState), receiveRoom };
+  return { roomState: readonly(roomState), receiveRoom, swapRooms};
 }
 
 //function for receiving a room.
@@ -31,11 +31,34 @@ function receiveRoom() {
   stompClient.onConnect = () => {
     stompClient.subscribe(DEST, (message) => {
       roomState.room = JSON.parse(message.body);
-      console.log("room-number: " + roomState.room.roomNumber);
     });
   };
   stompClient.activate();
   stompClient.onDisconnect = () => {
     /* Verbindung abgebaut*/
   };
+}
+
+function swapRooms(roomNumber : number) {
+  fetch('/api/room/'+roomNumber, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({sessionId: document.cookie.split("=")[1]})
+      })
+      .then((response) => {
+          if (!response.ok) {
+              console.log("Fehler bei Raumänderung!")
+          }else {
+              return response.text();
+          }
+      })
+      .then((response: string|undefined) => {
+          console.log("Done! New Room: " + roomNumber);
+          roomState.room.roomNumber = roomNumber;
+      })
+      .catch((e) => {
+          console.log("Fehler bei Raumänderung! " + e)
+      });
 }

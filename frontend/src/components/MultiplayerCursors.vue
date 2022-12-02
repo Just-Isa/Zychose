@@ -50,14 +50,14 @@ let lastYsent = 0;
 //const mouseMap = reactive(new Map<string, number[]>());
 let mouseDict: { [sessionID: string]: number[] } = reactive({});
 
-const { roomState, receiveRoom } = useRoom();
-const { publishMouse, mouseState, receiveMouse, createUser} = useUser();
-const { publishUser } = useUser();
+const { roomState, receiveRoom, swapRooms } = useRoom();
+const { publishMouse, mouseState, userState, receiveMouse} = useUser();
 
 onMounted(() => {
   receiveRoom();
-  receiveMouse();
-  createUser();
+  // location.pathname.split("/")[2] as unknown as number -> Get room number from url, since new rooms arent dynamically created yet
+  swapRooms((location.pathname.split("/")[2] as unknown) as number);
+  receiveMouse((location.pathname.split("/")[2] as unknown) as number);
 });
 
 setInterval(function () {
@@ -73,7 +73,8 @@ setInterval(function () {
         roomState.room.roomNumber,
         x.value,
         y.value
-      )
+      ),
+      (location.pathname.split("/")[2] as unknown) as number
     );
   }
   //mouseMap.set(mouseState.mouse.sessionID, [x.value, y.value]);
