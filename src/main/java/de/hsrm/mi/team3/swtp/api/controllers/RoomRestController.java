@@ -32,27 +32,42 @@ public class RoomRestController {
     @Autowired
     private RoomServiceImplementation roomService;
 
+    /**
+     * Retrieve the Room List saved in the RoomBox Singleton.
+     * 
+     * @return Room List of the RoomBox Singleton.
+     */
     @GetMapping(value = "/roomlist", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<GetRoomResponseDTO> getRoomBoxSingleton() {
         List<GetRoomResponseDTO> roomDTOList = new ArrayList<GetRoomResponseDTO>();
         for (Room room : roomBoxService.getRoomBoxSingelton().getRooms().values()) {
             roomDTOList.add(GetRoomResponseDTO.from(room));
         }
-        logger.info("Returning roombox! = {}", roomDTOList);
         return roomDTOList;
     }
 
+    /**
+     * Changes the Room a User is in to another.
+     * 
+     * @param roomNumber Room number of room that the User is supposed to be swapped
+     *                   into
+     * @param sessionId  SessionID of User that will be moved
+     */
     @PostMapping(value = "/room/{number}")
-    public void changeRoomOfUser(@PathVariable("number") int number, @RequestBody String sessionId) {
+    public void changeRoomOfUser(@PathVariable("roomNumber") int roomNumber, @RequestBody String sessionId) {
         String sId = sessionId.split(":")[1].replace("\"", "").replace("}", "");
 
-        Room room = roomBoxService.getSpecificRoom(number);
-        User userOpt = roomService.getUserBySessionID(sId);
-        Room oldRoom = roomBoxService.getRoomsFromRoomBox().get(userOpt.getCurrentRoomNumber());
+        Room room = roomBoxService.getSpecificRoom(roomNumber);
+        Optional<User> userOpt = roomService.getUserBySessionID(sId);
+        if (userOpt.isPresent()) {
+            Room oldRoom = roomBoxService.getRoomsFromRoomBox().get(userOpt.get().getCurrentRoomNumber());
 
-        roomService.removeUserFromRoom(oldRoom, userOpt);
-        roomService.addNewUserToRoom(room, userOpt);
+            roomService.removeUserFromRoom(oldRoom, userOpt.get());
+            roomService.addNewUserToRoom(room, userOpt.get());
 
-        logger.info("ROOM = {}", room.getUserList());
+            logger.info("ROOM = {}", room.getUserList());
+        } else {
+            logger.warn("User with SessionID: " + sessionId + " not present!");
+        }
     }
 }

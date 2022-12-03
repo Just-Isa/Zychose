@@ -13,7 +13,6 @@ import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendMouseMessage;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
-import de.hsrm.mi.team3.swtp.domain.messaging.BackendUserMessage;
 import de.hsrm.mi.team3.swtp.services.BackendInfoService;
 import de.hsrm.mi.team3.swtp.services.RoomBoxServiceImplementation;
 import de.hsrm.mi.team3.swtp.services.RoomServiceImplementation;

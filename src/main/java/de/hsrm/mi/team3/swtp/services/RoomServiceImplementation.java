@@ -1,6 +1,5 @@
 package de.hsrm.mi.team3.swtp.services;
 
-import java.lang.StackWalker.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,14 +47,20 @@ public class RoomServiceImplementation implements RoomService {
         return room.getUserList();
     }
 
-    public User getUserBySessionID(String sessionID) {
+    /**
+     * 
+     * @param sessionID SessionID of wanted User
+     * @return Either the User with the given SessionID or null if not present
+     */
+    public Optional<User> getUserBySessionID(String sessionID) {
+        Optional<User> userOpt = Optional.empty();
         for (Room room : this.roomBoxService.getRoomsFromRoomBox().values()) {
             for (User user : room.getUserList()) {
                 if (user.getSessionID().contains(sessionID)) {
-                    return user;
+                    userOpt = Optional.ofNullable(user);
                 }
             }
         }
-        return null;
+        return userOpt;
     }
 }

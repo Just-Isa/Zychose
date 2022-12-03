@@ -31,6 +31,9 @@ export function getRoomList() : void {
     });
 }
 
+/**
+ * Exports functions for useRoom
+ */
 export function useRoomBox() {
     return { roomListState: readonly(roomListState), getRoomList };
   }

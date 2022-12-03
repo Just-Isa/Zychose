@@ -12,12 +12,18 @@ const roomState = reactive<IRoomState>({
   errorMessage: "",
 });
 
-//function to get access to the room and the functions with stomp
+/**
+ * @returns Export of useRoom
+ */
 export function useRoom() {
   return { roomState: readonly(roomState), receiveRoom, swapRooms};
 }
 
-//function for receiving a room.
+/**
+ * Subscribes to the specific Rooms topic
+ * 
+ * NOT IMPLEMENTED / NO FUNCTIONALITY
+ */
 function receiveRoom() {
   const webSocketUrl = `ws://${window.location.host}/stompbroker`;
   const DEST = "/topic/room";
@@ -39,6 +45,10 @@ function receiveRoom() {
   };
 }
 
+/** Changes Room a User is in to another
+ * 
+ * @param roomNumber Room number into which the user is to be swapped
+ */
 function swapRooms(roomNumber : number) {
   fetch('/api/room/'+roomNumber, {
           method: 'POST',

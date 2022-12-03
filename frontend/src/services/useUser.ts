@@ -2,8 +2,6 @@ import { Client } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
 import { Mouse, type IMouse } from "./IMouse";
 import { User, type IUser } from "./IUser";
-import { MessageOperator } from "./MessageOperators";
-import { useRoom } from "./useRoom";
 
 export interface IMouseState {
   mouse: IMouse;
@@ -39,7 +37,11 @@ export function useUser() {
   };
 }
 
-//um einen User zum Server zu schicken.
+/** Publishes user to the User topic
+ * 
+ * @param operator *NOT IMPLEMENTED*
+ * @param user User that is to be published
+ */
 function publishUser(operator: string, user: IUser) {
   const userDto: UserDTO = {
     user: user,
@@ -72,7 +74,13 @@ function publishUser(operator: string, user: IUser) {
     /* Verbindung abgebaut*/
   };
 }
-//function sends Mouse to a server.
+
+/** Publishes current state of the clients mouse to the respective
+ *  mouse topic.
+ * 
+ * @param mouse Current Mouse object of client
+ * @param roomNumber roomNumber of the mouse topic
+ */
 function publishMouse(mouse: IMouse, roomNumber: number) {
   const webSocketUrl = `ws://${window.location.host}/stompbroker`;
   const DEST = "/topic/mouse/"+roomNumber;
@@ -100,7 +108,11 @@ function publishMouse(mouse: IMouse, roomNumber: number) {
     /* Verbindung abgebaut*/
   };
 }
-//function to receive a mouse, so movement can be available to others.
+
+/** Subscribes to rooms mouseTopic
+ * 
+ * @param roomNumber roomNumber for the mouse topic that is to be subscribed to
+ */
 function receiveMouse(roomNumber: number) {
   const WebSocketUrl = `ws://${window.location.host}/stompbroker`;
   const DEST = "/topic/mouse/"+roomNumber;
@@ -131,6 +143,8 @@ function receiveMouse(roomNumber: number) {
   };
 }
 
+/** Creates a User by setting the sessionID cookie* 
+ */
 function createUser() {
   if (document.cookie.split("=")[0] != "sid") {
     document.cookie = "sid=" + crypto.randomUUID();
