@@ -13,10 +13,10 @@
 	text-decoration:none;
 	text-shadow:0px 1px 0px #2f6627;
     "
-    v-on:click="getRoomList()">GetFreshBois</button>
+    v-on:click="getRoomList()">Show me the rooms kekw</button>
 <br>
 <div v-for="room in roomListState.rooms.roomList">
-	<a style="color: red;"  :href="('/room/'+room.roomNumber)" >Raum {{room.roomNumber}}: {{room.roomName}}<br></a>
+	<a style="color: red;"  :href="('/'+room.roomNumber)" >Raum {{room.roomNumber}}: {{room.roomName}}<br></a>
 	<div v-for="user in room.userList" style="margin-left: 20px;">
 		<p>{{user.userName}}</p>
 	</div>

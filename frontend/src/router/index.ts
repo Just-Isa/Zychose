@@ -6,32 +6,32 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/",
+      path: "/rooms",
       name: "Raumauswahl",
       component: RoomSelect
     },
     {
-      path: "/room/1",
+      path: "/1",
       name: "Raum1",
       component: EditorView
     },
     {
-      path: "/room/2",
+      path: "/2",
       name: "Raum2",
       component: EditorView
     },
     {
-      path: "/room/3",
+      path: "/3",
       name: "Raum3",
       component: EditorView
     },
     {
-      path: "/room/4",
+      path: "/4",
       name: "Raum4",
       component: EditorView
     },
     {
-      path: "/room/5",
+      path: "/5",
       name: "Raum5",
       component: EditorView
     }
