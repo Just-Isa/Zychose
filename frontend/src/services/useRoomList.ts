@@ -25,6 +25,7 @@ export function getRoomList() : void {
     .then((jsondata) => {
         roomListState.rooms.roomList = jsondata;
         roomListState.errorMessage = "";
+        console.log(roomListState.rooms)
     })
     .catch((e) => {
         roomListState.errorMessage = e;

@@ -15,7 +15,12 @@
     "
     v-on:click="getRoomList()">GetFreshBois</button>
 <br>
-<a style="color: red;" v-for="room in roomListState.rooms.roomList" :href="('/room/'+room.roomNumber)" >Raum {{room.roomNumber}}: {{room.roomName}}<br></a>
+<div v-for="room in roomListState.rooms.roomList">
+	<a style="color: red;"  :href="('/room/'+room.roomNumber)" >Raum {{room.roomNumber}}: {{room.roomName}}<br></a>
+	<div v-for="user in room.userList" style="margin-left: 20px;">
+		<p>{{user.userName}}</p>
+	</div>
+</div>
 </template>
 
 <script setup lang="ts">
@@ -24,16 +29,12 @@ import { useRoomBox } from '@/services/useRoomList';
 import { onMounted } from 'vue';
 import { useUser } from "@/services/useUser";
 import { useRouter } from 'vue-router';
-import { useRoom } from '@/services/useRoom';
 
 const { roomListState, getRoomList} = useRoomBox();
 const { createUser } = useUser();
-const { roomState, receiveRoom } = useRoom();
 
 const router = useRouter();
 onMounted(() => {
     createUser();
 });
-
-//:key="i.angebotid"
 </script>

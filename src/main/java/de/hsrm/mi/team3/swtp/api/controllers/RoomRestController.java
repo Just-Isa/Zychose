@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,20 +55,21 @@ public class RoomRestController {
      * @param sessionId  SessionID of User that will be moved
      */
     @PostMapping(value = "/room/{number}")
-    public void changeRoomOfUser(@PathVariable("roomNumber") int roomNumber, @RequestBody String sessionId) {
+    public void changeRoomOfUser(@PathVariable("number") String number,
+            @RequestBody String sessionId) {
         String sId = sessionId.split(":")[1].replace("\"", "").replace("}", "");
 
-        Room room = roomBoxService.getSpecificRoom(roomNumber);
+        Room room = roomBoxService.getSpecificRoom(Integer.parseInt(number));
         Optional<User> userOpt = roomService.getUserBySessionID(sId);
         if (userOpt.isPresent()) {
             Room oldRoom = roomBoxService.getRoomsFromRoomBox().get(userOpt.get().getCurrentRoomNumber());
 
             roomService.removeUserFromRoom(oldRoom, userOpt.get());
-            roomService.addNewUserToRoom(room, userOpt.get());
 
             logger.info("ROOM = {}", room.getUserList());
         } else {
             logger.warn("User with SessionID: " + sessionId + " not present!");
+            roomService.addNewUserToRoom(room, new User(sId, 0, sId));
         }
     }
 }

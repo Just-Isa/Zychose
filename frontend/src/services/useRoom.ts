@@ -1,6 +1,7 @@
 import { Client } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
 import { Room, type IRoom } from "./IRoom";
+import { useRoomBox } from "./useRoomList";
 
 export interface IRoomState {
   room: IRoom;
@@ -18,6 +19,8 @@ const roomState = reactive<IRoomState>({
 export function useRoom() {
   return { roomState: readonly(roomState), receiveRoom, swapRooms};
 }
+
+const { getRoomList } = useRoomBox();
 
 /**
  * Subscribes to the specific Rooms topic
@@ -50,7 +53,10 @@ function receiveRoom() {
  * @param roomNumber Room number into which the user is to be swapped
  */
 function swapRooms(roomNumber : number) {
-  fetch('/api/room/'+roomNumber, {
+  console.log(roomNumber);
+  const DEST = "/api/room/" + roomNumber;
+  console.log(DEST);
+  fetch(DEST, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
@@ -67,6 +73,7 @@ function swapRooms(roomNumber : number) {
       .then((response: string|undefined) => {
           console.log("Done! New Room: " + roomNumber);
           roomState.room.roomNumber = roomNumber;
+          getRoomList();
       })
       .catch((e) => {
           console.log("Fehler bei Raumänderung! " + e)

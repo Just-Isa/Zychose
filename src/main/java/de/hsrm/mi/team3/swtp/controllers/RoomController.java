@@ -72,20 +72,16 @@ public class RoomController {
     public void getUser(@Payload User user) {
         logger.info("User: (" + user.getSessionID() + ", " + user.getUserName() + ", "
                 + user.getCurrentRoomNumber() + ")");
-        Room room;
 
-        if (roomBoxService.getRoomsFromRoomBox().size() <= 5) {
-            while (roomBoxService.getRoomsFromRoomBox().size() <= 5) {
+        if (roomBoxService.getRoomsFromRoomBox().size() <= 4) {
+            while (roomBoxService.getRoomsFromRoomBox().size() <= 4) {
                 roomBoxService.addRoom();
             }
         }
-        room = roomBoxService.getSpecificRoom(1);
 
         if (user.getUserName() == null) {
             user.setUserName("Raus aus meinem Kopf");
         }
-        roomService.addNewUserToRoom(room, user);
-        backservice.sendRoom("room", BackendOperation.CREATE, room);
     }
 
 }
