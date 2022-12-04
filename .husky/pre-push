@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+. "$(dirname "$0")/_/husky.sh"
+
+./gradlew test # run backend unit tests
+./gradlew build # check if build is successful
+cd frontend
+npm test # run frontend unit tests
+npm run lint # lint frontend code
