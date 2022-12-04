@@ -15,7 +15,7 @@ Menü, in dem alles zu den Straßen angezeigt wird
         class="tabHead"
         @click="changeTab(2)"
         v-bind:class="[activetab === 2 ? 'active' : '']"
-        id="bycicle"
+        id="bicycle"
       ></a>
     </div>
 
@@ -142,7 +142,6 @@ footer {
 
 #bicycle {
   background-image: url("../assets/img/bicycle-pictogram.svg");
-  background-size: 300%;
   background-repeat: no-repeat;
   background-position: center;
 }
