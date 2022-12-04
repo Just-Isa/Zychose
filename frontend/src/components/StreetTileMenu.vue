@@ -4,28 +4,28 @@ Geben beim Anklicken den Typ durch, Bild kann per URL / Icon(props) weitergereic
 Template ist als Footer angelegt, da das Menü unten liegt. 
 -->
 <template>
-    <div class="tilemenuwrapper" >
-      <div class="tilemenu">
-        <StreetTile
-          @click="setTileResetBagger(tileTypes[1])"
-          id="cross-road"
-        ></StreetTile>
-        <StreetTile
-          @click="setTileResetBagger(tileTypes[3])"
-          id="curve-road"
-        ></StreetTile>
-        <StreetTile
-          @click="setTileResetBagger(tileTypes[2])"
-          id="t-cross-road"
-        ></StreetTile>
-        <StreetTile
-          @click="setTileResetBagger(tileTypes[0])"
-          id="street-road"
-        ></StreetTile>
-      </div>
+  <div class="tilemenuwrapper">
+    <div class="tilemenu">
+      <StreetTile
+        @click="setTileResetBagger(tileTypes[1])"
+        id="cross-road"
+      ></StreetTile>
+      <StreetTile
+        @click="setTileResetBagger(tileTypes[3])"
+        id="curve-road"
+      ></StreetTile>
+      <StreetTile
+        @click="setTileResetBagger(tileTypes[2])"
+        id="t-cross-road"
+      ></StreetTile>
+      <StreetTile
+        @click="setTileResetBagger(tileTypes[0])"
+        id="street-road"
+      ></StreetTile>
     </div>
+  </div>
 
-    <a id="baggercursor" @click="setBaggerToDelete()"></a>
+  <a id="baggercursor" @click="setBaggerToDelete()"></a>
 </template>
 
 <script setup lang="ts">
@@ -39,7 +39,7 @@ const tileTypes = ["street-road", "cross-road", "t-cross-road", "curve-road"];
  * Basic Tiles werden aus den Interfaces geholt & zugewiesen
  */
 
-const { tile, getTileType, setTileType, getActive, setActive } = useTile();
+const { getTileType, setTileType, getActive, setActive } = useTile();
 
 /**
  * Baggerbutton: Einfacher Toggle, falls TRUE, wird Tiletyp geloggt.
@@ -121,7 +121,7 @@ footer {
 
 .tilemenuwrapper {
   background-color: #5b6569;
-  border-radius: 1em;
+  border-radius: 0 1em 1em 1em;
   height: 7.6em;
 }
 

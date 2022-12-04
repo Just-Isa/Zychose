@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import MultiplayerCursors from "../components/MultiplayerCursors.vue";
 import GridComponent from "@/components/grid/GridComponent.vue";
-import StreetTileMenu from "@/components/StreetTileMenu.vue";
 import StreetMenu from "@/components/StreetMenu.vue";
 </script>
 
@@ -9,7 +8,6 @@ import StreetMenu from "@/components/StreetMenu.vue";
   <main>
     <MultiplayerCursors />
     <GridComponent v-bind:gridSize="100"></GridComponent>
-    <StreetMenu /> 
-
+    <StreetMenu />
   </main>
 </template>
