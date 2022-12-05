@@ -1,6 +1,7 @@
 package de.hsrm.mi.team3.swtp.services;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.RoomBox;
+import de.hsrm.mi.team3.swtp.domain.User;
 
 /**
  * implementation of RoomBoxService
@@ -98,4 +100,20 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
         return (RoomBox) applicationContext.getBean("roomBoxSingleton");
     }
 
+    /**
+     * 
+     * @param sessionID SessionID of wanted User
+     * @return Either the User with the given SessionID or null if not present
+     */
+    public Optional<User> getUserBySessionID(String sessionID) {
+        Optional<User> userOpt = Optional.empty();
+        for (Room room : this.getRoomsFromRoomBox().values()) {
+            for (User user : room.getUserList()) {
+                if (user.getSessionID().contains(sessionID)) {
+                    userOpt = Optional.of(user);
+                }
+            }
+        }
+        return userOpt;
+    }
 }

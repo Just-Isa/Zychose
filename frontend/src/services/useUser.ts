@@ -46,7 +46,6 @@ function publishUser(operator: string, user: IUser) {
   const userDto: UserDTO = {
     user: user,
   };
-  console.log(userDto);
   const webSocketUrl = `ws://${window.location.host}/stompbroker`;
   const DEST = "/topic/user";
   const userClient = new Client({ brokerURL: webSocketUrl });
@@ -66,7 +65,7 @@ function publishUser(operator: string, user: IUser) {
       });
     } catch (err) {
       // in case of an error
-      console.log("Es gab ein fehler", err);
+      console.log("Error while Publishing User! ", err);
     }
   };
   userClient.activate();

@@ -59,12 +59,12 @@ public class RoomRestController {
         String sId = sessionId.split(":")[1].replace("\"", "").replace("}", "");
 
         Room room = roomBoxService.getSpecificRoom(Integer.parseInt(number));
-        Optional<User> userOpt = roomService.getUserBySessionID(sId);
+        Optional<User> userOpt = roomBoxService.getUserBySessionID(sId);
         if (userOpt.isPresent()) {
             Room oldRoom = roomBoxService.getRoomsFromRoomBox().get(userOpt.get().getCurrentRoomNumber());
 
             roomService.removeUserFromRoom(oldRoom, userOpt.get());
-
+            roomService.addNewUserToRoom(room, userOpt.get());
             logger.info("ROOM = {}", room.getUserList());
         } else {
             logger.warn("User with SessionID: " + sessionId + " not present!");

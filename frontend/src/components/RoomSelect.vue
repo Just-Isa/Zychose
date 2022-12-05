@@ -1,21 +1,8 @@
 <template>
 
 <h1 style="font-size: 20px; text-align: center;"> ROOMS</h1>
-<button style="background-color:#000000;
-	border-radius:28px;
-	border:1px solid #18ab29;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:17px;
-	padding:16px 31px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #2f6627;
-    "
-    v-on:click="getRoomList()">Show me the rooms kekw</button>
 <br>
-<div v-for="room in roomListState.rooms.roomList">
+<div v-for="room in roomListItems">
 	<a style="color: red;"  :href="('/'+room.roomNumber)" >Raum {{room.roomNumber}}: {{room.roomName}}<br></a>
 	<div v-for="user in room.userList" style="margin-left: 20px;">
 		<p>{{user.userName}}</p>
@@ -26,15 +13,18 @@
 <script setup lang="ts">
 //v-on:click="swapRooms(room.roomNumber)"
 import { useRoomBox } from '@/services/useRoomList';
-import { onMounted } from 'vue';
+import { onMounted, computed} from 'vue';
 import { useUser } from "@/services/useUser";
-import { useRouter } from 'vue-router';
 
 const { roomListState, getRoomList} = useRoomBox();
 const { createUser } = useUser();
 
-const router = useRouter();
+const roomListItems = computed(() => {
+	return roomListState.rooms.roomList;
+});
+
 onMounted(() => {
     createUser();
+	getRoomList();
 });
 </script>

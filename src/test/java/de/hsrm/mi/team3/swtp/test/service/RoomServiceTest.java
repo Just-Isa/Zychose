@@ -20,10 +20,14 @@ import de.hsrm.mi.team3.swtp.services.RoomService;
 @AutoConfigureMockMvc
 class RoomServiceTest {
 
-    @Autowired RoomService roomService;
+    @Autowired
+    RoomService roomService;
 
-    private final String ROOMNAME = "RoomName";
-    private final int ROOMNUMBER = 1;
+    private final String ROOMNAMEONE = "RoomNameOne";
+    private final int ROOMNUMBERONE = 1;
+
+    private final String ROOMNAMETWO = "RoomNameTwo";
+    private final int ROOMNUMBERTWO = 2;
 
     private final String SESSIONID = "session-id-test-1";
     private final int USERROOMNUMBER = 1;
@@ -31,7 +35,7 @@ class RoomServiceTest {
 
     private final String SESSIONIDTWO = "session-id-test-2";
     private final int USERROOMNUMBERTWO = 1;
-    private final String USERNAMETWO= "User-Two";
+    private final String USERNAMETWO = "User-Two";
 
     private final int USERLISTSIZEBEFOREADDITION = 0;
     private final int USERLISTSIZEMIDADDITON = 1;
@@ -41,7 +45,7 @@ class RoomServiceTest {
     User userTwo = null;
 
     Room roomOne = null;
-
+    Room roomTwo = null;
 
     @BeforeEach
     public void benutzerprofil_init() {
@@ -56,7 +60,8 @@ class RoomServiceTest {
         userTwo.setUserName(USERNAMETWO);
         userTwo.setCurrentRoomNumber(USERROOMNUMBERTWO);
 
-        roomOne = new Room(ROOMNAME, ROOMNUMBER);
+        roomOne = new Room(ROOMNAMEONE, ROOMNUMBERONE);
+        roomTwo = new Room(ROOMNAMETWO, ROOMNUMBERTWO);
     }
 
     @Test
@@ -72,5 +77,17 @@ class RoomServiceTest {
 
         assertThat(roomService.getUserList(roomOne).size()).isEqualTo(USERLISTSIZEAFTERADDITION);
         assertThat(roomService.getUserList(roomOne)).containsExactlyElementsOf(List.of(userOne, userTwo));
+    }
+
+    @Test
+    @DisplayName("Room: User not present in room after removing")
+    public void roomRemoveUser() {
+        assertThat(roomService.getUserList(roomOne).size()).isEqualTo(USERLISTSIZEBEFOREADDITION);
+        roomService.addNewUserToRoom(roomOne, userOne);
+        assertThat(roomService.getUserList(roomOne)).containsExactlyElementsOf(List.of(userOne));
+
+        roomService.removeUserFromRoom(roomOne, userOne);
+        assertThat(roomService.getUserList(roomOne).size()).isEqualTo(USERLISTSIZEBEFOREADDITION);
+        assertThat(roomService.getUserList(roomOne)).containsExactlyElementsOf(List.of());
     }
 }

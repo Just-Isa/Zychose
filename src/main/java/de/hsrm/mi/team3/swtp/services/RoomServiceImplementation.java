@@ -32,6 +32,12 @@ public class RoomServiceImplementation implements RoomService {
         user.setCurrentRoomNumber(room.getRoomNumber());
     }
 
+    /**
+     * This method removes a user from a room.
+     * 
+     * @param room
+     * @param user
+     */
     public void removeUserFromRoom(Room room, User user) {
         room.removeUserFromList(user);
     }
@@ -45,22 +51,5 @@ public class RoomServiceImplementation implements RoomService {
     @Override
     public List<User> getUserList(Room room) {
         return room.getUserList();
-    }
-
-    /**
-     * 
-     * @param sessionID SessionID of wanted User
-     * @return Either the User with the given SessionID or null if not present
-     */
-    public Optional<User> getUserBySessionID(String sessionID) {
-        Optional<User> userOpt = Optional.empty();
-        for (Room room : this.roomBoxService.getRoomsFromRoomBox().values()) {
-            for (User user : room.getUserList()) {
-                if (user.getSessionID().contains(sessionID)) {
-                    userOpt = Optional.ofNullable(user);
-                }
-            }
-        }
-        return userOpt;
     }
 }

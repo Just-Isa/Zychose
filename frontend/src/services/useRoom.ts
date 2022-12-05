@@ -53,9 +53,7 @@ function receiveRoom() {
  * @param roomNumber Room number into which the user is to be swapped
  */
 function swapRooms(roomNumber : number) {
-  console.log(roomNumber);
   const DEST = "/api/room/" + roomNumber;
-  console.log(DEST);
   fetch(DEST, {
           method: 'POST',
           headers: {
