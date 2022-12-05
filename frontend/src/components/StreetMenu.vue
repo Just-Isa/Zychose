@@ -1,9 +1,10 @@
 <!--- 
-Menü, in dem alles zu den Straßen angezeigt wird
+Menu for selecting street tiles according to selected vehicle.
+Source for basic tab idea: https://vuejsexamples.com/tabbed-content-with-vue-js/
 -->
 
 <template>
-  <footer class="container">
+  <footer>
     <div class="tabs">
       <a
         class="tabHead"
@@ -34,9 +35,16 @@ Menü, in dem alles zu den Straßen angezeigt wird
 import { ref } from "vue";
 import StreetTileMenu from "./StreetTileMenu.vue";
 
-let activetab = ref(1);
+/**
+ * activetab: numeration of tabs from left to right
+ */
+const activetab = ref(1);
 
-function changeTab(x: number) {
+/**
+ * function to change the selected tab and switch the displayed content for the tile menu
+ * @param newTabNumber number of the newly selected tab
+ */
+function changeTab(newTabNumber: number) {
   console.log("altes Tab: " + activetab.value);
 
   // delete class on old tab
@@ -45,7 +53,7 @@ function changeTab(x: number) {
     oldTab.classList.remove("active");
   }
 
-  activetab.value = x;
+  activetab.value = newTabNumber;
 
   // set class on new tab
   let newTab = document.getElementById("tab" + activetab.value);
@@ -64,22 +72,13 @@ function changeTab(x: number) {
   padding: 0;
 }
 
+/* footer style taken over from StreetTileMenu.vue */
 footer {
   position: absolute;
   left: 30vw;
   bottom: 0;
   overflow: hidden;
-  /*display: flex;*/
   justify-content: center;
-}
-
-.container {
-  max-width: 620px;
-  min-width: 420px;
-  margin: 40px auto;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.9em;
-  color: #888;
 }
 
 /* Style the tabs */
@@ -92,17 +91,11 @@ footer {
   overflow: hidden;
 }
 
-.tabs ul {
-  list-style-type: none;
-  margin-left: 20px;
-}
-
 .tabs a {
   float: left;
   cursor: pointer;
   padding: 5px 5px;
   transition: background-color 0.2s;
-  /*border: 1px solid #ccc;*/
   border-right: none;
   background-color: #424a4c;
   border-radius: 10px 10px 0 0;
@@ -120,20 +113,16 @@ footer {
 .tabs a.active {
   background-color: #5b6569;
   color: #fff;
-  /*border-bottom: 2px solid #fff;*/
   cursor: default;
 }
 
 /* Style the tab content */
 .tabcontent {
-  /*padding: 30px;
-    border: 1px solid #ccc; */
   border-radius: 10px;
-  background-color: aqua;
-  height: auto;
-  /*box-shadow: 3px 3px 6px #e1e1e1;*/
+  display: flex;
 }
 
+/* svg-files for tabs corresponding with ids */
 #car {
   background-image: url("../assets/img/car-pictogram.svg");
   background-repeat: no-repeat;
