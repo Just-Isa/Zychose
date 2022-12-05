@@ -34,7 +34,8 @@ export function gridToJson(streets: IStreetInformation[]) {
 
       rotationAsKeyMap.set(r, positionArray);
     }
-    streettypeAsKeyMap.set(k, rotationAsKeyMap);
+    const name = TypeStreet[Number(k)];
+    streettypeAsKeyMap.set(name, rotationAsKeyMap);
   }
 
   console.log(streettypeAsKeyMap);
@@ -44,4 +45,31 @@ export function gridToJson(streets: IStreetInformation[]) {
   const dings2 = JSON.stringify(streettypeAsKeyMap.keys);
   console.log(dings);
   console.log(dings2);
+  console.log("mein Teil: ");
+  console.log("------------------------------------------");
+  console.log(JSON.stringify(streettypeAsKeyMap));
+  const jsonObject = Object.fromEntries(streettypeAsKeyMap);
+  console.log("jsonObject vorher: ", jsonObject);
+  console.log("JSON.stringify: ", JSON.stringify(jsonObject));
+  for (const k of keys) {
+    const n = TypeStreet[Number(k)];
+    console.log("k: ", n);
+    console.log("Eintrag: ", Object.fromEntries(streettypeAsKeyMap.get(n)));
+    jsonObject[n] = Object.fromEntries(streettypeAsKeyMap.get(n));
+  }
+  console.log("jsonObject nachher: ", jsonObject);
+  const jsonString = JSON.stringify(jsonObject);
+  console.log("jsonObject.stringify: ", jsonString);
+  const againJSONObject = JSON.parse(jsonString);
+  console.log("parse: ", againJSONObject);
+  console.log("++++++++++++++++++++++++++++++++++++++++++++++");
+  for (const k of keys) {
+    const n = TypeStreet[Number(k)];
+    console.log("k: ", n);
+    const neueMap = new Map(Object.entries(againJSONObject[n]));
+    console.log("Eintrag: ", neueMap);
+    againJSONObject[n] = neueMap;
+  }
+  const mapAgain = new Map(Object.entries(againJSONObject));
+  console.log(mapAgain);
 }
