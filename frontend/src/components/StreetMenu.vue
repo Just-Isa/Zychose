@@ -83,8 +83,8 @@ footer {
 
 /* Style the tabs */
 .tabHead {
-  height: 2em;
-  width: 3em;
+  height: 1.125rem;
+  width: 3.125rem;
 }
 
 .tabs {
@@ -100,7 +100,7 @@ footer {
   background-color: #424a4c;
   border-radius: 10px 10px 0 0;
   font-weight: bold;
-  margin-right: 1em;
+  margin-right: 0.7rem;
 }
 
 /* Change background color of tabs on hover */
@@ -118,7 +118,7 @@ footer {
 
 /* Style the tab content */
 .tabcontent {
-  border-radius: 10px;
+  border-radius: 0.625rem;
   display: flex;
 }
 
@@ -131,6 +131,7 @@ footer {
 
 #bicycle {
   background-image: url("../assets/img/bicycle-pictogram.svg");
+  background-size: 32%;
   background-repeat: no-repeat;
   background-position: center;
 }
