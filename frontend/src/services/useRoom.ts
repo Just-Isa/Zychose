@@ -17,14 +17,14 @@ const roomState = reactive<IRoomState>({
  * @returns Export of useRoom
  */
 export function useRoom() {
-  return { roomState: readonly(roomState), receiveRoom, swapRooms};
+  return { roomState: readonly(roomState), receiveRoom, swapRooms };
 }
 
 const { getRoomList } = useRoomBox();
 
 /**
  * Subscribes to the specific Rooms topic
- * 
+ *
  * NOT IMPLEMENTED / NO FUNCTIONALITY
  */
 function receiveRoom() {
@@ -49,31 +49,31 @@ function receiveRoom() {
 }
 
 /** Changes Room a User is in to another
- * 
+ *
  * @param roomNumber Room number into which the user is to be swapped
  */
-function swapRooms(roomNumber : number) {
+function swapRooms(roomNumber: number) {
   const DEST = "/api/room/" + roomNumber;
   fetch(DEST, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({sessionId: document.cookie.split("=")[1]})
-      })
-      .then((response) => {
-          if (!response.ok) {
-              console.log("Fehler bei Raumänderung!")
-          }else {
-              return response.text();
-          }
-      })
-      .then((response: string|undefined) => {
-          console.log("Done! New Room: " + roomNumber);
-          roomState.room.roomNumber = roomNumber;
-          getRoomList();
-      })
-      .catch((e) => {
-          console.log("Fehler bei Raumänderung! " + e)
-      });
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ sessionId: document.cookie.split("=")[1] }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        console.log("Fehler bei Raumänderung!");
+      } else {
+        return response.text();
+      }
+    })
+    .then((response: string | undefined) => {
+      console.log("Done! New Room: " + roomNumber);
+      roomState.room.roomNumber = roomNumber;
+      getRoomList();
+    })
+    .catch((e) => {
+      console.log("Fehler bei Raumänderung! " + e);
+    });
 }
