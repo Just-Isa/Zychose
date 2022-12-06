@@ -8,33 +8,33 @@ const router = createRouter({
     {
       path: "/rooms",
       name: "Raumauswahl",
-      component: RoomSelect
+      component: RoomSelect,
     },
     {
       path: "/1",
       name: "Raum1",
-      component: EditorView
+      component: EditorView,
     },
     {
       path: "/2",
       name: "Raum2",
-      component: EditorView
+      component: EditorView,
     },
     {
       path: "/3",
       name: "Raum3",
-      component: EditorView
+      component: EditorView,
     },
     {
       path: "/4",
       name: "Raum4",
-      component: EditorView
+      component: EditorView,
     },
     {
       path: "/5",
       name: "Raum5",
-      component: EditorView
-    }
+      component: EditorView,
+    },
   ],
 });
 

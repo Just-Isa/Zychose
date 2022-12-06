@@ -1,34 +1,34 @@
 import { reactive, readonly } from "vue";
-import type { IRoom } from "./IRoom";
 import { RoomList, type IRoomList } from "./IRoomList";
 
 export interface IRoomListState {
-    rooms: IRoomList
-    errorMessage: string;
-  }
-  
-const roomListState = reactive<IRoomListState>({
-    rooms: new RoomList([]),
-    errorMessage: ""
-  });
+  rooms: IRoomList;
+  errorMessage: string;
+}
 
-export function getRoomList() : void {
-    fetch('/api/roomlist', {
-        method: 'GET'
-    })
+const roomListState = reactive<IRoomListState>({
+  rooms: new RoomList([]),
+  errorMessage: "",
+});
+
+export function getRoomList(): void {
+  fetch("/api/roomlist", {
+    method: "GET",
+  })
     .then((response) => {
-        if (!response.ok) {
-            roomListState.errorMessage = "Could not GET RoomBoxSingleton!" + response.status;
-        }
-        return response.json();
+      if (!response.ok) {
+        roomListState.errorMessage =
+          "Could not GET RoomBoxSingleton!" + response.status;
+      }
+      return response.json();
     })
     .then((jsondata) => {
-        roomListState.rooms.roomList = jsondata;
-        roomListState.errorMessage = "";
-        console.log(roomListState.rooms)
+      roomListState.rooms.roomList = jsondata;
+      roomListState.errorMessage = "";
+      console.log(roomListState.rooms);
     })
     .catch((e) => {
-        roomListState.errorMessage = e;
+      roomListState.errorMessage = e;
     });
 }
 
@@ -36,6 +36,5 @@ export function getRoomList() : void {
  * Exports functions for useRoom
  */
 export function useRoomBox() {
-    return { roomListState: readonly(roomListState), getRoomList };
-  }
-  
+  return { roomListState: readonly(roomListState), getRoomList };
+}

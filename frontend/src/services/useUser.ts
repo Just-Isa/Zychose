@@ -9,7 +9,7 @@ export interface IMouseState {
 }
 
 export interface IUserState {
-  user: IUser
+  user: IUser;
 }
 
 const mouseState = reactive<IMouseState>({
@@ -18,12 +18,8 @@ const mouseState = reactive<IMouseState>({
 });
 
 const userState = reactive<IUserState>({
-  user: new User("", 0, "")
+  user: new User("", 0, ""),
 });
-
-interface UserDTO {
-  user: IUser;
-}
 
 //zugreifbar gemacht
 export function useUser() {
@@ -33,19 +29,16 @@ export function useUser() {
     receiveMouse,
     createUser,
     mouseState: readonly(mouseState),
-    userState: readonly(userState)
+    userState: readonly(userState),
   };
 }
 
 /** Publishes user to the User topic
- * 
+ *
  * @param operator *NOT IMPLEMENTED*
  * @param user User that is to be published
  */
 function publishUser(operator: string, user: IUser) {
-  const userDto: UserDTO = {
-    user: user,
-  };
   const webSocketUrl = `ws://${window.location.host}/stompbroker`;
   const DEST = "/topic/user";
   const userClient = new Client({ brokerURL: webSocketUrl });
@@ -76,13 +69,13 @@ function publishUser(operator: string, user: IUser) {
 
 /** Publishes current state of the clients mouse to the respective
  *  mouse topic.
- * 
+ *
  * @param mouse Current Mouse object of client
  * @param roomNumber roomNumber of the mouse topic
  */
 function publishMouse(mouse: IMouse, roomNumber: number) {
   const webSocketUrl = `ws://${window.location.host}/stompbroker`;
-  const DEST = "/topic/mouse/"+roomNumber;
+  const DEST = "/topic/mouse/" + roomNumber;
   const userClient = new Client({ brokerURL: webSocketUrl });
   userClient.onWebSocketError = () => {
     console.log("WS-error-mouse"); /* WS-Error */
@@ -109,12 +102,12 @@ function publishMouse(mouse: IMouse, roomNumber: number) {
 }
 
 /** Subscribes to rooms mouseTopic
- * 
+ *
  * @param roomNumber roomNumber for the mouse topic that is to be subscribed to
  */
 function receiveMouse(roomNumber: number) {
   const WebSocketUrl = `ws://${window.location.host}/stompbroker`;
-  const DEST = "/topic/mouse/"+roomNumber;
+  const DEST = "/topic/mouse/" + roomNumber;
   const stompClient = new Client({ brokerURL: WebSocketUrl });
   stompClient.onWebSocketError = () => {
     console.log("WS-error"); /* WS-Error */
@@ -142,7 +135,7 @@ function receiveMouse(roomNumber: number) {
   };
 }
 
-/** Creates a User by setting the sessionID cookie* 
+/** Creates a User by setting the sessionID cookie*
  */
 function createUser() {
   if (document.cookie.split("=")[0] != "sid") {
