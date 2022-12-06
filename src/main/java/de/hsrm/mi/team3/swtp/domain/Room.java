@@ -52,5 +52,4 @@ public class Room {
   public void setRoomNumber(int roomNumber) {
     this.roomNumber = roomNumber;
   }
-
 }

@@ -1,14 +1,14 @@
 package de.hsrm.mi.team3.swtp.test.service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
 import de.hsrm.mi.team3.swtp.services.RoomBoxService;
+import de.hsrm.mi.team3.swtp.services.RoomService;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,16 +17,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
-import de.hsrm.mi.team3.swtp.services.RoomService;
-
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 class RoomBoxServiceTest {
 
-  @Autowired
-  RoomBoxService roomBoxService;
-  @Autowired
-  RoomService roomService;
+  @Autowired RoomBoxService roomBoxService;
+  @Autowired RoomService roomService;
 
   private final String SESSIONID = "session-id-test-1";
   private final int USERROOMNUMBER = 1;
@@ -100,7 +96,8 @@ class RoomBoxServiceTest {
   }
 
   @Test
-  @DisplayName("Room: Get user by sessionID if room is not known and null if user with given sessionID is not present")
+  @DisplayName(
+      "Room: Get user by sessionID if room is not known and null if user with given sessionID is not present")
   public void getUserFromRoomBox() {
     Room roomOne = roomBoxService.addRoom();
     roomOne.addUserToList(userOne);
@@ -110,7 +107,8 @@ class RoomBoxServiceTest {
     assertThat(getUserBySessionIdPresent.isPresent());
     assertThat(getUserBySessionIdPresent.get()).isEqualTo(userOne);
 
-    Optional<User> getUserBySessionIdNotPresent = roomBoxService.getUserBySessionID(NOTPRESENTSESSIONID);
+    Optional<User> getUserBySessionIdNotPresent =
+        roomBoxService.getUserBySessionID(NOTPRESENTSESSIONID);
     assertThat(getUserBySessionIdNotPresent.isEmpty());
   }
 }
