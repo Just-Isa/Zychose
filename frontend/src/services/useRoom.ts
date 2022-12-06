@@ -68,7 +68,7 @@ function swapRooms(roomNumber: number) {
         return response.text();
       }
     })
-    .then((response: string | undefined) => {
+    .then(() => {
       console.log("Done! New Room: " + roomNumber);
       roomState.room.roomNumber = roomNumber;
       getRoomList();

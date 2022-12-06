@@ -21,10 +21,6 @@ const userState = reactive<IUserState>({
   user: new User("", 0, ""),
 });
 
-interface UserDTO {
-  user: IUser;
-}
-
 //zugreifbar gemacht
 export function useUser() {
   return {
@@ -43,9 +39,6 @@ export function useUser() {
  * @param user User that is to be published
  */
 function publishUser(operator: string, user: IUser) {
-  const userDto: UserDTO = {
-    user: user,
-  };
   const webSocketUrl = `ws://${window.location.host}/stompbroker`;
   const DEST = "/topic/user";
   const userClient = new Client({ brokerURL: webSocketUrl });

@@ -16,13 +16,11 @@
 
 <script setup lang="ts">
 import { Mouse } from "@/services/IMouse";
-import { User } from "@/services/IUser";
 import { useRoom } from "@/services/useRoom";
 import { useUser } from "@/services/useUser";
 import { onMounted, reactive, ref } from "vue";
 
 // https://vueuse.org/core/usemouse/
-import { MessageOperator } from "@/services/MessageOperators";
 import { useMouse } from "@vueuse/core";
 
 const colors = ref([
@@ -51,7 +49,7 @@ let lastYsent = 0;
 let mouseDict: { [sessionID: string]: number[] } = reactive({});
 
 const { roomState, receiveRoom, swapRooms } = useRoom();
-const { publishMouse, mouseState, userState, receiveMouse } = useUser();
+const { publishMouse, mouseState, receiveMouse } = useUser();
 
 onMounted(() => {
   receiveRoom();

@@ -1,5 +1,4 @@
 import { reactive, readonly } from "vue";
-import type { IRoom } from "./IRoom";
 import { RoomList, type IRoomList } from "./IRoomList";
 
 export interface IRoomListState {
