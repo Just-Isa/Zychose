@@ -4,26 +4,30 @@ Source for basic tab idea: https://vuejsexamples.com/tabbed-content-with-vue-js/
 -->
 <template>
   <div class="fixed bottom-6 left-1/2 -translate-x-1/2">
-    <div class="flex gap-5">
+    <div class="flex gap-3">
       <a
         @click="changeTab(1)"
         v-bind:class="[activetab === 1 ? 'active' : '']"
-        class="bg-street-menu-bg-gray px-3 pt-1 rounded-tl-lg rounded-tr-lg"
+        class="bg-street-menu-bg-gray px-4 pt-1 rounded-tl-lg rounded-tr-lg"
       >
         <img src="../assets/img/car-pictogram.svg" />
       </a>
-      <a @click="changeTab(2)" v-bind:class="[activetab === 2 ? 'active' : '']">
+      <a
+        @click="changeTab(2)"
+        v-bind:class="[activetab === 2 ? 'active' : '']"
+        class="bg-street-menu-bg-gray px-4 pt-1 rounded-tl-lg rounded-tr-lg"
+      >
         <img src="../assets/img/bicycle-pictogram.svg"
       /></a>
     </div>
     <div class="flex justify-items-center items-center">
       <StreetMenuFolder
         v-if="activetab === 1"
-        class="tabcontent flex rounded-lg"
+        class="tabcontent flex rounded-b-lg rounded-tr-lg"
       />
       <StreetMenuFolder
         v-if="activetab === 2"
-        class="tabcontent flex rounded-lg"
+        class="tabcontent flex rounded-b-lg rounded-tr-lg"
       />
       <BulldozerIcon />
     </div>
