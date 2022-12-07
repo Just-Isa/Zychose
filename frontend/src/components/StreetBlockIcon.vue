@@ -5,33 +5,33 @@
         class="tile-current flex justify-center items-center rounded-lg"
         :class="getActiveState() == prop.id ? 'active' : 'inactive'"
       >
-        <img :src="prop.imgSrc" :alt="prop.id" />
+        <img :src="getImgSrc(prop.id)" :alt="prop.id" />
       </div>
     </div>
     <div :class="rotationAllowed[0] ? 'tile-rotate-block' : 'hidden'">
       <div class="tile-rotate-ele" @click="changeTileRotation(0)">
-        <img :src="imgSrc" :alt="prop.id" />
+        <img :src="getImgSrc(prop.id)" :alt="prop.id" />
       </div>
       <div
         class="tile-rotate-ele rotate-90"
         :class="rotationAllowed[1] ? '' : 'hidden'"
         @click="changeTileRotation(90)"
       >
-        <img :src="imgSrc" :alt="prop.id" />
+        <img :src="getImgSrc(prop.id)" :alt="prop.id" />
       </div>
       <div
         class="tile-rotate-ele rotate-180"
         :class="rotationAllowed[2] ? '' : 'hidden'"
         @click="changeTileRotation(180)"
       >
-        <img :src="imgSrc" :alt="prop.id" />
+        <img :src="getImgSrc(prop.id)" :alt="prop.id" />
       </div>
       <div
         class="tile-rotate-ele rotate-270"
         :class="rotationAllowed[3] ? '' : 'hidden'"
         @click="changeTileRotation(270)"
       >
-        <img :src="imgSrc" :alt="prop.id" />
+        <img :src="getImgSrc(prop.id)" :alt="prop.id" />
       </div>
     </div>
   </span>
@@ -42,7 +42,6 @@ import { useTile } from "@/services/useTileState";
 
 const prop = defineProps<{
   id: string;
-  imgSrc: string;
 }>();
 
 const {
@@ -51,6 +50,7 @@ const {
   getRotate,
   setActiveState,
   getActiveState,
+  getImgSrc,
 } = useTile();
 
 // check possible rotation values
@@ -121,7 +121,7 @@ function changeTileRotation(degree: number) {
   background-color: #e4f9ff; /* Tallwind Configuration nötig für custom-Farbvariable */
   border-radius: 0.5rem;
   border: 0.25rem solid white;
-  top: -2.1rem;
+  top: -1.3rem;
   margin-left: -0.25rem;
   display: none;
 }
