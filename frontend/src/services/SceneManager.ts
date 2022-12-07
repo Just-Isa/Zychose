@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import type { Scene } from "three";
-import data from "./dummy.json";
+import data from "../data/dummy.json";
 import { generateMapArray } from "./JSONtoMapArray";
 
 const BOXSIZE = 16;
