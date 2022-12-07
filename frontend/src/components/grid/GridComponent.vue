@@ -161,18 +161,20 @@ function clearCell(posX: number, posY: number): void {
     instead scale the component independently with CSS, so no other ui parts are effected.
 */
 let scale = 1;
-document.addEventListener("wheel", (event) => {
-  event.preventDefault();
-  scale += event.deltaY * -0.01;
-  scale = Math.min(Math.max(1, scale), 4);
-  const element = document.getElementById("wrapper");
-  if (element != null) {
-    element.style.transformOrigin = "left top 0";
-    element.style.transform = `scale(${scale})`;
-  }
-});
-
-window.addEventListener("wheel", (e) => e.preventDefault(), { passive: false });
+document.addEventListener(
+  "wheel",
+  (event) => {
+    event.preventDefault();
+    scale += event.deltaY * -0.01;
+    scale = Math.min(Math.max(1, scale), 4);
+    const element = document.getElementById("wrapper");
+    if (element != null) {
+      element.style.transformOrigin = "left top 0";
+      element.style.transform = `scale(${scale})`;
+    }
+  },
+  { passive: false }
+);
 </script>
 
 <style>
