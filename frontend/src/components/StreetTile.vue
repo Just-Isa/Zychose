@@ -2,7 +2,7 @@
   <span class="tile-ele m-1.5 inline-block hover:cursor-pointer">
     <div :id="prop.id" @click="changeActiveState(prop.id)">
       <div
-        class="tile-current flex justify-center items-center rounded-lg border-4"
+        class="tile-current flex justify-center items-center rounded-lg"
         :class="getActiveState() == prop.id ? 'active' : 'inactive'"
       >
         <img :src="prop.imgSrc" :alt="prop.id" />
@@ -89,6 +89,7 @@ function changeActiveState(type: string) {
  * @param {number} degree - new rotation value
  */
 function changeTileRotation(degree: number) {
+  changeActiveState(prop.id);
   setRotate(degree, prop.id);
   let rotateClass = `rotate-${getRotate(prop.id)}`;
   let actTile = document.getElementById(prop.id);
@@ -158,5 +159,6 @@ function changeTileRotation(degree: number) {
 
 .active {
   background-color: #95e8ff; /* Tallwind Configuration nötig für custom-Farbvariable */
+  outline: solid white 3px;
 }
 </style>

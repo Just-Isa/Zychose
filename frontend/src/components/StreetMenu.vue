@@ -3,7 +3,7 @@ Menu for selecting street tiles according to selected vehicle.
 Source for basic tab idea: https://vuejsexamples.com/tabbed-content-with-vue-js/
 -->
 <template>
-  <footer class="justify-center flex fixed">
+  <footer class="justify-center fixed">
     <div class="tabs overflow-hidden">
       <a
         class="tabHead bg-center bg-no-repeat"
@@ -22,9 +22,7 @@ Source for basic tab idea: https://vuejsexamples.com/tabbed-content-with-vue-js/
       <div v-if="activetab === 1" class="tabcontent flex rounded-lg">
         <StreetTileMenu></StreetTileMenu>
       </div>
-      <div v-if="activetab === 2" class="tabcontent flex rounded-lg">
-        <StreetTileMenu></StreetTileMenu>
-      </div>
+      <div v-if="activetab === 2" class="tabcontent flex rounded-lg"></div>
     </div>
   </footer>
 </template>
@@ -65,7 +63,6 @@ function changeTab(newTabNumber: number) {
 
 <style>
 footer {
-  left: 30vw;
   bottom: 7.8rem;
 }
 
@@ -85,12 +82,7 @@ footer {
   border-radius: 10px 10px 0 0;
   font-weight: bold;
   margin-right: 0.7rem;
-}
-
-/* Change background color of tabs on hover */
-.tabs a:hover {
-  background-color: #aaa; /* Tallwind Configuration nötig für custom-Farbvariable */
-  color: #fff;
+  margin-bottom: 0.2rem;
 }
 
 /* Styling for active tab */

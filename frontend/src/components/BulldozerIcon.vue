@@ -28,7 +28,8 @@ function changeActiveState() {
   } else {
     setActiveState(type);
     if (entireDoc) {
-      entireDoc.style.cursor = 'url("src/assets/img/bulldozer.svg"), auto';
+      entireDoc.style.cursor =
+        'url("src/assets/img/bulldozer.svg") 25 25, auto';
     }
   }
 }
@@ -43,11 +44,11 @@ function changeActiveState() {
 }
 
 .inactive {
-  background-image: url("../assets/img/bulldozer-grey.svg");
+  background-image: url("../assets/img/bulldozer-grey.svg") !important;
   border-color: #4b5357; /* Tallwind Configuration nötig für custom-Farbvariable */
 }
 
 .active {
-  background-image: url("../assets/img/bulldozer-white.svg");
+  background-image: url("../assets/img/bulldozer-white.svg") !important;
 }
 </style>

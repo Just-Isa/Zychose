@@ -32,10 +32,6 @@ import BulldozerIcon from "./BulldozerIcon.vue";
 </script>
 
 <style scoped>
-.menu {
-  left: 30vw;
-}
-
 .tilemenuwrapper {
   background-color: #5b6569; /* Tallwind Configuration nötig für custom-Farbvariable */
 }
