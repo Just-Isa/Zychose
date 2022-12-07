@@ -3,33 +3,37 @@ Menu for selecting street tiles according to selected vehicle.
 Source for basic tab idea: https://vuejsexamples.com/tabbed-content-with-vue-js/
 -->
 <template>
-  <footer class="justify-center fixed">
-    <div class="tabs overflow-hidden">
+  <div class="fixed bottom-6 left-1/2 -translate-x-1/2">
+    <div class="flex gap-5">
       <a
-        class="tabHead bg-center bg-no-repeat"
         @click="changeTab(1)"
         v-bind:class="[activetab === 1 ? 'active' : '']"
-        id="car"
-      ></a>
-      <a
-        class="tabHead bg-center bg-no-repeat"
-        @click="changeTab(2)"
-        v-bind:class="[activetab === 2 ? 'active' : '']"
-        id="bicycle"
-      ></a>
+        class="bg-street-menu-bg-gray px-3 pt-1 rounded-tl-lg rounded-tr-lg"
+      >
+        <img src="../assets/img/car-pictogram.svg" />
+      </a>
+      <a @click="changeTab(2)" v-bind:class="[activetab === 2 ? 'active' : '']">
+        <img src="../assets/img/bicycle-pictogram.svg"
+      /></a>
     </div>
-    <div class="content">
-      <div v-if="activetab === 1" class="tabcontent flex rounded-lg">
-        <StreetTileMenu></StreetTileMenu>
-      </div>
-      <div v-if="activetab === 2" class="tabcontent flex rounded-lg"></div>
+    <div class="flex justify-items-center items-center">
+      <StreetMenuFolder
+        v-if="activetab === 1"
+        class="tabcontent flex rounded-lg"
+      />
+      <StreetMenuFolder
+        v-if="activetab === 2"
+        class="tabcontent flex rounded-lg"
+      />
+      <BulldozerIcon />
     </div>
-  </footer>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import StreetTileMenu from "./StreetTileMenu.vue";
+import StreetMenuFolder from "./StreetMenuFolder.vue";
+import BulldozerIcon from "./BulldozerIcon.vue";
 
 /**
  * activetab: numeration of tabs from left to right
@@ -90,15 +94,5 @@ footer {
   background-color: #5b6569; /* Tallwind Configuration nötig für custom-Farbvariable */
   color: #fff;
   cursor: default;
-}
-
-/* svg-files for tabs corresponding with ids */
-#car {
-  background-image: url("../assets/img/car-pictogram.svg");
-}
-
-#bicycle {
-  background-image: url("../assets/img/bicycle-pictogram.svg");
-  background-size: 32%;
 }
 </style>

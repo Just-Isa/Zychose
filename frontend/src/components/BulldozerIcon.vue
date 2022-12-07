@@ -41,6 +41,7 @@ function changeActiveState() {
   background-color: #ffd941; /* Tallwind Configuration nötig für custom-Farbvariable */
   height: 4em;
   width: 4em;
+  margin-top: 1em;
 }
 
 .inactive {
