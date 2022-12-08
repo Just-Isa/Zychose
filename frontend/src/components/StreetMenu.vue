@@ -7,14 +7,14 @@ Source for basic tab idea: https://vuejsexamples.com/tabbed-content-with-vue-js/
     <div class="flex gap-3">
       <a
         @click="changeTab(1)"
-        v-bind:class="[activetab === 1 ? 'active' : '']"
+        v-bind:class="[activetab === 1 ? 'active' : 'bg-back-folder-gray']"
         class="bg-street-menu-bg-gray px-4 pt-1 rounded-tl-lg rounded-tr-lg"
       >
         <img src="../assets/img/car-pictogram.svg" />
       </a>
       <a
         @click="changeTab(2)"
-        v-bind:class="[activetab === 2 ? 'active' : '']"
+        v-bind:class="[activetab === 2 ? 'active' : 'bg-back-folder-gray']"
         class="bg-street-menu-bg-gray px-4 pt-1 rounded-tl-lg rounded-tr-lg"
       >
         <img src="../assets/img/bicycle-pictogram.svg"

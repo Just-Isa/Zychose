@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'street-menu-bg-gray' : '#5b6569',
+        'street-menu-bg-gray' : '#5B6569',
         'active-block-turquoise' : '#95E8FF',
         'back-folder-gray' : '#424A4C',
         'street-menu-tile-bg-turquoise' : '#E4F9FF',
