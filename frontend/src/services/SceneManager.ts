@@ -62,7 +62,6 @@ export class SceneManager {
 
     // creates landscape with ground
     createLandscape(){
-        this.addTileToScene("grassPlane", 0, -0.05, 0, 0);
-        this.addTileToScene("landscape", 0 , 0 , 0, 0);
+       this.addTileToScene("landscape", 0 , -17 , 0, 0);
     }
 }
