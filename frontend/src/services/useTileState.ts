@@ -7,6 +7,7 @@ import { readonly, reactive, ref } from "vue";
  */
 const state = ref<ITileItem>({
   type: "",
+  imgSrc: "",
   rotate: 0,
   possibleRotation: [true, true, true],
 });
@@ -14,12 +15,24 @@ const state = ref<ITileItem>({
 /**
  * initial tileTypes
  */
-// WIP: Could be generated in useStreets.ts later (if the enum there would be expanded by possibleRotation)
+// WIP: Could be generated in useStreets.ts later (if the enum there would be expanded)
 const initTiles: TileEle[] = [
-  new TileEle("crossing", 0, [false, false, false]),
-  new TileEle("curve", 0, [true, true, true]),
-  new TileEle("tCrossing", 0, [true, true, true]),
-  new TileEle("straight", 0, [true, false, false]),
+  new TileEle("crossing", "src/assets/img/crossing.svg", 0, [
+    false,
+    false,
+    false,
+  ]),
+  new TileEle("curve", "src/assets/img/curve-crop.svg", 0, [true, true, true]),
+  new TileEle("tCrossing", "src/assets/img/tCrossing-crop.svg", 0, [
+    true,
+    true,
+    true,
+  ]),
+  new TileEle("straight", "src/assets/img/straight-crop.svg", 0, [
+    true,
+    false,
+    false,
+  ]),
 ];
 
 /**
@@ -106,6 +119,17 @@ export function useTile() {
     rea.currActiveState = type;
   }
 
+  /**
+   * IMPORTANT: Only for Tile-Types. Make sure that type is not "delete"
+   * Get the image Source from tile
+   * @param {string} type - Type of Tile
+   * @returns image Source
+   */
+  function getImgSrc(type: string) {
+    const ele = findElementByType(type);
+    return ele?.imgSrc;
+  }
+
   return {
     tile: readonly(state),
     allTiles: rea.allTiles,
@@ -116,5 +140,6 @@ export function useTile() {
     setRotate,
     getActiveState,
     setActiveState,
+    getImgSrc,
   };
 }
