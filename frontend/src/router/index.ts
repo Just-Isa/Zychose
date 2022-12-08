@@ -11,10 +11,10 @@ const router = createRouter({
       component: EditorView,
     },
     {
-      path:"/3d",
+      path: "/3D",
       name: "fpv",
       component: ThreeDView,
-    }
+    },
   ],
 });
 
