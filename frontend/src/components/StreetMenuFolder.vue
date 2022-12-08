@@ -9,5 +9,4 @@
 
 <script setup lang="ts">
 import StreetBlockIcon from "./StreetBlockIcon.vue";
-import BulldozerIcon from "./BulldozerIcon.vue";
 </script>

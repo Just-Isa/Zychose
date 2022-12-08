@@ -4,13 +4,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'street-menu-bg-gray' : '#5b6569',
-        'active-block-turquoise' : '#95E8FF',
-        'back-folder-gray' : '#424A4C',
-        'street-menu-tile-bg-turquoise' : '#E4F9FF',
-        'bulldozer-yellow' : '#FFD941',
-        'bulldozer-gray' : '#4B5357',
-      }
+        "street-menu-bg-gray": "#5b6569",
+        "active-block-turquoise": "#95E8FF",
+        "back-folder-gray": "#424A4C",
+        "street-menu-tile-bg-turquoise": "#E4F9FF",
+        "bulldozer-yellow": "#FFD941",
+        "bulldozer-gray": "#4B5357",
+      },
     },
   },
   plugins: [],
