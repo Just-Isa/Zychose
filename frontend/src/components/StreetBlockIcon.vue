@@ -12,7 +12,13 @@
         <img class="h-16 w-16 mt-2" :src="getImgSrc(prop.id)" :alt="prop.id" />
       </div>
     </div>
-    <div :class="rotationAllowed[0] ? 'tile-rotate-block' : 'hidden'">
+    <div
+      :class="
+        rotationAllowed[0]
+          ? 'tile-rotate-block absolute z-50 bg-street-menu-tile-bg-turquoise rounded-lg -ml-1 hidden -top-4 border-white'
+          : 'hidden'
+      "
+    >
       <div class="tile-rotate-ele" @click="changeTileRotation(0)">
         <img :src="getImgSrc(prop.id)" :alt="prop.id" />
       </div>
@@ -131,17 +137,6 @@ function changeTileRotation(degree: number) {
 </script>
 
 <style scoped>
-.tile-rotate-block {
-  position: absolute;
-  z-index: 99;
-  background-color: #e4f9ff; /* Tallwind Configuration nötig für custom-Farbvariable */
-  border-radius: 0.5rem;
-  border: 0.25rem solid white;
-  top: -1.3rem;
-  margin-left: -0.25rem;
-  display: none;
-}
-
 .tile-ele:hover .tile-rotate-block,
 .tile-rotate-block:hover {
   display: flex;
