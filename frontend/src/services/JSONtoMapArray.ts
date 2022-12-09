@@ -1,10 +1,14 @@
+/**
+ * funtion for converting the json object to block array
+ *
+ * @param jsondata
+ * @returns streetArray
+ */
 export function generateMapArray(jsondata: object) {
   const size = 100;
-  //let rotations = [0, 90, 180, 270];
   const rotations = new Array();
-  //let streetTypes = ["street", "t-junction"];
   const streetTypes = new Array();
-  const streetArray: String[][] = new Array();
+  const streetArray: string[][] = new Array();
 
   // dynamically read street types
   for (const element of Object.keys(jsondata)) {
@@ -12,12 +16,8 @@ export function generateMapArray(jsondata: object) {
   }
 
   // dynamically read street type orientations/rotations (in this case: from the first street type)
-  for (
-    let i = 0;
-    i < Object.keys(Object(jsondata)[streetTypes[0]]).length;
-    i++
-  ) {
-    rotations.push(Object.keys(Object(jsondata)[streetTypes[0]])[i]);
+  for (const element of Object.keys(Object(jsondata)[streetTypes[0]])) {
+    rotations.push(element);
   }
 
   // initialize empty street array
@@ -29,11 +29,11 @@ export function generateMapArray(jsondata: object) {
   }
 
   // fill street array with types according to given coordinates
-  for (let i = 0; i < streetTypes.length; i++) {
+  for (const i in streetTypes) {
     const streetType = Object(jsondata)[streetTypes[i]];
-    for (let j = 0; j < rotations.length; j++) {
+    for (const j in rotations) {
       const rotation = Object(streetType)[rotations[j]];
-      for (let z = 0; z < rotation.length; z++) {
+      for (const z in rotation) {
         const coords = rotation[z];
         streetArray[coords[0]][coords[1]] = streetTypes[i] + ":" + rotations[j];
       }

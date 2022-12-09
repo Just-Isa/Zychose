@@ -33,24 +33,22 @@ import {
   Renderer,
   Scene,
 } from "troisjs";
-import { useGLB } from "@/services/glbTileLoader";
+import { useGLB } from "@/services/glbBlockLoader";
 import { SceneManager } from "@/services/SceneManager";
 
-const { glbState, generateTileMap } = useGLB();
+const { glbState, generateBlockMap } = useGLB();
 
-generateTileMap();
+generateBlockMap();
 
 export default {
   components: { Box, Camera, LambertMaterial, PointLight, Renderer, Scene },
   mounted() {
-    const tileMap = glbState.tileMap;
+    const blockMap = glbState.blockMap;
     const scene = (this.$refs.scene as any).scene;
-    const generator = new SceneManager(scene, tileMap);
+    const sceneManager = new SceneManager(scene, blockMap);
 
-    generator.createLandscape();
-    generator.createGrid();
-
-    //const renderer = (this.$refs.renderer as any);
+    sceneManager.createLandscape();
+    sceneManager.createGrid();
   },
 };
 </script>

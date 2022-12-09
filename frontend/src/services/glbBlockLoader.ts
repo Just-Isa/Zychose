@@ -3,34 +3,38 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { reactive } from "vue";
 
 const gltfloader = new GLTFLoader();
-const PATH = "/src/assets/models/";
+const path = "/src/assets/models/";
 const glbState = reactive<GLBState>({
-  tileMap: new Map(),
+  blockMap: new Map(),
 });
 
 export function useGLB() {
-  return { glbState, generateTileMap };
+  return { glbState, generateBlockMap };
 }
 
 export interface GLBState {
-  tileMap: Map<string, Promise<THREE.Group>>;
+  blockMap: Map<string, Promise<THREE.Group>>;
 }
 
-//creates an map of tiles with tile name as key and Promise as Value.
-function generateTileMap() {
+/**
+ * creates an map of blocks with filename as key and Promise as Value.
+ */
+function generateBlockMap() {
   //path cant be variable, i dont know why
   const assetNames = import.meta.glob(`/src/assets/models/*`);
 
   for (const path in assetNames) {
     const key = path.toString().split("/")[4].split(".")[0];
-    glbState.tileMap.set(key, modelLoader(key));
+    glbState.blockMap.set(key, loadModel(key));
   }
 }
 
-//loads the tile assets from filepath
-//returns an Promise
-async function modelLoader(filename: string): Promise<THREE.Group> {
-  const url = `${PATH}${filename}.glb`;
+/**
+ * loads the block assets from filepath
+ * returns a Promise
+ */
+async function loadModel(filename: string): Promise<THREE.Group> {
+  const url = `${path}${filename}.glb`;
   return new Promise((resolve, reject) => {
     try {
       gltfloader.load(
