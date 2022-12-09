@@ -11,6 +11,15 @@ module.exports = {
         "bulldozer-yellow": "#FFD941",
         "bulldozer-gray": "#4B5357",
       },
+
+      backgroundImage: {
+        "bulldozer-active" : "url('/src/assets/img/bulldozer-white.svg') !important",
+        "bulldozer-inactive" : "url('/src/assets/img/bulldozer-grey.svg') !important",
+      },
+
+      backgroundSize: {
+        "65%" : "65%"
+      }
     },
   },
   plugins: [],

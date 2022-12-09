@@ -2,8 +2,12 @@
   <div
     id="bulldozer"
     @click="changeActiveState()"
-    class="shadow-lg border-4 rounded-full bg-center bg-no-repeat ml-4 hover:cursor-pointer"
-    :class="getActiveState() == type ? 'active border-white' : 'inactive'"
+    class="shadow-lg border-4 rounded-full bg-center bg-no-repeat ml-4 hover:cursor-pointer bg-bulldozer-yellow h-16 w-16 mt-2 bg-65%"
+    :class="
+      getActiveState() == type
+        ? 'active border-white bg-bulldozer-active'
+        : 'inactive border-bulldozer-gray bg-bulldozer-inactive'
+    "
   ></div>
 </template>
 
@@ -34,22 +38,3 @@ function changeActiveState() {
   }
 }
 </script>
-
-<style scoped>
-#bulldozer {
-  background-size: 65%;
-  background-color: #ffd941; /* Tallwind Configuration nötig für custom-Farbvariable */
-  height: 4em;
-  width: 4em;
-  margin-top: 1em;
-}
-
-.inactive {
-  background-image: url("../assets/img/bulldozer-grey.svg") !important;
-  border-color: #4b5357; /* Tallwind Configuration nötig für custom-Farbvariable */
-}
-
-.active {
-  background-image: url("../assets/img/bulldozer-white.svg") !important;
-}
-</style>

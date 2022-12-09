@@ -1,11 +1,11 @@
 <template>
-  <span class="tile-ele m-1.5 inline-block hover:cursor-pointer">
+  <span
+    class="tile-ele m-1.5 inline-block hover:cursor-pointer h-20 w-20 bg-street-menu-tile-bg-turquoise rounded-lg"
+    :class="getActiveState() == prop.id ? 'active' : 'inactive'"
+  >
     <div :id="prop.id" @click="changeActiveState(prop.id)">
-      <div
-        class="tile-current flex justify-center items-center rounded-lg"
-        :class="getActiveState() == prop.id ? 'active' : 'inactive'"
-      >
-        <img :src="getImgSrc(prop.id)" :alt="prop.id" />
+      <div class="tile-current flex justify-center items-center rounded-lg">
+        <img class="h-16 w-16 mt-2" :src="getImgSrc(prop.id)" :alt="prop.id" />
       </div>
     </div>
     <div :class="rotationAllowed[0] ? 'tile-rotate-block' : 'hidden'">
@@ -104,17 +104,6 @@ function changeTileRotation(degree: number) {
 </script>
 
 <style scoped>
-.tile-current {
-  height: 5em;
-  width: 5em;
-  background-color: #e4f9ff; /* Tallwind Configuration nötig für custom-Farbvariable */
-}
-
-.tile-current img {
-  max-width: 3.75rem;
-  max-height: 3.75rem;
-}
-
 .tile-rotate-block {
   position: absolute;
   z-index: 99;
@@ -139,26 +128,5 @@ function changeTileRotation(degree: number) {
 .tile-rotate-ele img {
   width: 2.5rem;
   height: 2.5rem;
-}
-
-.rotate-0 {
-  transform: rotate(0);
-}
-
-.rotate-90 {
-  transform: rotate(90deg);
-}
-
-.rotate-180 {
-  transform: rotate(180deg);
-}
-
-.rotate-270 {
-  transform: rotate(270deg);
-}
-
-.active {
-  background-color: #95e8ff; /* Tallwind Configuration nötig für custom-Farbvariable */
-  outline: solid white 3px;
 }
 </style>
