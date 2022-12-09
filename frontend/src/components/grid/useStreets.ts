@@ -4,12 +4,20 @@ import { reactive, readonly } from "vue";
  * @enum {TypeStreet}  Different types of Streets and delete.
  */
 export enum TypeStreet {
-  // TODO add to type when Malte finishes StreetMenu
   delete,
   straight,
   curve,
   tCrossing,
   crossing,
+}
+/**
+ * @enum {Rotations} Different types of Rotations
+ */
+export enum Rotations {
+  Zero = 0,
+  Ninety = 90,
+  OneHundredEighty = 180,
+  TwoHundredSeventy = 270,
 }
 /**
  * Interface to save street information
@@ -45,7 +53,6 @@ export function useStreets() {
    * @param {IStreetInformation} onGridClickObject - IStreetInformation Object that needs to be saved or deleted
    */
   function handleClick(onGridClickObject: IStreetInformation): void {
-    //const finished = false;
     if (onGridClickObject.streettype === TypeStreet.delete) {
       state.streets = state.streets.filter(
         (street) =>
@@ -64,26 +71,8 @@ export function useStreets() {
       } else {
         state.streets.push(onGridClickObject);
       }
-      /*
-      for (const street of state.streets) {
-        if (
-          street.posX === onGridClickObject.posX &&
-          street.posY === onGridClickObject.posY
-        ) {
-          street.rotation = onGridClickObject.rotation;
-          street.streettype = onGridClickObject.streettype;
-          finished = true;
-          break;
-        }
-      }
-      if (!finished) {
-        state.streets.push(onGridClickObject);
-      }*/
     }
-    // let stringed: JsonTile = JSON.parse(JSON.stringify(state.streets));
     console.log("STATE: ", state.streets);
-    console.log("#####################################################");
-    console.log("OWN FUNC: ");
     gridToJson(state.streets);
   }
 
