@@ -13,20 +13,22 @@ module.exports = {
       },
 
       backgroundImage: {
-        "bulldozer-active" : "url('/src/assets/img/bulldozer-white.svg') !important",
-        "bulldozer-inactive" : "url('/src/assets/img/bulldozer-grey.svg') !important",
+        "bulldozer-active":
+          "url('/src/assets/img/bulldozer-white.svg') !important",
+        "bulldozer-inactive":
+          "url('/src/assets/img/bulldozer-grey.svg') !important",
       },
 
       backgroundSize: {
-        "65%" : "65%",
+        "65%": "65%",
       },
 
       outlineWidth: {
-        "3" : "3px",
+        3: "3px",
       },
 
       rotate: {
-        '270': '270deg',
+        270: "270deg",
       },
     },
   },
