@@ -4,9 +4,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        "inactive-folder-gray": "#424A4C",
         "street-menu-bg-gray": "#5B6569",
         "active-block-turquoise": "#95E8FF",
-        "inactive-folder-gray": "#424A4C",
         "street-menu-tile-bg-turquoise": "#E4F9FF",
         "bulldozer-yellow": "#FFD941",
         "bulldozer-gray": "#4B5357",
@@ -18,8 +18,16 @@ module.exports = {
       },
 
       backgroundSize: {
-        "65%" : "65%"
-      }
+        "65%" : "65%",
+      },
+
+      outlineWidth: {
+        "3" : "3px",
+      },
+
+      rotate: {
+        '270': '270deg',
+      },
     },
   },
   plugins: [],

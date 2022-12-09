@@ -1,7 +1,11 @@
 <template>
   <span
     class="tile-ele m-1.5 inline-block hover:cursor-pointer h-20 w-20 bg-street-menu-tile-bg-turquoise rounded-lg"
-    :class="getActiveState() == prop.id ? 'active' : 'inactive'"
+    :class="
+      getActiveState() == prop.id
+        ? 'active outline bg-active-block-turquoise outline-white outline-3'
+        : 'inactive'
+    "
   >
     <div :id="prop.id" @click="changeActiveState(prop.id)">
       <div class="tile-current flex justify-center items-center rounded-lg">
@@ -14,7 +18,7 @@
       </div>
       <div
         class="tile-rotate-ele rotate-90"
-        :class="rotationAllowed[1] ? '' : 'hidden'"
+        :class="rotationAllowed[1] ? 'active' : 'hidden'"
         @click="changeTileRotation(90)"
       >
         <img :src="getImgSrc(prop.id)" :alt="prop.id" />
@@ -92,6 +96,29 @@ function changeTileRotation(degree: number) {
   changeActiveState(prop.id);
   setRotate(degree, prop.id);
   let rotateClass = `rotate-${getRotate(prop.id)}`;
+
+  const currentTile = document.getElementById(getActiveState());
+  if (getRotate(prop.id) == 90) {
+    console.log(currentTile);
+    if (currentTile) {
+      currentTile.style.margin = "0.25rem -0.2rem 0.25rem 0.25rem";
+    }
+  } else if (getRotate(prop.id) == 180) {
+    console.log(currentTile);
+    if (currentTile) {
+      currentTile.style.margin = "0.4rem -0.6rem 0.25rem -0.6rem";
+    }
+  } else if (getRotate(prop.id) == 270) {
+    console.log(currentTile);
+    if (currentTile) {
+      currentTile.style.margin = "0.2rem -0.3rem 0.25rem -0.6rem";
+    }
+  } else {
+    if (currentTile) {
+      currentTile.style.margin = "0 0 0 0";
+    }
+  }
+
   let actTile = document.getElementById(prop.id);
   if (actTile != null) {
     actTile.classList.remove("rotate-0");

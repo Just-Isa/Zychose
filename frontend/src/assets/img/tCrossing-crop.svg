@@ -1,1 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?><svg id="Ebene_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 69 56.5"><defs><style>.cls-1{fill:#efda1f;}.cls-2{fill:#717171;}.cls-3{fill:#555454;}</style></defs><rect class="cls-3" x="12.5" y="2.5" width="44" height="54"/><rect class="cls-3" width="69" height="44"/><rect class="cls-2" x="15.5" y="3.5" width="38" height="53"/><rect class="cls-2" y="3" width="69" height="38"/><g><path class="cls-1" d="M35.5,56.5h-2v-3h2v3Zm0-7h-2v-4h2v4Zm0-8h-2v-4h2v4Zm0-8h-2v-4h2v4Z"/><path class="cls-1" d="M1,23v-2H5v2H1Zm8,0v-2h4v2h-4Zm8,0v-2h4v2h-4Zm8,0v-2h4v2h-4Zm8,0v-2h4v2h-4Zm8,0v-2h4v2h-4Zm8,0v-2h4v2h-4Zm8,0v-2h4v2h-4Zm8,0v-2h4v2h-4Z"/></g><rect class="cls-2" x="15.5" y="3" width="38" height="40"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(2.89855,0,0,2.89855,100,100)">
+        <g id="tCrossing-crop.svg" transform="matrix(1,0,0,1,-34.5,-28.25)">
+            <rect x="12.5" y="2.5" width="44" height="54" style="fill:rgb(85,84,84);"/>
+            <rect x="0" y="0" width="69" height="44" style="fill:rgb(85,84,84);"/>
+            <rect x="15.5" y="3.5" width="38" height="53" style="fill:rgb(113,113,113);"/>
+            <rect x="0" y="3" width="69" height="38" style="fill:rgb(113,113,113);"/>
+            <g>
+                <path d="M35.5,56.5L33.5,56.5L33.5,53.5L35.5,53.5L35.5,56.5ZM35.5,49.5L33.5,49.5L33.5,45.5L35.5,45.5L35.5,49.5ZM35.5,41.5L33.5,41.5L33.5,37.5L35.5,37.5L35.5,41.5ZM35.5,33.5L33.5,33.5L33.5,29.5L35.5,29.5L35.5,33.5Z" style="fill:rgb(239,218,31);fill-rule:nonzero;"/>
+                <path d="M1,23L1,21L5,21L5,23L1,23ZM9,23L9,21L13,21L13,23L9,23ZM17,23L17,21L21,21L21,23L17,23ZM25,23L25,21L29,21L29,23L25,23ZM33,23L33,21L37,21L37,23L33,23ZM41,23L41,21L45,21L45,23L41,23ZM49,23L49,21L53,21L53,23L49,23ZM57,23L57,21L61,21L61,23L57,23ZM65,23L65,21L69,21L69,23L65,23Z" style="fill:rgb(239,218,31);fill-rule:nonzero;"/>
+            </g>
+            <rect x="15.5" y="3" width="38" height="40" style="fill:rgb(113,113,113);"/>
+        </g>
+        <g id="tCrossing-crop.svg1" serif:id="tCrossing-crop.svg">
+        </g>
+    </g>
+</svg>

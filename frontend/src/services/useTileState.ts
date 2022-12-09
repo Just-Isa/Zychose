@@ -28,7 +28,7 @@ const initTiles: TileEle[] = [
     true,
     true,
   ]),
-  new TileEle("straight", "src/assets/img/straight-crop.svg", 0, [
+  new TileEle("straight", "src/assets/img/straight.svg", 0, [
     true,
     false,
     false,
