@@ -83,11 +83,10 @@ function swapRooms(roomNumber: number) {
     });
 }
 
-/** Removes a user from a room
- *
- * @param roomNumber Room number into which the user is to be swapped
+/**
+ *  Removes a user from a room
  */
-function removeUserFromRoom(roomNumber: number) {
+function removeUserFromRoom() {
   const DEST = "/api/room/remove";
   fetch(DEST, {
     method: "POST",
@@ -98,17 +97,16 @@ function removeUserFromRoom(roomNumber: number) {
   })
     .then((response) => {
       if (!response.ok) {
-        console.log("Fehler bei Raumänderung!");
+        console.log("Fehler beim Raum verlassen!");
       } else {
         return response.text();
       }
     })
     .then(() => {
-      console.log("Done! New Room: " + roomNumber);
       roomState.room.roomNumber = 0;
       getRoomList();
     })
     .catch((e) => {
-      console.log("Fehler bei Raumänderung! " + e);
+      console.log("Fehler beim Raum verlassen!" + e);
     });
 }
