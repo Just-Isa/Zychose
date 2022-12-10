@@ -17,7 +17,12 @@ const roomState = reactive<IRoomState>({
  * @returns Export of useRoom
  */
 export function useRoom() {
-  return { roomState: readonly(roomState), receiveRoom, swapRooms };
+  return {
+    roomState: readonly(roomState),
+    receiveRoom,
+    swapRooms,
+    removeUserFromRoom,
+  };
 }
 
 const { getRoomList } = useRoomBox();
@@ -48,7 +53,7 @@ function receiveRoom() {
   };
 }
 
-/** Changes Room a User is in to another
+/** Changes room of a user is in to another
  *
  * @param roomNumber Room number into which the user is to be swapped
  */
@@ -71,6 +76,36 @@ function swapRooms(roomNumber: number) {
     .then(() => {
       console.log("Done! New Room: " + roomNumber);
       roomState.room.roomNumber = roomNumber;
+      getRoomList();
+    })
+    .catch((e) => {
+      console.log("Fehler bei Raumänderung! " + e);
+    });
+}
+
+/** Removes a user from a room
+ *
+ * @param roomNumber Room number into which the user is to be swapped
+ */
+function removeUserFromRoom(roomNumber: number) {
+  const DEST = "/api/room/remove";
+  fetch(DEST, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ sessionId: document.cookie.split("=")[1] }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        console.log("Fehler bei Raumänderung!");
+      } else {
+        return response.text();
+      }
+    })
+    .then(() => {
+      console.log("Done! New Room: " + roomNumber);
+      roomState.room.roomNumber = 0;
       getRoomList();
     })
     .catch((e) => {
