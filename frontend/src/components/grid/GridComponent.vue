@@ -34,7 +34,7 @@ function cellClicked(posX: number, posY: number): void {
   const tabelle = document.getElementById("gridTable") as HTMLTableElement;
   const cell = tabelle.rows[posX - 1].cells[posY - 1];
   let testInput: IStreetInformation = {
-    streettype: TypeStreet.straight,
+    streetType: TypeStreet.straight,
     rotation: 90,
     posX: posX,
     posY: posY,
@@ -42,7 +42,7 @@ function cellClicked(posX: number, posY: number): void {
   cell.style.backgroundSize = "cover";
   cell.style.backgroundRepeat = "no-repeat";
   cell.style.backgroundPosition = "center";
-  switch (testInput.streettype) {
+  switch (testInput.streetType) {
     case TypeStreet.straight: {
       cell.style.backgroundImage = 'url("/src/assets/straight-road.svg")';
       cell.style.transform = `rotate(${testInput.rotation}deg)`;
@@ -78,7 +78,7 @@ function cellClicked(posX: number, posY: number): void {
 function clearCell(posX: number, posY: number): void {
   console.log("clearCell aufgerufen!");
   let neuerInput: IStreetInformation = {
-    streettype: TypeStreet.delete,
+    streetType: TypeStreet.delete,
     rotation: 90,
     posX: posX,
     posY: posY,

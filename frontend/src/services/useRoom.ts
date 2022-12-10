@@ -17,7 +17,7 @@ export function useRoom() {
   return { roomState: readonly(roomState), receiveRoom, updateRoomMap };
 }
 //function to save the roomMap for a Room
-function updateRoomMap(rMap:String):void{
+function updateRoomMap(rMap: String): void {
   roomState.room.roomMap = rMap;
 }
 

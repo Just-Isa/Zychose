@@ -27,7 +27,7 @@ export enum Rotations {
  * @param {number} posY - Position on y axis
  */
 export interface IStreetInformation {
-  streettype: TypeStreet;
+  streetType: TypeStreet;
   rotation: number;
   posX: number;
   posY: number;
@@ -53,7 +53,7 @@ export function useStreets() {
    * @param {IStreetInformation} onGridClickObject - IStreetInformation Object that needs to be saved or deleted
    */
   function handleClick(onGridClickObject: IStreetInformation): void {
-    if (onGridClickObject.streettype === TypeStreet.delete) {
+    if (onGridClickObject.streetType === TypeStreet.delete) {
       state.streets = state.streets.filter(
         (street) =>
           street.posX !== onGridClickObject.posX ||
@@ -67,7 +67,7 @@ export function useStreets() {
       );
       if (str.length > 0) {
         str[0].rotation = onGridClickObject.rotation;
-        str[0].streettype = onGridClickObject.streettype;
+        str[0].streetType = onGridClickObject.streetType;
       } else {
         state.streets.push(onGridClickObject);
       }
@@ -76,9 +76,14 @@ export function useStreets() {
     gridToJson(state.streets);
   }
 
+  function recieveNewStreetState(newStreets: Array<IStreetInformation>) {
+    state.streets = newStreets;
+  }
+
   return {
     streets: readonly(state.streets),
     handleClick,
     TypeStreet,
+    recieveNewStreetState,
   };
 }
