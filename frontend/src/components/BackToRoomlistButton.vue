@@ -10,8 +10,8 @@ import { useRoom } from "@/services/useRoom";
 const { removeUserFromRoom } = useRoom();
 
 function hoden() {
-  removeUserFromRoom();
   location.href = "/rooms";
+  removeUserFromRoom();
 }
 </script>
 

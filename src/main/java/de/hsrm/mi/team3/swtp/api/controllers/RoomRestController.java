@@ -78,6 +78,7 @@ public class RoomRestController {
   public void removeUserFromRoom(@RequestBody String sessionId) {
     String sId = sessionId.split(":")[1].replace("\"", "").replace("}", "");
     Optional<User> userOpt = roomBoxService.getUserBySessionID(sId);
+    logger.info("USER = {}", sId);
     if (userOpt.isPresent()) {
       Room oldRoom = roomBoxService.getRoomsFromRoomBox().get(userOpt.get().getCurrentRoomNumber());
       roomService.removeUserFromRoom(oldRoom, userOpt.get());
