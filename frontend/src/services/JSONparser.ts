@@ -43,17 +43,24 @@ export function gridToJson(streets: IStreetInformation[]) {
     );
   }
   updateRoomMap(JSON.stringify(jsonObject));
+
+  /*jsonToState wird am Ende nicht an dieser Stelle aufgerufen,
+    das Linting weint aber sonst wegen unused function rum und zum testen hat es hier gereicht.
+    Der Aufruf erfolgt dann nach einer Nachricht vom Backend.
+  */
   jsonToState(JSON.stringify(jsonObject));
 }
 
+/**
+   * Function to parse a stringified JSON RoomMap in our state format.
+   * This function is necessary to be able to synchronize the RoomMap for all users in a room.
+   * @param {string} roomMapAsString - stringified JSON-Object of our streets
+   */
 function jsonToState(roomMapAsString: string) {
   const { recieveNewStreetState } = useStreets();
   const newStreetsState: Array<IStreetInformation> = [];
   const roomMap = roomMapAsString;
   const roomMapAsObject = JSON.parse(roomMap);
-  console.log("parse: ", roomMapAsObject);
-  console.log("++++++++++++++++++++++++++++++++++++++++++++++");
-
   for (const [type, rotations] of Object.entries(roomMapAsObject)) {
     for (const [rotation, positions] of Object.entries(Object(rotations))) {
       const positionArray: Array<[][]> = positions as Array<[][]>;
@@ -64,7 +71,6 @@ function jsonToState(roomMapAsString: string) {
           posY: Number(coordinate[1]),
           streetType: TypeStreet[type as keyof typeof TypeStreet],
         };
-        console.log("object:", streetObject);
         newStreetsState.push(streetObject);
       }
     }

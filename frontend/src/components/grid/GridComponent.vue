@@ -40,6 +40,7 @@ function cellClicked(posX: number, posY: number): void {
   console.log("(posX,posY): ", [posX, posY]);
   const tabelle = document.getElementById("gridTable") as HTMLTableElement;
   const cell = tabelle.rows[posX - 1].cells[posY - 1];
+  /* testInput has to be hard coded as long as we're not able to get the informations from the states of the streetTileMenu */
   let testInput: IStreetInformation = {
     streetType: TypeStreet.straight,
     rotation: 90,
@@ -94,6 +95,7 @@ function onEndHover(x: number, y: number): void {
     setCellStyle(cell, street);
   }
 }*/
+
 /**
  * Function that sets the style of the given Cell. The given street is needed for information about the streetType and rotation.
  * @param {HTMLTableCellElement} cell cell object which style should be set
