@@ -1,14 +1,23 @@
+import { gridToJson } from "@/services/JSONparser";
 import { reactive, readonly } from "vue";
 /**
  * @enum {TypeStreet}  Different types of Streets and delete.
  */
 export enum TypeStreet {
-  // TODO add to type when Malte finishes StreetMenu
   delete,
   straight,
   curve,
   tCrossing,
   crossing,
+}
+/**
+ * @enum {Rotations} Different types of Rotations
+ */
+export enum Rotations {
+  Zero = 0,
+  Ninety = 90,
+  OneHundredEighty = 180,
+  TwoHundredSeventy = 270,
 }
 /**
  * Interface to save street information
@@ -64,7 +73,11 @@ export function useStreets() {
       }
     }
     console.log("STATE: ", state.streets);
-    console.log("#####################################################");
+    gridToJson(state.streets);
+  }
+
+  function recieveNewStreetState(newStreets: Array<IStreetInformation>) {
+    state.streets = newStreets;
   }
 
   function isStreetPlaced(row: number, col: number) {
@@ -79,5 +92,6 @@ export function useStreets() {
     handleClick,
     TypeStreet,
     isStreetPlaced,
+    recieveNewStreetState,
   };
 }

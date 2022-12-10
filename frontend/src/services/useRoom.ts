@@ -8,13 +8,17 @@ export interface IRoomState {
 }
 
 const roomState = reactive<IRoomState>({
-  room: new Room("", 1, []),
+  room: new Room("", 1, [], ""),
   errorMessage: "",
 });
 
 //function to get access to the room and the functions with stomp
 export function useRoom() {
-  return { roomState: readonly(roomState), receiveRoom };
+  return { roomState: readonly(roomState), receiveRoom, updateRoomMap };
+}
+//function to save the roomMap for a Room
+function updateRoomMap(rMap: String): void {
+  roomState.room.roomMap = rMap;
 }
 
 //function for receiving a room.
