@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import MultiplayerCursors from "../components/MultiplayerCursors.vue";
-import GridComponent from "@/components/grid/GridComponent.vue";
+import GridComponent from "@/components/GridComponent.vue";
 </script>
 
 <template>

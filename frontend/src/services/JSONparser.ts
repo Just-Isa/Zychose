@@ -1,10 +1,6 @@
-import {
-  Rotations,
-  TypeStreet,
-  type IStreetInformation,
-} from "../components/grid/useStreets";
+import { Rotations, TypeStreet, type IStreetInformation } from "./useStreets";
 import { useRoom } from "./useRoom";
-import { useStreets } from "../components/grid/useStreets";
+import { useStreets } from "./useStreets";
 
 export function gridToJson(streets: IStreetInformation[]) {
   const { updateRoomMap } = useRoom();
@@ -52,10 +48,10 @@ export function gridToJson(streets: IStreetInformation[]) {
 }
 
 /**
-   * Function to parse a stringified JSON RoomMap in our state format.
-   * This function is necessary to be able to synchronize the RoomMap for all users in a room.
-   * @param {string} roomMapAsString - stringified JSON-Object of our streets
-   */
+ * Function to parse a stringified JSON RoomMap in our state format.
+ * This function is necessary to be able to synchronize the RoomMap for all users in a room.
+ * @param {string} roomMapAsString - stringified JSON-Object of our streets
+ */
 function jsonToState(roomMapAsString: string) {
   const { recieveNewStreetState } = useStreets();
   const newStreetsState: Array<IStreetInformation> = [];

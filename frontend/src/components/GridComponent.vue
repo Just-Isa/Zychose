@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { TypeStreet, useStreets, type IStreetInformation } from "./useStreets";
+import { TypeStreet, useStreets, type IStreetInformation } from "../services/useStreets";
 
 /**
  * @param {number} gridSize defines the size of the grid component

@@ -85,7 +85,7 @@ export function useStreets() {
   }
 
   /**
-   * 
+   *
    * @param {number} row - row of the cell to be checked
    * @param {number} col - column of the cell to be checked
    * @returns boolean, if there is a street placed on the checked cell
