@@ -42,14 +42,13 @@ const { glbState, generateBlockMap } = useGLB();
 generateBlockMap();
 
 export default {
-  components: { Box, Camera, LambertMaterial, PointLight, Renderer, Scene },
+  components: { Box, Camera, LambertMaterial, PointLight, Renderer, Scene},
   mounted() {
     const blockMap = glbState.blockMap;
     const scene = (this.$refs.scene as any).scene;
     const sceneManager = new SceneManager(scene, blockMap);
     const camera = (this.$refs.camera as any).camera;
-
-    camera.sceneManager.createLandscape();
+    sceneManager.createLandscape();
     sceneManager.createGrid();
     sceneManager.handleCar();
   },

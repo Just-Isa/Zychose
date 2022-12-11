@@ -111,13 +111,22 @@ export class SceneManager {
           this.scene.add(clonedBlock);
 
           document.onkeydown = function (e) {
-            console.log(e);
+            const direction = new THREE.Vector3();
+            clonedBlock.getWorldDirection(direction)
+            
+            console.log('sin y ', Math.sin(clonedBlock.rotation.y *Math.PI/2))
+            console.log('cos y ', Math.cos(clonedBlock.rotation.y *Math.PI/2))
 
             if (e.key === "ArrowUp") {
-              clonedBlock.position.z -= 1;
+
+              clonedBlock.position.add(direction.multiplyScalar(1))
+              // clonedBlock.position.x += Math.sin(clonedBlock.rotation.y *Math.PI/2) * 1
+				      // clonedBlock.position.z += Math.cos(clonedBlock.rotation.y *Math.PI/2) * 1
+              
             }
             if (e.key === "ArrowDown") {
-              clonedBlock.position.z += 1;
+              clonedBlock.position.add(direction.multiplyScalar(-1))
+
             }
             if (e.key === "ArrowLeft") {
               clonedBlock.rotateY(-0.1);
