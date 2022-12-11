@@ -24,8 +24,9 @@ function generateBlockMap() {
   const assetNames = import.meta.glob(`/src/assets/models/*`);
 
   for (const path in assetNames) {
+    const fileType = path.toString().split("/")[4].split(".")[1];
     const key = path.toString().split("/")[4].split(".")[0];
-    glbState.blockMap.set(key, loadModel(key));
+    glbState.blockMap.set(key, loadModel(key, fileType));
   }
 }
 
@@ -33,8 +34,11 @@ function generateBlockMap() {
  * loads the block assets from filepath
  * returns a Promise
  */
-async function loadModel(filename: string): Promise<THREE.Group> {
-  const url = `${path}${filename}.glb`;
+async function loadModel(
+  filename: string,
+  fileType: string
+): Promise<THREE.Group> {
+  const url = `${path}${filename}.${fileType}`;
   return new Promise((resolve, reject) => {
     try {
       gltfloader.load(

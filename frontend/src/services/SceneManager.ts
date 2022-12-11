@@ -99,4 +99,40 @@ export class SceneManager {
   createLandscape() {
     this.addBlockToScene("landscape", 0, -17, 0, 0);
   }
+
+  handleCar() {
+    const key = "car";
+    const blockPromise = this.blockMap.get(key);
+    if (blockPromise != undefined) {
+      blockPromise
+        ?.then((block) => {
+          const clonedBlock = block.clone();
+          clonedBlock.position.set(0, 0, 0);
+          this.scene.add(clonedBlock);
+
+          document.onkeydown = function (e) {
+            console.log(e);
+
+            if (e.key === "ArrowUp") {
+              clonedBlock.position.z -= 1;
+            }
+            if (e.key === "ArrowDown") {
+              clonedBlock.position.z += 1;
+            }
+            if (e.key === "ArrowLeft") {
+              clonedBlock.rotateY(-0.1);
+            }
+            if (e.key === "ArrowRight") {
+              clonedBlock.rotateY(0.1);
+            }
+          };
+        })
+        .catch((error) => {
+          this.getErrorBlock(0, 0, 0);
+          console.error(error);
+        });
+    } else {
+      this.getErrorBlock(0, 0, 0);
+    }
+  }
 }

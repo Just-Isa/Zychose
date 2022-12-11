@@ -10,6 +10,7 @@
     }"
   >
     <Camera
+      ref="camera"
       :position="{ y: 1500, z: 400 }"
       :look-at="{ x: 0, y: 0, z: 0 }"
       :near="1"
@@ -46,9 +47,11 @@ export default {
     const blockMap = glbState.blockMap;
     const scene = (this.$refs.scene as any).scene;
     const sceneManager = new SceneManager(scene, blockMap);
+    const camera = (this.$refs.camera as any).camera;
 
-    sceneManager.createLandscape();
+    camera.sceneManager.createLandscape();
     sceneManager.createGrid();
+    sceneManager.handleCar();
   },
 };
 </script>
