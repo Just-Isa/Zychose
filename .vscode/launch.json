@@ -1,6 +1,24 @@
 {
   "configurations": [
     {
+      "type": "chrome",
+      "request": "launch",
+      "name": "vuejs: chrome",
+      "url": "http://localhost:5173/",
+      "webRoot": "${workspaceFolder}/frontend/src",
+      "sourceMapPathOverrides": {
+        "webpack:///src/*": "${webRoot}/*"
+      }
+    },
+    {
+      "type": "firefox",
+      "request": "launch",
+      "name": "vuejs: firefox",
+      "url": "http://localhost:5173/",
+      "webRoot": "${workspaceFolder}/frontend/src",
+      "pathMappings": [{ "url": "webpack:///src/", "path": "${webRoot}/" }]
+    },
+    {
       "type": "java",
       "name": "Spring Boot-SwtpApplication<swtp>",
       "request": "launch",
