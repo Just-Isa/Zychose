@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import MultiplayerCursors from "../components/MultiplayerCursors.vue";
-import GridComponent from "@/components/GridComponent.vue";
+import MapGrid from "@/components/MapGrid.vue";
 </script>
 
 <template>
   <main>
     <MultiplayerCursors />
-    <GridComponent v-bind:gridSize="100"></GridComponent>
+    <MapGrid v-bind:gridSize="100"></MapGrid>
   </main>
 </template>
