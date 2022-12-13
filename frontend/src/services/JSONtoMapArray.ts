@@ -35,7 +35,8 @@ export function generateMapArray(jsondata: object) {
       const rotation = Object(streetType)[rotations[j]];
       for (const z in rotation) {
         const coords = rotation[z];
-        streetArray[coords[0]][coords[1]] = streetTypes[i] + ":" + rotations[j];
+        streetArray[coords[0] - 1][coords[1] - 1] =
+          streetTypes[i] + ":" + rotations[j];
       }
     }
   }
