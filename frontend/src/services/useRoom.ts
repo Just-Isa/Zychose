@@ -78,7 +78,7 @@ function swapRooms(roomNumber: number) {
       roomState.room.roomNumber = roomNumber;
       getRoomList();
     })
-    .catch((e) => {
+    .catch(() => {
       location.href = "/500";
     });
 }
@@ -106,7 +106,7 @@ function removeUserFromRoom() {
       roomState.room.roomNumber = 0;
       getRoomList();
     })
-    .catch((e) => {
+    .catch(() => {
       location.href = "/500";
     });
 }
