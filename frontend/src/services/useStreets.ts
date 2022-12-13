@@ -1,24 +1,25 @@
-import { gridToJson } from "@/services/JSONparser";
+import { gridToJson } from "./JSONparser";
 import { reactive, readonly } from "vue";
+
 /**
  * @enum {TypeStreet}  Different types of Streets and delete.
  */
-export enum TypeStreet {
+/*export enum TypeStreet {
   delete,
   straight,
   curve,
   tCrossing,
   crossing,
-}
+}*/
 /**
  * @enum {Rotations} Different types of Rotations
  */
-export enum Rotations {
+/*export enum Rotations {
   Zero = 0,
   Ninety = 90,
   OneHundredEighty = 180,
   TwoHundredSeventy = 270,
-}
+}*/
 /**
  * Interface to save street information
  * @param {TypeStreet} streetType - Type of Street
@@ -27,7 +28,7 @@ export enum Rotations {
  * @param {number} posY - Position on y axis
  */
 export interface IStreetInformation {
-  streetType: TypeStreet;
+  streetType: String;
   rotation: number;
   posX: number;
   posY: number;
@@ -53,7 +54,7 @@ export function useStreets() {
    * @param {IStreetInformation} onGridClickObject - IStreetInformation Object that needs to be saved or deleted
    */
   function handleClick(onGridClickObject: IStreetInformation): void {
-    if (onGridClickObject.streetType === TypeStreet.delete) {
+    if (onGridClickObject.streetType === "delete") {
       state.streets = state.streets.filter(
         (street) =>
           street.posX !== onGridClickObject.posX ||
@@ -100,7 +101,6 @@ export function useStreets() {
   return {
     streets: readonly(state.streets),
     handleClick,
-    TypeStreet,
     isStreetPlaced,
     recieveNewStreetState,
   };

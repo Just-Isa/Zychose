@@ -17,7 +17,8 @@
 </template>
 
 <script setup lang="ts">
-import { TypeStreet, useStreets, type IStreetInformation } from "../services/useStreets";
+import { useStreets, type IStreetInformation } from "../services/useStreets";
+import testJSON from "../jsons/testJSON.json";
 
 /**
  * @param {number} gridSize defines the size of the grid component
@@ -26,6 +27,7 @@ const props = defineProps<{
   gridSize: number;
 }>();
 const { handleClick, isStreetPlaced } = useStreets();
+const strassenTypen = testJSON.strassenTypen;
 //TODO
 //Sobald der Input von Malte, Lara und Antonia eingelesen werden kann, wird diese Methode angepasst.
 //Hier wird der Input(strassentyp und rotation) aus dem anderen state geholt und zusammen mit den Positionen fuer die Achsen im state fuer den grid gespeichert.
@@ -42,7 +44,7 @@ function cellClicked(posX: number, posY: number): void {
   const cell = tabelle.rows[posX - 1].cells[posY - 1];
   /* testInput has to be hard coded as long as we're not able to get the informations from the states of the streetTileMenu */
   let testInput: IStreetInformation = {
-    streetType: TypeStreet.straight,
+    streetType: "straight-road",
     rotation: 90,
     posX: posX,
     posY: posY,
@@ -60,7 +62,7 @@ function cellClicked(posX: number, posY: number): void {
 function onHover(x: number, y: number): void {
   const tabelle = document.getElementById("gridTable") as HTMLTableElement;
   const cell = tabelle.rows[x - 1].cells[y - 1];
-  cell.style.backgroundImage = 'url("/src/assets/cross-road.svg")';
+  cell.style.backgroundImage = "url(/src/assets/cross-road.svg)";
   cell.style.opacity = "0.5";
 }
 
@@ -108,7 +110,13 @@ function setCellStyle(
   cell.style.backgroundSize = "cover";
   cell.style.backgroundRepeat = "no-repeat";
   cell.style.backgroundPosition = "center";
-  switch (street.streetType) {
+  for (const strassenTyp of strassenTypen) {
+    if (strassenTyp.name === street.streetType) {
+      cell.style.backgroundImage = strassenTyp.path;
+      cell.style.transform = `rotate(${street.rotation}deg)`;
+    }
+  }
+  /*switch (street.streetType) {
     case TypeStreet.straight: {
       cell.style.backgroundImage = 'url("/src/assets/straight-road.svg")';
       cell.style.transform = `rotate(${street.rotation}deg)`;
@@ -133,7 +141,7 @@ function setCellStyle(
       cell.style.transform = `rotate(${street.rotation}deg)`;
       break;
     }
-  }
+  }*/
 }
 
 /**
@@ -146,7 +154,7 @@ function setCellStyle(
 function clearCell(posX: number, posY: number): void {
   console.log("clearCell aufgerufen!");
   let neuerInput: IStreetInformation = {
-    streetType: TypeStreet.delete,
+    streetType: "delete",
     rotation: 90,
     posX: posX,
     posY: posY,

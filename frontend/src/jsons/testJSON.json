@@ -1,0 +1,26 @@
+{
+    "strassenTypen":[
+        {
+            "name": "cross-road",
+            "path": "url(/src/assets/cross-road.svg)"
+        },
+        {
+            "name": "curve-road",
+            "path": "url(/src/assets/curve-road.svg)"
+        },
+        {
+            "name": "straight-road",
+            "path": "url(/src/assets/straight-road.svg)"
+        },
+        {
+            "name": "t-road",
+            "path": "url(/src/assets/t-road.svg)"
+        }
+    ],
+    "rotationen":[
+        0,
+        90,
+        180,
+        270
+    ]
+}
