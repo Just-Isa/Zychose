@@ -2,6 +2,7 @@ import { Client } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
 import { Room, type IRoom } from "./IRoom";
 import { useRoomBox } from "./useRoomList";
+import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
 
 export interface IRoomState {
   room: IRoom;
@@ -26,7 +27,6 @@ export function useRoom() {
 }
 
 const { getRoomList } = useRoomBox();
-
 /**
  * Subscribes to the specific Rooms topic
  *
@@ -64,11 +64,11 @@ function swapRooms(roomNumber: number) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ sessionId: document.cookie.split("=")[1] }),
+    body: JSON.stringify({ sessionId: getSessionIDFromCookie() }),
   })
     .then((response) => {
       if (!response.ok) {
-        console.log("Fehler bei Raumänderung!");
+        location.href = "/500";
       } else {
         return response.text();
       }
@@ -79,7 +79,7 @@ function swapRooms(roomNumber: number) {
       getRoomList();
     })
     .catch((e) => {
-      console.log("Fehler bei Raumänderung! " + e);
+      location.href = "/500";
     });
 }
 
@@ -87,17 +87,17 @@ function swapRooms(roomNumber: number) {
  *  Removes a user from a room
  */
 function removeUserFromRoom() {
-  const DEST = "/api/room/remove";
+  const DEST = "/api/user/logout";
   fetch(DEST, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ sessionId: document.cookie.split("=")[1] }),
+    body: JSON.stringify({ sessionId: getSessionIDFromCookie() }),
   })
     .then((response) => {
       if (!response.ok) {
-        console.log("Fehler beim Raum verlassen!");
+        location.href = "/500";
       } else {
         return response.text();
       }
@@ -107,6 +107,6 @@ function removeUserFromRoom() {
       getRoomList();
     })
     .catch((e) => {
-      console.log("Fehler beim Raum verlassen!" + e);
+      location.href = "/500";
     });
 }

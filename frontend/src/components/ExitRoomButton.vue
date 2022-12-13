@@ -1,6 +1,6 @@
 <template>
   <main>
-    <a class="exitToRoomList" v-on:click="hoden()" :href="'#'">
+    <a class="exitToRoomList" v-on:click="backToRoomList()" :href="'#'">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -57,7 +57,7 @@ import { useRoom } from "@/services/useRoom";
 
 const { removeUserFromRoom } = useRoom();
 
-function hoden() {
+function backToRoomList() {
   location.href = "/rooms";
   removeUserFromRoom();
 }
