@@ -81,4 +81,9 @@ public class RoomRestController {
       roomService.removeUserFromRoom(oldRoom, userOpt.get());
     }
   }
+
+  @PostMapping(value = "/reset")
+  public void restartEverything() {
+    this.roomBoxService.resetEverything();
+  }
 }

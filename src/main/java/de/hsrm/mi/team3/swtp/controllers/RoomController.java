@@ -1,6 +1,5 @@
 package de.hsrm.mi.team3.swtp.controllers;
 
-import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendMouseMessage;
 import de.hsrm.mi.team3.swtp.services.BackendInfoService;
@@ -13,7 +12,6 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 
 @Controller
 public class RoomController {
@@ -23,19 +21,6 @@ public class RoomController {
   @Autowired BackendInfoService backservice;
   Logger logger = LoggerFactory.getLogger(RoomController.class);
 
-  /*
-   * This method creates a new room, if there is no room in the RoomBox.
-   */
-  public void init(ModelMap m) {
-    // In this case it creates a new room and leaves that room as the only one.
-    if (roomBoxService.getRoomsFromRoomBox().size() < 1) {
-
-      Room room = roomBoxService.addRoom();
-
-      logger.info("room = {}", room.getRoomNumber());
-    }
-  }
-
   /**
    * Further along, this method can be used for updating a room.
    *
@@ -43,7 +28,7 @@ public class RoomController {
    * @param m
    */
   @MessageMapping("/topic/room")
-  public void sendroom(@Payload String test, ModelMap m) {
+  public void sendroom(@Payload String test) {
     logger.info("----------------------" + test + "-------------------------");
   }
 
@@ -78,6 +63,7 @@ public class RoomController {
     if (roomBoxService.getRoomsFromRoomBox().size() <= 4) {
       while (roomBoxService.getRoomsFromRoomBox().size() <= 4) {
         roomBoxService.addRoom();
+        logger.info("RoomBox: {}", roomBoxService.getRoomsFromRoomBox());
       }
     }
 
