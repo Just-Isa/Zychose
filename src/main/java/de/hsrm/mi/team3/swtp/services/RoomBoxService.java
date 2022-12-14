@@ -22,4 +22,6 @@ public interface RoomBoxService {
   public void clearRoombox();
 
   public Optional<User> getUserBySessionID(String sessionID);
+
+  public void resetEverything();
 }

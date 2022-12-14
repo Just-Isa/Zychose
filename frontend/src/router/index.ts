@@ -3,6 +3,7 @@ import EditorView from "../views/EditorView.vue";
 import RoomSelect from "@/components/RoomSelect.vue";
 import ThreeDView from "../views/ThreeDView.vue";
 import GenericResponseError from "@/components/errors/GenericResponseError.vue";
+import ResetModal from "@/components/ResetModal.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -46,6 +47,11 @@ const router = createRouter({
       path: "/500",
       name: "ErrorPage500",
       component: GenericResponseError,
+    },
+    {
+      path: "/reset",
+      name: "ResetModal",
+      component: ResetModal,
     },
   ],
 });
