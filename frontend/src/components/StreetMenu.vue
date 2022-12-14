@@ -34,7 +34,7 @@ Source for basic tab idea: https://vuejsexamples.com/tabbed-content-with-vue-js/
         v-if="activetab === 1"
         class="pointer-events-auto tabcontent flex rounded-b-lg rounded-tr-lg"
       />
-      <StreetMenuFolder
+      <BikeMenuFolder
         v-if="activetab === 2"
         class="pointer-events-auto tabcontent flex rounded-b-lg rounded-tr-lg"
       />
@@ -46,6 +46,7 @@ Source for basic tab idea: https://vuejsexamples.com/tabbed-content-with-vue-js/
 <script setup lang="ts">
 import { ref } from "vue";
 import StreetMenuFolder from "./StreetMenuFolder.vue";
+import BikeMenuFolder from "./BikeMenuFolder.vue";
 import BulldozerIcon from "./BulldozerIcon.vue";
 
 /**
