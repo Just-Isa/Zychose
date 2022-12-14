@@ -53,7 +53,6 @@
 
 <script setup lang="ts">
 import { useTile } from "@/services/useTileState";
-import { ref } from "vue";
 
 const prop = defineProps<{
   type: string;
