@@ -16,7 +16,7 @@ test("generateMapArray", () => {
   const streetArray = generateMapArray(data);
 
   expect(streetArray).toHaveLength(100);
-  expect(streetArray[0][0]).toMatch("");
-  expect(streetArray[1][1]).toMatch("road_straight:90");
-  expect(streetArray[1][3]).toMatch("road_straight:180");
+  expect(streetArray[5][5]).toMatch("");
+  expect(streetArray[0][0]).toMatch("road_straight:90");
+  expect(streetArray[0][2]).toMatch("road_straight:180");
 });

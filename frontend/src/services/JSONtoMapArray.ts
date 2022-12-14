@@ -18,7 +18,7 @@ export function generateMapArray(jsondata: object[]) {
 
   // fill street array with types according to given coordinates
   jsondata.forEach(function (obj) {
-    streetArray[Object(obj)["posX"]][Object(obj)["posY"]] =
+    streetArray[Object(obj)["posX"] - 1][Object(obj)["posY"] - 1] =
       Object(obj)["streetType"] + ":" + Object(obj)["rotation"];
   });
 
