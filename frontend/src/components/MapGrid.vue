@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import { useStreets, type IStreetInformation } from "../services/useStreets";
-import swtpConfigJSON from "../jsons/swtp.config.json";
+import swtpConfigJSON from "../../../swtp.config.json";
 
 /**
  * @param {number} gridSize defines the size of the grid component
