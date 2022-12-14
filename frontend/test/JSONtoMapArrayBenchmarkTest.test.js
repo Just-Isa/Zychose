@@ -20,9 +20,9 @@ test("full JSON (benchmark)", async () => {
   let startTime = performance.now();
 
   await generateBlockMap();
-  const blockMap = glbState.blockMap;
+  const blockMap = await glbState.blockMap;
   const scene = new Scene();
-  const sceneManager = new SceneManager(scene, blockMap, streetState);
+  const sceneManager = await new SceneManager(scene, blockMap, streetState);
   await sceneManager.createLandscape();
   await sceneManager.createGrid();
 
