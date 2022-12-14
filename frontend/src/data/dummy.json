@@ -1,26 +1,26 @@
 [
   {
-    "streetType":"road_straight",
-    "rotation":90,
-    "posX":1,
-    "posY":1
+    "streetType": "road_straight",
+    "rotation": 90,
+    "posX": 1,
+    "posY": 1
   },
   {
-    "streetType":"road_straight",
-    "rotation":90,
-    "posX":1,
-    "posY":3
+    "streetType": "road_straight",
+    "rotation": 90,
+    "posX": 1,
+    "posY": 3
   },
   {
-    "streetType":"road_straight",
-    "rotation":90,
-    "posX":1,
-    "posY":5
+    "streetType": "road_straight",
+    "rotation": 90,
+    "posX": 1,
+    "posY": 5
   },
   {
-    "streetType":"road_straight",
-    "rotation":90,
-    "posX":1,
-    "posY":7
+    "streetType": "road_straight",
+    "rotation": 90,
+    "posX": 1,
+    "posY": 7
   }
 ]
