@@ -4,7 +4,7 @@
     v-bind:style="{
       transform: `translateX(${item[0]}px) translateY(${item[1]}px)`,
     }"
-    class="cursor"
+    class="absolute top-0 left-0 transition-transform duration-100 ease-linear"
     v-bind:fill="colors[index]"
     v-bind:key="key"
   >
@@ -89,12 +89,3 @@ setInterval(function () {
   }
 }, 300);
 </script>
-
-<style>
-.cursor {
-  position: absolute;
-  transition: transform 120ms linear;
-  top: 0;
-  left: 0;
-}
-</style>

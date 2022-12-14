@@ -1,10 +1,17 @@
 <template>
   <div id="wrapper">
-    <table id="gridTable">
-      <tr v-for="row in props.gridSize" v-bind:key="row" class="gridRow">
+    <table
+      id="gridTable"
+      class="bg-green-500 w-full border-spacing-0 border-separate table-fixed"
+    >
+      <tr
+        v-for="row in props.gridSize"
+        v-bind:key="row"
+        class="box-border h-20 p-0"
+      >
         <td
           v-for="col in props.gridSize"
-          class="gridCell"
+          class="box-border w-20 p-0 border border-white/20 hover:border-white hover:shadow-inner hover:shadow-white"
           v-bind:key="col"
           v-on:click="cellClicked(row, col)"
         ></td>
@@ -43,50 +50,3 @@ document.addEventListener("wheel", (event) => {
 
 window.addEventListener("wheel", (e) => e.preventDefault(), { passive: false });
 </script>
-
-<style>
-body {
-  padding: 0;
-  margin: 0;
-  scrollbar-width: none;
-}
-html {
-  -ms-overflow-style: none; /* for Internet Explorer, Edge */
-  scrollbar-width: none; /* for Firefox */
-  overflow: scroll;
-}
-html::-webkit-scrollbar {
-  display: none; /* for Chrome, Safari, and Opera */
-}
-.wrapper {
-  width: 100%;
-}
-table {
-  border-collapse: separate;
-  border-spacing: 0;
-  table-layout: fixed;
-  width: 100%;
-  background-color: green;
-}
-.gridRow {
-  height: 5em;
-  border: 1px solid black;
-  padding: 0;
-  box-sizing: border-box;
-}
-.gridCell {
-  width: 5em;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 0;
-  box-sizing: border-box;
-  /*
-        --- maybe useful for tile-types later ---
-        background-image: url("../../assets/grass.png");
-        background-size: cover;
-        background-repeat: no-repeat;*/
-}
-.gridCell:hover {
-  border-color: rgba(255, 255, 255, 1);
-  box-shadow: inset 0px 0px 4px 1px #fff;
-}
-</style>
