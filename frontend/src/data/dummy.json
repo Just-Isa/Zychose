@@ -1,19 +1,26 @@
-{
-  "road_straight": {
-    "0": [
-      [4, 3],
-      [7, 2],
-      [4, 4],
-      [2, 1],
-      [1, 1]
-    ],
-    "90": [[7, 5]],
-    "180": [
-      [6, 5],
-      [8, 5],
-      [9, 5],
-      [10, 5]
-    ],
-    "270": [[50, 51]]
+[
+  {
+    "streetType":"road_straight",
+    "rotation":90,
+    "posX":1,
+    "posY":1
+  },
+  {
+    "streetType":"road_straight",
+    "rotation":90,
+    "posX":1,
+    "posY":3
+  },
+  {
+    "streetType":"road_straight",
+    "rotation":90,
+    "posX":1,
+    "posY":5
+  },
+  {
+    "streetType":"road_straight",
+    "rotation":90,
+    "posX":1,
+    "posY":7
   }
-}
+]
