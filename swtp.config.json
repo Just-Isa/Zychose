@@ -2,22 +2,22 @@
   "streetTypes": [
     {
       "name": "cross-road",
-      "svgPath": "/src/assets/cross-road.svg",
+      "svgPath": "/src/assets/img/cross-road.svg",
       "glbPath": ""
     },
     {
       "name": "curve-road",
-      "svgPath": "/src/assets/curve-road.svg",
+      "svgPath": "/src/assets/img/curve-road.svg",
       "glbPath": ""
     },
     {
       "name": "straight-road",
-      "svgPath": "/src/assets/straight-road.svg",
+      "svgPath": "/src/assets/img/straight-road.svg",
       "glbPath": ""
     },
     {
       "name": "t-road",
-      "svgPath": "/src/assets/t-road.svg",
+      "svgPath": "/src/assets/img/t-road.svg",
       "glbPath": ""
     }
   ],

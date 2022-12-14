@@ -62,7 +62,7 @@ function cellClicked(posX: number, posY: number): void {
 function onHover(x: number, y: number): void {
   const tabelle = document.getElementById("gridTable") as HTMLTableElement;
   const cell = tabelle.rows[x - 1].cells[y - 1];
-  cell.style.backgroundImage = "url(/src/assets/cross-road.svg)";
+  cell.style.backgroundImage = "url(/src/assets/img/cross-road.svg)";
   cell.style.opacity = "0.5";
 }
 
