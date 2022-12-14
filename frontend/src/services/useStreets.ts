@@ -2,25 +2,6 @@ import { gridToJson } from "./JSONparser";
 import { reactive, readonly } from "vue";
 
 /**
- * @enum {TypeStreet}  Different types of Streets and delete.
- */
-/*export enum TypeStreet {
-  delete,
-  straight,
-  curve,
-  tCrossing,
-  crossing,
-}*/
-/**
- * @enum {Rotations} Different types of Rotations
- */
-/*export enum Rotations {
-  Zero = 0,
-  Ninety = 90,
-  OneHundredEighty = 180,
-  TwoHundredSeventy = 270,
-}*/
-/**
  * Interface to save street information
  * @param {TypeStreet} streetType - Type of Street
  * @param {number} rotation - street rotation in degree

@@ -3,7 +3,6 @@ import { useRoom } from "./useRoom";
 import { useStreets } from "./useStreets";
 
 export function gridToJson(streets: IStreetInformation[]) {
-  console.log("json.stringify vom state: ", JSON.stringify(streets));
   const { updateRoomMap } = useRoom();
   updateRoomMap(JSON.stringify(streets));
 
@@ -20,10 +19,7 @@ export function gridToJson(streets: IStreetInformation[]) {
  * @param {string} roomMapAsString - stringified JSON-Object of our streets
  */
 function jsonToState(roomMapAsString: string) {
-  const { recieveNewStreetState, streets } = useStreets();
+  const { recieveNewStreetState } = useStreets();
   const newState = JSON.parse(roomMapAsString);
-  console.log("newState: ", newState);
   recieveNewStreetState(newState);
-  console.log("streets: ", streets);
-  console.log("#######################################################");
 }

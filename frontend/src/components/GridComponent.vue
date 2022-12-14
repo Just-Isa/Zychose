@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import { useStreets, type IStreetInformation } from "../services/useStreets";
-import testJSON from "../jsons/testJSON.json";
+import swtpConfigJSON from "../jsons/swtp.config.json";
 
 /**
  * @param {number} gridSize defines the size of the grid component
@@ -27,7 +27,7 @@ const props = defineProps<{
   gridSize: number;
 }>();
 const { handleClick, isStreetPlaced } = useStreets();
-const strassenTypen = testJSON.strassenTypen;
+const streetTypes = swtpConfigJSON.streetTypes;
 //TODO
 //Sobald der Input von Malte, Lara und Antonia eingelesen werden kann, wird diese Methode angepasst.
 //Hier wird der Input(strassentyp und rotation) aus dem anderen state geholt und zusammen mit den Positionen fuer die Achsen im state fuer den grid gespeichert.
@@ -110,38 +110,12 @@ function setCellStyle(
   cell.style.backgroundSize = "cover";
   cell.style.backgroundRepeat = "no-repeat";
   cell.style.backgroundPosition = "center";
-  for (const strassenTyp of strassenTypen) {
-    if (strassenTyp.name === street.streetType) {
-      cell.style.backgroundImage = strassenTyp.path;
+  for (const streetType of streetTypes) {
+    if (streetType.name === street.streetType) {
+      cell.style.backgroundImage = streetType.svgPath;
       cell.style.transform = `rotate(${street.rotation}deg)`;
     }
   }
-  /*switch (street.streetType) {
-    case TypeStreet.straight: {
-      cell.style.backgroundImage = 'url("/src/assets/straight-road.svg")';
-      cell.style.transform = `rotate(${street.rotation}deg)`;
-      break;
-    }
-    case TypeStreet.delete: {
-      cell.style.backgroundImage = "";
-      break;
-    }
-    case TypeStreet.curve: {
-      cell.style.backgroundImage = 'url("/src/assets/curve-road.svg")';
-      cell.style.transform = `rotate(${street.rotation}deg)`;
-      break;
-    }
-    case TypeStreet.crossing: {
-      cell.style.backgroundImage = 'url("/src/assets/cross-road.svg")';
-      cell.style.transform = `rotate(${street.rotation}deg)`;
-      break;
-    }
-    case TypeStreet.tCrossing: {
-      cell.style.backgroundImage = 'url("/src/assets/t-road.svg")';
-      cell.style.transform = `rotate(${street.rotation}deg)`;
-      break;
-    }
-  }*/
 }
 
 /**
