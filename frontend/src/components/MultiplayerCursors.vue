@@ -19,6 +19,7 @@ import { Mouse } from "@/services/IMouse";
 import { useRoom } from "@/services/useRoom";
 import { useUser } from "@/services/useUser";
 import { onMounted, reactive, ref } from "vue";
+import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
 
 // https://vueuse.org/core/usemouse/
 import { useMouse } from "@vueuse/core";
@@ -67,7 +68,7 @@ setInterval(function () {
     lastYsent = y.value;
     publishMouse(
       new Mouse(
-        document.cookie.split("=")[1],
+        getSessionIDFromCookie(),
         roomState.room.roomNumber,
         x.value,
         y.value
@@ -79,7 +80,7 @@ setInterval(function () {
   if (
     mouseState.mouse.sessionID != "" &&
     mouseState.mouse.sessionID != null &&
-    mouseState.mouse.sessionID != document.cookie.split("=")[1]
+    mouseState.mouse.sessionID != getSessionIDFromCookie()
   ) {
     mouseDict[mouseState.mouse.sessionID] = [
       mouseState.mouse.x,

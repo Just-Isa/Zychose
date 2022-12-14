@@ -71,8 +71,8 @@ public class RoomRestController {
    *
    * @param sessionId SessionID of User that will be moved
    */
-  @PostMapping(value = "/room/remove")
-  public void removeUserFromRoom(@RequestBody String sessionId) {
+  @PostMapping(value = "/user/logout")
+  public void logoutUserFromRoom(@RequestBody String sessionId) {
     String sId = sessionId.split(":")[1].replace("\"", "").replace("}", "");
     Optional<User> userOpt = roomBoxService.getUserBySessionID(sId);
     logger.info("USER = {}", sId);
