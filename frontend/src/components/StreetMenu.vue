@@ -4,7 +4,7 @@ Source for basic tab idea: https://vuejsexamples.com/tabbed-content-with-vue-js/
 -->
 
 <template>
-  <div class="fixed bottom-6 left-1/2 -translate-x-1/2">
+  <div class="fixed bottom-6 left-1/2 -translate-x-1/2 pointer-events-none">
     <div class="tabs flex gap-3">
       <!--- 
         Tabs jetzt nicht als Komponente - werden nicht weiter modifiziert/weiterbenutzt, 
@@ -15,7 +15,7 @@ Source for basic tab idea: https://vuejsexamples.com/tabbed-content-with-vue-js/
         v-bind:class="[
           activetab === 1 ? 'active shadow-lg' : 'bg-inactive-folder-gray',
         ]"
-        class="bg-street-menu-bg-gray px-4 pt-1 rounded-tl-lg rounded-tr-lg hover:cursor-pointer"
+        class="pointer-events-auto bg-street-menu-bg-gray px-4 pt-1 rounded-tl-lg rounded-tr-lg hover:cursor-pointer"
       >
         <img src="../assets/img/car-pictogram.svg" />
       </a>
@@ -24,7 +24,7 @@ Source for basic tab idea: https://vuejsexamples.com/tabbed-content-with-vue-js/
         v-bind:class="[
           activetab === 2 ? 'active shadow-lg' : 'bg-inactive-folder-gray',
         ]"
-        class="bg-street-menu-bg-gray px-4 pt-1 rounded-tl-lg rounded-tr-lg hover:cursor-pointer"
+        class="pointer-events-auto bg-street-menu-bg-gray px-4 pt-1 rounded-tl-lg rounded-tr-lg hover:cursor-pointer"
       >
         <img src="../assets/img/bicycle-pictogram.svg"
       /></a>
@@ -32,13 +32,13 @@ Source for basic tab idea: https://vuejsexamples.com/tabbed-content-with-vue-js/
     <div class="flex justify-items-center items-center">
       <StreetMenuFolder
         v-if="activetab === 1"
-        class="tabcontent flex rounded-b-lg rounded-tr-lg"
+        class="pointer-events-auto tabcontent flex rounded-b-lg rounded-tr-lg"
       />
       <StreetMenuFolder
         v-if="activetab === 2"
-        class="tabcontent flex rounded-b-lg rounded-tr-lg"
+        class="pointer-events-auto tabcontent flex rounded-b-lg rounded-tr-lg"
       />
-      <BulldozerIcon />
+      <BulldozerIcon class="pointer-events-auto" />
     </div>
   </div>
 </template>
