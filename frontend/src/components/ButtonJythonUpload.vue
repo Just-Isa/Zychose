@@ -39,14 +39,6 @@ function onChangeFile(event: any) {
   addFiles(event.target.files);
   for (let file of event.target.files) {
     console.log("File Upload: " + file.name);
-
-    const reader = new FileReader();
-    // reads and encodes the file as a base64 string
-    reader.readAsDataURL(file);
-    // onloadend gets triggered when the file read above was completed
-    reader.onloadend = () => {
-      console.log(`HIER: ${JSON.stringify(reader.result)}`);
-    }
   }
   event.target.value = null;
 }

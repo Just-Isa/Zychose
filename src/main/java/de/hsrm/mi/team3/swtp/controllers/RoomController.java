@@ -1,11 +1,5 @@
 package de.hsrm.mi.team3.swtp.controllers;
 
-import de.hsrm.mi.team3.swtp.domain.Room;
-import de.hsrm.mi.team3.swtp.domain.User;
-import de.hsrm.mi.team3.swtp.domain.messaging.BackendMouseMessage;
-import de.hsrm.mi.team3.swtp.services.BackendInfoService;
-import de.hsrm.mi.team3.swtp.services.RoomBoxServiceImplementation;
-import de.hsrm.mi.team3.swtp.services.RoomServiceImplementation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +9,22 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 
+import de.hsrm.mi.team3.swtp.domain.Room;
+import de.hsrm.mi.team3.swtp.domain.User;
+import de.hsrm.mi.team3.swtp.domain.messaging.BackendMouseMessage;
+import de.hsrm.mi.team3.swtp.services.BackendInfoService;
+import de.hsrm.mi.team3.swtp.services.RoomBoxServiceImplementation;
+import de.hsrm.mi.team3.swtp.services.RoomServiceImplementation;
+
 @Controller
 public class RoomController {
 
-  @Autowired RoomBoxServiceImplementation roomBoxService;
-  @Autowired RoomServiceImplementation roomService;
-  @Autowired BackendInfoService backservice;
+  @Autowired
+  RoomBoxServiceImplementation roomBoxService;
+  @Autowired
+  RoomServiceImplementation roomService;
+  @Autowired
+  BackendInfoService backservice;
   Logger logger = LoggerFactory.getLogger(RoomController.class);
 
   /*
@@ -44,6 +48,8 @@ public class RoomController {
    */
   @MessageMapping("/topic/room")
   public void sendroom(@Payload String test, ModelMap m) {
+    // saves the jython script to the room
+    this.roomService.saveScriptToRoom(test);
     logger.info("----------------------" + test + "-------------------------");
   }
 

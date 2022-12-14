@@ -1,5 +1,6 @@
 package de.hsrm.mi.team3.swtp.domain;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ public class Room {
   private String roomName;
   private int roomNumber;
   private List<User> userList;
+  private File jythonScript;
 
   public Room(int roomNumber) {
     this.roomName = "default-name";
@@ -51,5 +53,13 @@ public class Room {
 
   public void setRoomNumber(int roomNumber) {
     this.roomNumber = roomNumber;
+  }
+
+  public File getJythonScript() {
+    return jythonScript;
+  }
+
+  public void setJythonScript(File jythonScript) {
+    this.jythonScript = jythonScript;
   }
 }
