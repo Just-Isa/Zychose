@@ -22,8 +22,8 @@ const initTiles: TileEle[] = [
     false,
     false,
   ]),
-  new TileEle("curve", "src/assets/img/curve-crop.svg", 0, [true, true, true]),
-  new TileEle("tCrossing", "src/assets/img/tCrossing-crop.svg", 0, [
+  new TileEle("curve", "src/assets/img/curve.svg", 0, [true, true, true]),
+  new TileEle("tCrossing", "src/assets/img/tCrossing.svg", 0, [
     true,
     true,
     true,
