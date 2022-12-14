@@ -46,8 +46,9 @@ export default {
   mounted() {
     const blockMap = glbState.blockMap;
     const scene = (this.$refs.scene as any).scene;
-    const sceneManager = new SceneManager(scene, blockMap);
+    const renderer = (this.$refs.renderer as any).renderer;
     const camera = (this.$refs.camera as any).camera;
+    const sceneManager = new SceneManager(scene, blockMap,renderer, camera);
     sceneManager.createLandscape();
     sceneManager.createGrid();
     sceneManager.handleCar();

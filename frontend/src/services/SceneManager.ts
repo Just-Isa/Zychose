@@ -2,6 +2,7 @@ import * as THREE from "three";
 import type { Scene } from "three";
 import data from "../data/dummy.json";
 import { generateMapArray } from "./JSONtoMapArray";
+import * as TWEEN from '@tweenjs/tween.js'
 
 const blockSize = 16;
 
@@ -12,10 +13,19 @@ export class SceneManager {
   scene: Scene;
   blockMap: Map<string, Promise<THREE.Group>>;
   streetArray: string[][] = generateMapArray(data);
-
-  constructor(scene: Scene, blockMap: Map<string, Promise<THREE.Group>>) {
+  renderer:THREE.Renderer;
+  camera:THREE.Camera ;
+  direction = new THREE.Vector3();
+  constructor(scene: Scene, blockMap: Map<string, Promise<THREE.Group>>, renderer:THREE.Renderer, camera:THREE.Camera) {
     this.scene = scene;
     this.blockMap = blockMap;
+    this.renderer = renderer;
+    this.camera = camera;
+    const animate = () => {
+      TWEEN.update();
+      window.requestAnimationFrame(animate);
+    };
+    animate();
   }
 
   /**
@@ -103,38 +113,38 @@ export class SceneManager {
   handleCar() {
     const key = "car";
     const blockPromise = this.blockMap.get(key);
+    
     if (blockPromise != undefined) {
       blockPromise
         ?.then((block) => {
-          const clonedBlock = block.clone();
-          clonedBlock.position.set(0, 0, 0);
-          this.scene.add(clonedBlock);
+          const car = block.clone();
+          car.position.set(0, 0, 0);
+          this.scene.add(car);
 
-          document.onkeydown = function (e) {
-            const direction = new THREE.Vector3();
-            clonedBlock.getWorldDirection(direction)
-            
-            console.log('sin y ', Math.sin(clonedBlock.rotation.y *Math.PI/2))
-            console.log('cos y ', Math.cos(clonedBlock.rotation.y *Math.PI/2))
+          document.addEventListener("keydown", (e)=>{ 
+            car.getWorldDirection(this.direction)
 
+            let destination = car.clone().position
             if (e.key === "ArrowUp") {
+                destination.add(this.direction.multiplyScalar(16))
 
-              clonedBlock.position.add(direction.multiplyScalar(1))
-              // clonedBlock.position.x += Math.sin(clonedBlock.rotation.y *Math.PI/2) * 1
-				      // clonedBlock.position.z += Math.cos(clonedBlock.rotation.y *Math.PI/2) * 1
-              
-            }
+                //car.position.add(direction.multiplyScalar(1))
+                this.moveObject(car, destination, 2000)
+              }
             if (e.key === "ArrowDown") {
-              clonedBlock.position.add(direction.multiplyScalar(-1))
+              destination.add(this.direction.multiplyScalar(-16))
+
+              this.moveObject(car, destination, 2000)
 
             }
             if (e.key === "ArrowLeft") {
-              clonedBlock.rotateY(-0.1);
+              this.rotateObject(car, 0.3)
             }
             if (e.key === "ArrowRight") {
-              clonedBlock.rotateY(0.1);
+              this.rotateObject(car,-0.3)
             }
-          };
+           });
+
         })
         .catch((error) => {
           this.getErrorBlock(0, 0, 0);
@@ -143,5 +153,32 @@ export class SceneManager {
     } else {
       this.getErrorBlock(0, 0, 0);
     }
+  }
+  moveObject(object:THREE.Group, destination:THREE.Vector3, value:number){
+   
+    console.log("from:",object.position,"to ", destination)
+    const tween = new TWEEN.Tween(object.position)
+    .to(destination,700)
+    .onUpdate((dir) =>{
+      object.position.set(dir.x, dir.y, dir.z)
+      
+    }
+    );
+    tween.start()
+
+
+  }
+  rotateObject(object:THREE.Group, rotation:number){
+    const tween = new TWEEN.Tween({rotate:object.rotation.y})
+    .to({rotate:object.rotation.y+rotation},700)
+    .onUpdate((rot) =>{
+      object.rotation.y = rot.rotate
+      object.getWorldDirection(this.direction)
+
+    }
+    );
+    tween.start()
+
+
   }
 }
