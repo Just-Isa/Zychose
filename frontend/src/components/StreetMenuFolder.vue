@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-street-menu-bg-gray items-center bottom-6 p-1 shadow-lg"
+    class="pointer-events-auto bg-street-menu-bg-gray items-center bottom-6 p-1 shadow-lg"
     v-for="t in types"
   >
     <StreetBlockIcon :type="t" />

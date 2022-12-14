@@ -2,14 +2,18 @@
   <span
     class="tile-ele m-1.5 inline-block hover:cursor-pointer h-20 w-20 bg-street-menu-tile-bg-turquoise rounded-lg"
     :class="
-      getActiveState() == prop.id
+      getActiveState() == prop.type
         ? 'active outline bg-active-block-turquoise outline-white outline-3'
         : 'inactive'
     "
   >
-    <div :id="prop.id" @click="changeActiveState(prop.id)">
+    <div :id="prop.type" @click="changeActiveState(prop.type)">
       <div class="tile-current flex justify-center items-center rounded-lg">
-        <img class="h-16 w-16 mt-2" :src="getImgSrc(prop.id)" :alt="prop.id" />
+        <img
+          class="h-16 w-16 mt-2"
+          :src="getImgSrc(prop.type)"
+          :alt="prop.type"
+        />
       </div>
     </div>
     <div
@@ -20,28 +24,28 @@
       "
     >
       <div class="tile-rotate-ele" @click="changeTileRotation(0)">
-        <img :src="getImgSrc(prop.id)" :alt="prop.id" />
+        <img :src="getImgSrc(prop.type)" :alt="prop.type" />
       </div>
       <div
         class="tile-rotate-ele rotate-90"
         :class="rotationAllowed[1] ? 'active' : 'hidden'"
         @click="changeTileRotation(90)"
       >
-        <img :src="getImgSrc(prop.id)" :alt="prop.id" />
+        <img :src="getImgSrc(prop.type)" :alt="prop.type" />
       </div>
       <div
         class="tile-rotate-ele rotate-180"
         :class="rotationAllowed[2] ? '' : 'hidden'"
         @click="changeTileRotation(180)"
       >
-        <img :src="getImgSrc(prop.id)" :alt="prop.id" />
+        <img :src="getImgSrc(prop.type)" :alt="prop.type" />
       </div>
       <div
         class="tile-rotate-ele rotate-270"
         :class="rotationAllowed[3] ? '' : 'hidden'"
         @click="changeTileRotation(270)"
       >
-        <img :src="getImgSrc(prop.id)" :alt="prop.id" />
+        <img :src="getImgSrc(prop.type)" :alt="prop.type" />
       </div>
     </div>
   </span>
@@ -49,9 +53,10 @@
 
 <script setup lang="ts">
 import { useTile } from "@/services/useTileState";
+import { ref } from "vue";
 
 const prop = defineProps<{
-  id: string;
+  type: string;
 }>();
 
 const {
@@ -64,20 +69,22 @@ const {
 } = useTile();
 
 // check possible rotation values
-const possibleRotation = getpossibleRotation(prop.id);
+const possibleRotation = getpossibleRotation(prop.type);
 
 let rotationAllowed = [false, false, false, false]; // [rotateallowed, rotate90allowed, rotate180allowed, rotate270allowed]
-if (possibleRotation[0]) {
-  rotationAllowed[0] = true;
-  rotationAllowed[1] = true;
-}
-if (possibleRotation[1]) {
-  rotationAllowed[0] = true;
-  rotationAllowed[2] = true;
-}
-if (possibleRotation[2]) {
-  rotationAllowed[0] = true;
-  rotationAllowed[3] = true;
+if (possibleRotation?.length == 3) {
+  if (possibleRotation[0]) {
+    rotationAllowed[0] = true;
+    rotationAllowed[1] = true;
+  }
+  if (possibleRotation[1]) {
+    rotationAllowed[0] = true;
+    rotationAllowed[2] = true;
+  }
+  if (possibleRotation[2]) {
+    rotationAllowed[0] = true;
+    rotationAllowed[3] = true;
+  }
 }
 
 /**
@@ -99,22 +106,22 @@ function changeActiveState(type: string) {
  * @param {number} degree - new rotation value
  */
 function changeTileRotation(degree: number) {
-  changeActiveState(prop.id);
-  setRotate(degree, prop.id);
-  let rotateClass = `rotate-${getRotate(prop.id)}`;
+  changeActiveState(prop.type);
+  setRotate(degree, prop.type);
+  let rotateClass = `rotate-${getRotate(prop.type)}`;
 
   const currentTile = document.getElementById(getActiveState());
-  if (getRotate(prop.id) == 90) {
+  if (getRotate(prop.type) == 90) {
     console.log(currentTile);
     if (currentTile) {
       currentTile.style.margin = "0.25rem -0.2rem 0.25rem 0.25rem";
     }
-  } else if (getRotate(prop.id) == 180) {
+  } else if (getRotate(prop.type) == 180) {
     console.log(currentTile);
     if (currentTile) {
       currentTile.style.margin = "0.4rem -0.6rem 0.25rem -0.6rem";
     }
-  } else if (getRotate(prop.id) == 270) {
+  } else if (getRotate(prop.type) == 270) {
     console.log(currentTile);
     if (currentTile) {
       currentTile.style.margin = "0.2rem -0.3rem 0.25rem -0.6rem";
@@ -125,7 +132,7 @@ function changeTileRotation(degree: number) {
     }
   }
 
-  let actTile = document.getElementById(prop.id);
+  let actTile = document.getElementById(prop.type);
   if (actTile != null) {
     actTile.classList.remove("rotate-0");
     actTile.classList.remove("rotate-90");

@@ -35,9 +35,10 @@ Source for basic tab idea: https://vuejsexamples.com/tabbed-content-with-vue-js/
         class="pointer-events-auto tabcontent flex rounded-b-lg rounded-tr-lg"
         :types="streetTypes"
       />
-      <BikeMenuFolder
+      <StreetMenuFolder
         v-if="activetab === 2"
         class="pointer-events-auto tabcontent flex rounded-b-lg rounded-tr-lg"
+        :types="bikeTypes"
       />
       <BulldozerIcon class="pointer-events-auto" />
     </div>
@@ -49,19 +50,24 @@ import { ref } from "vue";
 import StreetMenuFolder from "./StreetMenuFolder.vue";
 import BikeMenuFolder from "./BikeMenuFolder.vue";
 import BulldozerIcon from "./BulldozerIcon.vue";
+import { useTile } from "@/services/useTileState";
+
+const { setActiveState } = useTile();
 
 /**
  * activetab: numeration of tabs from left to right
  */
 const activetab = ref(1);
 
-const streetTypes = ["straigt", "tCrossing", "curve", "crossing"];
+const streetTypes = ["straight", "tCrossing", "curve", "crossing"];
+const bikeTypes = ["straight", "tCrossing"];
 
 /**
  * function to change the selected tab and switch the displayed content for the tile menu
  * @param newTabNumber number of the newly selected tab
  */
 function changeTab(newTabNumber: number) {
+  setActiveState(""); // set active StreetTile to "" when switching between folders
   console.log("altes Tab: " + activetab.value);
 
   // delete class on old tab
