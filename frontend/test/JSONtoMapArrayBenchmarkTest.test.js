@@ -1,8 +1,8 @@
-import { useGLB } from "@/services/glbBlockLoader";
-import { SceneManager } from "@/services/SceneManager";
+import { useGLB } from "../src/services/glbBlockLoader";
+import { SceneManager } from "../src/services/SceneManager";
 import { Scene } from "three";
 
-test("full JSON (benchmark)", async () => {
+test("full JSON (benchmark)", () => {
   let streetState = [];
   for (let row = 1; row <= 100; row++) {
     for (let col = 1; col <= 100; col++) {
@@ -19,12 +19,12 @@ test("full JSON (benchmark)", async () => {
 
   let startTime = performance.now();
 
-  await generateBlockMap();
-  const blockMap = await glbState.blockMap;
+  generateBlockMap();
+  const blockMap = glbState.blockMap;
   const scene = new Scene();
-  const sceneManager = await new SceneManager(scene, blockMap, streetState);
-  await sceneManager.createLandscape();
-  await sceneManager.createGrid();
+  const sceneManager = new SceneManager(scene, blockMap, streetState);
+  sceneManager.createLandscape();
+  sceneManager.createGrid();
 
   let endTime = performance.now();
 
