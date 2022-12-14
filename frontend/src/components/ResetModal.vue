@@ -9,8 +9,10 @@ import { resetEverything } from "@/helpers/ResetHelper";
 import { deleteSessionId } from "@/helpers/SessionIDHelper";
 
 onMounted(() => {
-  resetEverything();
   deleteSessionId();
-  location.href = "/rooms";
+  resetEverything();
+  setTimeout(function () {
+    location.href = "/rooms";
+  }, 100);
 });
 </script>

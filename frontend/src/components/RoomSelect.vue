@@ -30,8 +30,8 @@ const roomListItems = computed(() => {
 
 onMounted(() => {
   createUser();
-  setTimeout(function() {
+  setTimeout(function () {
     getRoomList();
-  }, 400);
+  }, 600);
 });
 </script>
