@@ -50,19 +50,3 @@ document.addEventListener("wheel", (event) => {
 
 window.addEventListener("wheel", (e) => e.preventDefault(), { passive: false });
 </script>
-
-<style>
-body {
-  padding: 0;
-  margin: 0;
-  scrollbar-width: none;
-}
-html {
-  -ms-overflow-style: none; /* for Internet Explorer, Edge */
-  scrollbar-width: none; /* for Firefox */
-  overflow: scroll;
-}
-html::-webkit-scrollbar {
-  display: none; /* for Chrome, Safari, and Opera */
-}
-</style>
