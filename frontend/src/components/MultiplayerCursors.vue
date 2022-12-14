@@ -4,7 +4,7 @@
     v-bind:style="{
       transform: `translateX(${item[0]}px) translateY(${item[1]}px)`,
     }"
-    class="cursor absolute top-0 left-0 transition-transform duration-100 ease-linear"
+    class="absolute top-0 left-0 transition-transform duration-100 ease-linear"
     v-bind:fill="colors[index]"
     v-bind:key="key"
   >
