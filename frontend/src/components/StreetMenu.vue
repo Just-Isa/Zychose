@@ -33,6 +33,7 @@ Source for basic tab idea: https://vuejsexamples.com/tabbed-content-with-vue-js/
       <StreetMenuFolder
         v-if="activetab === 1"
         class="pointer-events-auto tabcontent flex rounded-b-lg rounded-tr-lg"
+        :types="streetTypes"
       />
       <BikeMenuFolder
         v-if="activetab === 2"
@@ -53,6 +54,8 @@ import BulldozerIcon from "./BulldozerIcon.vue";
  * activetab: numeration of tabs from left to right
  */
 const activetab = ref(1);
+
+const streetTypes = ["straigt", "tCrossing", "curve", "crossing"];
 
 /**
  * function to change the selected tab and switch the displayed content for the tile menu
