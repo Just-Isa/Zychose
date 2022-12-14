@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-street-menu-bg-gray items-center bottom-6 p-1">
+  <div class="bg-street-menu-bg-gray items-center bottom-6 p-1 shadow-lg">
     <StreetBlockIcon id="straight"></StreetBlockIcon>
     <StreetBlockIcon id="tCrossing"></StreetBlockIcon>
     <StreetBlockIcon id="curve"></StreetBlockIcon>
