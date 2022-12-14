@@ -48,7 +48,6 @@ Source for basic tab idea: https://vuejsexamples.com/tabbed-content-with-vue-js/
 <script setup lang="ts">
 import { ref } from "vue";
 import StreetMenuFolder from "./StreetMenuFolder.vue";
-import BikeMenuFolder from "./BikeMenuFolder.vue";
 import BulldozerIcon from "./BulldozerIcon.vue";
 import { useTile } from "@/services/useTileState";
 
