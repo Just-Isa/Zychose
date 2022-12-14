@@ -1,0 +1,25 @@
+{
+  "streetTypes": [
+    {
+      "name": "cross-road",
+      "svgPath": "url(/src/assets/cross-road.svg)",
+      "glbPath": ""
+    },
+    {
+      "name": "curve-road",
+      "svgPath": "url(/src/assets/curve-road.svg)",
+      "glbPath": ""
+    },
+    {
+      "name": "straight-road",
+      "svgPath": "url(/src/assets/straight-road.svg)",
+      "glbPath": ""
+    },
+    {
+      "name": "t-road",
+      "svgPath": "url(/src/assets/t-road.svg)",
+      "glbPath": ""
+    }
+  ],
+  "rotations": [0, 90, 180, 270]
+}
