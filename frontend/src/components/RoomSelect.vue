@@ -30,6 +30,7 @@ const roomListItems = computed(() => {
 
 onMounted(() => {
   createUser();
+  // 600ms chosen to account for slower Connection (and slower Computers)
   setTimeout(function () {
     getRoomList();
   }, 600);

@@ -9,11 +9,11 @@ export function checkIfSessionIDCookieExists(): boolean {
   );
 }
 
-/**Function to delete a cookie by settings its expiry date to 1970
+/**
+ * Function to delete a cookie by settings its expiry date to 1970
  *
- * @param name Name of cookie -> REQUIRED
- * @param path Path of cookie -> Not required
- * @param domain Domain of cookie -> Not required
+ * @param path Path of cookie - Not required
+ * @param domain Domain of cookie - Not required
  */
 export function deleteSessionId(path?: string, domain?: string) {
   if (getCookie("sid")) {

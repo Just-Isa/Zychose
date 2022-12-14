@@ -2,8 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import EditorView from "../views/EditorView.vue";
 import RoomSelect from "@/components/RoomSelect.vue";
 import ThreeDView from "../views/ThreeDView.vue";
-import GenericResponseError from "@/components/errors/GenericResponseError.vue";
-import ResetModal from "@/components/ResetModal.vue";
+import FiveHundredErr from "@/views/errors/500.vue";
+import ResetInfoView from "@/views/ResetInfoView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,13 +45,13 @@ const router = createRouter({
     },
     {
       path: "/500",
-      name: "ErrorPage500",
-      component: GenericResponseError,
+      name: "500",
+      component: FiveHundredErr,
     },
     {
       path: "/reset",
-      name: "ResetModal",
-      component: ResetModal,
+      name: "ResetInfoView",
+      component: ResetInfoView,
     },
   ],
 });

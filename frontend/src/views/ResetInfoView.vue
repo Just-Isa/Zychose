@@ -11,6 +11,7 @@ import { deleteSessionId } from "@/helpers/SessionIDHelper";
 onMounted(() => {
   deleteSessionId();
   resetEverything();
+  // Timeout necessary due to Firefox' request lifetime
   setTimeout(function () {
     location.href = "/rooms";
   }, 100);
