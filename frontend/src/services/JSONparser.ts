@@ -2,7 +2,6 @@ import type { IStreetInformation } from "./useStreets";
 import { useRoom } from "./useRoom";
 import { useStreets } from "./useStreets";
 
-
 /**
  * Function to parse the streetState into a JSON format
  * @param {IStreetInformation[]} streets array of all streets in form of our generated streetState
@@ -10,7 +9,7 @@ import { useStreets } from "./useStreets";
 export function gridToJson(streets: IStreetInformation[]) {
   const { updateRoomMap } = useRoom();
   updateRoomMap(JSON.stringify(streets));
-  
+
   /*jsonToState wird am Ende nicht an dieser Stelle aufgerufen,
     das Linting weint aber sonst wegen unused function rum und zum testen hat es hier gereicht.
     Der Aufruf erfolgt dann nach einer Nachricht vom Backend.
