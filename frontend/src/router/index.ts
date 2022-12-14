@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import EditorView from "../views/EditorView.vue";
 import RoomSelect from "@/components/RoomSelect.vue";
 import ThreeDView from "../views/ThreeDView.vue";
-import Error500 from "@/views/errors/Error500.vue";
+import ErrorView500 from "@/views/errors/ErrorView500.vue";
 import ResetInfoView from "@/views/ResetInfoView.vue";
 
 const router = createRouter({
@@ -45,8 +45,8 @@ const router = createRouter({
     },
     {
       path: "/500",
-      name: "Error500",
-      component: Error500,
+      name: "ErrorView500",
+      component: ErrorView500,
     },
     {
       path: "/reset",
