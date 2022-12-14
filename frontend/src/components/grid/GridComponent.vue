@@ -2,16 +2,16 @@
   <div id="wrapper">
     <table
       id="gridTable"
-      class="bg-grid-bg w-full border-spacing-0 border-separate table-fixed"
+      class="bg-green-500 w-full border-spacing-0 border-separate table-fixed"
     >
       <tr
         v-for="row in props.gridSize"
         v-bind:key="row"
-        class="gridRow box-border h-20 p-0"
+        class="box-border h-20 p-0"
       >
         <td
           v-for="col in props.gridSize"
-          class="gridCell box-border w-20 p-0 border border-white/20 hover:border-white hover:shadow-inner hover:shadow-white"
+          class="box-border w-20 p-0 border border-white/20 hover:border-white hover:shadow-inner hover:shadow-white"
           v-bind:key="col"
           v-on:click="cellClicked(row, col)"
         ></td>
