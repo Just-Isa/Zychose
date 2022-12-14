@@ -62,8 +62,23 @@ public class RoomRestController {
       roomService.addNewUserToRoom(room, userOpt.get());
       logger.info("ROOM = {}", room.getUserList());
     } else {
-      logger.warn("User with SessionID: " + sessionId + " not present!");
       roomService.addNewUserToRoom(room, new User(sId, 0, sId));
+    }
+  }
+
+  /**
+   * Removes the user from their current room.
+   *
+   * @param sessionId SessionID of User that will be moved
+   */
+  @PostMapping(value = "/room/remove")
+  public void removeUserFromRoom(@RequestBody String sessionId) {
+    String sId = sessionId.split(":")[1].replace("\"", "").replace("}", "");
+    Optional<User> userOpt = roomBoxService.getUserBySessionID(sId);
+    logger.info("USER = {}", sId);
+    if (userOpt.isPresent()) {
+      Room oldRoom = roomBoxService.getRoomsFromRoomBox().get(userOpt.get().getCurrentRoomNumber());
+      roomService.removeUserFromRoom(oldRoom, userOpt.get());
     }
   }
 }
