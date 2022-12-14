@@ -112,7 +112,7 @@ function setCellStyle(
   cell.style.backgroundPosition = "center";
   for (const streetType of streetTypes) {
     if (streetType.name === street.streetType) {
-      cell.style.backgroundImage = streetType.svgPath;
+      cell.style.backgroundImage = `url(${streetType.svgPath})`;
       cell.style.transform = `rotate(${street.rotation}deg)`;
     }
   }
