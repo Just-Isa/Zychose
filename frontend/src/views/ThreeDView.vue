@@ -36,6 +36,8 @@ import {
 } from "troisjs";
 import { useGLB } from "@/services/glbBlockLoader";
 import { SceneManager } from "@/services/SceneManager";
+import * as TWEEN from '@tweenjs/tween.js'
+
 
 const { glbState, generateBlockMap } = useGLB();
 
@@ -49,9 +51,14 @@ export default {
     const renderer = (this.$refs.renderer as any).renderer;
     const camera = (this.$refs.camera as any).camera;
     const sceneManager = new SceneManager(scene, blockMap,renderer, camera);
+   
+
     sceneManager.createLandscape();
     sceneManager.createGrid();
     sceneManager.handleCar();
+
+
+
   },
 };
 </script>

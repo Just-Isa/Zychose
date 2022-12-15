@@ -3,6 +3,7 @@ import type { Scene } from "three";
 import data from "../data/dummy.json";
 import { generateMapArray } from "./JSONtoMapArray";
 import * as TWEEN from '@tweenjs/tween.js'
+import { Car } from "./Car";
 
 const blockSize = 16;
 
@@ -21,11 +22,6 @@ export class SceneManager {
     this.blockMap = blockMap;
     this.renderer = renderer;
     this.camera = camera;
-    const animate = () => {
-      TWEEN.update();
-      window.requestAnimationFrame(animate);
-    };
-    animate();
   }
 
   /**
@@ -113,37 +109,15 @@ export class SceneManager {
   handleCar() {
     const key = "car";
     const blockPromise = this.blockMap.get(key);
-    
     if (blockPromise != undefined) {
       blockPromise
         ?.then((block) => {
-          const car = block.clone();
-          car.position.set(0, 0, 0);
-          this.scene.add(car);
-
-          document.addEventListener("keydown", (e)=>{ 
-            car.getWorldDirection(this.direction)
-
-            let destination = car.clone().position
-            if (e.key === "ArrowUp") {
-                destination.add(this.direction.multiplyScalar(16))
-
-                //car.position.add(direction.multiplyScalar(1))
-                this.moveObject(car, destination, 2000)
-              }
-            if (e.key === "ArrowDown") {
-              destination.add(this.direction.multiplyScalar(-16))
-
-              this.moveObject(car, destination, 2000)
-
-            }
-            if (e.key === "ArrowLeft") {
-              this.rotateObject(car, 0.3)
-            }
-            if (e.key === "ArrowRight") {
-              this.rotateObject(car,-0.3)
-            }
-           });
+          const carObject = block.clone();
+          
+          carObject.position.set(0, 0, 0);
+          this.scene.add(carObject);
+          let carm = new Car(carObject, this.scene, this.renderer, this.camera)
+          carm.handleWithKeys()
 
         })
         .catch((error) => {
@@ -153,32 +127,5 @@ export class SceneManager {
     } else {
       this.getErrorBlock(0, 0, 0);
     }
-  }
-  moveObject(object:THREE.Group, destination:THREE.Vector3, value:number){
-   
-    console.log("from:",object.position,"to ", destination)
-    const tween = new TWEEN.Tween(object.position)
-    .to(destination,700)
-    .onUpdate((dir) =>{
-      object.position.set(dir.x, dir.y, dir.z)
-      
-    }
-    );
-    tween.start()
-
-
-  }
-  rotateObject(object:THREE.Group, rotation:number){
-    const tween = new TWEEN.Tween({rotate:object.rotation.y})
-    .to({rotate:object.rotation.y+rotation},700)
-    .onUpdate((rot) =>{
-      object.rotation.y = rot.rotate
-      object.getWorldDirection(this.direction)
-
-    }
-    );
-    tween.start()
-
-
   }
 }
