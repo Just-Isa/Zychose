@@ -4,7 +4,6 @@ import de.hsrm.mi.team3.swtp.domain.User;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendMouseMessage;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendRoomMessage;
-
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,11 +1,9 @@
 package de.hsrm.mi.team3.swtp.services;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
+import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public interface RoomService {
