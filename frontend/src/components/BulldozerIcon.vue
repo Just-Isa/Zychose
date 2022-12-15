@@ -93,8 +93,7 @@ function changeActiveState() {
         fillSvg2.style.fill = "white";
         fillSvg3.style.fill = "white";
       }
-
-      entireDoc.style.cursor = 'v-bind(url("props.cursorSrc")) 25 25, auto';
+      entireDoc.style.cursor = `url("${props.cursorSrc}") 25 25, auto`;
     }
   }
 }

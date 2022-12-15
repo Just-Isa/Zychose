@@ -41,7 +41,7 @@ Source for basic tab idea: https://vuejsexamples.com/tabbed-content-with-vue-js/
         :types="bikeTypes"
       />
       <BulldozerIcon
-        :cursorSrc="'src/assets/img/bulldozer.svg'"
+        cursorSrc="src/assets/img/bulldozer-cursor.svg"
         class="pointer-events-auto"
       />
     </div>
