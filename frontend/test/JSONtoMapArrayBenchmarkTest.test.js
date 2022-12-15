@@ -28,5 +28,5 @@ test("full JSON (benchmark)", () => {
 
   let endTime = performance.now();
 
-  expect(endTime - startTime).toBeLessThan(100);
+  expect(endTime - startTime).toBeLessThan(1000);
 });
