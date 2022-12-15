@@ -40,7 +40,10 @@ Source for basic tab idea: https://vuejsexamples.com/tabbed-content-with-vue-js/
         class="pointer-events-auto tabcontent flex rounded-b-lg rounded-tr-lg"
         :types="bikeTypes"
       />
-      <BulldozerIcon class="pointer-events-auto" />
+      <BulldozerIcon
+        :cursorSrc="'src/assets/img/bulldozer.svg'"
+        class="pointer-events-auto"
+      />
     </div>
   </div>
 </template>
