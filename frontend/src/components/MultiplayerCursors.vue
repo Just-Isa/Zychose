@@ -22,6 +22,7 @@ import { onMounted, reactive, ref } from "vue";
 
 // https://vueuse.org/core/usemouse/
 import { useMouse } from "@vueuse/core";
+import { MessageOperator } from "@/services/MessageOperators";
 
 const colors = ref([
   "#A9E5BB",
@@ -48,7 +49,7 @@ let lastYsent = 0;
 //const mouseMap = reactive(new Map<string, number[]>());
 let mouseDict: { [sessionID: string]: number[] } = reactive({});
 
-const { roomState, receiveRoom, swapRooms } = useRoom();
+const { roomState, receiveRoom, swapRooms, updateRoom } = useRoom();
 const { publishMouse, mouseState, receiveMouse } = useUser();
 
 onMounted(() => {
