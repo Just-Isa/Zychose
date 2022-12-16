@@ -1,118 +1,118 @@
 import * as THREE from "three";
 import type { Scene } from "three";
 import { timestamp } from '@vueuse/core';
+import { useInputs } from "./useInputs";
+import { TiltShiftPass } from "troisjs";
 
+const { keysPressed } = useInputs()
 
 
 export class Car {
     direction = new THREE.Vector3();
     destination = new THREE.Vector3();
-    keysPressed = new Map<string, boolean>();
     speed: number;
     maxspeed: number
+    handling: number;
+    slowing:number
     car: THREE.Group;
-    renderer: THREE.Renderer;
-    scene: THREE.Scene;
+    acceleration: number;
     camera: THREE.Camera;
-    
 
-    constructor(car: THREE.Group, scene: Scene, renderer: THREE.Renderer, camera: THREE.Camera) {
+    constructor(car: THREE.Group, camera: THREE.Camera) {
 
         this.speed = 0;
         this.car = car;
-        this.renderer = renderer;
-        this.scene = scene;
         this.camera = camera;
         this.maxspeed = 2;
-    
+        this.acceleration = 0.1;
+        this.handling = 0.15
+        this.slowing = -0.15
 
-        
-    
     }
+    /**
+     * handles car with inputs.
+     */
+    handelCar() {
+        if (!keysPressed.get("ArrowUp") && !keysPressed.get("ArrowDown")) {
+            this.carRunOut()
+        }
 
-    handleWithKeys() {
+        if (keysPressed.get("ArrowUp")) {
+            this.calcSpeed(this.acceleration)
+        }
+        if (keysPressed.get("ArrowDown")) {
+            this.calcSpeed(-this.acceleration)
+        }
 
-        document.addEventListener('keydown', (event) => {
-            
-            
-            this.car.getWorldDirection(this.direction)
-            this.keysPressed.set(event.key, true);
-            console.log("keyPressed:", this.keysPressed)
-            
+        if (this.speed != 0) {
+            if (keysPressed.get("ArrowLeft")) {
+                this.rotate(this.handling) 
 
-        });
+            }
+            if (keysPressed.get("ArrowRight")) {
+                this.rotate(-this.handling) 
 
-        document.addEventListener('keyup', (event) => {
-            this.keysPressed.set(event.key, false);
-
-        });
-
-        const animate = () => {
-            console.log("speed", this.speed)
-            this.executeMovement1()
-            this.renderer.render(this.scene, this.camera);
-            requestAnimationFrame(animate);
-        
-    
-        };
-        animate()
-        
-        
+            }
+        }
+        this.move()
     }
-
-    
-    executeMovement1() {
-        if(!this.keysPressed.get("ArrowUp") && !this.keysPressed.get("ArrowDown") && this.speed != 0){
-            if(this.speed > 0){
-                if((Math.round((this.speed + -0.15)*100)/100)<0){
-                    this.speed = 0;
-                }else{
-                    this.speed = Math.round((this.speed - 0.15)*100)/100;
-                }
-            }else{
-                if((Math.round((this.speed + 0.15)*100)/100)>0){
-                    this.speed = 0;
-                }else{
-                    this.speed = Math.round((this.speed + 0.15)*100)/100;
-                }
-            }
-        }
-
-        if (this.keysPressed.get("ArrowUp")) {
-            
-            if((Math.round((this.speed + +0.1)*100)/100) >= this.maxspeed){
-                this.speed = this.maxspeed;
-            }else{
-                this.speed = Math.round((this.speed + 0.1)*100)/100
-            }
-            
-        }
-        if(this.speed != 0){
-            if (this.keysPressed.get("ArrowLeft")) {
-                this.car.rotation.y += 0.15 //+ 0.1/Math.round(Math.abs(this.speed))
-
-            }
-            if (this.keysPressed.get("ArrowRight")) {
-                this.car.rotation.y -= 0.15 //+ 0.1/Math.round(Math.abs(this.speed))
-
-            }
-        }
-        if (this.keysPressed.get("ArrowDown")) {
-            if((Math.round((this.speed + -0.1)*100)/100) <= -this.maxspeed){
-                this.speed = -this.maxspeed;
-            }else{
-                this.speed = Math.round((this.speed - 0.1)*100)/100
-            }
-            // this.car.getWorldDirection(this.direction)
-            // this.destination.add(this.direction.multiplyScalar(-1.7))
-            // //car.position.add(direction.multiplyScalar(1))
-            
-            // this.car.position.lerpVectors(this.car.position,this.destination,0.5)
-        }
+    /**
+     * moves Car
+     */
+    private move(){
         this.car.getWorldDirection(this.direction)
         this.destination.add(this.direction.multiplyScalar(this.speed))
-        //car.position.add(direction.multiplyScalar(1))
-        this.car.position.lerpVectors(this.car.position,this.destination,0.5)
+        this.car.position.lerpVectors(this.car.position, this.destination, 0.5)
     }
+
+    /**
+     * 
+     * calculates speed
+     * @param acc 
+     */
+    private calcSpeed(acc: number) {
+        // math.round because js can count corretly
+        let curspeed = Math.round((this.speed + acc) * 100) / 100;
+        if (Math.abs(curspeed) >= this.maxspeed) {
+            if (acc < 0) {
+                this.speed = -this.maxspeed;
+            } else {
+                this.speed = this.maxspeed;
+            }
+        } else {
+            this.speed = curspeed
+        }
+    }
+    /**
+     * rotates car
+     * @param hand 
+     */
+    private rotate(hand:number) {
+        this.car.rotation.y += hand //+ 0.1/Math.round(Math.abs(this.speed))
+    }
+
+    /**
+     * lets car run out after user doesnt move car
+     */
+    private carRunOut(){
+        if (this.speed > 0) {
+            let curSpeed = Math.round((this.speed + this.slowing) * 100) / 100
+
+            if (curSpeed < 0) {
+                this.speed = 0;
+            } else {
+                this.speed = curSpeed;
+            }
+        } else if(this.speed < 0) {
+            let curSpeed = Math.round((this.speed - this.slowing) * 100) / 100
+
+            if (curSpeed > 0) {
+                this.speed = 0;
+            } else {
+                this.speed = curSpeed
+            }
+        }
+    }
+
 
 }

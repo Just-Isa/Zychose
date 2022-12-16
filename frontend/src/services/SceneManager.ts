@@ -17,11 +17,13 @@ export class SceneManager {
   renderer:THREE.Renderer;
   camera:THREE.Camera ;
   direction = new THREE.Vector3();
+  cars:Car[];
   constructor(scene: Scene, blockMap: Map<string, Promise<THREE.Group>>, renderer:THREE.Renderer, camera:THREE.Camera) {
     this.scene = scene;
     this.blockMap = blockMap;
     this.renderer = renderer;
     this.camera = camera;
+    this.cars = []
   }
 
   /**
@@ -106,19 +108,22 @@ export class SceneManager {
     this.addBlockToScene("landscape", 0, -17, 0, 0);
   }
 
-  handleCar() {
+
+  /**
+   * adds new car
+   */
+  addCar() {
     const key = "car";
     const blockPromise = this.blockMap.get(key);
     if (blockPromise != undefined) {
       blockPromise
         ?.then((block) => {
-          const carObject = block.clone();
+          const car = block.clone();
           
-          carObject.position.set(0, 0, 0);
-          this.scene.add(carObject);
-          let carm = new Car(carObject, this.scene, this.renderer, this.camera)
-          carm.handleWithKeys()
-
+          car.position.set(0, 0, 0);
+          this.scene.add(car);
+          
+          this.cars.push(new Car(car, this.camera))
         })
         .catch((error) => {
           this.getErrorBlock(0, 0, 0);
@@ -128,4 +133,20 @@ export class SceneManager {
       this.getErrorBlock(0, 0, 0);
     }
   }
+
+  /**
+   * Renders and animates scene.
+   * 
+   */
+  handleRender(){
+    const animate = () => {
+      this.cars.forEach(car =>{
+        car.handelCar()
+      })
+      this.renderer.render(this.scene, this.camera);
+      requestAnimationFrame(animate);
+  };
+  animate()
+  }
+
 }

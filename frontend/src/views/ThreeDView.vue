@@ -37,11 +37,14 @@ import {
 import { useGLB } from "@/services/glbBlockLoader";
 import { SceneManager } from "@/services/SceneManager";
 import * as TWEEN from '@tweenjs/tween.js'
+import { useInputs } from '@/services/useInputs';
 
 
 const { glbState, generateBlockMap } = useGLB();
 
 generateBlockMap();
+
+const {inputs} = useInputs()
 
 export default {
   components: { Box, Camera, LambertMaterial, PointLight, Renderer, Scene},
@@ -55,8 +58,9 @@ export default {
 
     sceneManager.createLandscape();
     sceneManager.createGrid();
-    sceneManager.handleCar();
-
+    sceneManager.addCar();
+    sceneManager.handleRender();
+    inputs()
 
 
   },
