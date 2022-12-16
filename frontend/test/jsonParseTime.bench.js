@@ -1,4 +1,4 @@
-import {bench, expect } from "vitest";
+import { bench, expect } from "vitest";
 import { gridToJson, jsonToState } from "../src/services/JSONparser.ts";
 
 let streetState = [];
