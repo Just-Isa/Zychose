@@ -27,9 +27,11 @@ export function useRoom() {
 }
 
 //function to save the roomMap for a Room
+/* eslint-disable @typescript-eslint/no-unused-vars*/
 function updateRoomMap(rMap: String): void {
   roomState.room.roomMap = rMap;
 }
+/* eslint-enable */
 
 const { getRoomList } = useRoomBox();
 /**
