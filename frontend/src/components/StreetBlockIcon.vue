@@ -1,5 +1,5 @@
 <template>
-  <span
+  <div
     class="tile-ele m-1.5 inline-block hover:cursor-pointer h-20 w-20 bg-street-menu-tile-bg-turquoise rounded-lg"
     :class="
       getActiveState() == prop.type
@@ -7,15 +7,18 @@
         : 'inactive'
     "
   >
-    <div :id="prop.type" @click="changeActiveState(prop.type)">
-      <div class="tile-current flex justify-center items-center rounded-lg">
-        <img
-          class="h-16 w-16 mt-2"
-          :src="getImgSrc(prop.type)"
-          :alt="prop.type"
-        />
-      </div>
+    <div
+      :id="prop.type"
+      @click="changeActiveState(prop.type)"
+      class="tile-current flex justify-center items-center rounded-lg"
+    >
+      <img
+        class="h-16 w-16 mt-2"
+        :src="getImgSrc(prop.type)"
+        :alt="prop.type"
+      />
     </div>
+
     <div
       :class="
         rotationAllowed[0]
@@ -48,7 +51,7 @@
         <img :src="getImgSrc(prop.type)" :alt="prop.type" />
       </div>
     </div>
-  </span>
+  </div>
 </template>
 
 <script setup lang="ts">
