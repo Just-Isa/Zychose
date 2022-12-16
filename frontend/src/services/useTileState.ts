@@ -96,20 +96,9 @@ export function useTile() {
   }
 
   /**
-   * Get the current activeState
-   * @returns current activeState (Type of tile or "delete" from Bulldozer)
-   */
-  function getActiveState() {
-    return state.currActiveState;
-  }
-
-  /**
    * Set activeState
    * @param {string} type - Type of Tile or "delete" from Bulldozer
    */
-  function setActiveState(type: string) {
-    state.currActiveState = type;
-  }
 
   /**
    * IMPORTANT: Only for Tile-Types. Make sure that type is not "delete"
@@ -130,8 +119,6 @@ export function useTile() {
     getpossibleRotation,
     getRotate,
     setRotate,
-    getActiveState,
-    setActiveState,
     getImgSrc,
   };
 }
