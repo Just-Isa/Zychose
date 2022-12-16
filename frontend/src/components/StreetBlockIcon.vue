@@ -2,7 +2,7 @@
   <div
     class="tile-ele m-1.5 inline-block hover:cursor-pointer h-20 w-20 bg-street-menu-tile-bg-turquoise rounded-lg"
     :class="
-      getActiveState() == prop.type
+      tile.currActiveState == prop.type
         ? 'active outline bg-active-block-turquoise outline-white outline-3'
         : 'inactive'
     "
@@ -64,9 +64,9 @@ const prop = defineProps<{
 const {
   getpossibleRotation,
   setRotate,
+  tile,
   getRotate,
-  setActiveState,
-  getActiveState,
+  changeCurrentTileType,
   getImgSrc,
 } = useTile();
 
@@ -94,7 +94,7 @@ if (possibleRotation?.length == 3) {
  * @param {string} type - current tile type
  */
 function changeActiveState(type: string) {
-  setActiveState(type);
+  changeCurrentTileType(type);
   const entireDoc = document.documentElement;
   entireDoc.style.cursor = "default";
   // WIP: Später hierüber auch Cursor in Tile umwandelbar, laut Absprache aber noch nicht in Story
@@ -108,11 +108,11 @@ function changeActiveState(type: string) {
  * @param {number} degree - new rotation value
  */
 function changeTileRotation(degree: number) {
-  changeActiveState(prop.type);
+  changeCurrentTileType(prop.type);
   setRotate(degree, prop.type);
   let rotateClass = `rotate-${getRotate(prop.type)}`;
 
-  const currentTile = document.getElementById(getActiveState());
+  const currentTile = document.getElementById(tile.currActiveState);
   if (getRotate(prop.type) == 90) {
     console.log(currentTile);
     if (currentTile) {

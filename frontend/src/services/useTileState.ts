@@ -31,38 +31,27 @@ const initTiles: TileEle[] = [
   ]),
 ];
 
-const state = ref<ITileItem>({
-  type: "",
-  imgSrc: "",
-  rotate: 0,
-  possibleRotation: [true, true, true],
-});
-
 /**
  * Set reactive
  */
-const rea = reactive({
+const state = reactive({
   allTiles: initTiles,
   currActiveState: initCurrActiveState,
   bulldozerMode: false,
 });
 
 export function useTile() {
-  function getTileType() {
-    return state.value.type;
-  }
-
-  function setTileType(s: string) {
-    state.value.type = s;
-  }
-
   /**
    * Find an element of tileTypes by type name
    * @returns found tileType
    */
   function findElementByType(type: string) {
-    const ele = rea.allTiles.find((element) => element.type == type);
+    const ele = state.allTiles.find((element) => element.type == type);
     return ele;
+  }
+
+  function changeCurrentTileType(s: string) {
+    state.currActiveState = s;
   }
 
   /**
@@ -107,7 +96,7 @@ export function useTile() {
    * @returns current activeState (Type of tile or "delete" from Bulldozer)
    */
   function getActiveState() {
-    return rea.currActiveState;
+    return state.currActiveState;
   }
 
   /**
@@ -115,7 +104,7 @@ export function useTile() {
    * @param {string} type - Type of Tile or "delete" from Bulldozer
    */
   function setActiveState(type: string) {
-    rea.currActiveState = type;
+    state.currActiveState = type;
   }
 
   /**
@@ -131,9 +120,8 @@ export function useTile() {
 
   return {
     tile: readonly(state),
-    allTiles: rea.allTiles,
-    getTileType,
-    setTileType,
+    allTiles: state.allTiles,
+    changeCurrentTileType,
     getpossibleRotation,
     getRotate,
     setRotate,
