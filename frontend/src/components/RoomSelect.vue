@@ -15,7 +15,7 @@
         <p>{{ user.userName }}</p>
       </div>
     </div>
-    <ButtonJythonUpload></ButtonJythonUpload>
+    <ButtonJythonUpload :room-number="room.roomNumber"></ButtonJythonUpload>
   </div>
 </template>
 
