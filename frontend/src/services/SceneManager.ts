@@ -2,7 +2,6 @@ import * as THREE from "three";
 import type { Scene } from "three";
 import data from "../data/dummy.json";
 import { generateMapArray } from "./JSONtoMapArray";
-import * as TWEEN from '@tweenjs/tween.js'
 import { Car } from "./Car";
 
 const blockSize = 16;
@@ -14,16 +13,21 @@ export class SceneManager {
   scene: Scene;
   blockMap: Map<string, Promise<THREE.Group>>;
   streetArray: string[][] = generateMapArray(data);
-  renderer:THREE.Renderer;
-  camera:THREE.Camera ;
+  renderer: THREE.Renderer;
+  camera: THREE.Camera;
   direction = new THREE.Vector3();
-  cars:Car[];
-  constructor(scene: Scene, blockMap: Map<string, Promise<THREE.Group>>, renderer:THREE.Renderer, camera:THREE.Camera) {
+  cars: Car[];
+  constructor(
+    scene: Scene,
+    blockMap: Map<string, Promise<THREE.Group>>,
+    renderer: THREE.Renderer,
+    camera: THREE.Camera
+  ) {
     this.scene = scene;
     this.blockMap = blockMap;
     this.renderer = renderer;
     this.camera = camera;
-    this.cars = []
+    this.cars = [];
   }
 
   /**
@@ -108,7 +112,6 @@ export class SceneManager {
     this.addBlockToScene("landscape", 0, -17, 0, 0);
   }
 
-
   /**
    * adds new car
    */
@@ -119,11 +122,11 @@ export class SceneManager {
       blockPromise
         ?.then((block) => {
           const car = block.clone();
-          
+
           car.position.set(0, 0, 0);
           this.scene.add(car);
-          
-          this.cars.push(new Car(car, this.camera))
+
+          this.cars.push(new Car(car, this.camera));
         })
         .catch((error) => {
           this.getErrorBlock(0, 0, 0);
@@ -136,17 +139,17 @@ export class SceneManager {
 
   /**
    * Renders and animates scene.
-   * 
+   *
    */
-  handleRender(){
+  handleRender() {
     const animate = () => {
-      this.cars.forEach(car =>{
-        car.handelCar()
-      })
+      //every car gets rendered
+      this.cars.forEach((car) => {
+        car.handelCar();
+      });
       this.renderer.render(this.scene, this.camera);
       requestAnimationFrame(animate);
-  };
-  animate()
+    };
+    animate();
   }
-
 }

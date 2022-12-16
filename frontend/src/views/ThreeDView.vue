@@ -36,33 +36,28 @@ import {
 } from "troisjs";
 import { useGLB } from "@/services/glbBlockLoader";
 import { SceneManager } from "@/services/SceneManager";
-import * as TWEEN from '@tweenjs/tween.js'
-import { useInputs } from '@/services/useInputs';
-
+import { useInputs } from "@/services/useInputs";
 
 const { glbState, generateBlockMap } = useGLB();
 
 generateBlockMap();
 
-const {inputs} = useInputs()
+const { inputs } = useInputs();
 
 export default {
-  components: { Box, Camera, LambertMaterial, PointLight, Renderer, Scene},
+  components: { Box, Camera, LambertMaterial, PointLight, Renderer, Scene },
   mounted() {
     const blockMap = glbState.blockMap;
     const scene = (this.$refs.scene as any).scene;
     const renderer = (this.$refs.renderer as any).renderer;
     const camera = (this.$refs.camera as any).camera;
-    const sceneManager = new SceneManager(scene, blockMap,renderer, camera);
-   
+    const sceneManager = new SceneManager(scene, blockMap, renderer, camera);
 
     sceneManager.createLandscape();
     sceneManager.createGrid();
     sceneManager.addCar();
     sceneManager.handleRender();
-    inputs()
-
-
+    inputs();
   },
 };
 </script>
