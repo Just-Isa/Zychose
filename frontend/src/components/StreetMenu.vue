@@ -45,7 +45,7 @@ import StreetMenuFolder from "./StreetMenuFolder.vue";
 import BullDozerBtn from "./BullDozerBtn.vue";
 import { useTile } from "@/services/useTileState";
 
-const { changeCurrentTileType, tile, allTiles } = useTile();
+const { changeCurrentTileType, tile, allTiles, toggleBulldozer } = useTile();
 
 /**
  * activetab: numeration of tabs from left to right
@@ -60,7 +60,9 @@ const bikeTypes = ["straight", "tCrossing"];
  * @param newTabNumber number of the newly selected tab
  */
 function changeTab(newTabNumber: number) {
-  changeCurrentTileType(""); // set active StreetTile to "" when switching between folders
+  changeCurrentTileType("");
+  toggleBulldozer(false);
+  // set active StreetTile to "" when switching between folders
   console.log("altes Tab: " + activetab.value);
 
   activetab.value = newTabNumber;

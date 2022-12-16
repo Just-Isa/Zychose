@@ -54,6 +54,10 @@ export function useTile() {
     state.currActiveState = s;
   }
 
+  function toggleBulldozer(b: boolean) {
+    state.bulldozerMode = b;
+  }
+
   /**
    * IMPORTANT: Only for Tile-Types. Make sure that type is not "delete"
    * Get the possible rotate values from tile
@@ -122,6 +126,7 @@ export function useTile() {
     tile: readonly(state),
     allTiles: state.allTiles,
     changeCurrentTileType,
+    toggleBulldozer,
     getpossibleRotation,
     getRotate,
     setRotate,

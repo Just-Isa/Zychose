@@ -67,6 +67,7 @@ const {
   tile,
   getRotate,
   changeCurrentTileType,
+  toggleBulldozer,
   getImgSrc,
 } = useTile();
 
@@ -94,7 +95,10 @@ if (possibleRotation?.length == 3) {
  * @param {string} type - current tile type
  */
 function changeActiveState(type: string) {
+  console.log("VORHER: " + tile.currActiveState);
   changeCurrentTileType(type);
+  toggleBulldozer(false);
+  console.log("AKTUELLE: " + tile.currActiveState);
   const entireDoc = document.documentElement;
   entireDoc.style.cursor = "default";
   // WIP: Später hierüber auch Cursor in Tile umwandelbar, laut Absprache aber noch nicht in Story
@@ -109,6 +113,7 @@ function changeActiveState(type: string) {
  */
 function changeTileRotation(degree: number) {
   changeCurrentTileType(prop.type);
+  toggleBulldozer(false);
   setRotate(degree, prop.type);
   let rotateClass = `rotate-${getRotate(prop.type)}`;
 

@@ -3,7 +3,7 @@
     @click="changeActiveState()"
     class="shadow-lg border-4 rounded-full ml-4 hover:cursor-pointer bg-bulldozer-yellow h-16 w-16 mt-2"
     :class="
-      getActiveState() == type
+      tile.currActiveState == type
         ? 'active border-white'
         : 'inactive border-bulldozer-gray'
     "
@@ -54,9 +54,9 @@
 
 <script setup lang="ts">
 import { useTile } from "@/services/useTileState";
-import { onMounted } from "vue";
+import { watch } from "vue";
 
-const { setActiveState, getActiveState } = useTile();
+const { changeCurrentTileType, tile, toggleBulldozer } = useTile();
 
 const props = defineProps<{
   cursorSrc: string;
@@ -72,14 +72,12 @@ function changeActiveState() {
   const entireDoc = document.documentElement;
 
   if (entireDoc) {
-    if (getActiveState() == type) {
-      colorBulldozer(bulldozerGray);
-      setActiveState("");
-      entireDoc.style.cursor = "default";
+    if (tile.currActiveState == type) {
+      changeCurrentTileType("");
+      toggleBulldozer(false);
     } else {
-      colorBulldozer("white");
-      setActiveState(type);
-      entireDoc.style.cursor = `url("${props.cursorSrc}") 25 25, auto`;
+      changeCurrentTileType(type);
+      toggleBulldozer(true);
     }
   }
 }
@@ -94,4 +92,18 @@ function colorBulldozer(color: string) {
     fillSvg3.style.fill = color;
   }
 }
+
+watch(tile, () => {
+  console.log("CURRENT MODE" + tile.bulldozerMode);
+  const entireDoc = document.documentElement;
+  if (entireDoc) {
+    if (tile.bulldozerMode) {
+      entireDoc.style.cursor = `url("${props.cursorSrc}") 25 25, auto`;
+      colorBulldozer("white");
+    } else {
+      entireDoc.style.cursor = "default";
+      colorBulldozer(bulldozerGray);
+    }
+  }
+});
 </script>
