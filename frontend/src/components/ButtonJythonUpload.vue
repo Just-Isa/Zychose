@@ -58,7 +58,7 @@ async function submitForm() {
   formData.append('file', files.value[0]);
 
   try {
-    const response = await fetch('/upload', reqOptions)
+    const response = await fetch(`/upload/${props.roomNumber}`, reqOptions)
       .then((response) => {
         if(!response.ok) {
           //console.error("ERROR in response")

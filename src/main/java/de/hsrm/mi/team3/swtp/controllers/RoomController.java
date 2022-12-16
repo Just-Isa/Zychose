@@ -16,13 +16,20 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class RoomController {
 
-  @Autowired RoomBoxServiceImplementation roomBoxService;
-  @Autowired RoomServiceImplementation roomService;
-  @Autowired BackendInfoService backservice;
+  @Autowired
+  RoomBoxServiceImplementation roomBoxService;
+  @Autowired
+  RoomServiceImplementation roomService;
+  @Autowired
+  BackendInfoService backservice;
   Logger logger = LoggerFactory.getLogger(RoomController.class);
 
   /*
@@ -41,7 +48,7 @@ public class RoomController {
   /**
    * Used to differentiate and update specific rooms.
    *
-   * @param operation Operation that is used
+   * @param operation  Operation that is used
    * @param roomNumber Room on which the changes occured
    */
   @MessageMapping("/topic/room/{roomNumber}")
@@ -101,4 +108,16 @@ public class RoomController {
       user.setUserName("Raus aus meinem Kopf");
     }
   }
+
+  @PostMapping("/upload/{roomNumber}")
+  public void uploadJythonFile(@RequestParam("file") MultipartFile file, @PathVariable("roomNumber") int roomNumber) {
+    logger.info(
+        "FILE RECEIVED: "
+            + file.getOriginalFilename());
+
+    Room room = this.roomBoxService.getSpecificRoom(roomNumber);
+
+    this.roomService.saveScriptToRoom(file, room);
+  }
+
 }

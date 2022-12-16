@@ -1,8 +1,9 @@
 package de.hsrm.mi.team3.swtp.domain;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 /*
  * Room class that is used within the RoomBox.
@@ -13,7 +14,7 @@ public class Room {
   private String roomName;
   private int roomNumber;
   private List<User> userList;
-  private File jythonScript;
+  private MultipartFile jythonScript;
 
   public Room(int roomNumber) {
     this.roomName = "default-name";
@@ -55,11 +56,11 @@ public class Room {
     this.roomNumber = roomNumber;
   }
 
-  public File getJythonScript() {
+  public MultipartFile getJythonScript() {
     return jythonScript;
   }
 
-  public void setJythonScript(File jythonScript) {
+  public void setJythonScript(MultipartFile jythonScript) {
     this.jythonScript = jythonScript;
   }
 }

@@ -4,6 +4,7 @@ import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public interface RoomService {
@@ -13,5 +14,5 @@ public interface RoomService {
 
   public List<User> getUserList(Room room);
 
-  public void saveScriptToRoom(String encodedString);
+  public void saveScriptToRoom(MultipartFile file, Room room);
 }
