@@ -10,7 +10,7 @@ export interface IRoomState {
 }
 
 const roomState = reactive<IRoomState>({
-  room: new Room("", 1, []),
+  room: new Room("", 1, [], ""),
   errorMessage: "",
 });
 
@@ -24,6 +24,11 @@ export function useRoom() {
     swapRooms,
     removeUserFromRoom,
   };
+}
+
+//function to save the roomMap for a Room
+function updateRoomMap(rMap: String): void {
+  roomState.room.roomMap = rMap;
 }
 
 const { getRoomList } = useRoomBox();
