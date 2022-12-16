@@ -3,7 +3,7 @@ import { reactive, readonly } from "vue";
 
 /**
  * Interface to save street information
- * @param {TypeStreet} streetType - Type of Street
+ * @param {String} streetType - Type of Street
  * @param {number} rotation - street rotation in degree
  * @param {number} posX - Position on x axis
  * @param {number} posY - Position on y axis
@@ -22,10 +22,9 @@ const state = reactive({
 });
 /**
  * State Management for the streets
- * @see {@link handleClick} function that handles the onGridClickObject
- * @see {@link TypeStreet} enum for the different street types and delete
+ * @see {@link updateStreetState} function that handles the onGridClickObject
  * @see {@link IStreetInformation} interface for the information saved in the state
- * @returns Returns the Array of streets (readonly), the handleClick function and the enum TypeStreet
+ * @returns Returns the Array of streets (readonly) and the functions updateStreetState, isStreetPlaced and recieveNewStreetState,
  */
 export function useStreets() {
   /**
@@ -34,7 +33,7 @@ export function useStreets() {
    * Otherwise the street needs to be saved.
    * @param {IStreetInformation} onGridClickObject - IStreetInformation Object that needs to be saved or deleted
    */
-  function handleClick(onGridClickObject: IStreetInformation): void {
+  function updateStreetState(onGridClickObject: IStreetInformation): void {
     if (onGridClickObject.streetType === "delete") {
       state.streets = state.streets.filter(
         (street) =>
@@ -42,19 +41,18 @@ export function useStreets() {
           street.posY !== onGridClickObject.posY
       );
     } else {
-      const str = state.streets.filter(
+      const foundStreet = state.streets.find(
         (street) =>
           street.posX === onGridClickObject.posX &&
           street.posY === onGridClickObject.posY
       );
-      if (str.length > 0) {
-        str[0].rotation = onGridClickObject.rotation;
-        str[0].streetType = onGridClickObject.streetType;
+      if (foundStreet) {
+        foundStreet.rotation = onGridClickObject.rotation;
+        foundStreet.streetType = onGridClickObject.streetType;
       } else {
         state.streets.push(onGridClickObject);
       }
     }
-    console.log("STATE: ", state.streets);
     gridToJson(state.streets);
   }
 
@@ -73,15 +71,18 @@ export function useStreets() {
    * @returns boolean, if there is a street placed on the checked cell
    */
   function isStreetPlaced(row: number, col: number) {
-    const streetFound = state.streets.filter(
-      (street) => street.posX === row && street.posY === col
-    );
-    return streetFound.length > 0;
+    if (
+      state.streets.find((street) => street.posX === row && street.posY === col)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   return {
     streets: readonly(state.streets),
-    handleClick,
+    updateStreetState,
     isStreetPlaced,
     recieveNewStreetState,
   };

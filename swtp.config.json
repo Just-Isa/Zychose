@@ -3,23 +3,31 @@
     {
       "name": "cross-road",
       "svgPath": "/src/assets/img/cross-road.svg",
-      "glbPath": ""
+      "glbPath": "",
+      "vehicleTypes":["car", "bicycle"],
+      "possibleRotations": []
     },
     {
       "name": "curve-road",
       "svgPath": "/src/assets/img/curve-road.svg",
-      "glbPath": ""
+      "glbPath": "",
+      "vehicleTypes":["car", "bicycle"],
+      "possibleRotations": [0, 90, 180, 270]
     },
     {
       "name": "straight-road",
       "svgPath": "/src/assets/img/straight-road.svg",
-      "glbPath": ""
+      "glbPath": "",
+      "vehicleTypes":["car", "bicycle"],
+      "possibleRotations": [0, 90]
     },
     {
       "name": "t-road",
       "svgPath": "/src/assets/img/t-road.svg",
-      "glbPath": ""
+      "glbPath": "",
+      "vehicleTypes":["car", "bicycle"],
+      "possibleRotations": [0, 90, 180, 270]
     }
   ],
-  "rotations": [0, 90, 180, 270]
+  "gridSize": 100
 }

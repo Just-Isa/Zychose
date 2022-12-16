@@ -1,9 +1,10 @@
 <template>
   <div id="wrapper">
     <table id="gridTable" class="border-separate">
-      <tr v-for="row in props.gridSize" v-bind:key="row" class="gridRow">
+      <tr v-for="row in checkedGridSize" v-bind:key="row" class="gridRow">
+        <!-- //TODO sobald die Informationen ueber streetType und rotation aus dem State gelesen werden koennen, muss die zeile v-on:dblclick="clearCell(row, col)" geloescht werden -->
         <td
-          v-for="col in props.gridSize"
+          v-for="col in checkedGridSize"
           class="gridCell"
           v-bind:key="col"
           v-on:click="cellClicked(row, col)"
@@ -19,18 +20,30 @@
 <script setup lang="ts">
 import { useStreets, type IStreetInformation } from "../services/useStreets";
 import swtpConfigJSON from "../../../swtp.config.json";
+import { computed } from "vue";
 
 /**
  * @param {number} gridSize defines the size of the grid component
  */
 const props = defineProps<{
-  gridSize: number;
+  gridSize: any;
 }>();
-const { handleClick, isStreetPlaced } = useStreets();
+//TODO werte für 100 und 20 vllt auch in die config --> können dort aber auch so angepasst werden, dass bullshit drin ist
+const checkedGridSize = computed(() => {
+  if (isNaN(props.gridSize)) {
+    return 100;
+  } else {
+    if (props.gridSize < 20) {
+      return 20;
+    } else {
+      return props.gridSize;
+    }
+  }
+});
+const { updateStreetState, isStreetPlaced } = useStreets();
 const streetTypes = swtpConfigJSON.streetTypes;
 //TODO
-//Sobald der Input von Malte, Lara und Antonia eingelesen werden kann, wird diese Methode angepasst.
-//Hier wird der Input(strassentyp und rotation) aus dem anderen state geholt und zusammen mit den Positionen fuer die Achsen im state fuer den grid gespeichert.
+//Hier wird der Input(strassentyp und rotation), sobald es moeglich ist, aus dem anderen state geholt und zusammen mit den Positionen fuer die Achsen im state fuer die strassen gespeichert
 /**
  * cellClicked handles the click event for cells.
  * Data like Typestreet and rotation of the selected Street are passed in through a state.
@@ -40,8 +53,8 @@ const streetTypes = swtpConfigJSON.streetTypes;
  */
 function cellClicked(posX: number, posY: number): void {
   console.log("(posX,posY): ", [posX, posY]);
-  const tabelle = document.getElementById("gridTable") as HTMLTableElement;
-  const cell = tabelle.rows[posX - 1].cells[posY - 1];
+  const table = document.getElementById("gridTable") as HTMLTableElement;
+  const cell = table.rows[posX - 1].cells[posY - 1];
   /* testInput has to be hard coded as long as we're not able to get the informations from the states of the streetTileMenu */
   let testInput: IStreetInformation = {
     streetType: "straight-road",
@@ -49,8 +62,8 @@ function cellClicked(posX: number, posY: number): void {
     posX: posX,
     posY: posY,
   };
-  setCellStyle(cell, testInput);
-  handleClick(testInput);
+  setCellBackgroundStyle(cell, testInput);
+  updateStreetState(testInput);
 }
 
 /**
@@ -60,8 +73,9 @@ function cellClicked(posX: number, posY: number): void {
  * @param {number} y position on y axis (click)
  */
 function onHover(x: number, y: number): void {
-  const tabelle = document.getElementById("gridTable") as HTMLTableElement;
-  const cell = tabelle.rows[x - 1].cells[y - 1];
+  const table = document.getElementById("gridTable") as HTMLTableElement;
+  const cell = table.rows[x - 1].cells[y - 1];
+  //TODO sobald man die Informationen ueber streetType und rotation aus dem State lesen kann, muss der code unterhalb angepasst werden
   cell.style.backgroundImage = "url(/src/assets/img/cross-road.svg)";
   cell.style.opacity = "0.5";
 }
@@ -75,8 +89,8 @@ function onHover(x: number, y: number): void {
  * @param {number} y position on y axis (click)
  */
 function onEndHover(x: number, y: number): void {
-  const tabelle = document.getElementById("gridTable") as HTMLTableElement;
-  const cell = tabelle.rows[x - 1].cells[y - 1];
+  const table = document.getElementById("gridTable") as HTMLTableElement;
+  const cell = table.rows[x - 1].cells[y - 1];
   if (isStreetPlaced(x, y)) {
     cellClicked(x, y);
   } else {
@@ -86,15 +100,15 @@ function onEndHover(x: number, y: number): void {
 }
 
 /**
- * //TODO
+ * //TODO linter ignore erweitern und streets muessen vom state importiert werden
  * Function to display the streets that are saved in the state.
  */
 /*
  function stateToGrid():void{
-  const tabelle = document.getElementById("gridTable") as HTMLTableElement;
+  const table = document.getElementById("gridTable") as HTMLTableElement;
   for(const street of streets){
-    const cell = tabelle.rows[street.posX - 1].cells[street.posY - 1];
-    setCellStyle(cell, street);
+    const cell = table.rows[street.posX - 1].cells[street.posY - 1];
+    setCellBackgroundStyle(cell, street);
   }
 }*/
 
@@ -103,7 +117,7 @@ function onEndHover(x: number, y: number): void {
  * @param {HTMLTableCellElement} cell cell object which style should be set
  * @param {IStreetInformation} street information about the street
  */
-function setCellStyle(
+function setCellBackgroundStyle(
   cell: HTMLTableCellElement,
   street: IStreetInformation
 ): void {
@@ -120,7 +134,6 @@ function setCellStyle(
 
 /**
  * //TODO
- * Sobald der Input von Malte, Lara und Antonia eingelesen werden kann, wird diese Methode nicht mehr gebraucht.
  * Diese Methode ist nur zum testen gedacht, um zu sehen, ob Strassen richtig aus dem state geloescht werden.
  * Sie wird entfernt, sobald der Strassentyp und die Rotation ueber einen weiteren State ausgelesen werden koennen.
  * Dann wird das loeschen der Zelle ueber die cellClicked Methode gemacht.
@@ -133,9 +146,9 @@ function clearCell(posX: number, posY: number): void {
     posX: posX,
     posY: posY,
   };
-  const tabelle = document.getElementById("gridTable") as HTMLTableElement;
-  handleClick(neuerInput);
-  const cell = tabelle.rows[posX - 1].cells[posY - 1];
+  const table = document.getElementById("gridTable") as HTMLTableElement;
+  updateStreetState(neuerInput);
+  const cell = table.rows[posX - 1].cells[posY - 1];
   cell.style.backgroundImage = "";
   cell.style.backgroundSize = "cover";
   cell.style.backgroundRepeat = "no-repeat";
