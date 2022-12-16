@@ -35,20 +35,23 @@ import { computed } from "vue";
 const props = defineProps<{
   gridSize: any;
 }>();
-//TODO werte für 100 und 20 vllt auch in die config --> können dort aber auch so angepasst werden, dass bullshit drin ist
+/**
+  //TODO werte für 100 und 20 vllt auch in die config --> können dort aber auch so angepasst werden, dass bullshit drin ist
+  * Hardcoded Wert 24, weil 1rem entspricht 16px, also 1920/16 = 120 -> 120/5rem (cell-width) = 24 cells
+  //TODO ?min-gridSize dynamisch berechenbar machen/ cell-size in config einstellbar ----- storyless task oder issue?
+ */
 const checkedGridSize = computed(() => {
   if (isNaN(props.gridSize)) {
     return 100;
   } else {
-    if (props.gridSize < 20) {
-      return 20;
+    if (props.gridSize < 24) {
+      return 24;
     } else {
       return props.gridSize;
     }
   }
 });
 const { updateStreetState, isStreetPlaced, streets } = useStreets();
-
 const streetTypes = swtpConfigJSON.streetTypes;
 //TODO
 //Hier wird der Input(strassentyp und rotation), sobald es moeglich ist, aus dem anderen state geholt und zusammen mit den Positionen fuer die Achsen im state fuer die strassen gespeichert
