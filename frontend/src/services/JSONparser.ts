@@ -9,17 +9,9 @@ import { useStreets } from "./useStreets";
 export function gridToJson(streets: IStreetInformation[]) {
   const { updateRoomMap } = useRoom();
   updateRoomMap(JSON.stringify(streets));
-
-  /*jsonToState wird am Ende nicht an dieser Stelle aufgerufen,
-    das Linting weint aber sonst wegen unused function rum und zum testen hat es hier gereicht.
-    Der Aufruf erfolgt dann nach einer Nachricht vom Backend.
-
-    WICHTIG: jsonParseTime.test.js wurde ohne diesen Funktionsaufruf ausgeführt, da er nicht an dieser Stelle bleibt.
-    Zum testen also auskommentieren oder ähnliches.
-  */
-  jsonToState(JSON.stringify(streets));
 }
 
+/* eslint-disable @typescript-eslint/no-unused-vars*/
 /**
  * Function to parse a stringified JSON RoomMap in our state format.
  * This function is necessary to be able to synchronize the RoomMap for all users in a room.
@@ -30,3 +22,4 @@ export function jsonToState(roomMapAsString: string) {
   const newState = JSON.parse(roomMapAsString);
   recieveNewStreetState(newState);
 }
+/* eslint-enable */

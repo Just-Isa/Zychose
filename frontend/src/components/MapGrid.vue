@@ -1,11 +1,18 @@
 <template>
   <div id="wrapper">
-    <table id="gridTable" class="border-separate">
-      <tr v-for="row in checkedGridSize" v-bind:key="row" class="gridRow">
+    <table
+      id="gridTable"
+      class="bg-[#008000] w-full border-spacing-0 border-separate table-fixed"
+    >
+      <tr
+        v-for="row in checkedGridSize"
+        v-bind:key="row"
+        class="box-border h-20 p-0"
+      >
         <!-- //TODO sobald die Informationen ueber streetType und rotation aus dem State gelesen werden koennen, muss die zeile v-on:dblclick="clearCell(row, col)" geloescht werden -->
         <td
           v-for="col in checkedGridSize"
-          class="gridCell"
+          class="box-border w-20 p-0 border border-white/20 hover:border-white hover:shadow-[inset_0_0_4px_1px_#fff] hover:opacity-50 bg-cover bg-no-repeat bg-center"
           v-bind:key="col"
           v-on:click="cellClicked(row, col)"
           v-on:dblclick="clearCell(row, col)"
@@ -40,7 +47,8 @@ const checkedGridSize = computed(() => {
     }
   }
 });
-const { updateStreetState, isStreetPlaced } = useStreets();
+const { updateStreetState, isStreetPlaced, streets } = useStreets();
+
 const streetTypes = swtpConfigJSON.streetTypes;
 //TODO
 //Hier wird der Input(strassentyp und rotation), sobald es moeglich ist, aus dem anderen state geholt und zusammen mit den Positionen fuer die Achsen im state fuer die strassen gespeichert
@@ -77,7 +85,6 @@ function onHover(x: number, y: number): void {
   const cell = table.rows[x - 1].cells[y - 1];
   //TODO sobald man die Informationen ueber streetType und rotation aus dem State lesen kann, muss der code unterhalb angepasst werden
   cell.style.backgroundImage = "url(/src/assets/img/cross-road.svg)";
-  cell.style.opacity = "0.5";
 }
 
 /**
@@ -96,21 +103,20 @@ function onEndHover(x: number, y: number): void {
   } else {
     cell.style.backgroundImage = "";
   }
-  cell.style.opacity = "1";
 }
 
+/* eslint-disable @typescript-eslint/no-unused-vars*/
 /**
- * //TODO linter ignore erweitern und streets muessen vom state importiert werden
  * Function to display the streets that are saved in the state.
  */
-/*
- function stateToGrid():void{
+function stateToGrid(): void {
   const table = document.getElementById("gridTable") as HTMLTableElement;
-  for(const street of streets){
+  for (const street of streets) {
     const cell = table.rows[street.posX - 1].cells[street.posY - 1];
     setCellBackgroundStyle(cell, street);
   }
-}*/
+}
+/* eslint-enable */
 
 /**
  * Function that sets the style of the given Cell. The given street is needed for information about the streetType and rotation.
@@ -121,9 +127,6 @@ function setCellBackgroundStyle(
   cell: HTMLTableCellElement,
   street: IStreetInformation
 ): void {
-  cell.style.backgroundSize = "cover";
-  cell.style.backgroundRepeat = "no-repeat";
-  cell.style.backgroundPosition = "center";
   for (const streetType of streetTypes) {
     if (streetType.name === street.streetType) {
       cell.style.backgroundImage = `url(${streetType.svgPath})`;
@@ -150,8 +153,6 @@ function clearCell(posX: number, posY: number): void {
   updateStreetState(neuerInput);
   const cell = table.rows[posX - 1].cells[posY - 1];
   cell.style.backgroundImage = "";
-  cell.style.backgroundSize = "cover";
-  cell.style.backgroundRepeat = "no-repeat";
 }
 /*
     two EventListeners on the wheel-scrool to prevent the default browser functionalities and
@@ -173,49 +174,3 @@ document.addEventListener(
   { passive: false }
 );
 </script>
-
-<style>
-body {
-  padding: 0;
-  margin: 0;
-  scrollbar-width: none;
-}
-html {
-  -ms-overflow-style: none; /* for Internet Explorer, Edge */
-  scrollbar-width: none; /* for Firefox */
-  overflow: scroll;
-}
-html::-webkit-scrollbar {
-  display: none; /* for Chrome, Safari, and Opera */
-}
-.wrapper {
-  width: 100%;
-}
-table {
-  border-spacing: 0;
-  table-layout: fixed;
-  width: 100%;
-  background-color: green;
-}
-.gridRow {
-  height: 5em;
-  border: 1px solid black;
-  padding: 0;
-  box-sizing: border-box;
-}
-.gridCell {
-  width: 5em;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 0;
-  box-sizing: border-box;
-  /*
-        --- maybe useful for tile-types later ---
-        background-image: url("../../assets/grass.png");
-        background-size: cover;
-        background-repeat: no-repeat;*/
-}
-.gridCell:hover {
-  border-color: rgba(255, 255, 255, 1);
-  box-shadow: inset 0px 0px 4px 1px #fff;
-}
-</style>

@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import {bench, expect } from "vitest";
 import { gridToJson, jsonToState } from "../src/services/JSONparser.ts";
 
 let streetState = [];
@@ -13,21 +13,20 @@ for (let row = 1; row <= 100; row++) {
     streetState.push(newStreet);
   }
 }
+let stringifiedState = JSON.stringify(streetState);
 
-test("gridstate parsing to json time elapsed", () => {
+bench("gridstate parsing to json time elapsed", () => {
   const start = new Date().getTime();
   gridToJson(streetState);
   const elapsed = new Date().getTime() - start;
   const elapsedInSeconds = elapsed / 1000;
-  console.log(console.log(`${elapsedInSeconds}s`));
-  expect(elapsedInSeconds).toBeLessThan(0.01);
+  expect(elapsedInSeconds).toBeLessThan(0.1);
 });
 
-test("parsing from json to state time elapsed", () => {
+bench("parsing from json to state time elapsed", () => {
   const start = new Date().getTime();
-  jsonToState(JSON.stringify(streetState));
+  jsonToState(stringifiedState);
   const elapsed = new Date().getTime() - start;
   const elapsedInSeconds = elapsed / 1000;
-  console.log(console.log(`${elapsedInSeconds}s`));
-  expect(elapsedInSeconds).toBeLessThan(0.01);
+  expect(elapsedInSeconds).toBeLessThan(0.1);
 });
