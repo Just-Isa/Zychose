@@ -94,18 +94,4 @@ function colorBulldozer(color: string) {
     fillSvg3.style.fill = color;
   }
 }
-
-//wahrscheinlich bullshit, aber ey
-
-const listener = () => {
-  console.log("listen here fella" + getActiveState());
-  if (getActiveState() == type) {
-    colorBulldozer("white");
-  } else {
-    colorBulldozer(bulldozerGray);
-  }
-};
-
-window.addEventListener("click", listener);
-// bis hier
 </script>
