@@ -3,14 +3,10 @@ import { TileEle } from "@/services/ITileItem";
 import { readonly, reactive, ref } from "vue";
 
 /**
- * tiles are created and exported in interface
+ * initial ActiveState
  */
-const state = ref<ITileItem>({
-  type: "",
-  imgSrc: "",
-  rotate: 0,
-  possibleRotation: [true, true, true],
-});
+
+const initCurrActiveState = "";
 
 /**
  * initial tileTypes
@@ -35,17 +31,20 @@ const initTiles: TileEle[] = [
   ]),
 ];
 
-/**
- * initial ActiveState
- */
-const initcurrActiveState = "";
+const state = ref<ITileItem>({
+  type: "",
+  imgSrc: "",
+  rotate: 0,
+  possibleRotation: [true, true, true],
+});
 
 /**
  * Set reactive
  */
 const rea = reactive({
   allTiles: initTiles,
-  currActiveState: initcurrActiveState,
+  currActiveState: initCurrActiveState,
+  bulldozerMode: false,
 });
 
 export function useTile() {

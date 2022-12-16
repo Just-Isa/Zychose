@@ -1,15 +1,6 @@
-<!--- 
-Menu for selecting street tiles according to selected vehicle.
-Source for basic tab idea: https://vuejsexamples.com/tabbed-content-with-vue-js/
--->
-
 <template>
   <div class="fixed bottom-6 left-1/2 -translate-x-1/2 pointer-events-none">
     <div class="tabs flex gap-3">
-      <!--- 
-        Tabs jetzt nicht als Komponente - werden nicht weiter modifiziert/weiterbenutzt, 
-        ergo einfacher einfach nur ein Tag mit Klickfunktion und CSS zu haben.
-      -->
       <a
         @click="changeTab(1)"
         v-bind:class="[
@@ -40,7 +31,7 @@ Source for basic tab idea: https://vuejsexamples.com/tabbed-content-with-vue-js/
         class="pointer-events-auto tabcontent flex rounded-b-lg rounded-tr-lg"
         :types="bikeTypes"
       />
-      <BulldozerIcon
+      <BullDozerBtn
         cursorSrc="src/assets/img/bulldozer-cursor.svg"
         class="pointer-events-auto"
       />
@@ -51,7 +42,7 @@ Source for basic tab idea: https://vuejsexamples.com/tabbed-content-with-vue-js/
 <script setup lang="ts">
 import { ref } from "vue";
 import StreetMenuFolder from "./StreetMenuFolder.vue";
-import BulldozerIcon from "./BulldozerIcon.vue";
+import BullDozerBtn from "./BullDozerBtn.vue";
 import { useTile } from "@/services/useTileState";
 
 const { setActiveState } = useTile();
