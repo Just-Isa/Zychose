@@ -20,18 +20,19 @@
         <img src="../assets/img/bicycle-pictogram.svg" alt="bicycle-menu"
       /></a>
     </div> -->
-    <div v-for="vehicle in vehicleTypes" v-bind:key="vehicle[1]">
-      <StreetMenuTab
-        :vehicleType="vehicle[0]"
-        :imgSrc="vehicle[1]"
-        @click="changeTab(vehicle[0])"
-        v-bind:class="[
-          activetab === vehicle[0]
-            ? 'active shadow-lg'
-            : 'bg-inactive-folder-gray',
-        ]"
-      ></StreetMenuTab>
+    <div class="tabs flex gap-3">
+      <div v-for="vehicle in vehicleTypes" v-bind:key="vehicle[1]">
+        <StreetMenuTab
+          :vehicleType="vehicle[0]"
+          :imgSrc="vehicle[1]"
+          @click="changeTab(vehicle[0])"
+          v-bind:class="[
+            activetab === vehicle[0] ? 'active shadow-lg' : 'bg-[#424A4C]',
+          ]"
+        ></StreetMenuTab>
+      </div>
     </div>
+
     <div class="flex justify-items-center items-center">
       <div id="streetMenuFolder">
         <StreetMenuFolder
@@ -76,7 +77,7 @@ const bikeTypes = ["straight", "tCrossing"];
  */
 const vehicleTypes = [
   ["streetTypes", "car-pictogram.svg"],
-  ["bikeTypes", "src/assets/img/bicycle-pictogram.svg"],
+  ["bikeTypes", "bicycle-pictogram.svg"],
 ];
 
 /**
