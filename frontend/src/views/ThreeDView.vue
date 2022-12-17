@@ -9,8 +9,8 @@
       dampingFactor: 0.05,
     }"
   >
-    <Camera
-      ref="camera"
+    <PerspectiveCamera
+      ref="cameraTop"
       :position="{ y: 1500, z: 400 }"
       :look-at="{ x: 0, y: 0, z: 0 }"
       :near="1"
@@ -30,27 +30,39 @@ import {
   Box,
   Camera,
   LambertMaterial,
+  PerspectiveCamera,
   PointLight,
   Renderer,
   Scene,
 } from "troisjs";
 import { useGLB } from "@/services/glbBlockLoader";
 import { SceneManager } from "@/services/SceneManager";
+import { CameraManager } from "@/services/CameraManager";
+import { useCamera } from "@/services/CreateCamera";
 
 const { glbState, generateBlockMap } = useGLB();
+const { camState, createCamera } = useCamera();
 
 generateBlockMap();
+createCamera();
 
 export default {
-  components: { Box, Camera, LambertMaterial, PointLight, Renderer, Scene},
+  components: { Box, Camera, LambertMaterial, PointLight, Renderer, Scene, PerspectiveCamera },
   mounted() {
+    
     const blockMap = glbState.blockMap;
     const scene = (this.$refs.scene as any).scene;
+    const camera = (this.$refs.cameraTop as any).camera;
+    camera.name = "CameraTop";
+    const renderer = (this.$refs.renderer as any).renderer;
     const sceneManager = new SceneManager(scene, blockMap);
-    const camera = (this.$refs.camera as any).camera;
+    const camMap = camState.cameraMap;
+    const camaraManager = new CameraManager( scene, renderer, camera, camMap);
+   
     sceneManager.createLandscape();
     sceneManager.createGrid();
     sceneManager.handleCar();
+    camaraManager.switchCamera();
   },
 };
 </script>
