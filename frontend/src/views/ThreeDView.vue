@@ -3,15 +3,10 @@
     ref="renderer"
     resize="window"
     antialias
-    :orbit-ctrl="{
-      autoRotate: false,
-      enableDamping: true,
-      dampingFactor: 0.05,
-    }"
   >
     <Camera
       ref="camera"
-      :position="{ y: 1500, z: 400 }"
+      :position="{ y: 100, z: 400 }"
       :look-at="{ x: 0, y: 0, z: 0 }"
       :near="1"
       :far="5500"

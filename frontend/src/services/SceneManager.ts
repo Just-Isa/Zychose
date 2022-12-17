@@ -2,7 +2,7 @@ import * as THREE from "three";
 import type { Scene } from "three";
 import data from "../data/dummy.json";
 import { generateMapArray } from "./JSONtoMapArray";
-import { Car } from "./Car";
+import { ControllableCar } from "./ControllableCar";
 
 const blockSize = 16;
 
@@ -16,7 +16,8 @@ export class SceneManager {
   renderer: THREE.Renderer;
   camera: THREE.Camera;
   direction = new THREE.Vector3();
-  cars: Car[];
+  cars: ControllableCar[];
+  newcamera: THREE.Camera;
   constructor(
     scene: Scene,
     blockMap: Map<string, Promise<THREE.Group>>,
@@ -28,6 +29,7 @@ export class SceneManager {
     this.renderer = renderer;
     this.camera = camera;
     this.cars = [];
+    this.newcamera = new THREE.Camera();
   }
 
   /**
@@ -125,8 +127,7 @@ export class SceneManager {
 
           car.position.set(0, 0, 0);
           this.scene.add(car);
-
-          this.cars.push(new Car(car, this.camera));
+          this.cars.push(new ControllableCar(car, this.camera));
         })
         .catch((error) => {
           this.getErrorBlock(0, 0, 0);
