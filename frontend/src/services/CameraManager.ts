@@ -1,9 +1,5 @@
 import * as THREE from "three";
-import type { Camera, PerspectiveCamera, Renderer, Scene } from "three";
-import { generateMapArray } from "./JSONtoMapArray";
-import data from "../data/dummy.json";
-import { onKeyPressed } from "@vueuse/core";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import type { PerspectiveCamera, Renderer, Scene } from "three";
 
 const aspect = window.innerWidth / window.innerHeight;
 
@@ -27,10 +23,10 @@ export class CameraManager {
 
   switchCamera() {
     //TODO Enum
-    const camaraTop = "CameraTop";
+    //const camaraTop = "CameraTop";
     // const camaraThird = "ThirdPersonCam";
-    const camaraFirst = "FirstPersonCam";
-    const activeCamera = this.cam;
+    //const camaraFirst = "FirstPersonCam";
+    //const activeCamera = this.cam;
     const renderer = this.renderer;
 
     window.addEventListener("keydown", (event) => {

@@ -19,7 +19,6 @@
 <script lang="ts">
 import {
   Box,
-  Camera,
   LambertMaterial,
   PerspectiveCamera,
   PointLight,
