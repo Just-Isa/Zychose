@@ -1,8 +1,9 @@
 import { StreetBlock } from "@/services/IStreetBlock";
 import { reactive, readonly } from "vue";
-
-// Work in progress
-
+/**
+ * State Interface for information on street menus
+ * WIP: might change when street types are in json-format
+ */
 export interface IStreetTypes {
   vehicleTypes: string[][];
   carTypes: StreetBlock[];
@@ -10,6 +11,9 @@ export interface IStreetTypes {
   currentActiveTab: string;
 }
 
+/**
+ * State Interface for information on active StreetBlock and Bulldozer
+ */
 export interface IStateStreetblock {
   streetBlock: StreetBlock;
   bulldozerActive: boolean;
@@ -48,19 +52,17 @@ export function useStreetBlock() {
   }
 
   function changeCurrentTab(s: string) {
-    console.log(streetTypesState.currentActiveTab);
-
     streetTypesState.currentActiveTab = s;
-    console.log(s);
-    console.log(streetTypesState.currentActiveTab);
     changeCurrentTileType(new StreetBlock("", 0, []));
     toggleBulldozer(false);
   }
 
   /**
-   * Set the rotate value from tile
-   * @param {number} degree - new rotate value
-   * @param {string} type - Type of Tile
+   * changes currentRotation of StreetBlock
+   * WIP: might change when street types are in json-format
+   *
+   * @param s currently selected StreetBlock
+   * @param d new rotation
    */
   function changeRotation(s: StreetBlock, d: number) {
     switch (streetTypesState.currentActiveTab) {

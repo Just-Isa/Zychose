@@ -1,10 +1,5 @@
 /**
- * Interface für States der Tiles
- * *
- * @param {string} type - Type of Tile
- * @param {string} imgSrc - Path to image
- * @param {number} rotate - street rotation in degree
- * @param {boolean[]} possibleRotation - valid street rotations [is90Allowed, is180Allowed, is270Allowed]
+ * Interface for StreetBlocks
  */
 export interface IStreetBlock {
   type: string;
@@ -17,6 +12,12 @@ export class StreetBlock implements IStreetBlock {
   currentRotation = 0;
   possibleRotation = [0];
 
+  /**
+   *
+   * @param type name of StreetBlock as string
+   * @param currentRotation
+   * @param possibleRotation array with possible rotations of this StreetBlock
+   */
   constructor(
     type: string,
     currentRotation: number,

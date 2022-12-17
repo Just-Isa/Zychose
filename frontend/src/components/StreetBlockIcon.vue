@@ -9,7 +9,7 @@
   >
     <div
       :id="prop.currentBlock.type"
-      @click="changeActiveState(prop.currentBlock)"
+      @click="changeActiveStreetBlock(prop.currentBlock)"
       class="tile-current flex justify-center items-center rounded-lg"
     >
       <img
@@ -37,11 +37,10 @@ const {
 } = useStreetBlock();
 
 /**
- * change activeState
- * @param {string} type - current tile type
+ * changes the active StreetBlock in streetBlockState and rotates StreetBlock if StreetBlock is clicked multiple times
+ * @param type selected StreetBlock
  */
-function changeActiveState(type: StreetBlock) {
-  // when block is clicked again it changes rotation
+function changeActiveStreetBlock(type: StreetBlock) {
   if (
     type == streetBlockState.streetBlock &&
     !streetBlockState.bulldozerActive
@@ -70,30 +69,4 @@ function changeActiveState(type: StreetBlock) {
   const entireDoc = document.documentElement;
   entireDoc.style.cursor = "default";
 }
-
-/* /**
- * Rotate the tile and update the value in state
- * @param {number} degree - new rotation value
-
-function changeTileRotation(degree: number) {
-  changeCurrentTileType(prop.currentBlock.type);
-  toggleBulldozer(false);
-} */
 </script>
-
-<style scoped>
-.tile-ele:hover .tile-rotate-block,
-.tile-rotate-block:hover {
-  display: flex;
-}
-
-.tile-rotate-ele {
-  width: 2.5rem;
-  padding: 0.25rem;
-}
-
-.tile-rotate-ele img {
-  width: 2.5rem;
-  height: 2.5rem;
-}
-</style>

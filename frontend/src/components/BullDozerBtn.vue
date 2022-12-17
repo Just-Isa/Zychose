@@ -1,6 +1,6 @@
 <template>
   <div
-    @click="changeActiveState()"
+    @click="changeBulldozerState()"
     class="shadow-lg border-4 rounded-full ml-4 hover:cursor-pointer bg-bulldozer-yellow h-16 w-16 mt-2"
     :class="
       streetBlockState.bulldozerActive
@@ -67,9 +67,9 @@ const props = defineProps<{
 const bulldozerGray = "#4B5357";
 
 /**
- * change activeState
+ * changes BulldozerState and sets currentTileType to an empty StreetBlock
  */
-function changeActiveState() {
+function changeBulldozerState() {
   const entireDoc = document.documentElement;
 
   if (entireDoc) {
@@ -82,6 +82,10 @@ function changeActiveState() {
   }
 }
 
+/**
+ * changes the path color of the svg
+ * @param color color as string
+ */
 function colorBulldozer(color: string) {
   const fillSvg = document.getElementById("bull");
   const fillSvg2 = document.getElementById("bull2");
@@ -93,6 +97,9 @@ function colorBulldozer(color: string) {
   }
 }
 
+/**
+ * watches streetBlockState and changes cursor style according to bulldozerActive
+ */
 watch(streetBlockState, () => {
   const entireDoc = document.documentElement;
   if (entireDoc) {

@@ -22,12 +22,10 @@
       <div id="streetMenuFolder" class="hover:cursor-default">
         <StreetMenuFolder
           v-if="streetTypesState.currentActiveTab === 'car'"
-          class="pointer-events-auto tabcontent flex rounded-b-lg rounded-tr-lg"
           :types="(streetTypesState.carTypes as StreetBlock[])"
         />
         <StreetMenuFolder
           v-if="streetTypesState.currentActiveTab === 'bike'"
-          class="pointer-events-auto tabcontent flex rounded-b-lg rounded-tr-lg"
           :types="(streetTypesState.bikeTypes as StreetBlock[])"
         />
       </div>
