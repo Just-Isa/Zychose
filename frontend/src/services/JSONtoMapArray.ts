@@ -1,23 +1,20 @@
 /**
  * funtion for converting the json object to block array
  *
- * @param jsondata
+ * @param jsonData
  * @returns streetArray
  */
-export function generateMapArray(jsondata: object[]) {
+export function generateMapArray(jsonData: object[]) {
   const size = 100;
-  const streetArray: string[][] = new Array();
 
   // initialize empty street array
-  for (let i = 0; i < size; i++) {
-    streetArray[i] = [];
-    for (let j = 0; j < size; j++) {
-      streetArray[i][j] = "";
-    }
-  }
+  const streetArray = new Array(size)
+    .fill("")
+    .map(() => new Array(size).fill(""));
+  console.log(streetArray);
 
   // fill street array with types according to given coordinates
-  jsondata.forEach(function (obj) {
+  jsonData.forEach(function (obj) {
     streetArray[Object(obj)["posX"] - 1][Object(obj)["posY"] - 1] =
       Object(obj)["streetType"] + ":" + Object(obj)["rotation"];
   });
