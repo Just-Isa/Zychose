@@ -1,6 +1,5 @@
-import type { ITileItem } from "@/services/ITileItem";
 import { TileEle } from "@/services/ITileItem";
-import { readonly, reactive, ref } from "vue";
+import { readonly, reactive } from "vue";
 
 /**
  * initial ActiveState

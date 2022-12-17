@@ -45,7 +45,7 @@ import StreetMenuFolder from "./StreetMenuFolder.vue";
 import BullDozerBtn from "./BullDozerBtn.vue";
 import { useTile } from "@/services/useTileState";
 
-const { changeCurrentTileType, tile, allTiles, toggleBulldozer } = useTile();
+const { changeCurrentTileType, toggleBulldozer } = useTile();
 
 /**
  * activetab: numeration of tabs from left to right
