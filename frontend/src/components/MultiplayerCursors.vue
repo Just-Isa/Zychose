@@ -16,13 +16,11 @@
 
 <script setup lang="ts">
 import { Mouse } from "@/services/IMouse";
-import { User } from "@/services/IUser";
 import { useRoom } from "@/services/useRoom";
 import { useUser } from "@/services/useUser";
 import { onMounted, reactive, ref } from "vue";
 
 // https://vueuse.org/core/usemouse/
-import { MessageOperator } from "@/services/MessageOperators";
 import { useMouse } from "@vueuse/core";
 
 const colors = ref([
@@ -50,27 +48,15 @@ let lastYsent = 0;
 //const mouseMap = reactive(new Map<string, number[]>());
 let mouseDict: { [sessionID: string]: number[] } = reactive({});
 
-const { roomState, receiveRoom } = useRoom();
+const { roomState, receiveRoom, swapRooms } = useRoom();
 const { publishMouse, mouseState, receiveMouse } = useUser();
-const { publishUser } = useUser();
 
 onMounted(() => {
   receiveRoom();
-  receiveMouse();
-  createUser();
+  // location.pathname.split("/")[2] as unknown as number -> Get room number from url, since new rooms arent dynamically created yet
+  swapRooms(location.pathname.split("/")[1] as unknown as number);
+  receiveMouse(location.pathname.split("/")[1] as unknown as number);
 });
-
-function createUser() {
-  if (document.cookie.split("=")[0] != "sid") {
-    document.cookie = "sid=" + crypto.randomUUID();
-    const user = new User(
-      document.cookie.split("=")[1],
-      1,
-      document.cookie.split("=")[1]
-    );
-    publishUser(MessageOperator.CREATE, user);
-  }
-}
 
 setInterval(function () {
   if (
@@ -85,7 +71,8 @@ setInterval(function () {
         roomState.room.roomNumber,
         x.value,
         y.value
-      )
+      ),
+      location.pathname.split("/")[1] as unknown as number
     );
   }
   //mouseMap.set(mouseState.mouse.sessionID, [x.value, y.value]);

@@ -164,3 +164,8 @@ gradle-app.setting
 
 # End of https://www.toptal.com/developers/gitignore/api/osx,windows,linux,visualstudiocode,java,gradle,vue,vuejs
 
+/bin
+
+node_modules
+!node_modules/husky/
+!node_modules/bin/
