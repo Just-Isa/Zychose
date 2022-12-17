@@ -95,18 +95,3 @@ function changeTab(vehicleType: string) {
   console.log("neues Tab:" + activetab.value);
 }
 </script>
-
-<style>
-/**
-mit Tailwind lässt sich die Hintergrund-Farbe des nicht aktiven Tabs leider nicht ändern
-(wie es mit tailwind funktionieren sollte, ist aber noch drin)
- */
-
-.tabs a {
-  background-color: #424a4c;
-}
-
-.tabs a.active {
-  background-color: #5b6569;
-}
-</style>
