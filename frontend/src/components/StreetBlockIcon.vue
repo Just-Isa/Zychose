@@ -2,20 +2,20 @@
   <div
     class="tile-ele m-1.5 inline-block hover:cursor-pointer h-20 w-20 bg-street-menu-tile-bg-turquoise rounded-lg"
     :class="
-      tile.currActiveState == prop.type
+      prop.currentBlock.type == streetBlock.type
         ? 'active outline bg-active-block-turquoise outline-white outline-3'
         : 'inactive'
     "
   >
     <div
-      :id="prop.type"
-      @click="changeActiveState(prop.type)"
+      :id="prop.currentBlock.type"
+      @click="changeActiveState(prop.currentBlock.type)"
       class="tile-current flex justify-center items-center rounded-lg"
     >
       <img
         class="h-16 w-16 mt-2"
-        :src="getImgSrc(prop.type)"
-        :alt="prop.type"
+        :src="`/src/assets/img/${prop.currentBlock.type}.svg`"
+        :alt="prop.currentBlock.type"
       />
     </div>
 
@@ -27,54 +27,62 @@
       "
     >
       <div class="tile-rotate-ele" @click="changeTileRotation(0)">
-        <img :src="getImgSrc(prop.type)" :alt="prop.type" />
+        <img
+          :src="`/src/assets/img/${prop.currentBlock.type}.svg`"
+          :alt="prop.currentBlock.type"
+        />
       </div>
       <div
         class="tile-rotate-ele rotate-90"
         :class="rotationAllowed[1] ? 'active' : 'hidden'"
         @click="changeTileRotation(90)"
       >
-        <img :src="getImgSrc(prop.type)" :alt="prop.type" />
+        <img
+          :src="`/src/assets/img/${prop.currentBlock.type}.svg`"
+          :alt="prop.currentBlock.type"
+        />
       </div>
       <div
         class="tile-rotate-ele rotate-180"
         :class="rotationAllowed[2] ? '' : 'hidden'"
         @click="changeTileRotation(180)"
       >
-        <img :src="getImgSrc(prop.type)" :alt="prop.type" />
+        <img
+          :src="`/src/assets/img/${prop.currentBlock.type}.svg`"
+          :alt="prop.currentBlock.type"
+        />
       </div>
       <div
         class="tile-rotate-ele rotate-270"
         :class="rotationAllowed[3] ? '' : 'hidden'"
         @click="changeTileRotation(270)"
       >
-        <img :src="getImgSrc(prop.type)" :alt="prop.type" />
+        <img
+          :src="`/src/assets/img/${prop.currentBlock.type}.svg`"
+          :alt="prop.currentBlock.type"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useTile } from "@/services/useTileState";
+import { useStreetBlock } from "@/services/useStreetBlock";
+import type { StreetBlock } from "@/services/IStreetBlock";
 
 const prop = defineProps<{
-  type: string;
+  currentBlock: StreetBlock;
 }>();
 
-const {
-  getpossibleRotation,
-  setRotate,
-  tile,
-  getRotate,
-  changeCurrentTileType,
-  toggleBulldozer,
-  getImgSrc,
-} = useTile();
+const { streetBlock, changeCurrentTileType, toggleBulldozer, changeRotation } =
+  useStreetBlock();
 
 // check possible rotation values
-const possibleRotation = getpossibleRotation(prop.type);
+const possibleRotation = streetBlock.value.possibleRotation;
 
+/*
 let rotationAllowed = [false, false, false, false]; // [rotateallowed, rotate90allowed, rotate180allowed, rotate270allowed]
+
 if (possibleRotation?.length == 3) {
   if (possibleRotation[0]) {
     rotationAllowed[0] = true;
@@ -88,23 +96,19 @@ if (possibleRotation?.length == 3) {
     rotationAllowed[0] = true;
     rotationAllowed[3] = true;
   }
-}
+}*/
 
 /**
  * change activeState
  * @param {string} type - current tile type
  */
 function changeActiveState(type: string) {
-  console.log("VORHER: " + tile.currActiveState);
+  console.log("VORHER: " + streetBlock.value.type);
   changeCurrentTileType(type);
   toggleBulldozer(false);
-  console.log("AKTUELLE: " + tile.currActiveState);
+  console.log("AKTUELLE: " + streetBlock.value.type);
   const entireDoc = document.documentElement;
   entireDoc.style.cursor = "default";
-  // WIP: Später hierüber auch Cursor in Tile umwandelbar, laut Absprache aber noch nicht in Story
-  //if (entireDoc) {
-  //entireDoc.style.cursor = 'url("src/assets/img/[imgName].svg"), auto';
-  //}
 }
 
 /**
@@ -112,9 +116,10 @@ function changeActiveState(type: string) {
  * @param {number} degree - new rotation value
  */
 function changeTileRotation(degree: number) {
-  changeCurrentTileType(prop.type);
+  changeCurrentTileType(prop.currentBlock.type);
   toggleBulldozer(false);
-  setRotate(degree, prop.type);
+  changeRotation(degree, prop.currentBlock.type);
+  /*
   let rotateClass = `rotate-${getRotate(prop.type)}`;
 
   const currentTile = document.getElementById(tile.currActiveState);
@@ -146,7 +151,7 @@ function changeTileRotation(degree: number) {
     actTile.classList.remove("rotate-180");
     actTile.classList.remove("rotate-270");
     actTile.classList.add(rotateClass);
-  }
+  }*/
 }
 </script>
 

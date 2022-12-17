@@ -3,7 +3,7 @@
     @click="changeActiveState()"
     class="shadow-lg border-4 rounded-full ml-4 hover:cursor-pointer bg-bulldozer-yellow h-16 w-16 mt-2"
     :class="
-      tile.currActiveState == type
+      streetBlock.bulldozerActive
         ? 'active border-white'
         : 'inactive border-bulldozer-gray'
     "
@@ -53,31 +53,31 @@
 </template>
 
 <script setup lang="ts">
-import { useTile } from "@/services/useTileState";
+import { useStreetBlock } from "@/services/useStreetBlock";
 import { watch } from "vue";
 
-const { changeCurrentTileType, tile, toggleBulldozer } = useTile();
+const { changeCurrentTileType, streetBlock, toggleBulldozer } =
+  useStreetBlock();
 
 const props = defineProps<{
   cursorSrc: string;
 }>();
 
-const type = "delete";
 const bulldozerGray = "#4B5357";
 
 /**
  * change activeState
  */
 function changeActiveState() {
+  console.log("DRIN");
   const entireDoc = document.documentElement;
 
   if (entireDoc) {
-    if (tile.currActiveState == type) {
+    if (!streetBlock.value.bulldozerActive) {
       changeCurrentTileType("");
-      toggleBulldozer(false);
-    } else {
-      changeCurrentTileType(type);
       toggleBulldozer(true);
+    } else {
+      toggleBulldozer(false);
     }
   }
 }
@@ -93,11 +93,11 @@ function colorBulldozer(color: string) {
   }
 }
 
-watch(tile, () => {
-  console.log("CURRENT MODE" + tile.bulldozerMode);
+watch(streetBlock.value, () => {
+  console.log("CURRENT MODE" + streetBlock.value.bulldozerActive);
   const entireDoc = document.documentElement;
   if (entireDoc) {
-    if (tile.bulldozerMode) {
+    if (streetBlock.value.bulldozerActive) {
       entireDoc.style.cursor = `url("${props.cursorSrc}") 25 25, auto`;
       colorBulldozer("white");
     } else {

@@ -60,18 +60,27 @@ import { ref } from "vue";
 import StreetMenuFolder from "./StreetMenuFolder.vue";
 import BullDozerBtn from "./BullDozerBtn.vue";
 import StreetMenuTab from "./StreetMenuTab.vue";
-import { useTile } from "@/services/useTileState";
+import { useStreetBlock } from "@/services/useStreetBlock";
+import { StreetBlock } from "@/services/IStreetBlock";
 
-const { changeCurrentTileType, toggleBulldozer } = useTile();
+const { changeCurrentTileType, toggleBulldozer } = useStreetBlock();
 
 /**
  * activetab: currently string representing the corresponding vehicle
  */
 const activetab = ref("streetTypes");
 
-const streetTypes = ["straight", "tCrossing", "curve", "crossing"];
-const bikeTypes = ["straight", "tCrossing"];
+const streetTypes = [
+  new StreetBlock("straight", 0, [0, 90], false),
+  new StreetBlock("tCrossing", 0, [0, 90, 180, -90], false),
+  new StreetBlock("curve", 0, [0, 90, 180, -90], false),
+  new StreetBlock("crossing", 0, [0], false),
+];
 
+const bikeTypes = [
+  new StreetBlock("straight", 0, [0, 90], false),
+  new StreetBlock("tCrossing", 0, [0, 90, 180, -90], false),
+];
 /**
  * TODO: wie bekommt man die Daten? auch über json, wie die StreetBlocks?
  */
