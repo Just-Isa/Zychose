@@ -3,7 +3,7 @@
     class="pointer-events-auto bg-street-menu-bg-gray items-center bottom-6 p-1 shadow-lg w-95"
   >
     <div v-for="t in props.types" v-bind:key="t.type">
-      <StreetBlockIcon :type="t" />
+      <StreetBlockIcon :currentBlock="t" />
     </div>
   </div>
 </template>

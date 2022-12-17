@@ -16,7 +16,7 @@ export interface IStreetBlock {
 export class StreetBlock implements IStreetBlock {
   type = "";
   currentRotation = 0;
-  possibleRotation = [0, 90, 180, -90];
+  possibleRotation = [0];
   bulldozerActive = false;
 
   constructor(

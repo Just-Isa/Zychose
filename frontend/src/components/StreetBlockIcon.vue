@@ -13,55 +13,10 @@
       class="tile-current flex justify-center items-center rounded-lg"
     >
       <img
-        class="h-16 w-16 mt-2"
+        class="h-16 w-16 m-2"
         :src="`/src/assets/img/${prop.currentBlock.type}.svg`"
         :alt="prop.currentBlock.type"
       />
-    </div>
-
-    <div
-      :class="
-        rotationAllowed[0]
-          ? 'tile-rotate-block absolute z-50 bg-street-menu-tile-bg-turquoise rounded-lg -ml-1 hidden -top-4 border-white'
-          : 'hidden'
-      "
-    >
-      <div class="tile-rotate-ele" @click="changeTileRotation(0)">
-        <img
-          :src="`/src/assets/img/${prop.currentBlock.type}.svg`"
-          :alt="prop.currentBlock.type"
-        />
-      </div>
-      <div
-        class="tile-rotate-ele rotate-90"
-        :class="rotationAllowed[1] ? 'active' : 'hidden'"
-        @click="changeTileRotation(90)"
-      >
-        <img
-          :src="`/src/assets/img/${prop.currentBlock.type}.svg`"
-          :alt="prop.currentBlock.type"
-        />
-      </div>
-      <div
-        class="tile-rotate-ele rotate-180"
-        :class="rotationAllowed[2] ? '' : 'hidden'"
-        @click="changeTileRotation(180)"
-      >
-        <img
-          :src="`/src/assets/img/${prop.currentBlock.type}.svg`"
-          :alt="prop.currentBlock.type"
-        />
-      </div>
-      <div
-        class="tile-rotate-ele rotate-270"
-        :class="rotationAllowed[3] ? '' : 'hidden'"
-        @click="changeTileRotation(270)"
-      >
-        <img
-          :src="`/src/assets/img/${prop.currentBlock.type}.svg`"
-          :alt="prop.currentBlock.type"
-        />
-      </div>
     </div>
   </div>
 </template>
@@ -80,79 +35,50 @@ const { streetBlock, changeCurrentTileType, toggleBulldozer, changeRotation } =
 // check possible rotation values
 const possibleRotation = streetBlock.value.possibleRotation;
 
-/*
-let rotationAllowed = [false, false, false, false]; // [rotateallowed, rotate90allowed, rotate180allowed, rotate270allowed]
-
-if (possibleRotation?.length == 3) {
-  if (possibleRotation[0]) {
-    rotationAllowed[0] = true;
-    rotationAllowed[1] = true;
-  }
-  if (possibleRotation[1]) {
-    rotationAllowed[0] = true;
-    rotationAllowed[2] = true;
-  }
-  if (possibleRotation[2]) {
-    rotationAllowed[0] = true;
-    rotationAllowed[3] = true;
-  }
-}*/
-
 /**
  * change activeState
  * @param {string} type - current tile type
  */
 function changeActiveState(type: string) {
+  console.log("current rotatin: ", streetBlock.value.currentRotation);
   console.log("VORHER: " + streetBlock.value.type);
-  changeCurrentTileType(type);
+  //changeCurrentTileType(type);
+
+  // when block is clicked again it changes rotation
+  if (type == streetBlock.value.type && !streetBlock.value.bulldozerActive) {
+    console.log("same tile");
+
+    const block = document.getElementById(prop.currentBlock.type);
+    if (block) {
+      let nextRotIndex =
+        streetBlock.value.possibleRotation.indexOf(
+          streetBlock.value.currentRotation
+        ) + 1;
+
+      if (nextRotIndex >= streetBlock.value.possibleRotation.length) {
+        nextRotIndex = 0;
+      }
+      let nextRot = streetBlock.value.possibleRotation[nextRotIndex];
+      block.style.rotate = `${nextRot}deg`;
+      changeRotation(nextRot, prop.currentBlock.type);
+    }
+    return;
+  }
+
   toggleBulldozer(false);
   console.log("AKTUELLE: " + streetBlock.value.type);
   const entireDoc = document.documentElement;
   entireDoc.style.cursor = "default";
 }
 
-/**
+/* /**
  * Rotate the tile and update the value in state
  * @param {number} degree - new rotation value
- */
+
 function changeTileRotation(degree: number) {
   changeCurrentTileType(prop.currentBlock.type);
   toggleBulldozer(false);
-  changeRotation(degree, prop.currentBlock.type);
-  /*
-  let rotateClass = `rotate-${getRotate(prop.type)}`;
-
-  const currentTile = document.getElementById(tile.currActiveState);
-  if (getRotate(prop.type) == 90) {
-    console.log(currentTile);
-    if (currentTile) {
-      currentTile.style.margin = "0.25rem -0.2rem 0.25rem 0.25rem";
-    }
-  } else if (getRotate(prop.type) == 180) {
-    console.log(currentTile);
-    if (currentTile) {
-      currentTile.style.margin = "0.4rem -0.6rem 0.25rem -0.6rem";
-    }
-  } else if (getRotate(prop.type) == 270) {
-    console.log(currentTile);
-    if (currentTile) {
-      currentTile.style.margin = "0.2rem -0.3rem 0.25rem -0.6rem";
-    }
-  } else {
-    if (currentTile) {
-      currentTile.style.margin = "0 0 0 0";
-    }
-  }
-
-  let actTile = document.getElementById(prop.type);
-  if (actTile != null) {
-    actTile.classList.remove("rotate-0");
-    actTile.classList.remove("rotate-90");
-    actTile.classList.remove("rotate-180");
-    actTile.classList.remove("rotate-270");
-    actTile.classList.add(rotateClass);
-  }*/
-}
+} */
 </script>
 
 <style scoped>

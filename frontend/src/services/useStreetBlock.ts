@@ -1,4 +1,4 @@
-import type { IStreetBlock } from "@/services/IStreetBlock";
+import type { IStreetBlock, StreetBlock } from "@/services/IStreetBlock";
 import { readonly, ref } from "vue";
 
 const initCurrActiveState = "";
@@ -8,19 +8,14 @@ const currentActiveTab = ref("car");
 
 const stateStreetBlock = ref<IStreetBlock>({
   type: initCurrActiveState,
-  rotate: 0,
+  currentRotation: 0,
   possibleRotation: [0, 90, 180, -90],
   bulldozerActive: false,
 });
 
 export function useStreetBlock() {
-  /**
-   * Find an element of tileTypes by type name
-   * @returns found tileType
-   */
-
-  function changeCurrentTileType(s: string) {
-    stateStreetBlock.value.type = s;
+  function changeCurrentTileType(s: StreetBlock) {
+    stateStreetBlock.value = s;
   }
 
   function toggleBulldozer(b: boolean) {
@@ -29,6 +24,8 @@ export function useStreetBlock() {
 
   function changeCurrentTab(s: string) {
     currentActiveTab.value = s;
+    //changeCurrentTileType("");
+    toggleBulldozer(false);
   }
 
   /**
@@ -40,7 +37,7 @@ export function useStreetBlock() {
     console.log("DEGREE" + degree + "TYPE" + type);
     const ele = stateStreetBlock.value;
     if (ele) {
-      ele.rotate = degree;
+      ele.currentRotation = degree;
     }
     console.log(ele);
   }
