@@ -1,9 +1,5 @@
 <template>
-  <Renderer
-    ref="renderer"
-    resize="window"
-    antialias
-  >
+  <Renderer ref="renderer" resize="window" antialias>
     <PerspectiveCamera
       ref="cameraTop"
       :position="{ y: 100, z: 100 }"
@@ -45,9 +41,15 @@ createCamera();
 const { inputs } = useInputs();
 
 export default {
-  components: { Box, LambertMaterial, PointLight, Renderer, Scene, PerspectiveCamera },
+  components: {
+    Box,
+    LambertMaterial,
+    PointLight,
+    Renderer,
+    Scene,
+    PerspectiveCamera,
+  },
   mounted() {
-    
     const blockMap = glbState.blockMap;
     const scene = (this.$refs.scene as any).scene;
     const renderer = (this.$refs.renderer as any).renderer;
@@ -55,11 +57,8 @@ export default {
     const camMap = camState.cameraMap;
     camera.name = "CameraTop";
 
-    const camaraManager = new CameraManager( scene, renderer, camera, camMap);
+    const camaraManager = new CameraManager(scene, renderer, camera, camMap);
     const sceneManager = new SceneManager(scene, blockMap, renderer, camera);
-    
-   
-
 
     sceneManager.createLandscape();
     sceneManager.createGrid();

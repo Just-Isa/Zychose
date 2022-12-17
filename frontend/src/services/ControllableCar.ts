@@ -4,7 +4,7 @@ import { useInputs } from "./useInputs";
 
 const { keysPressed } = useInputs();
 
-export class ControllableCar implements ICar{
+export class ControllableCar implements ICar {
   direction = new THREE.Vector3();
   destination = new THREE.Vector3();
   speed: number;
@@ -19,7 +19,7 @@ export class ControllableCar implements ICar{
     this.speed = 0;
     this.car = car;
     this.camera = camera;
-    this.camera.position
+    this.camera.position;
     this.maxspeed = 2;
     this.acceleration = 0.1;
     this.handling = 0.15;
@@ -63,7 +63,7 @@ export class ControllableCar implements ICar{
     //   this.camera.lookAt(this.destination.clone().multiplyScalar(-1))
 
     // }
-    
+
     // this.camera.position.lerpVectors(this.car.position.clone().set(this.car.position.x, this.car.position.y+30 ,this.car.position.z), this.destination.clone().set(this.destination.x, this.destination.y+30 ,this.destination.z),0.5);
 
     this.car.position.lerpVectors(this.car.position, this.destination, 0.5);
