@@ -10,24 +10,20 @@ export interface IStreetBlock {
   type: string;
   currentRotation: number;
   possibleRotation: number[];
-  bulldozerActive: boolean;
 }
 
 export class StreetBlock implements IStreetBlock {
   type = "";
   currentRotation = 0;
   possibleRotation = [0];
-  bulldozerActive = false;
 
   constructor(
     type: string,
     currentRotation: number,
-    possibleRotation: number[],
-    bulldozerActive: boolean
+    possibleRotation: number[]
   ) {
     this.type = type;
     this.currentRotation = currentRotation;
     this.possibleRotation = possibleRotation;
-    this.bulldozerActive = bulldozerActive;
   }
 }

@@ -3,7 +3,7 @@
     @click="changeActiveState()"
     class="shadow-lg border-4 rounded-full ml-4 hover:cursor-pointer bg-bulldozer-yellow h-16 w-16 mt-2"
     :class="
-      streetBlock.bulldozerActive
+      streetBlockState.bulldozerActive
         ? 'active border-white'
         : 'inactive border-bulldozer-gray'
     "
@@ -53,10 +53,11 @@
 </template>
 
 <script setup lang="ts">
+import { StreetBlock } from "@/services/IStreetBlock";
 import { useStreetBlock } from "@/services/useStreetBlock";
 import { watch } from "vue";
 
-const { changeCurrentTileType, streetBlock, toggleBulldozer } =
+const { changeCurrentTileType, streetBlockState, toggleBulldozer } =
   useStreetBlock();
 
 const props = defineProps<{
@@ -69,12 +70,11 @@ const bulldozerGray = "#4B5357";
  * change activeState
  */
 function changeActiveState() {
-  console.log("DRIN");
   const entireDoc = document.documentElement;
 
   if (entireDoc) {
-    if (!streetBlock.value.bulldozerActive) {
-      changeCurrentTileType("");
+    if (!streetBlockState.bulldozerActive) {
+      changeCurrentTileType(new StreetBlock("", 0, []));
       toggleBulldozer(true);
     } else {
       toggleBulldozer(false);
@@ -93,11 +93,10 @@ function colorBulldozer(color: string) {
   }
 }
 
-watch(streetBlock.value, () => {
-  console.log("CURRENT MODE" + streetBlock.value.bulldozerActive);
+watch(streetBlockState, () => {
   const entireDoc = document.documentElement;
   if (entireDoc) {
-    if (streetBlock.value.bulldozerActive) {
+    if (streetBlockState.bulldozerActive) {
       entireDoc.style.cursor = `url("${props.cursorSrc}") 25 25, auto`;
       colorBulldozer("white");
     } else {

@@ -2,14 +2,14 @@
   <div
     class="tile-ele m-1.5 inline-block hover:cursor-pointer h-20 w-20 bg-street-menu-tile-bg-turquoise rounded-lg"
     :class="
-      prop.currentBlock.type == streetBlock.type
+      prop.currentBlock.type == streetBlockState.streetBlock.type
         ? 'active outline bg-active-block-turquoise outline-white outline-3'
         : 'inactive'
     "
   >
     <div
       :id="prop.currentBlock.type"
-      @click="changeActiveState(prop.currentBlock.type)"
+      @click="changeActiveState(prop.currentBlock)"
       class="tile-current flex justify-center items-center rounded-lg"
     >
       <img
@@ -29,40 +29,44 @@ const prop = defineProps<{
   currentBlock: StreetBlock;
 }>();
 
-const { streetBlock, toggleBulldozer, changeRotation } = useStreetBlock();
+const {
+  streetBlockState,
+  changeCurrentTileType,
+  toggleBulldozer,
+  changeRotation,
+} = useStreetBlock();
 
 /**
  * change activeState
  * @param {string} type - current tile type
  */
-function changeActiveState(type: string) {
-  console.log("current rotatin: ", streetBlock.value.currentRotation);
-  console.log("VORHER: " + streetBlock.value.type);
-  //changeCurrentTileType(type);
-
+function changeActiveState(type: StreetBlock) {
   // when block is clicked again it changes rotation
-  if (type == streetBlock.value.type && !streetBlock.value.bulldozerActive) {
-    console.log("same tile");
-
+  if (
+    type == streetBlockState.streetBlock &&
+    !streetBlockState.bulldozerActive
+  ) {
     const block = document.getElementById(prop.currentBlock.type);
     if (block) {
       let nextRotIndex =
-        streetBlock.value.possibleRotation.indexOf(
-          streetBlock.value.currentRotation
+        streetBlockState.streetBlock.possibleRotation.indexOf(
+          streetBlockState.streetBlock.currentRotation
         ) + 1;
 
-      if (nextRotIndex >= streetBlock.value.possibleRotation.length) {
+      if (
+        nextRotIndex >= streetBlockState.streetBlock.possibleRotation.length
+      ) {
         nextRotIndex = 0;
       }
-      let nextRot = streetBlock.value.possibleRotation[nextRotIndex];
+      let nextRot = streetBlockState.streetBlock.possibleRotation[nextRotIndex];
       block.style.rotate = `${nextRot}deg`;
-      changeRotation(nextRot, prop.currentBlock.type);
+      changeRotation(prop.currentBlock, nextRot);
     }
     return;
   }
+  changeCurrentTileType(type);
 
   toggleBulldozer(false);
-  console.log("AKTUELLE: " + streetBlock.value.type);
   const entireDoc = document.documentElement;
   entireDoc.style.cursor = "default";
 }

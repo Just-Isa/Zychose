@@ -1,30 +1,59 @@
-import type { IStreetBlock, StreetBlock } from "@/services/IStreetBlock";
-import { readonly, ref } from "vue";
-
-const initCurrActiveState = "";
+import { StreetBlock } from "@/services/IStreetBlock";
+import { reactive, readonly } from "vue";
 
 // Work in progress
-const currentActiveTab = ref("car");
 
-const stateStreetBlock = ref<IStreetBlock>({
-  type: initCurrActiveState,
-  currentRotation: 0,
-  possibleRotation: [0, 90, 180, -90],
+export interface IStreetTypes {
+  vehicleTypes: string[][];
+  carTypes: StreetBlock[];
+  bikeTypes: StreetBlock[];
+  currentActiveTab: string;
+}
+
+export interface IStateStreetblock {
+  streetBlock: StreetBlock;
+  bulldozerActive: boolean;
+}
+
+const stateStreetBlock = reactive<IStateStreetblock>({
+  streetBlock: new StreetBlock("", 0, []),
   bulldozerActive: false,
+});
+
+const streetTypesState = reactive<IStreetTypes>({
+  vehicleTypes: [
+    ["car", "car-pictogram.svg"],
+    ["bike", "bicycle-pictogram.svg"],
+  ],
+  carTypes: [
+    new StreetBlock("straight", 0, [0, 90]),
+    new StreetBlock("tCrossing", 0, [0, 90, 180, -90]),
+    new StreetBlock("curve", 0, [0, 90, 180, -90]),
+    new StreetBlock("crossing", 0, [0]),
+  ],
+  bikeTypes: [
+    new StreetBlock("straight", 0, [0, 90]),
+    new StreetBlock("tCrossing", 0, [0, 90, 180, -90]),
+  ],
+  currentActiveTab: "car",
 });
 
 export function useStreetBlock() {
   function changeCurrentTileType(s: StreetBlock) {
-    stateStreetBlock.value = s;
+    stateStreetBlock.streetBlock = s;
   }
 
   function toggleBulldozer(b: boolean) {
-    stateStreetBlock.value.bulldozerActive = b;
+    stateStreetBlock.bulldozerActive = b;
   }
 
   function changeCurrentTab(s: string) {
-    currentActiveTab.value = s;
-    //changeCurrentTileType("");
+    console.log(streetTypesState.currentActiveTab);
+
+    streetTypesState.currentActiveTab = s;
+    console.log(s);
+    console.log(streetTypesState.currentActiveTab);
+    changeCurrentTileType(new StreetBlock("", 0, []));
     toggleBulldozer(false);
   }
 
@@ -33,21 +62,31 @@ export function useStreetBlock() {
    * @param {number} degree - new rotate value
    * @param {string} type - Type of Tile
    */
-  function changeRotation(degree: number, type: string) {
-    console.log("DEGREE" + degree + "TYPE" + type);
-    const ele = stateStreetBlock.value;
-    if (ele) {
-      ele.currentRotation = degree;
+  function changeRotation(s: StreetBlock, d: number) {
+    switch (streetTypesState.currentActiveTab) {
+      case "car":
+        streetTypesState.carTypes[
+          streetTypesState.carTypes.indexOf(s)
+        ].currentRotation = d;
+        break;
+
+      case "bike":
+        streetTypesState.bikeTypes[
+          streetTypesState.bikeTypes.indexOf(s)
+        ].currentRotation = d;
+        break;
+      default:
+        console.log("Error while rotating, no active tab!");
+        break;
     }
-    console.log(ele);
   }
 
   return {
-    streetBlock: readonly(stateStreetBlock),
+    streetBlockState: readonly(stateStreetBlock),
     changeCurrentTileType,
     toggleBulldozer,
     changeRotation,
-    currentActiveTab: readonly(currentActiveTab),
     changeCurrentTab,
+    streetTypesState: readonly(streetTypesState),
   };
 }
