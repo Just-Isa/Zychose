@@ -29,11 +29,7 @@ const prop = defineProps<{
   currentBlock: StreetBlock;
 }>();
 
-const { streetBlock, changeCurrentTileType, toggleBulldozer, changeRotation } =
-  useStreetBlock();
-
-// check possible rotation values
-const possibleRotation = streetBlock.value.possibleRotation;
+const { streetBlock, toggleBulldozer, changeRotation } = useStreetBlock();
 
 /**
  * change activeState
