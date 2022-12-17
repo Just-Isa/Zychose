@@ -16,7 +16,7 @@ public class RoomServiceImplementation implements RoomService {
   @Autowired RoomBoxServiceImplementation roomBoxService;
 
   /**
-   * This method adds a new user to a room.
+   * This method adds a new user to a room, and changed the users currentRoomNumber respectively.
    *
    * @param room
    * @param user
@@ -24,6 +24,17 @@ public class RoomServiceImplementation implements RoomService {
   @Override
   public void addNewUserToRoom(Room room, User user) {
     room.addUserToList(user);
+    user.setCurrentRoomNumber(room.getRoomNumber());
+  }
+
+  /**
+   * This method removes a user from a room.
+   *
+   * @param room
+   * @param user
+   */
+  public void removeUserFromRoom(Room room, User user) {
+    room.removeUserFromList(user);
   }
 
   /**

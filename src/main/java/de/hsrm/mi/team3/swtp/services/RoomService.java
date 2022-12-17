@@ -9,5 +9,7 @@ import org.springframework.stereotype.Service;
 public interface RoomService {
   public void addNewUserToRoom(Room room, User user);
 
+  public void removeUserFromRoom(Room room, User user);
+
   public List<User> getUserList(Room room);
 }

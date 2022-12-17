@@ -5,8 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
 import de.hsrm.mi.team3.swtp.services.RoomBoxService;
+import de.hsrm.mi.team3.swtp.services.RoomService;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 class RoomBoxServiceTest {
 
   @Autowired RoomBoxService roomBoxService;
+  @Autowired RoomService roomService;
 
   private final String SESSIONID = "session-id-test-1";
   private final int USERROOMNUMBER = 1;
@@ -28,6 +31,8 @@ class RoomBoxServiceTest {
   private final String SESSIONIDTWO = "session-id-test-2";
   private final int USERROOMNUMBERTWO = 1;
   private final String USERNAMETWO = "User-Two";
+
+  private final String NOTPRESENTSESSIONID = "not-present";
 
   private final int ROOMBOXSIZEBEFOREADDITION = 0;
   private final int ROOMBOXSIZEAFTERADDITION = 1;
@@ -88,5 +93,22 @@ class RoomBoxServiceTest {
     rooms.put(ROOMNUMBERAFTERFIRSTADDITION, roomOne);
     rooms.put(ROOMNUMBERAFTERSECONDADDITION, roomTwo);
     assertThat(roomBoxService.getRoomsFromRoomBox()).isEqualTo(rooms);
+  }
+
+  @Test
+  @DisplayName(
+      "Room: Get user by sessionID if room is not known and null if user with given sessionID is not present")
+  public void getUserFromRoomBox() {
+    Room roomOne = roomBoxService.addRoom();
+    roomOne.addUserToList(userOne);
+    roomService.addNewUserToRoom(roomOne, userOne);
+
+    Optional<User> getUserBySessionIdPresent = roomBoxService.getUserBySessionID(SESSIONID);
+    assertThat(getUserBySessionIdPresent.isPresent());
+    assertThat(getUserBySessionIdPresent.get()).isEqualTo(userOne);
+
+    Optional<User> getUserBySessionIdNotPresent =
+        roomBoxService.getUserBySessionID(NOTPRESENTSESSIONID);
+    assertThat(getUserBySessionIdNotPresent.isEmpty());
   }
 }

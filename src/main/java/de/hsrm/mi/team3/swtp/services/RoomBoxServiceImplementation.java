@@ -2,7 +2,9 @@ package de.hsrm.mi.team3.swtp.services;
 
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.RoomBox;
+import de.hsrm.mi.team3.swtp.domain.User;
 import java.util.Map;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -35,10 +37,6 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
     RoomBox roomBox = getRoomBoxSingelton();
     int newRoomNumber = this.nextRoomNumber();
     logger.info("-------" + newRoomNumber + "---------");
-    Room existentRoom = this.getRoomsFromRoomBox().get(newRoomNumber);
-    if (existentRoom != null) {
-      return existentRoom;
-    }
     roomBox.addRoom(newRoomNumber, new Room(newRoomNumber));
     return this.getRoomsFromRoomBox().get(newRoomNumber);
   }
@@ -92,5 +90,39 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
    */
   public RoomBox getRoomBoxSingelton() {
     return (RoomBox) applicationContext.getBean("roomBoxSingleton");
+  }
+
+  /**
+   * @param sessionID SessionID of wanted User
+   * @return Either the User with the given SessionID or null if not present
+   */
+  public Optional<User> getUserBySessionID(String sessionID) {
+    Optional<User> userOpt = Optional.empty();
+    for (Room room : this.getRoomsFromRoomBox().values()) {
+      for (User user : room.getUserList()) {
+        if (user.getSessionID().contains(sessionID)) {
+          userOpt = Optional.of(user);
+        }
+      }
+    }
+    return userOpt;
+  }
+
+  @Override
+  public void resetEverything() {
+    logger.info("ROOMBOXSIZE= {}", this.getRoomsFromRoomBox().size());
+    int countRooms = this.getRoomsFromRoomBox().size();
+    for (int i = 0; i < countRooms; i++) {
+      for (int j = 0; j < this.getSpecificRoom(i + 1).getUserList().size(); j++) {
+        logger.info("USER={}", this.getSpecificRoom(i + 1).getUserList().size());
+        User user = this.getSpecificRoom(i + 1).getUserList().get(j);
+        this.getSpecificRoom(i + 1).removeUserFromList(user);
+        user.setCurrentRoomNumber(0);
+      }
+      Room roomToRemove = this.getSpecificRoom(i + 1);
+      logger.info("ROOM TO REMOVE = {}", roomToRemove.getRoomNumber());
+      this.getRoomBoxSingelton().removeRoom(roomToRemove);
+    }
+    logger.info("ROOMBOXSIZE AFTER = {}", this.getRoomsFromRoomBox().size());
   }
 }

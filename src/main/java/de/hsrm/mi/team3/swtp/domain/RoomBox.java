@@ -25,6 +25,10 @@ public class RoomBox {
     this.rooms.put(number, room);
   }
 
+  public void removeRoom(Room room) {
+    this.rooms.remove(room.getRoomNumber());
+  }
+
   @Bean
   @Scope("singleton")
   public RoomBox roomBoxSingleton() {

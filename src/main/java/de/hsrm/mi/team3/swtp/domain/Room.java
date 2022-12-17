@@ -37,8 +37,12 @@ public class Room {
     return userList;
   }
 
-  public void addUserToList(User userName) {
-    this.userList.add(userName);
+  public void addUserToList(User user) {
+    this.userList.add(user);
+  }
+
+  public void removeUserFromList(User user) {
+    this.userList.remove(user);
   }
 
   public int getRoomNumber() {

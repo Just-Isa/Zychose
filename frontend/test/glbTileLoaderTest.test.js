@@ -1,4 +1,4 @@
-import { useGLB } from "../src/services/glbTileLoader.ts";
+import { useGLB } from "../src/services/glbBlockLoader.ts";
 
 test.skip("useGLBSuccess", () => {
   const { glbState, generateTileMap } = useGLB();
