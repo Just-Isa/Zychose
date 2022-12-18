@@ -9,7 +9,6 @@ const aspect = window.innerWidth / window.innerHeight;
 export interface iCameraState {
   cam: PerspectiveCamera;
   carcam: CarCamera;
-
 }
 
 const camState = reactive<iCameraState>({
@@ -27,7 +26,7 @@ export function useCamera() {
 }
 /** 
  * Switches Perspective when c is pressed.
- * Iterates with each pressed key throw cameras.
+ * Check which perspective is in use and changes it accordingly.
  */
 function switchCamera() {
   document.addEventListener("keypress", (event) => {
@@ -38,12 +37,16 @@ function switchCamera() {
 }
 /**
  * Updates the Camera according to the car position.
+ * @param speed 
  */
 function updateCamera(speed: number) {
     camState.carcam.updateCamera(speed);
     
 }
-
+/**
+ * Initialize car camera.
+ * @param car 
+ */
 function initCarCamera(car: THREE.Group){
     camState.carcam = new CarCamera(car, camState.cam, firstPerson);
 
