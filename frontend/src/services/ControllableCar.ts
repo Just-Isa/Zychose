@@ -65,7 +65,7 @@ export class ControllableCar implements ICar {
     updateCamera(this.speed);
   }
   /**
-   * moves Car
+   * moves car
    */
   private move() {
     this.car.getWorldDirection(this.direction);
@@ -81,7 +81,7 @@ export class ControllableCar implements ICar {
    * @param acc
    */
   private calcSpeed(acc: number) {
-    // math.round because js can count corretly
+    // math.round() because js can't count corretly
     const curspeed = Math.round((this.speed + acc) * 100) / 100;
     if (Math.abs(curspeed) >= this.maxspeed) {
       if (acc < 0) {
@@ -98,11 +98,11 @@ export class ControllableCar implements ICar {
    * @param hand
    */
   private rotate(hand: number) {
-    this.car.rotation.y += hand; //+ 0.1/Math.round(Math.abs(this.speed))
+    this.car.rotation.y += hand;
   }
 
   /**
-   * lets car run out after user doesnt move car
+   * lets car slow down when user doesnt move car
    */
   private carRunOut() {
     if (this.speed > 0) {

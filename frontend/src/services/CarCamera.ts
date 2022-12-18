@@ -17,7 +17,7 @@ export class CarCamera {
     this.isFirstPerson = isFirstPerson;
   }
   /**
-   * Calculates offset for Camera
+   * Calculates offset for camera
    * @param speed
    * @returns 
    */
@@ -31,7 +31,7 @@ export class CarCamera {
     return this.calcVectors(speed, thirdPerson);
   }
   /**
-   * Calculates Lookat for Camera
+   * Calculates Lookat for camera
    * @param speed 
    * @returns 
    */
