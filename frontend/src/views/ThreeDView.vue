@@ -4,8 +4,8 @@
       ref="cameraTop"
       :position="{ y: 100, z: 100 }"
       :look-at="{ x: 0, y: 0, z: 0 }"
-      :near="1"
-      :far="5500"
+      :near="2"
+      :far="2000"
     />
     <Scene ref="scene" background="#fff">
       <PointLight :position="{ y: 5000, z: 50 }" />
@@ -28,14 +28,10 @@ import {
 import { useGLB } from "@/services/glbBlockLoader";
 import { SceneManager } from "@/services/SceneManager";
 import { useInputs } from "@/services/useInputs";
-import { CameraManager } from "@/services/CameraManager";
-import { useCamera } from "@/services/CreateCamera";
 
 const { glbState, generateBlockMap } = useGLB();
-const { camState, createCamera } = useCamera();
 
 generateBlockMap();
-createCamera();
 
 const { inputs } = useInputs();
 
@@ -53,10 +49,7 @@ export default {
     const scene = (this.$refs.scene as any).scene;
     const renderer = (this.$refs.renderer as any).renderer;
     const camera = (this.$refs.cameraTop as any).camera;
-    const camMap = camState.cameraMap;
-    camera.name = "CameraTop";
 
-    const camaraManager = new CameraManager(scene, renderer, camera, camMap);
     const sceneManager = new SceneManager(scene, blockMap, renderer, camera);
 
     sceneManager.createLandscape();
@@ -64,7 +57,6 @@ export default {
     sceneManager.addCar();
     sceneManager.handleRender();
     inputs();
-    camaraManager.switchCamera();
   },
 };
 </script>

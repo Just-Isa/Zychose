@@ -14,7 +14,7 @@ export class SceneManager {
   blockMap: Map<string, Promise<THREE.Group>>;
   streetArray: string[][] = generateMapArray(data);
   renderer: THREE.Renderer;
-  camera: THREE.Camera;
+  camera: THREE.PerspectiveCamera;
   direction = new THREE.Vector3();
   cars: ControllableCar[];
   newcamera: THREE.Camera;
@@ -22,7 +22,7 @@ export class SceneManager {
     scene: Scene,
     blockMap: Map<string, Promise<THREE.Group>>,
     renderer: THREE.Renderer,
-    camera: THREE.Camera
+    camera: THREE.PerspectiveCamera
   ) {
     this.scene = scene;
     this.blockMap = blockMap;
