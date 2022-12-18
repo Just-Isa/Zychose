@@ -28,6 +28,10 @@ const props = defineProps<{
   roomNumber: number;
 }>();
 
+/**
+ * function that saves all selected files to an array
+ * @param newFiles list of new selected files
+ */
 function addFiles(newFiles: any) {
   console.log(`NEWFILES: ${(newFiles[0] as File).size}`);
   files = files.concat(newFiles[0] as File);
@@ -35,6 +39,10 @@ function addFiles(newFiles: any) {
   console.log(`FILES: ${files}`);
 }
 
+/**
+ * Function that is triggered when a file was selected
+ * @param event --
+ */
 function onChangeFile(event: any) {
   console.log("----- onChange: files test -----");
   addFiles(event.target.files);
@@ -44,6 +52,9 @@ function onChangeFile(event: any) {
   event.target.value = null;
 }
 
+/**
+ * asynchronous function to send a selected file from the frontend to the backend
+ */
 async function submitForm() {
   const formData = new FormData();
   const postURL = `/api/upload/${props.roomNumber}`;
