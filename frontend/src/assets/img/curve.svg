@@ -1,15 +1,27 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="100%" height="100%" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-    <g transform="matrix(3.08508,0,0,3.08508,100,100)">
-        <g transform="matrix(1,0,0,1,-28.49,-28.25)">
-            <rect x="0" y="0.5" width="44" height="56" style="fill:rgb(85,84,84);"/>
-            <rect x="0" y="0" width="56.98" height="44" style="fill:rgb(85,84,84);"/>
-            <rect x="3" y="3" width="53.98" height="38" style="fill:rgb(113,113,113);"/>
-            <rect x="3" y="4.5" width="38" height="52" style="fill:rgb(113,113,113);"/>
-            <path d="M55.42,23L51.42,23L51.42,21L55.42,21L55.42,23ZM47.42,23L43.42,23L43.42,21L47.42,21L47.42,23ZM39.42,23L35.42,23L35.42,21L39.42,21L39.42,23ZM31.42,23L27.42,23L27.42,21L31.42,21L31.42,23Z" style="fill:rgb(239,218,31);fill-rule:nonzero;"/>
-            <path d="M23,56.5L21,56.5L21,53.02L23,53.02L23,56.5ZM23,49.02L21,49.02L21,45.02L23,45.02L23,49.02ZM23,41.02L21,41.02L21,37.02L23,37.02L23,41.02ZM23,33.02L21,33.02L21,29.02L23,29.02L23,33.02ZM23,25.02L21,25.02L21,21.02L23,21.02L23,25.02Z" style="fill:rgb(239,218,31);fill-rule:nonzero;"/>
-            <rect x="21" y="21" width="4" height="2" style="fill:rgb(239,218,31);"/>
-        </g>
-    </g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Ebene_3" data-name="Ebene 3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 69 69">
+    <defs>
+        <style>
+            .cls-1 {
+            fill: #efda1f;
+            }
+
+            .cls-2 {
+            fill: #717171;
+            }
+
+            .cls-3 {
+            fill: #555454;
+            }
+        </style>
+    </defs>
+    <rect class="cls-3" x="12.02" y="13.01" width="44" height="56" />
+    <rect class="cls-3" x="12.02" y="12.51" width="60.5" height="44" />
+    <rect class="cls-2" x="15.02" y="15.51" width="56.42" height="38" />
+    <rect class="cls-2" x="15.02" y="17.01" width="38" height="52" />
+    <path class="cls-1"
+        d="M75.44,35.51h-4v-2h4v2Zm-8,0h-4v-2h4v2Zm-8,0h-4v-2h4v2Zm-8,0h-4v-2h4v2Zm-8,0h-4v-2h4v2Z" />
+    <path class="cls-1"
+        d="M35.02,69.01h-2v-3.48h2v3.48Zm0-7.48h-2v-4h2v4Zm0-8h-2v-4h2v4Zm0-8h-2v-4h2v4Zm0-8h-2v-4h2v4Z" />
+    <rect class="cls-1" x="33.02" y="33.51" width="4" height="2" />
 </svg>
