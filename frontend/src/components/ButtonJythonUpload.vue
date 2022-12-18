@@ -2,7 +2,6 @@
 <template>
   <div class="jython-upload">
     <form class="pl-5" @submit.prevent="submitForm">
-      
       <!-- akzeptiert .txt zum Testen, solange ich mich noch nicht mit jython beschäftigt habe -->
       <input
         type="file"
@@ -34,7 +33,7 @@ const props = defineProps<{
 
 function addFiles(newFiles: any) {
   console.log(`NEWFILES: ${(newFiles[0] as File).size}`);
-  files = files.concat((newFiles[0]) as File);
+  files = files.concat(newFiles[0] as File);
   console.log("newFile " + newFiles[0].name);
   console.log(`FILES: ${files}`);
 }
@@ -49,24 +48,21 @@ function onChangeFile(event: any) {
 }
 
 async function submitForm() {
-
   const formData = new FormData();
   const postURL = `/api/upload/${props.roomNumber}`;
 
-  formData.append('file', files[0]);
+  formData.append("file", files[0]);
 
-  console.log(files)
+  console.log(files);
 
-  console.log(formData.get('file'));
+  console.log(formData.get("file"));
 
   const reqOptions = {
     method: "POST",
-    headers: { },
-    body: formData
+    headers: {},
+    body: formData,
   };
 
   await fetch(postURL, reqOptions);
-
 }
-
 </script>
