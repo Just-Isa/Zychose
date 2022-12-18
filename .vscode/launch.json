@@ -16,17 +16,22 @@
       "name": "vuejs: firefox",
       "url": "http://localhost:5173/",
       "webRoot": "${workspaceFolder}/frontend/src",
-      "pathMappings": [{ "url": "webpack:///src/", "path": "${webRoot}/" }]
+      "pathMappings": [
+        {
+          "url": "webpack:///src/",
+          "path": "${webRoot}/"
+        }
+      ]
     },
     {
       "type": "java",
-      "name": "Spring Boot-SwtpApplication<swtp>",
+      "name": "Spring Boot-SwtpApplication<swtp-3>",
       "request": "launch",
       "cwd": "${workspaceFolder}",
       "mainClass": "de.hsrm.mi.team3.swtp.SwtpApplication",
-      "projectName": "swtp",
+      "projectName": "swtp-3",
       "args": "",
       "envFile": "${workspaceFolder}/.env"
     }
-  ],
+  ]
 }
