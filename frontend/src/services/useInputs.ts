@@ -14,7 +14,6 @@ export function useInputs() {
 function inputs() {
   document.addEventListener("keydown", (event) => {
     keysPressed.set(event.key, true);
-    console.log("keyPressed:", keysPressed);
   });
 
   document.addEventListener("keyup", (event) => {

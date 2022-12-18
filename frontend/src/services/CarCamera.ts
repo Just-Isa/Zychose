@@ -75,7 +75,9 @@ export class CarCamera {
     this.camera.position.copy(this.curCameraPos);
     this.camera.lookAt(this.curCameraLookAt);
   }
-
+  /**
+   * Boolean shows which camera is active in order to switch it.
+   */
   switchPerspective(){
     this.isFirstPerson = !this.isFirstPerson;
   }
