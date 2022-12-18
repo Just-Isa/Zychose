@@ -8,7 +8,7 @@ export function useInputs() {
 }
 
 /**
- * Detects when a key gets pressed and changes the boolen of that key in the map to true,
+ * Detects when a key gets pressed and changes the boolean of that key in the map to true,
  * when key gets released the boolean will set to false again.
  */
 function inputs() {

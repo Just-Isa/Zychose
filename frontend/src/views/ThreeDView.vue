@@ -28,14 +28,12 @@ import {
 import { useGLB } from "@/services/glbBlockLoader";
 import { SceneManager } from "@/services/SceneManager";
 import { useInputs } from "@/services/useInputs";
-import { CameraManager } from "@/services/CameraManager";
-import { useCamera } from "@/services/CreateCamera";
+import { useCamera } from "@/services/useCamera";
 
 const { glbState, generateBlockMap } = useGLB();
-const { camState, createCamera } = useCamera();
+const { switchCamera } = useCamera();
 
 generateBlockMap();
-createCamera();
 
 const { inputs } = useInputs();
 
@@ -53,10 +51,7 @@ export default {
     const scene = (this.$refs.scene as any).scene;
     const renderer = (this.$refs.renderer as any).renderer;
     const camera = (this.$refs.cameraTop as any).camera;
-    const camMap = camState.cameraMap;
-    camera.name = "CameraTop";
 
-    const camaraManager = new CameraManager(scene, renderer, camera, camMap);
     const sceneManager = new SceneManager(scene, blockMap, renderer, camera);
 
     sceneManager.createLandscape();
@@ -64,7 +59,7 @@ export default {
     sceneManager.addCar();
     sceneManager.handleRender();
     inputs();
-    camaraManager.switchCamera();
+    switchCamera();
   },
 };
 </script>
