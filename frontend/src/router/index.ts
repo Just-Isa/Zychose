@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import EditorView from "../views/EditorView.vue";
 import RoomSelect from "@/components/RoomSelect.vue";
+import ButtonJythonUpload from "@/components/ButtonJythonUpload.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,6 +35,11 @@ const router = createRouter({
       path: "/5",
       name: "Raum5",
       component: EditorView,
+    },
+    {
+      path: "/upload",
+      name: "Upload",
+      component: ButtonJythonUpload,
     },
   ],
 });
