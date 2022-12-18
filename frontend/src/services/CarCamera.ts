@@ -19,7 +19,7 @@ export class CarCamera {
   /**
    * Calculates offset for camera
    * @param speed
-   * @returns 
+   * @returns
    */
   private calcIdealOffset(speed: number) {
     const firstPerson = new THREE.Vector3(0, 4, -1);
@@ -32,8 +32,8 @@ export class CarCamera {
   }
   /**
    * Calculates Lookat for camera
-   * @param speed 
-   * @returns 
+   * @param speed
+   * @returns
    */
   private calculateIdealLookat(speed: number) {
     const firstPerson = new THREE.Vector3(0, 3, 15);
@@ -46,9 +46,9 @@ export class CarCamera {
   }
   /**
    * Formular for lookAt or offset
-   * @param speed 
-   * @param vector 
-   * @returns 
+   * @param speed
+   * @param vector
+   * @returns
    */
   private calcVectors(speed: number, vector: THREE.Vector3) {
     if (speed < 0) {
@@ -60,7 +60,7 @@ export class CarCamera {
   }
   /**
    * Updates camera when car moves
-   * @param speed 
+   * @param speed
    */
   updateCamera(speed: number) {
     const idealOffset = this.calcIdealOffset(speed);
@@ -78,7 +78,7 @@ export class CarCamera {
   /**
    * Boolean shows which camera is active in order to switch it.
    */
-  switchPerspective(){
+  switchPerspective() {
     this.isFirstPerson = !this.isFirstPerson;
   }
 }

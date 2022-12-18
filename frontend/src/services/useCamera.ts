@@ -1,9 +1,9 @@
 import * as THREE from "three";
 import { PerspectiveCamera } from "three";
-import { reactive, readonly } from "vue";
+import { reactive } from "vue";
 import { CarCamera } from "./CarCamera";
 
-let firstPerson = true; 
+const firstPerson = true;
 const aspect = window.innerWidth / window.innerHeight;
 
 export interface iCameraState {
@@ -13,7 +13,11 @@ export interface iCameraState {
 
 const camState = reactive<iCameraState>({
   cam: new PerspectiveCamera(70, aspect, 1, 2000),
-  carcam: new CarCamera(new THREE.Group(), new THREE.PerspectiveCamera(), false)
+  carcam: new CarCamera(
+    new THREE.Group(),
+    new THREE.PerspectiveCamera(),
+    false
+  ),
 });
 
 export function useCamera() {
@@ -24,30 +28,28 @@ export function useCamera() {
     initCarCamera,
   };
 }
-/** 
+/**
  * Switches Perspective when c is pressed.
  * Check which perspective is in use and changes it accordingly.
  */
 function switchCamera() {
   document.addEventListener("keypress", (event) => {
     if (event.key === "c") {
-        camState.carcam.switchPerspective();  
+      camState.carcam.switchPerspective();
     }
   });
 }
 /**
  * Updates the Camera according to the car position.
- * @param speed 
+ * @param speed
  */
 function updateCamera(speed: number) {
-    camState.carcam.updateCamera(speed);
-    
+  camState.carcam.updateCamera(speed);
 }
 /**
  * Initialize car camera.
- * @param car 
+ * @param car
  */
-function initCarCamera(car: THREE.Group){
-    camState.carcam = new CarCamera(car, camState.cam, firstPerson);
-
+function initCarCamera(car: THREE.Group) {
+  camState.carcam = new CarCamera(car, camState.cam, firstPerson);
 }

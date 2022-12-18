@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import type { PerspectiveCamera, Scene } from "three";
 import data from "../data/dummy.json";
 import { generateMapArray } from "./JSONtoMapArray";
 import { ControllableCar } from "./ControllableCar";
@@ -12,7 +11,7 @@ const carCam = useCamera();
  * Manages Scene with all Objects
  */
 export class SceneManager {
-  scene: Scene;
+  scene: THREE.Scene;
   blockMap: Map<string, Promise<THREE.Group>>;
   streetArray: string[][] = generateMapArray(data);
   renderer: THREE.Renderer;
@@ -20,9 +19,9 @@ export class SceneManager {
   cars: ControllableCar[];
   newcamera: THREE.Camera;
   constructor(
-    scene: Scene,
+    scene: THREE.Scene,
     blockMap: Map<string, Promise<THREE.Group>>,
-    renderer: THREE.Renderer,
+    renderer: THREE.Renderer
   ) {
     this.scene = scene;
     this.blockMap = blockMap;
@@ -31,18 +30,17 @@ export class SceneManager {
     this.newcamera = new THREE.Camera();
   }
 
-  
   /**
    *
    * adds loaded tile to Scene
-   * 
+   *
    * @param objectKey
    * @param posX
    * @param posY
    * @param posZ
    * @param rotation
    *
-   * 
+   *
    */
   addBlockToScene(
     objectKey: string,
@@ -150,7 +148,10 @@ export class SceneManager {
       this.cars.forEach((car) => {
         car.handelCar();
       });
-      this.renderer.render(this.scene, carCam.camState.cam as THREE.PerspectiveCamera);
+      this.renderer.render(
+        this.scene,
+        carCam.camState.cam as THREE.PerspectiveCamera
+      );
       requestAnimationFrame(animate);
     };
     animate();
