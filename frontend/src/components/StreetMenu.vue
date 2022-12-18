@@ -12,7 +12,7 @@
           v-bind:class="[
             streetTypesState.currentActiveTab === vehicle[0]
               ? 'active shadow-lg'
-              : 'bg-[#424A4C]',
+              : 'bg-inactive-folder-gray',
           ]"
         ></StreetMenuTab>
       </div>
