@@ -3,8 +3,6 @@ package de.hsrm.mi.team3.swtp.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
-
 /*
  * Room class that is used within the RoomBox.
  * This class has two different constructors.
@@ -14,20 +12,21 @@ public class Room {
   private String roomName;
   private int roomNumber;
   private List<User> userList;
-  private MultipartFile jythonScript;
+  private String jythonScript;
 
   public Room(int roomNumber) {
     this.roomName = "default-name";
     this.roomNumber = roomNumber;
     this.userList = new ArrayList<User>();
-    this.jythonScript = null;
+    this.jythonScript = "";
   }
 
   public Room(String roomName, int roomNumber) {
     this.roomName = roomName;
     this.roomNumber = roomNumber;
     this.userList = new ArrayList<User>();
-    this.jythonScript = null;
+    this.jythonScript = "";
+    ;
   }
 
   public String getRoomName() {
@@ -58,11 +57,11 @@ public class Room {
     this.roomNumber = roomNumber;
   }
 
-  public MultipartFile getJythonScript() {
+  public String getJythonScript() {
     return jythonScript;
   }
 
-  public void setJythonScript(MultipartFile jythonScript) {
+  public void setJythonScript(String jythonScript) {
     this.jythonScript = jythonScript;
   }
 }

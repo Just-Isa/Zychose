@@ -59,11 +59,13 @@ public class RoomController {
         break;
       case UPDATE:
         Room room = this.roomBoxService.getSpecificRoom(roomNumber);
+
         backservice.sendRoom(
             "room/" + roomNumber,
             BackendOperation.UPDATE,
             BackendRoomMessage.from(room.getRoomName(), room.getRoomNumber(), room.getUserList(),
                 room.getJythonScript()));
+
         break;
     }
   }

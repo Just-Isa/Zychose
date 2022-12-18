@@ -1,18 +1,17 @@
 package de.hsrm.mi.team3.swtp.domain.messaging;
 
-import de.hsrm.mi.team3.swtp.domain.User;
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
+import de.hsrm.mi.team3.swtp.domain.User;
 
-public record BackendRoomMessage(String roomName, int roomNumber, List<User> userList, MultipartFile jythonScript) {
+public record BackendRoomMessage(String roomName, int roomNumber, List<User> userList, String jythonScript) {
 
   /**
    * @param room
    * @return
    */
   public static BackendRoomMessage from(String roomName, int roomNumber, List<User> userList,
-      MultipartFile jythonScript) {
+      String jythonScript) {
     return new BackendRoomMessage(roomName, roomNumber, userList, jythonScript);
   }
 }

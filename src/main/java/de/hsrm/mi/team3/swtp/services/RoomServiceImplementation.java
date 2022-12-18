@@ -1,5 +1,6 @@
 package de.hsrm.mi.team3.swtp.services;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -55,6 +56,10 @@ public class RoomServiceImplementation implements RoomService {
 
   @Override
   public void saveScriptToRoom(MultipartFile file, Room room) {
-    room.setJythonScript(file);
+    try {
+      room.setJythonScript(new String(file.getBytes()));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }

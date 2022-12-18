@@ -44,7 +44,7 @@ function receiveRoom() {
   stompClient.onConnect = () => {
     stompClient.subscribe(DEST, (message) => {
       roomState.room = JSON.parse(message.body);
-      console.log(roomState.room.userList);
+      console.log(roomState.room);
     });
   };
   stompClient.activate();

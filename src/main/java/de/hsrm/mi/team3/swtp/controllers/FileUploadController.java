@@ -1,5 +1,6 @@
 package de.hsrm.mi.team3.swtp.controllers;
 
+import org.python.util.PythonInterpreter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,13 +43,20 @@ public class FileUploadController {
 
         this.roomService.saveScriptToRoom(file, room);
 
-        logger.info("ROOM: {}", room.getJythonScript().getOriginalFilename());
+        logger.info("ROOM: {}", room.getJythonScript());
+        logger.info("UPLOAD ROOMNUMBER: " + roomNumber);
 
         backservice.sendRoom(
                 "room/" + roomNumber,
                 BackendOperation.UPDATE,
                 BackendRoomMessage.from(room.getRoomName(), room.getRoomNumber(), room.getUserList(),
-                        room.getJythonScript()));
+                        new String(room.getJythonScript().getBytes())));
+
+        // just for testing-purposes, to show that you can execute the received file
+        try (PythonInterpreter pyInt = new PythonInterpreter()) {
+            pyInt.exec(room.getJythonScript());
+        }
+
     }
 
 }

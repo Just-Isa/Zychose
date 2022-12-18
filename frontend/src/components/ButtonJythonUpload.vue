@@ -53,7 +53,6 @@ async function submitForm() {
   const formData = new FormData();
   const postURL = `/api/upload/${props.roomNumber}`;
 
-  //formData.append('file', new Blob([JSON.stringify(files.value[0])]));
   formData.append('file', files[0]);
 
   console.log(files)
