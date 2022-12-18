@@ -31,15 +31,18 @@ export class SceneManager {
     this.newcamera = new THREE.Camera();
   }
 
+  
   /**
    *
+   * adds loaded tile to Scene
+   * 
    * @param objectKey
    * @param posX
    * @param posY
    * @param posZ
    * @param rotation
    *
-   * adds loaded tile to Scene
+   * 
    */
   addBlockToScene(
     objectKey: string,

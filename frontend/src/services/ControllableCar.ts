@@ -15,6 +15,7 @@ export class ControllableCar implements ICar {
   maxspeed: number;
   handling: number;
   slowing: number;
+  brake:number;
   acceleration: number;
   car: THREE.Group;
   constructor(car: THREE.Group) {
@@ -24,6 +25,8 @@ export class ControllableCar implements ICar {
     this.acceleration = 0.02;
     this.handling = 0.035;
     this.slowing = -0.023;
+    this.brake = 0.05;
+
     initCarCamera(this.car);
   }
 
@@ -36,10 +39,18 @@ export class ControllableCar implements ICar {
     }
 
     if (keysPressed.get("ArrowUp")) {
-      this.calcSpeed(this.acceleration);
+      if(this.speed < 0){
+        this.calcSpeed(this.brake);
+      }else{
+        this.calcSpeed(this.acceleration);
+      }
     }
     if (keysPressed.get("ArrowDown")) {
-      this.calcSpeed(-this.acceleration);
+      if(this.speed > 0){
+        this.calcSpeed(-this.brake);
+      }else{
+        this.calcSpeed(-this.acceleration);
+      }
     }
 
     if (this.speed != 0) {

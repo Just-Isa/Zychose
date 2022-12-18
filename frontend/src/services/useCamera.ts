@@ -13,7 +13,7 @@ export interface iCameraState {
 }
 
 const camState = reactive<iCameraState>({
-  cam: new PerspectiveCamera(70, aspect, 2, 2000),
+  cam: new PerspectiveCamera(70, aspect, 1, 2000),
   carcam: new CarCamera(new THREE.Group(), new THREE.PerspectiveCamera(), false)
 });
 
