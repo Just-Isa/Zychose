@@ -9,9 +9,6 @@
         accept=".jy, .py, .txt"
         @change="onChangeFile"
       />
-      <!-- <ul v-show="files.length">
-        <li v-for="file of files" :key="file">{{ file }}</li>
-      </ul> -->
       <button
         type="submit"
         class="border-black bg-neutral-400 hover:bg-lime-200 rounded p-1 m-1"
