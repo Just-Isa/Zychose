@@ -75,4 +75,8 @@ export class CarCamera {
     this.camera.position.copy(this.curCameraPos);
     this.camera.lookAt(this.curCameraLookAt);
   }
+
+  switchPerspective(){
+    this.isFirstPerson = !this.isFirstPerson;
+  }
 }

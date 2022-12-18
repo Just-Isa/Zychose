@@ -50,9 +50,8 @@ export default {
     const blockMap = glbState.blockMap;
     const scene = (this.$refs.scene as any).scene;
     const renderer = (this.$refs.renderer as any).renderer;
-    const camera = (this.$refs.cameraTop as any).camera;
 
-    const sceneManager = new SceneManager(scene, blockMap, renderer, camera);
+    const sceneManager = new SceneManager(scene, blockMap, renderer);
 
     sceneManager.createLandscape();
     sceneManager.createGrid();

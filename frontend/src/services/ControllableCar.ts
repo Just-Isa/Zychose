@@ -1,9 +1,12 @@
 import * as THREE from "three";
 import { CarCamera } from "./CarCamera";
 import type { ICar } from "./ICar";
+import { useCamera } from "./useCamera";
 import { useInputs } from "./useInputs";
 
+
 const { keysPressed } = useInputs();
+const { camState, updateCamera, initCarCamera } = useCamera();
 
 export class ControllableCar implements ICar {
   direction = new THREE.Vector3();
@@ -14,17 +17,14 @@ export class ControllableCar implements ICar {
   slowing: number;
   acceleration: number;
   car: THREE.Group;
-  camera: THREE.PerspectiveCamera;
-  carCam: CarCamera;
-  constructor(car: THREE.Group, camera: THREE.PerspectiveCamera) {
+  constructor(car: THREE.Group) {
     this.speed = 0;
     this.car = car;
-    this.camera = camera;
     this.maxspeed = 1.5;
     this.acceleration = 0.02;
     this.handling = 0.035;
     this.slowing = -0.023;
-    this.carCam = new CarCamera(this.car, this.camera, true);
+    initCarCamera(this.car);
   }
 
   /**
@@ -51,6 +51,7 @@ export class ControllableCar implements ICar {
       }
     }
     this.move();
+    updateCamera(this.speed);
   }
   /**
    * moves Car
@@ -58,12 +59,9 @@ export class ControllableCar implements ICar {
   private move() {
     this.car.getWorldDirection(this.direction);
     this.destination.add(this.direction.multiplyScalar(this.speed));
-
-    // const camereaLookAt = this.destination.clone());
-    // this.camera.position.set(this.car.position.x, this.car.position.y+5,this.car.position.z+2)
-    // this.camera.lookAt(camereaLookAt);
     this.car.position.lerpVectors(this.car.position, this.destination, 0.5);
-    this.carCam.updateCamera(this.speed);
+    
+
   }
 
   /**

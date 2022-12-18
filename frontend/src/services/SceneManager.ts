@@ -1,10 +1,12 @@
 import * as THREE from "three";
-import type { Scene } from "three";
+import type { PerspectiveCamera, Scene } from "three";
 import data from "../data/dummy.json";
 import { generateMapArray } from "./JSONtoMapArray";
 import { ControllableCar } from "./ControllableCar";
+import { useCamera } from "./useCamera";
 
 const blockSize = 16;
+const carCam = useCamera();
 
 /**
  * Manages Scene with all Objects
@@ -14,7 +16,6 @@ export class SceneManager {
   blockMap: Map<string, Promise<THREE.Group>>;
   streetArray: string[][] = generateMapArray(data);
   renderer: THREE.Renderer;
-  camera: THREE.PerspectiveCamera;
   direction = new THREE.Vector3();
   cars: ControllableCar[];
   newcamera: THREE.Camera;
@@ -22,12 +23,10 @@ export class SceneManager {
     scene: Scene,
     blockMap: Map<string, Promise<THREE.Group>>,
     renderer: THREE.Renderer,
-    camera: THREE.PerspectiveCamera
   ) {
     this.scene = scene;
     this.blockMap = blockMap;
     this.renderer = renderer;
-    this.camera = camera;
     this.cars = [];
     this.newcamera = new THREE.Camera();
   }
@@ -127,7 +126,7 @@ export class SceneManager {
 
           car.position.set(0, 0, 0);
           this.scene.add(car);
-          this.cars.push(new ControllableCar(car, this.camera));
+          this.cars.push(new ControllableCar(car));
         })
         .catch((error) => {
           this.getErrorBlock(0, 0, 0);
@@ -148,7 +147,7 @@ export class SceneManager {
       this.cars.forEach((car) => {
         car.handelCar();
       });
-      this.renderer.render(this.scene, this.camera);
+      this.renderer.render(this.scene, carCam.camState.cam as THREE.PerspectiveCamera);
       requestAnimationFrame(animate);
     };
     animate();
