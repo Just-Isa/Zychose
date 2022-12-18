@@ -9,7 +9,7 @@ export interface IRoomState {
 }
 
 const roomState = reactive<IRoomState>({
-  room: new Room("", 1, []),
+  room: new Room("", 1, [], new File([], "")),
   errorMessage: "",
 });
 

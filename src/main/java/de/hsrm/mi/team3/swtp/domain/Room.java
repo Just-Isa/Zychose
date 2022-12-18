@@ -20,12 +20,14 @@ public class Room {
     this.roomName = "default-name";
     this.roomNumber = roomNumber;
     this.userList = new ArrayList<User>();
+    this.jythonScript = null;
   }
 
   public Room(String roomName, int roomNumber) {
     this.roomName = roomName;
     this.roomNumber = roomNumber;
     this.userList = new ArrayList<User>();
+    this.jythonScript = null;
   }
 
   public String getRoomName() {

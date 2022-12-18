@@ -1,13 +1,5 @@
 package de.hsrm.mi.team3.swtp.controllers;
 
-import de.hsrm.mi.team3.swtp.domain.Room;
-import de.hsrm.mi.team3.swtp.domain.User;
-import de.hsrm.mi.team3.swtp.domain.messaging.BackendMouseMessage;
-import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
-import de.hsrm.mi.team3.swtp.domain.messaging.BackendRoomMessage;
-import de.hsrm.mi.team3.swtp.services.BackendInfoService;
-import de.hsrm.mi.team3.swtp.services.RoomBoxServiceImplementation;
-import de.hsrm.mi.team3.swtp.services.RoomServiceImplementation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +8,15 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
+
+import de.hsrm.mi.team3.swtp.domain.Room;
+import de.hsrm.mi.team3.swtp.domain.User;
+import de.hsrm.mi.team3.swtp.domain.messaging.BackendMouseMessage;
+import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
+import de.hsrm.mi.team3.swtp.domain.messaging.BackendRoomMessage;
+import de.hsrm.mi.team3.swtp.services.BackendInfoService;
+import de.hsrm.mi.team3.swtp.services.RoomBoxServiceImplementation;
+import de.hsrm.mi.team3.swtp.services.RoomServiceImplementation;
 
 @Controller
 public class RoomController {
@@ -65,7 +62,8 @@ public class RoomController {
         backservice.sendRoom(
             "room/" + roomNumber,
             BackendOperation.UPDATE,
-            BackendRoomMessage.from(room.getRoomName(), room.getRoomNumber(), room.getUserList()));
+            BackendRoomMessage.from(room.getRoomName(), room.getRoomNumber(), room.getUserList(),
+                room.getJythonScript()));
         break;
     }
   }
@@ -107,17 +105,6 @@ public class RoomController {
     if (user.getUserName() == null) {
       user.setUserName("Raus aus meinem Kopf");
     }
-  }
-
-  @PostMapping("/upload/{roomNumber}")
-  public void uploadJythonFile(@RequestParam("file") MultipartFile file, @PathVariable("roomNumber") int roomNumber) {
-    logger.info(
-        "FILE RECEIVED: "
-            + file.getOriginalFilename());
-
-    Room room = this.roomBoxService.getSpecificRoom(roomNumber);
-
-    this.roomService.saveScriptToRoom(file, room);
   }
 
 }

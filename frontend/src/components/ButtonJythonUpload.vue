@@ -24,17 +24,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { reactive } from "vue";
 
-const files = ref([]);
+let files: File[] = reactive([]);
 
 const props = defineProps<{
   roomNumber: number;
 }>();
 
 function addFiles(newFiles: any) {
-  files.value = files.value.concat(newFiles);
+  console.log(`NEWFILES: ${(newFiles[0] as File).size}`);
+  files = files.concat((newFiles[0]) as File);
   console.log("newFile " + newFiles[0].name);
+  console.log(`FILES: ${files}`);
 }
 
 function onChangeFile(event: any) {
@@ -49,31 +51,22 @@ function onChangeFile(event: any) {
 async function submitForm() {
 
   const formData = new FormData();
+  const postURL = `/api/upload/${props.roomNumber}`;
+
+  //formData.append('file', new Blob([JSON.stringify(files.value[0])]));
+  formData.append('file', files[0]);
+
+  console.log(files)
+
+  console.log(formData.get('file'));
+
   const reqOptions = {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(formData)
+    headers: { },
+    body: formData
   };
 
-  formData.append('file', files.value[0]);
-
-  try {
-    const response = await fetch(`/upload/${props.roomNumber}`, reqOptions)
-      .then((response) => {
-        if(!response.ok) {
-          //console.error("ERROR in response")
-          throw new Error();
-        }
-        response.json();
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-
-    console.log(`RESPONSE HERE: ${response}`)
-  } catch(error) {
-    console.error(`ERROR ${error}`);
-  }
+  await fetch(postURL, reqOptions);
 
 }
 
