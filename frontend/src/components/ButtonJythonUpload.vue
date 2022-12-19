@@ -3,26 +3,34 @@
   <div class="jython-upload">
     <form class="pl-5" @submit.prevent="submitForm">
       <!-- akzeptiert .txt zum Testen, solange ich mich noch nicht mit jython beschäftigt habe -->
-      <input
-        type="file"
-        id="getFile"
-        accept=".jy, .py, .txt"
-        @change="onChangeFile"
-      />
-      <button
-        type="submit"
-        class="border-black bg-neutral-400 hover:bg-lime-200 rounded p-1 m-1"
-      >
-        Script Upload
-      </button>
+      <div class="flex items-center h-12">
+        <input
+          type="file"
+          id="getFile"
+          accept=".jy, .py, .txt"
+          @change="onChangeFile"
+        />
+        <button
+          type="submit"
+          class="border-black bg-neutral-400 hover:bg-lime-200 rounded p-1 m-1"
+        >
+          Script Upload
+        </button>
+        <div v-if="isSubmitted">
+          <span
+            class="h-5 w-5 bg-green-400 rounded-xl inline-block m-2 mt-[0.8em]"
+          ></span>
+        </div>
+      </div>
     </form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, watch, ref } from "vue";
 
 let files: File[] = reactive([]);
+let isSubmitted = ref(false);
 
 const props = defineProps<{
   roomNumber: number;
@@ -49,7 +57,7 @@ function onChangeFile(event: any) {
   for (let file of event.target.files) {
     console.log("File Upload: " + file.name);
   }
-  event.target.value = null;
+  //event.target.value = null;
 }
 
 /**
@@ -71,6 +79,9 @@ async function submitForm() {
     body: formData,
   };
 
-  await fetch(postURL, reqOptions);
+  const response = await fetch(postURL, reqOptions);
+  if (response.ok) {
+    isSubmitted.value = true;
+  }
 }
 </script>
