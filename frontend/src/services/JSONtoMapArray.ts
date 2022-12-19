@@ -11,7 +11,6 @@ export function generateMapArray(jsonData: object[]) {
   const streetArray = new Array(size)
     .fill("")
     .map(() => new Array(size).fill(""));
-  console.log(streetArray);
 
   // fill street array with types according to given coordinates
   jsonData.forEach(function (obj) {
