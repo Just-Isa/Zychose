@@ -14,7 +14,7 @@
     >
       <img
         class="h-16 w-16 m-2"
-        :src="`/assets/img/${prop.currentBlock.type}.svg`"
+        :src="`src/assets/img/${prop.currentBlock.type}.svg`"
         :alt="prop.currentBlock.type"
       />
     </div>
