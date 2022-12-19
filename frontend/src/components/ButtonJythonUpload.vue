@@ -16,6 +16,7 @@
         >
           Script Upload
         </button>
+        <button @click="receiveJythonData()">diese</button>
         <div v-if="isSubmitted">
           <span
             class="h-5 w-5 bg-green-400 rounded-xl inline-block m-2 mt-[0.8em]"
@@ -27,7 +28,9 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { type IRoom } from "@/services/IRoom";
+import type { IRoomList } from "@/services/IRoomList";
+import { onMounted, reactive, ref } from "vue";
 
 let files: File[] = reactive([]);
 let isSubmitted = ref(false);
@@ -82,5 +85,19 @@ async function submitForm() {
   if (response.ok) {
     isSubmitted.value = true;
   }
+}
+
+function receiveJythonData(): void {
+  console.log("START");
+  fetch(`/api/upload/${props.roomNumber}`)
+    .then((resp) => {
+      if (!resp.ok) {
+        throw new Error(resp.statusText);
+      }
+      return resp.json();
+    })
+    .then((jsondata: IRoom) => {
+      console.log(jsondata.jythonFile);
+    });
 }
 </script>
