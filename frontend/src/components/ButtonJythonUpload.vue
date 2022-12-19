@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, watch, ref } from "vue";
+import { reactive, ref } from "vue";
 
 let files: File[] = reactive([]);
 let isSubmitted = ref(false);
@@ -57,7 +57,6 @@ function onChangeFile(event: any) {
   for (let file of event.target.files) {
     console.log("File Upload: " + file.name);
   }
-  //event.target.value = null;
 }
 
 /**
