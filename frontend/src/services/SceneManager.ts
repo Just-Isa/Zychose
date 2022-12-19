@@ -1,6 +1,5 @@
 import * as THREE from "three";
 import type { Scene } from "three";
-import data from "../data/dummy.json";
 import { generateMapArray } from "./JSONtoMapArray";
 
 const blockSize = 16;
@@ -11,11 +10,16 @@ const blockSize = 16;
 export class SceneManager {
   scene: Scene;
   blockMap: Map<string, Promise<THREE.Group>>;
-  streetArray: string[][] = generateMapArray(data);
+  streetArray: string[][];
 
-  constructor(scene: Scene, blockMap: Map<string, Promise<THREE.Group>>) {
+  constructor(
+    scene: Scene,
+    blockMap: Map<string, Promise<THREE.Group>>,
+    data: object[]
+  ) {
     this.scene = scene;
     this.blockMap = blockMap;
+    this.streetArray = generateMapArray(data);
   }
 
   /**
