@@ -23,6 +23,7 @@ export function useRoom() {
     receiveRoom,
     swapRooms,
     removeUserFromRoom,
+    updateRoomMap,
   };
 }
 
