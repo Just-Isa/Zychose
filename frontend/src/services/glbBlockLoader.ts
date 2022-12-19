@@ -3,7 +3,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { reactive } from "vue";
 
 const gltfloader = new GLTFLoader();
-const path = "/assets/models/";
+const path = "src/assets/models/";
 const glbState = reactive<GLBState>({
   blockMap: new Map(),
 });
@@ -21,11 +21,11 @@ export interface GLBState {
  */
 function generateBlockMap() {
   //path cant be variable, i dont know why
-  const assetNames = import.meta.glob(`/assets/models/*`);
+  const assetNames = import.meta.glob(`/src/assets/models/*`);
 
   for (const path in assetNames) {
-    const fileType = path.toString().split("/")[3].split(".")[1];
-    const key = path.toString().split("/")[3].split(".")[0];
+    const fileType = path.toString().split("/")[4].split(".")[1];
+    const key = path.toString().split("/")[4].split(".")[0];
     glbState.blockMap.set(key, loadModel(key, fileType));
   }
 }

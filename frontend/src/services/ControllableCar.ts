@@ -19,10 +19,10 @@ export class ControllableCar implements ICar {
   constructor(car: THREE.Group) {
     this.speed = 0;
     this.car = car;
-    this.maxspeed = 1.5;
-    this.acceleration = 0.02;
-    this.handling = 0.035;
-    this.slowing = -0.023;
+    this.maxspeed = 0.4;
+    this.acceleration = 0.01;
+    this.handling = 0.015;
+    this.slowing = -0.008;
     this.brake = 0.05;
 
     initCarCamera(this.car);
@@ -73,12 +73,12 @@ export class ControllableCar implements ICar {
 
   /**
    *
-   * calculates speed
+   * calculates speed and caps the speed at maxSpeed
    * @param acc
    */
   private calcSpeed(acc: number) {
     // math.round() because js can't count corretly
-    const curspeed = Math.round((this.speed + acc) * 100) / 100;
+    const curspeed = this.speedCalculator(acc)
     if (Math.abs(curspeed) >= this.maxspeed) {
       if (acc < 0) {
         this.speed = -this.maxspeed;
@@ -88,6 +88,15 @@ export class ControllableCar implements ICar {
     } else {
       this.speed = curspeed;
     }
+  }
+
+  /**
+   * Math calculation for the speed
+   * @param acc 
+   * @returns 
+   */
+  private speedCalculator(acc:number){
+    return this.speed + acc // there can be wierd decimal places because maschines can't count : );
   }
   /**
    * rotates car
@@ -102,7 +111,7 @@ export class ControllableCar implements ICar {
    */
   private carRunOut() {
     if (this.speed > 0) {
-      const curSpeed = Math.round((this.speed + this.slowing) * 100) / 100;
+      const curSpeed = this.speedCalculator(this.slowing);
 
       if (curSpeed < 0) {
         this.speed = 0;
@@ -110,7 +119,7 @@ export class ControllableCar implements ICar {
         this.speed = curSpeed;
       }
     } else if (this.speed < 0) {
-      const curSpeed = Math.round((this.speed - this.slowing) * 100) / 100;
+      const curSpeed = this.speedCalculator(-this.slowing);
 
       if (curSpeed > 0) {
         this.speed = 0;
