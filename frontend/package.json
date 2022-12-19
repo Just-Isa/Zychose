@@ -7,7 +7,7 @@
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
-    "lint": "type-check && eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --max-warnings=0 --fix && npx prettier --write . && prettier --check .",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --max-warnings=0 --fix && npx prettier --write . && run-p type-check && prettier --check .",
     "test": "vitest",
     "bench": "vitest bench",
     "coverage": "vitest run --coverage"
