@@ -15,7 +15,7 @@ processResources {
 
 task copyFrontendToBuild(type: Copy) {
 	dependsOn 'npmBuild'
-	from 'frontend/build'
+	from 'frontend/dist'
 	into 'build/resources/main/static'
 }
 
