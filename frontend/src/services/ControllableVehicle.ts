@@ -29,15 +29,13 @@ export class ControllableVehicle implements IUpdatable {
     this._brakeSpeed = brakeSpeed;
     this._vehicleCamera = new VehicleCamera(true);
     this._vehicleCamera.update(this._currentSpeed, this._threeObjectVehicle); // camera should start on the vehicle position.
+    switchCamera(this._vehicleCamera); //lets eventhandler subscribe to key input.
   }
 
   update(): void {
     this.handleCar();
-    if (this._currentSpeed != 0) {
-      // camera and car should only Move when speed is not 0
-      this.move();
-      this._vehicleCamera.update(this._currentSpeed, this._threeObjectVehicle);
-    }
+    this.move();
+    this._vehicleCamera.update(this._currentSpeed, this._threeObjectVehicle);
   }
 
   /**
@@ -73,7 +71,6 @@ export class ControllableVehicle implements IUpdatable {
         this.rotate(-this._handling);
       }
     }
-    switchCamera(this._vehicleCamera);
   }
 
   /**
@@ -81,14 +78,16 @@ export class ControllableVehicle implements IUpdatable {
    */
   private move() {
     const lerpDuration = 0.5; //duration for the lerp
-
-    this._threeObjectVehicle.getWorldDirection(this._direction);
-    this._destination.add(this._direction.multiplyScalar(this._currentSpeed));
-    this._threeObjectVehicle.position.lerpVectors(
-      this._threeObjectVehicle.position,
-      this._destination,
-      lerpDuration
-    );
+    if (this._currentSpeed != 0) {
+      //should 'move' when speed is not 0
+      this._threeObjectVehicle.getWorldDirection(this._direction);
+      this._destination.add(this._direction.multiplyScalar(this._currentSpeed));
+      this._threeObjectVehicle.position.lerpVectors(
+        this._threeObjectVehicle.position,
+        this._destination,
+        lerpDuration
+      );
+    }
   }
 
   /**
