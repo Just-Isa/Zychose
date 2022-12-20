@@ -16,12 +16,12 @@
         >
           Script Upload
         </button>
-        <button @click="receiveJythonData()">diese</button>
-        <div v-if="isSubmitted">
+        <!----
+        <div v-if="hasJython">
           <span
             class="h-5 w-5 bg-green-400 rounded-xl inline-block m-2 mt-[0.8em]"
           ></span>
-        </div>
+        </div>-->
       </div>
     </form>
   </div>
@@ -30,14 +30,19 @@
 <script setup lang="ts">
 import { type IRoom } from "@/services/IRoom";
 import type { IRoomList } from "@/services/IRoomList";
-import { onMounted, reactive, ref } from "vue";
+import { useRoom } from "@/services/useRoom";
+import { getRoomList, useRoomBox } from "@/services/useRoomList";
+import { onMounted, onUpdated, reactive, ref } from "vue";
 
 let files: File[] = reactive([]);
-let isSubmitted = ref(false);
+let hasJython = ref(false);
 
 const props = defineProps<{
   roomNumber: number;
 }>();
+
+const { roomState } = useRoom();
+const { roomListState } = useRoomBox();
 
 /**
  * function that saves all selected files to an array
@@ -82,22 +87,23 @@ async function submitForm() {
   };
 
   const response = await fetch(postURL, reqOptions);
-  if (response.ok) {
-    isSubmitted.value = true;
+
+  for (let room of roomListState.rooms.roomList) {
+    if (room.roomNumber === props.roomNumber) {
+      if (response.ok) {
+        hasJython.value = true;
+      }
+    }
   }
 }
 
-function receiveJythonData(): void {
-  console.log("START");
-  fetch(`/api/upload/${props.roomNumber}`)
-    .then((resp) => {
-      if (!resp.ok) {
-        throw new Error(resp.statusText);
-      }
-      return resp.json();
-    })
-    .then((jsondata: IRoom) => {
-      console.log(jsondata.jythonFile);
-    });
-}
+onUpdated(async () => {
+  if (roomState.room.jythonFile.name != "") {
+    console.log("JYTHON:");
+    console.log(roomState.room.jythonFile);
+    hasJython.value = true;
+  } else {
+    console.log("alles leer");
+  }
+});
 </script>
