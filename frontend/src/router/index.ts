@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import EditorView from "../views/EditorView.vue";
-import RoomSelect from "@/views/RoomSelect.vue";
+import RoomSelectView from "../views/RoomSelectView.vue";
 import ThreeDView from "../views/ThreeDView.vue";
 import Error500View from "@/views/errors/Error500View.vue";
 import ResetInfoView from "@/views/ResetInfoView.vue";
@@ -11,7 +11,7 @@ const router = createRouter({
     {
       path: "/rooms",
       name: "Raumauswahl",
-      component: RoomSelect,
+      component: RoomSelectView,
     },
     {
       path: "/1",
