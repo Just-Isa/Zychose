@@ -16,26 +16,17 @@
         >
           Script Upload
         </button>
-        <!----
-        <div v-if="hasJython">
-          <span
-            class="h-5 w-5 bg-green-400 rounded-xl inline-block m-2 mt-[0.8em]"
-          ></span>
-        </div>-->
       </div>
     </form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { type IRoom } from "@/services/IRoom";
-import type { IRoomList } from "@/services/IRoomList";
 import { useRoom } from "@/services/useRoom";
 import { getRoomList, useRoomBox } from "@/services/useRoomList";
-import { onMounted, onUpdated, reactive, ref } from "vue";
+import { reactive } from "vue";
 
 let files: File[] = reactive([]);
-let hasJython = ref(false);
 
 const props = defineProps<{
   roomNumber: number;
@@ -88,23 +79,6 @@ async function submitForm() {
 
   const response = await fetch(postURL, reqOptions);
 
-  for (let room of roomListState.rooms.roomList) {
-    if (room.roomNumber === props.roomNumber) {
-      if (response.ok) {
-        hasJython.value = true;
-      }
-    }
-  }
   getRoomList();
 }
-
-onUpdated(async () => {
-  if (roomState.room.jythonScript != "") {
-    console.log("JYTHON:");
-    console.log(roomState.room.jythonScript);
-    hasJython.value = true;
-  } else {
-    console.log("alles leer");
-  }
-});
 </script>

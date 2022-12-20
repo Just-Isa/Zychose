@@ -27,7 +27,7 @@
 <script setup lang="ts">
 //v-on:click="swapRooms(room.roomNumber)"
 import { useRoomBox } from "@/services/useRoomList";
-import { onMounted, computed, ref, watch } from "vue";
+import { onMounted, computed } from "vue";
 import { useUser } from "@/services/useUser";
 
 import ButtonJythonUpload from "@/components/ButtonJythonUpload.vue";
