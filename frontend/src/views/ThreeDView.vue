@@ -1,7 +1,7 @@
 <template>
   <Renderer ref="renderer" resize="window" antialias>
     <PerspectiveCamera
-      ref="cameraTop"
+      ref="perspectiveCamera"
       :position="{ y: 100, z: 100 }"
       :look-at="{ x: 0, y: 0, z: 0 }"
       :near="2"
@@ -27,15 +27,13 @@ import {
 } from "troisjs";
 import { useGLB } from "@/services/glbBlockLoader";
 import { SceneManager } from "@/services/SceneManager";
-import { useInputs } from "@/services/useInputs";
-import { useCamera } from "@/services/useCamera";
+import { useKeyInput } from "@/services/useKeyInput";
 
 const { glbState, generateBlockMap } = useGLB();
-const { switchCamera } = useCamera();
 
 generateBlockMap();
 
-const { inputs } = useInputs();
+const { inputs } = useKeyInput();
 
 export default {
   components: {
@@ -50,15 +48,14 @@ export default {
     const blockMap = glbState.blockMap;
     const scene = (this.$refs.scene as any).scene;
     const renderer = (this.$refs.renderer as any).renderer;
-
+    console.log(blockMap)
     const sceneManager = new SceneManager(scene, blockMap, renderer);
-
+    console.log("AAAAA")
     sceneManager.createLandscape();
     sceneManager.createGrid();
     sceneManager.addCar();
     sceneManager.handleRender();
     inputs();
-    switchCamera();
   },
 };
 </script>

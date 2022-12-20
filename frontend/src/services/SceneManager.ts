@@ -1,33 +1,31 @@
 import * as THREE from "three";
 import data from "../data/dummy.json";
 import { generateMapArray } from "./JSONtoMapArray";
-import { ControllableCar } from "./ControllableCar";
+import { ControllableVehicle } from "./ControllableVehicle";
 import { useCamera } from "./useCamera";
+import type { IUpdatable } from "./IUpdatable";
 
 const blockSize = 16;
-const carCam = useCamera();
+const {camState} = useCamera();
 
 /**
  * Manages Scene with all Objects
  */
 export class SceneManager {
-  scene: THREE.Scene;
-  blockMap: Map<string, Promise<THREE.Group>>;
-  streetArray: string[][] = generateMapArray(data);
-  renderer: THREE.Renderer;
-  direction = new THREE.Vector3();
-  cars: ControllableCar[];
-  newcamera: THREE.Camera;
+  private scene: THREE.Scene;
+  private blockMap: Map<string, Promise<THREE.Group>>;
+  private streetArray: string[][] = generateMapArray(data);
+  private renderer: THREE.Renderer;
+  private updatables: IUpdatable[]; // list of all Object u should update every frame.
   constructor(
     scene: THREE.Scene,
     blockMap: Map<string, Promise<THREE.Group>>,
-    renderer: THREE.Renderer
+    renderer: THREE.Renderer, 
   ) {
     this.scene = scene;
     this.blockMap = blockMap;
     this.renderer = renderer;
-    this.cars = [];
-    this.newcamera = new THREE.Camera();
+    this.updatables = [];
   }
 
   /**
@@ -49,6 +47,7 @@ export class SceneManager {
     posZ: number,
     rotation: number
   ) {
+    
     const blockPromise = this.blockMap.get(objectKey);
     if (blockPromise != undefined) {
       blockPromise
@@ -124,10 +123,11 @@ export class SceneManager {
       blockPromise
         ?.then((block) => {
           const car = block.clone();
-
           car.position.set(0, 0, 0);
+          console.log(":(")
+          console.log(camState)
           this.scene.add(car);
-          this.cars.push(new ControllableCar(car));
+          this.updatables.push(new ControllableVehicle(car,1,0.01,0.015,0.05));
         })
         .catch((error) => {
           this.getErrorBlock(0, 0, 0);
@@ -139,18 +139,19 @@ export class SceneManager {
   }
 
   /**
-   * Renders and animates scene.
+   * 
+   * Renders and animates the scene.
    *
    */
   handleRender() {
     const animate = () => {
-      //every car gets rendered
-      this.cars.forEach((car) => {
-        car.handelCar();
+      //every updatable gets rendered
+      this.updatables.forEach((updatables) => {
+        updatables.update();
       });
       this.renderer.render(
         this.scene,
-        carCam.camState.cam as THREE.PerspectiveCamera
+        camState.cam as THREE.PerspectiveCamera
       );
       requestAnimationFrame(animate);
     };
