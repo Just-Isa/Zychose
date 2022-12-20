@@ -35,6 +35,7 @@ import {
 } from "troisjs";
 import { useGLB } from "@/services/glbBlockLoader";
 import { SceneManager } from "@/services/SceneManager";
+import data from "../data/dummy.json";
 
 const { glbState, generateBlockMap } = useGLB();
 
@@ -45,7 +46,7 @@ export default {
   mounted() {
     const blockMap = glbState.blockMap;
     const scene = (this.$refs.scene as any).scene;
-    const sceneManager = new SceneManager(scene, blockMap);
+    const sceneManager = new SceneManager(scene, blockMap, data);
 
     sceneManager.createLandscape();
     sceneManager.createGrid();
