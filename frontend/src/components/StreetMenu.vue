@@ -31,7 +31,7 @@
       </div>
 
       <BullDozerBtn
-        cursorSrc="/assets/img/bulldozer-cursor.svg"
+        cursorSrc="src/assets/img/bulldozer-cursor.svg"
         class="pointer-events-auto"
       />
     </div>
