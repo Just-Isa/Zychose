@@ -1,5 +1,5 @@
 import { PerspectiveCamera } from "three";
-import { reactive} from "vue";
+import { reactive } from "vue";
 
 const aspect = window.innerWidth / window.innerHeight;
 
@@ -16,5 +16,3 @@ export function useCamera() {
     camState,
   };
 }
-
-

@@ -4,7 +4,7 @@ import { useKeyInput } from "./useKeyInput";
 import { VehicleCamera } from "./VehicleCamera";
 
 const { keysPressed, switchCamera } = useKeyInput();
-export class ControllableVehicle implements IUpdatable{
+export class ControllableVehicle implements IUpdatable {
   private _direction = new THREE.Vector3();
   private _destination = new THREE.Vector3();
   private _currentSpeed = 0;
@@ -12,22 +12,29 @@ export class ControllableVehicle implements IUpdatable{
   private _maxSpeed: number;
   private _handling: number;
   private _acceleration: number;
-  private _brakeSpeed: number
+  private _brakeSpeed: number;
   private _threeObjectVehicle: THREE.Group;
   private _vehicleCamera: VehicleCamera;
-  constructor(threeObjectVehicle: THREE.Group, maxspeed: number, acceleration: number, handling: number,brakeSpeed: number) {
+  constructor(
+    threeObjectVehicle: THREE.Group,
+    maxspeed: number,
+    acceleration: number,
+    handling: number,
+    brakeSpeed: number
+  ) {
     this._threeObjectVehicle = threeObjectVehicle;
     this._maxSpeed = maxspeed;
     this._acceleration = acceleration;
     this._handling = handling;
     this._brakeSpeed = brakeSpeed;
-    this._vehicleCamera = new VehicleCamera(true)
-    this._vehicleCamera.update(this._currentSpeed, this._threeObjectVehicle) // camera should start on the vehicle position.
+    this._vehicleCamera = new VehicleCamera(true);
+    this._vehicleCamera.update(this._currentSpeed, this._threeObjectVehicle); // camera should start on the vehicle position.
   }
 
   update(): void {
     this.handleCar();
-    if(this._currentSpeed != 0){ // camera and car should only Move when speed is not 0
+    if (this._currentSpeed != 0) {
+      // camera and car should only Move when speed is not 0
       this.move();
       this._vehicleCamera.update(this._currentSpeed, this._threeObjectVehicle);
     }
@@ -36,7 +43,7 @@ export class ControllableVehicle implements IUpdatable{
   /**
    * handles car with inputs.
    */
-  handleCar():void {
+  handleCar(): void {
     //car should rolles out when it doesnt get an input to accelerate or brake
     if (!keysPressed.get("ArrowUp") && !keysPressed.get("ArrowDown")) {
       this.carRunOut();
@@ -52,7 +59,7 @@ export class ControllableVehicle implements IUpdatable{
     //car accelerates backword
     if (keysPressed.get("ArrowDown")) {
       if (this._currentSpeed > 0) {
-        this.calculateSpeed(-this._brakeSpeed);//or brakes the speed, when it drives forword
+        this.calculateSpeed(-this._brakeSpeed); //or brakes the speed, when it drives forword
       } else {
         this.calculateSpeed(-this._acceleration);
       }
@@ -74,11 +81,14 @@ export class ControllableVehicle implements IUpdatable{
    */
   private move() {
     const lerpDuration = 0.5; //duration for the lerp
-    
+
     this._threeObjectVehicle.getWorldDirection(this._direction);
     this._destination.add(this._direction.multiplyScalar(this._currentSpeed));
-    this._threeObjectVehicle.position.lerpVectors(this._threeObjectVehicle.position, this._destination, lerpDuration);   
-  
+    this._threeObjectVehicle.position.lerpVectors(
+      this._threeObjectVehicle.position,
+      this._destination,
+      lerpDuration
+    );
   }
 
   /**
@@ -87,7 +97,7 @@ export class ControllableVehicle implements IUpdatable{
    * @param acc
    */
   private calculateSpeed(acc: number) {
-    const newSpeed = this.accelerate(acc)
+    const newSpeed = this.accelerate(acc);
     if (Math.abs(newSpeed) >= this._maxSpeed) {
       if (acc < 0) {
         this._currentSpeed = -this._maxSpeed;
@@ -101,11 +111,11 @@ export class ControllableVehicle implements IUpdatable{
 
   /**
    * Math calculation for the speed
-   * @param acc 
-   * @returns 
+   * @param acc
+   * @returns
    */
-  private accelerate(acc:number){
-    return this._currentSpeed + acc // there can be wierd decimal places because maschines can't count :(
+  private accelerate(acc: number) {
+    return this._currentSpeed + acc; // there can be wierd decimal places because maschines can't count :(
   }
   /**
    * rotates car

@@ -6,7 +6,7 @@ import { useCamera } from "./useCamera";
 import type { IUpdatable } from "./IUpdatable";
 
 const blockSize = 16;
-const {camState} = useCamera();
+const { camState } = useCamera();
 
 /**
  * Manages Scene with all Objects
@@ -20,7 +20,7 @@ export class SceneManager {
   constructor(
     scene: THREE.Scene,
     blockMap: Map<string, Promise<THREE.Group>>,
-    renderer: THREE.Renderer, 
+    renderer: THREE.Renderer
   ) {
     this.scene = scene;
     this.blockMap = blockMap;
@@ -47,7 +47,6 @@ export class SceneManager {
     posZ: number,
     rotation: number
   ) {
-    
     const blockPromise = this.blockMap.get(objectKey);
     if (blockPromise != undefined) {
       blockPromise
@@ -124,10 +123,12 @@ export class SceneManager {
         ?.then((block) => {
           const car = block.clone();
           car.position.set(0, 0, 0);
-          console.log(":(")
-          console.log(camState)
+          console.log(":(");
+          console.log(camState);
           this.scene.add(car);
-          this.updatables.push(new ControllableVehicle(car,1,0.01,0.015,0.05));
+          this.updatables.push(
+            new ControllableVehicle(car, 1, 0.01, 0.015, 0.05)
+          );
         })
         .catch((error) => {
           this.getErrorBlock(0, 0, 0);
@@ -139,7 +140,7 @@ export class SceneManager {
   }
 
   /**
-   * 
+   *
    * Renders and animates the scene.
    *
    */
@@ -149,10 +150,7 @@ export class SceneManager {
       this.updatables.forEach((updatables) => {
         updatables.update();
       });
-      this.renderer.render(
-        this.scene,
-        camState.cam as THREE.PerspectiveCamera
-      );
+      this.renderer.render(this.scene, camState.cam as THREE.PerspectiveCamera);
       requestAnimationFrame(animate);
     };
     animate();

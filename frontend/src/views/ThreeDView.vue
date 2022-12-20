@@ -48,9 +48,9 @@ export default {
     const blockMap = glbState.blockMap;
     const scene = (this.$refs.scene as any).scene;
     const renderer = (this.$refs.renderer as any).renderer;
-    console.log(blockMap)
+    console.log(blockMap);
     const sceneManager = new SceneManager(scene, blockMap, renderer);
-    console.log("AAAAA")
+    console.log("AAAAA");
     sceneManager.createLandscape();
     sceneManager.createGrid();
     sceneManager.addCar();
