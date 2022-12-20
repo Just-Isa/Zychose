@@ -16,7 +16,7 @@
       </div>
     </div>
     <ButtonJythonUpload :room-number="room.roomNumber"></ButtonJythonUpload>
-    <div v-if="!room.jythonFile">
+    <div v-if="room.jythonScript">
       <span
         class="h-5 w-5 bg-green-400 rounded-xl inline-block m-2 mt-[0.8em]"
       ></span>
@@ -39,35 +39,8 @@ const roomListItems = computed(() => {
   return roomListState.rooms.roomList;
 });
 
-/*
-const isSubmitted = ref(false);
-const currentRoomList = ref(roomListState.rooms.roomList);
-
-function checkJython() {
-  for (let room of roomListItems.value) {
-    console.log(room);
-    if (room.jythonFile) {
-      isSubmitted.value = true;
-    }
-  }
-}*/
-
 onMounted(() => {
   createUser();
   getRoomList();
 });
-/*
-watch(currentRoomList, () => {
-  for (let room of roomListItems.value) {
-    console.log("ROOM" + room);
-    if (room.jythonFile != null) {
-      console.log("DRIN");
-      isSubmitted.value = true;
-    }
-  }
-
-  {
-    deep: true;
-  }
-});*/
 </script>

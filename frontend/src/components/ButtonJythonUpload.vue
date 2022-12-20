@@ -95,12 +95,13 @@ async function submitForm() {
       }
     }
   }
+  getRoomList();
 }
 
 onUpdated(async () => {
-  if (roomState.room.jythonFile.name != "") {
+  if (roomState.room.jythonScript != "") {
     console.log("JYTHON:");
-    console.log(roomState.room.jythonFile);
+    console.log(roomState.room.jythonScript);
     hasJython.value = true;
   } else {
     console.log("alles leer");

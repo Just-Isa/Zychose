@@ -1,27 +1,27 @@
 import type { IUser } from "./IUser";
 
 export interface IRoom {
-  roomName: String;
+  roomName: string;
   roomNumber: number;
   userList: IUser[];
-  jythonFile: File;
+  jythonScript: string;
 }
 
 export class Room implements IRoom {
-  roomName: String;
+  roomName: string;
   roomNumber: number;
   userList: IUser[];
-  jythonFile: File;
+  jythonScript: string;
 
   constructor(
     roomName: string,
     roomNumber: number,
     userList: IUser[],
-    jytohnFile: File
+    jythonScript: string
   ) {
     this.roomName = roomName;
     this.roomNumber = roomNumber;
     this.userList = userList;
-    this.jythonFile = jytohnFile;
+    this.jythonScript = jythonScript;
   }
 }
