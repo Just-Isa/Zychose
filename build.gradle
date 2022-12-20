@@ -9,6 +9,21 @@ plugins {
 }
 
 
+processResources {
+	dependsOn 'copyFrontendToBuild'
+}
+
+task copyFrontendToBuild(type: Copy) {
+	dependsOn 'npmBuild'
+	from 'frontend/dist'
+	into 'build/resources/main/static'
+}
+
+task npmBuild(type: Exec) {
+	workingDir = file('./frontend')
+	commandLine 'npm.cmd', 'run', 'build'
+}
+
 group = 'de.hsrm.mi.team3'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'

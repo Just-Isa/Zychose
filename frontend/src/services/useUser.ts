@@ -2,6 +2,10 @@ import { Client } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
 import { Mouse, type IMouse } from "./IMouse";
 import { User, type IUser } from "./IUser";
+import {
+  getSessionIDFromCookie,
+  checkIfSessionIDCookieExists,
+} from "@/helpers/SessionIDHelper";
 
 export interface IMouseState {
   mouse: IMouse;
@@ -138,11 +142,11 @@ function receiveMouse(roomNumber: number) {
 /** Creates a User by setting the sessionID cookie*
  */
 function createUser() {
-  if (document.cookie.split("=")[0] != "sid") {
+  if (!checkIfSessionIDCookieExists()) {
     document.cookie = "sid=" + crypto.randomUUID();
     userState.user.currentRoomNumber = 0;
-    userState.user.sessionID = document.cookie.split("=")[1];
-    userState.user.userName = document.cookie.split("=")[1];
+    userState.user.sessionID = getSessionIDFromCookie();
+    userState.user.userName = getSessionIDFromCookie();
     publishUser("CREATE", userState.user);
   }
 }

@@ -54,6 +54,10 @@ Icon
 
 # Thumbnails
 ._*
+# vitest default build folder
+frontend/dist
+
+# Backend .gitignore
 
 # Files that might appear in the root of a volume
 .DocumentRevisions-V100
