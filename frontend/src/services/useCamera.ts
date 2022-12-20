@@ -40,7 +40,7 @@ function switchCamera() {
   });
 }
 /**
- * Updates the Camera according to the car position.
+ * Attaches camera to vehicle by updating the camera position to the car's position.
  * @param speed
  */
 function updateCamera(speed: number) {
