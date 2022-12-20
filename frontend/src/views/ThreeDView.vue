@@ -34,19 +34,36 @@ import {
   Scene,
 } from "troisjs";
 import { useGLB } from "@/services/glbBlockLoader";
+import * as THREE from "three";
 import { SceneManager } from "@/services/SceneManager";
 import data from "../data/dummy.json";
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 
 const { glbState, generateBlockMap } = useGLB();
 
 generateBlockMap();
-
 export default {
-  components: { Box, Camera, LambertMaterial, PointLight, Renderer, Scene },
+  components: {
+    Box,
+    Camera,
+    LambertMaterial,
+    PointLight,
+    Renderer,
+    Scene,
+  },
   mounted() {
     const blockMap = glbState.blockMap;
-    const scene = (this.$refs.scene as any).scene;
+    const scene = (this.$refs.scene as typeof Scene).scene;
     const sceneManager = new SceneManager(scene, blockMap, data);
+
+    new RGBELoader()
+      .setPath("/src/assets/skybox/")
+      .load("skylight.hdr", function (texture) {
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+
+        scene.background = texture;
+        scene.environment = texture;
+      });
 
     sceneManager.createLandscape();
     sceneManager.createGrid();
