@@ -8,11 +8,6 @@ plugins {
 	id "com.diffplug.spotless" version "6.12.0"
 }
 
-
-processResources {
-	dependsOn 'copyFrontendToBuild'
-}
-
 task copyFrontendToBuild(type: Copy) {
 	dependsOn 'npmBuild'
 	from 'frontend/dist'
@@ -21,7 +16,7 @@ task copyFrontendToBuild(type: Copy) {
 
 task npmBuild(type: Exec) {
 	workingDir = file('./frontend')
-	commandLine 'npm.cmd', 'run', 'build'
+	commandLine 'npm', 'run', 'build'
 }
 
 group = 'de.hsrm.mi.team3'
