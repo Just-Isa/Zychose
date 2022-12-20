@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import EditorView from "../views/EditorView.vue";
-import RoomSelect from "@/components/RoomSelect.vue";
+import RoomSelect from "@/views/RoomSelect.vue";
 import ThreeDView from "../views/ThreeDView.vue";
 import Error500View from "@/views/errors/Error500View.vue";
 import ResetInfoView from "@/views/ResetInfoView.vue";
