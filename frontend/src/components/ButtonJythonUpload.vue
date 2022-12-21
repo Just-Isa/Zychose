@@ -16,25 +16,24 @@
         >
           Script Upload
         </button>
-        <div v-if="isSubmitted">
-          <span
-            class="h-5 w-5 bg-green-400 rounded-xl inline-block m-2 mt-[0.8em]"
-          ></span>
-        </div>
       </div>
     </form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { useRoom } from "@/services/useRoom";
+import { getRoomList, useRoomBox } from "@/services/useRoomList";
+import { reactive } from "vue";
 
 let files: File[] = reactive([]);
-let isSubmitted = ref(false);
 
 const props = defineProps<{
   roomNumber: number;
 }>();
+
+const { roomState } = useRoom();
+const { roomListState } = useRoomBox();
 
 /**
  * function that saves all selected files to an array
@@ -79,8 +78,7 @@ async function submitForm() {
   };
 
   const response = await fetch(postURL, reqOptions);
-  if (response.ok) {
-    isSubmitted.value = true;
-  }
+
+  getRoomList();
 }
 </script>

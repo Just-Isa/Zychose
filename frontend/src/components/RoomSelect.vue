@@ -16,6 +16,11 @@
       </div>
     </div>
     <ButtonJythonUpload :room-number="room.roomNumber"></ButtonJythonUpload>
+    <div v-if="room.jythonScript">
+      <span
+        class="h-5 w-5 bg-green-400 rounded-xl inline-block m-2 mt-[0.8em]"
+      ></span>
+    </div>
   </div>
 </template>
 
@@ -24,6 +29,7 @@
 import { useRoomBox } from "@/services/useRoomList";
 import { onMounted, computed } from "vue";
 import { useUser } from "@/services/useUser";
+
 import ButtonJythonUpload from "@/components/ButtonJythonUpload.vue";
 
 const { roomListState, getRoomList } = useRoomBox();
