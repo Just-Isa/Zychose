@@ -3,7 +3,7 @@
     class="tile-ele m-1.5 inline-block hover:cursor-pointer h-20 w-20 bg-street-menu-tile-bg-turquoise rounded-lg"
     :class="
       prop.currentBlock.type == streetBlockState.streetBlock.type
-        ? 'active outline bg-active-block-turquoise outline-white outline-3'
+        ? 'active outline bg-active-block-turquoise outline-white outline-[3px]'
         : 'inactive'
     "
   >

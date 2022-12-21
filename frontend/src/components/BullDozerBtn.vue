@@ -1,11 +1,11 @@
 <template>
   <div
     @click="changeBulldozerState()"
-    class="shadow-lg border-4 rounded-full ml-4 hover:cursor-pointer bg-bulldozer-yellow h-16 w-16 mt-2"
+    class="shadow-lg border-4 rounded-full ml-4 hover:cursor-pointer bg-[#FFD941] h-16 w-16 mt-2"
     :class="
       streetBlockState.bulldozerActive
         ? 'active border-white'
-        : 'inactive border-bulldozer-gray'
+        : 'inactive border-[#4B5357]'
     "
   >
     <svg
