@@ -27,7 +27,12 @@
 <script setup lang="ts">
 import { useStreets, type IStreetInformation } from "../services/useStreets";
 import swtpConfigJSON from "../../../swtp.config.json";
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
+
+onMounted(() => {
+  const gridTable = document.getElementById("gridTable") as HTMLTableElement;
+  gridTable.scrollIntoView({ behavior: "auto", block: "center", inline: "center" });
+});
 
 /**
  * @param {number} gridSize defines the size of the grid component
