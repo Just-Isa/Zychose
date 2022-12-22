@@ -2,10 +2,10 @@
 module.exports = {
   content: ["./index.html", "./src/**/*.vue"],
   theme: {
-    fontFamily: {
-      Poppins: ["Poppins", "sans"],
-    },
     extend: {
+      fontFamily: {
+        sans: ["Poppins", "sans"],
+      },
       colors: {
         "blue-custom": "#00C8FF",
         "green-custom": "#34D95A",
