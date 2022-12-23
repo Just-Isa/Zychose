@@ -38,12 +38,7 @@ function onChangeFile(event: any) {
 async function submitForm() {
   const formData = new FormData();
   const postURL = `/api/upload/${props.roomNumber}`;
-  console.log(props.roomNumber);
   formData.append("file", files[0]);
-
-  console.log(files);
-
-  console.log(formData.get("file"));
 
   const reqOptions = {
     method: "POST",
