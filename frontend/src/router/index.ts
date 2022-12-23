@@ -36,11 +36,6 @@ const router = createRouter({
       name: "Raum5",
       component: EditorView,
     },
-    {
-      path: "/upload",
-      name: "Upload",
-      component: ButtonJythonUpload,
-    },
   ],
 });
 

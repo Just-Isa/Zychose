@@ -1,29 +1,13 @@
-<!-- https://malcoded.com/posts/vue-file-upload-ts/ -->
 <template>
-  <div class="jython-upload">
-    <form class="pl-5" @submit.prevent="submitForm">
-      <!-- akzeptiert .txt zum Testen, solange ich mich noch nicht mit jython beschäftigt habe -->
-      <div class="flex items-center h-12">
-        <input
-          type="file"
-          id="getFile"
-          accept=".jy, .py, .txt"
-          @change="onChangeFile"
-        />
-        <button
-          type="submit"
-          class="border-black bg-neutral-400 hover:bg-lime-200 rounded p-1 m-1"
-        >
-          Script Upload
-        </button>
-      </div>
-    </form>
-  </div>
+  <form class="pl-5" @submit.prevent="submitForm">
+    <div class="flex items-center h-12">
+      <input type="file" accept=".jy, .py" @change="onChangeFile" />
+    </div>
+  </form>
 </template>
 
 <script setup lang="ts">
-import { useRoom } from "@/services/useRoom";
-import { getRoomList, useRoomBox } from "@/services/useRoomList";
+import { getRoomList } from "@/services/useRoomList";
 import { reactive } from "vue";
 
 let files: File[] = reactive([]);
@@ -32,29 +16,19 @@ const props = defineProps<{
   roomNumber: number;
 }>();
 
-const { roomState } = useRoom();
-const { roomListState } = useRoomBox();
-
-/**
- * function that saves all selected files to an array
- * @param newFiles list of new selected files
- */
-function addFiles(newFiles: any) {
-  console.log(`NEWFILES: ${(newFiles[0] as File).size}`);
-  files = files.concat(newFiles[0] as File);
-  console.log("newFile " + newFiles[0].name);
-  console.log(`FILES: ${files}`);
-}
-
 /**
  * Function that is triggered when a file was selected
  * @param event --
  */
 function onChangeFile(event: any) {
-  console.log("----- onChange: files test -----");
-  addFiles(event.target.files);
-  for (let file of event.target.files) {
-    console.log("File Upload: " + file.name);
+  if (
+    (event.target.files[0].name as string).split(".")[1] == "py" ||
+    (event.target.files[0].name as string).split(".")[1] == "jy"
+  ) {
+    files = files.concat(event.target.files[0] as File);
+    submitForm();
+  } else {
+    console.log("Only python or jython files allowed!");
   }
 }
 
@@ -64,7 +38,7 @@ function onChangeFile(event: any) {
 async function submitForm() {
   const formData = new FormData();
   const postURL = `/api/upload/${props.roomNumber}`;
-
+  console.log(props.roomNumber);
   formData.append("file", files[0]);
 
   console.log(files);
