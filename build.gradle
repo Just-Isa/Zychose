@@ -9,6 +9,10 @@ plugins {
 	id "com.github.node-gradle.node" version "3.5.0"
 }
 
+processResources {
+	dependsOn 'copyFrontendToBuild'
+}
+
 task copyFrontendToBuild(type: Copy) {
 	dependsOn 'npm_run_build'
 	from 'frontend/dist'
