@@ -8,6 +8,7 @@ import ResetInfoView from "@/views/ResetInfoView.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    { path: "/", redirect: "/rooms" },
     {
       path: "/rooms",
       name: "Raumauswahl",
