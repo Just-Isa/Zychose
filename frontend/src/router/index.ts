@@ -4,6 +4,7 @@ import RoomSelect from "@/components/RoomSelect.vue";
 import ThreeDView from "../views/ThreeDView.vue";
 import Error500View from "@/views/errors/Error500View.vue";
 import ResetInfoView from "@/views/ResetInfoView.vue";
+import Error404View from "@/views/errors/Error404View.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -46,13 +47,18 @@ const router = createRouter({
     },
     {
       path: "/500",
-      name: "Error500View",
+      name: "genericError",
       component: Error500View,
     },
     {
       path: "/reset",
       name: "ResetInfoView",
       component: ResetInfoView,
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'notFound',
+      component: Error404View,
     },
   ],
 });
