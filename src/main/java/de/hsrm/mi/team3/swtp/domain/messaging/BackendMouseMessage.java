@@ -5,8 +5,8 @@ public record BackendMouseMessage(String sessionID, int roomNumber, int x, int y
   /**
    * Parameter for Mouse Message.
    *
-   * @param sid sessionID
-   * @param roomNumber
+   * @param sessionID sessionID
+   * @param roomNumber roomNumber of mouse
    * @param x x-coordinate
    * @param y y-coordinate
    * @return BackendMouseMessage

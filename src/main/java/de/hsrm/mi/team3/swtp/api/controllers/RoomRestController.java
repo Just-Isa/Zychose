@@ -50,10 +50,10 @@ public class RoomRestController {
    */
   @PostMapping(value = "/room/{number}")
   public void changeRoomOfUser(
-      @PathVariable("number") String number, @RequestBody String sessionId) {
+      @PathVariable("number") String roomNumber, @RequestBody String sessionId) {
     String sId = sessionId.split(":")[1].replace("\"", "").replace("}", "");
 
-    Room room = roomBoxService.getSpecificRoom(Integer.parseInt(number));
+    Room room = roomBoxService.getSpecificRoom(Integer.parseInt(roomNumber));
     Optional<User> userOpt = roomBoxService.getUserBySessionID(sId);
     if (userOpt.isPresent()) {
       Room oldRoom = roomBoxService.getRoomsFromRoomBox().get(userOpt.get().getCurrentRoomNumber());

@@ -24,8 +24,7 @@ public class RoomController {
   /**
    * Further along, this method can be used for updating a room.
    *
-   * @param test
-   * @param m
+   * @param test test payload
    */
   @MessageMapping("/topic/room")
   public void sendroom(@Payload String test) {
@@ -35,7 +34,8 @@ public class RoomController {
   /**
    * This mapping send the mouse to all other subscribers.
    *
-   * @param mouse
+   * @param mouse Mouse that is being updated
+   * @param roomNumber Roomnumber of room that is to be updated
    */
   @MessageMapping("/topic/mouse/{roomNumber}")
   public void sendMouseToClients(

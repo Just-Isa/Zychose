@@ -40,7 +40,7 @@ public class RoomServiceImplementation implements RoomService {
   /**
    * This method provides a certain room by number.
    *
-   * @param roomNumber
+   * @param room Room of of which the userlist is required
    * @return Room
    */
   @Override
