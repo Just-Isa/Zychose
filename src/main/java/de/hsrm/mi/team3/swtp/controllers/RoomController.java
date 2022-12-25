@@ -16,16 +16,18 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class RoomController {
 
-  @Autowired RoomBoxServiceImplementation roomBoxService;
-  @Autowired RoomServiceImplementation roomService;
-  @Autowired BackendInfoService backservice;
+  @Autowired
+  RoomBoxServiceImplementation roomBoxService;
+  @Autowired
+  RoomServiceImplementation roomService;
+  @Autowired
+  BackendInfoService backservice;
   Logger logger = LoggerFactory.getLogger(RoomController.class);
 
   /**
    * Further along, this method can be used for updating a room.
    *
-   * @param test
-   * @param m
+   * @param test test payload
    */
   @MessageMapping("/topic/room")
   public void sendroom(@Payload String test) {
@@ -35,7 +37,8 @@ public class RoomController {
   /**
    * This mapping send the mouse to all other subscribers.
    *
-   * @param mouse
+   * @param mouse      Mouse that is being updated
+   * @param roomNumber Roomnumber of room that is to be updated
    */
   @MessageMapping("/topic/mouse/{roomNumber}")
   public void sendMouseToClients(

@@ -13,10 +13,12 @@ public class RoomServiceImplementation implements RoomService {
 
   Logger logger = LoggerFactory.getLogger(RoomServiceImplementation.class);
 
-  @Autowired RoomBoxServiceImplementation roomBoxService;
+  @Autowired
+  RoomBoxServiceImplementation roomBoxService;
 
   /**
-   * This method adds a new user to a room, and changed the users currentRoomNumber respectively.
+   * This method adds a new user to a room, and changed the users
+   * currentRoomNumber respectively.
    *
    * @param room
    * @param user
@@ -40,7 +42,7 @@ public class RoomServiceImplementation implements RoomService {
   /**
    * This method provides a certain room by number.
    *
-   * @param roomNumber
+   * @param room Room of of which the userlist is required
    * @return Room
    */
   @Override
