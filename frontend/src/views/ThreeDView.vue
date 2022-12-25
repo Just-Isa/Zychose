@@ -17,16 +17,12 @@
     />
     <Scene ref="scene" background="#fff">
       <PointLight :position="{ y: 5000, z: 50 }" />
-      <Box ref="box1" :scale="{ x: 3, y: 3, z: 3 }">
-        <LambertMaterial />
-      </Box>
     </Scene>
   </Renderer>
 </template>
 
 <script lang="ts">
 import {
-  Box,
   Camera,
   LambertMaterial,
   PointLight,
@@ -44,7 +40,6 @@ const { glbState, generateBlockMap } = useGLB();
 generateBlockMap();
 export default {
   components: {
-    Box,
     Camera,
     LambertMaterial,
     PointLight,
