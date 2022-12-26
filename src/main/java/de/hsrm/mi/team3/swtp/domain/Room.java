@@ -16,13 +16,13 @@ public class Room {
   public Room(int roomNumber) {
     this.roomName = "default-name";
     this.roomNumber = roomNumber;
-    this.userList = new ArrayList<User>();
+    this.userList = new ArrayList<>();
   }
 
   public Room(String roomName, int roomNumber) {
     this.roomName = roomName;
     this.roomNumber = roomNumber;
-    this.userList = new ArrayList<User>();
+    this.userList = new ArrayList<>();
   }
 
   public String getRoomName() {

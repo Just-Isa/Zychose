@@ -6,8 +6,6 @@ import java.util.List;
 
 public record GetRoomResponseDTO(String roomName, int roomNumber, List<User> userList) {
   public static GetRoomResponseDTO from(Room r) {
-    GetRoomResponseDTO dto =
-        new GetRoomResponseDTO(r.getRoomName(), r.getRoomNumber(), r.getUserList());
-    return dto;
+    return new GetRoomResponseDTO(r.getRoomName(), r.getRoomNumber(), r.getUserList());
   }
 }
