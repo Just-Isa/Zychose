@@ -21,8 +21,12 @@
     </div>
 
     <div class="flex justify-items-center items-center">
-      <div id="streetMenuFolder" class="hover:cursor-default"
-         v-for="(key) in Object.keys(vehicleTypeDict)">
+      <div
+        id="streetMenuFolder"
+        class="hover:cursor-default"
+        v-for="key in Object.keys(vehicleTypeDict)"
+        v-bind:key="key"
+      >
         <StreetMenuFolder
           v-if="streetTypesState.currentActiveTab === key"
           :types="vehicleTypeDict[key]"
@@ -46,14 +50,13 @@ import type { StreetBlock } from "@/services/IStreetBlock";
 
 const { changeCurrentTab, streetTypesState } = useStreetBlock();
 
-const vehicleTypeDict: { [type: string] : StreetBlock[]} = {};
+const vehicleTypeDict: { [type: string]: StreetBlock[] } = {};
 
-streetTypesState.vehicleTypes.forEach(type => {
+streetTypesState.vehicleTypes.forEach((type) => {
   vehicleTypeDict[type[0]] = streetTypesState.streetTypes.filter((obj) => {
-                      return obj.vehicleTypes.includes(type[0]);
-                    }) as StreetBlock[];
+    return obj.vehicleTypes.includes(type[0]);
+  }) as StreetBlock[];
 });
 
-vehicleTypeDict
-
+vehicleTypeDict;
 </script>
