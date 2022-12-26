@@ -2,29 +2,34 @@
  * Interface for StreetBlocks
  */
 export interface IStreetBlock {
-  type: string;
+  name: string;
   currentRotation: number;
   possibleRotation: number[];
+  vehicleTypes: string[];
 }
 
 export class StreetBlock implements IStreetBlock {
-  type = "";
+  name = "";
   currentRotation = 0;
   possibleRotation = [0];
+  vehicleTypes = [""];
 
   /**
    *
-   * @param type name of StreetBlock as string
+   * @param name name of StreetBlock as string
    * @param currentRotation
    * @param possibleRotation array with possible rotations of this StreetBlock
+   * @param vehicleTypes array that specifies which vehicle types this StreetBlock is used for
    */
   constructor(
-    type: string,
+    name: string,
     currentRotation: number,
-    possibleRotation: number[]
+    possibleRotation: number[],
+    vehicleTypes: string[]
   ) {
-    this.type = type;
+    this.name = name;
     this.currentRotation = currentRotation;
     this.possibleRotation = possibleRotation;
+    this.vehicleTypes = vehicleTypes;
   }
 }
