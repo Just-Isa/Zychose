@@ -1,5 +1,7 @@
 <template>
-  <div class="fixed bottom-6 left-1/2 -translate-x-1/2 pointer-events-none">
+  <div
+    class="fixed bottom-6 left-1/2 -translate-x-1/2 pointer-events-none z-50"
+  >
     <div class="tabs flex gap-3">
       <div
         v-for="vehicle in streetTypesState.vehicleTypes"
