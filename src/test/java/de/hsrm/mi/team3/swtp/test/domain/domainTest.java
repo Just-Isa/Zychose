@@ -1,7 +1,6 @@
 package de.hsrm.mi.team3.swtp.test.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.contains;
 
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.RoomBox;

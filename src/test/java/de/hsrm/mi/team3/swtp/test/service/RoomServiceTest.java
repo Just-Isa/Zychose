@@ -27,9 +27,6 @@ class RoomServiceTest {
   private final String ROOMNAMETWO = "RoomNameTwo";
   private final int ROOMNUMBERTWO = 2;
 
-  private final String ROOMNAME = "RoomName";
-  private final int ROOMNUMBER = 1;
-
   private final String SESSIONID = "session-id-test-1";
   private final int USERROOMNUMBER = 1;
   private final String USERNAME = "User-One";
