@@ -10,13 +10,9 @@
         <StreetMenuTab
           :vehicleType="vehicle[0]"
           :imgSrc="vehicle[1]"
+          :isActive="streetTypesState.currentActiveTab === vehicle[0]"
           @click="changeCurrentTab(vehicle[0])"
-          v-bind:class="[
-            streetTypesState.currentActiveTab === vehicle[0]
-              ? 'active shadow-lg'
-              : 'bg-inactive-folder-gray',
-          ]"
-        ></StreetMenuTab>
+        />
       </div>
     </div>
 

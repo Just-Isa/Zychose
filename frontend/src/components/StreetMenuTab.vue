@@ -1,13 +1,15 @@
 <template>
-  <div>
-    <button>
-      <img
-        :src="`src/assets/img/${props.imgSrc}`"
-        :alt="props.vehicleType + ' icon'"
-        class="p-1 -mb-[4px] max-h-7 pointer-events-auto bg-street-menu-bg-gray px-4 pt-1 rounded-tl-lg rounded-tr-lg hover:cursor-pointer"
-      />
-    </button>
-  </div>
+  <button
+    class="flex justify-items-center items-center pb-4 -mb-3 pointer-events-auto px-4 pt-1 rounded-t-lg"
+    v-bind:class="[
+      isActive ? 'bg-street-menu-bg-gray shadow-lg' : 'bg-inactive-folder-gray',
+    ]"
+  >
+    <img
+      :src="`src/assets/img/${props.imgSrc}`"
+      :alt="props.vehicleType + ' icon'"
+    />
+  </button>
 </template>
 
 <script setup lang="ts">
@@ -15,5 +17,6 @@ import { defineProps } from "vue";
 const props = defineProps<{
   vehicleType: string;
   imgSrc: string;
+  isActive: boolean;
 }>();
 </script>
