@@ -64,18 +64,8 @@
         180,
         270
       ]
-    },
-    {
-      "name": "grass",
-      "svgPath": "",
-      "glbPath": "/assets/models/grass.glb",
-      "vehicleTypes": [],
-      "possibleRotations": [
-        0
-      ]
     }
   ],
-  "gridSize": 100,
   "miscModels": [
     {
       "name": "grass-plane",
@@ -85,5 +75,6 @@
       "name": "landscape",
       "glbPath": "/assets/models/landscape.glb"
     }
-  ]
+  ],
+  "gridSize": 100
 }
