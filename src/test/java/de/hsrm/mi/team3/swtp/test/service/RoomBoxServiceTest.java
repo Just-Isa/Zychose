@@ -21,8 +21,10 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 @AutoConfigureMockMvc
 class RoomBoxServiceTest {
 
-  @Autowired RoomBoxService roomBoxService;
-  @Autowired RoomService roomService;
+  @Autowired
+  RoomBoxService roomBoxService;
+  @Autowired
+  RoomService roomService;
 
   private final String SESSIONID = "session-id-test-1";
   private final int USERROOMNUMBER = 1;
@@ -63,15 +65,15 @@ class RoomBoxServiceTest {
 
   @Test
   @DisplayName("RoomBoxService: AddRoom")
-  public void addRoomToRoomBox() {
-    assertThat(roomBoxService.getRoomsFromRoomBox().size()).isEqualTo(ROOMBOXSIZEBEFOREADDITION);
+  void addRoomToRoomBox() {
+    assertThat(roomBoxService.getRoomsFromRoomBox()).hasSize(ROOMBOXSIZEBEFOREADDITION);
     roomBoxService.addRoom();
-    assertThat(roomBoxService.getRoomsFromRoomBox().size()).isEqualTo(ROOMBOXSIZEAFTERADDITION);
+    assertThat(roomBoxService.getRoomsFromRoomBox()).hasSize(ROOMBOXSIZEAFTERADDITION);
   }
 
   @Test
   @DisplayName("RoomBoxService: nextRoomNumber")
-  public void getNextRoomNumber() {
+  void getNextRoomNumber() {
     assertThat(roomBoxService.nextRoomNumber()).isEqualTo(NEXTROOMNUMBERBEFOREADDITION);
     roomBoxService.addRoom();
     assertThat(roomBoxService.nextRoomNumber()).isEqualTo(NEXTROOMNUMBERAFTERADDITION);
@@ -79,14 +81,14 @@ class RoomBoxServiceTest {
 
   @Test
   @DisplayName("RoomBoxService: getSpecificRoom")
-  public void getSpecificRoom() {
+  void getSpecificRoom() {
     Room room = roomBoxService.addRoom();
     assertThat(roomBoxService.getSpecificRoom(ROOMNUMBERAFTERFIRSTADDITION)).isEqualTo(room);
   }
 
   @Test
   @DisplayName("RoomBoxService: getRoomsFromRoomBox")
-  public void getRoomsFromRoomBox() {
+  void getRoomsFromRoomBox() {
     Room roomOne = roomBoxService.addRoom();
     Room roomTwo = roomBoxService.addRoom();
     Map<Integer, Room> rooms = new HashMap<Integer, Room>();
@@ -96,19 +98,17 @@ class RoomBoxServiceTest {
   }
 
   @Test
-  @DisplayName(
-      "Room: Get user by sessionID if room is not known and null if user with given sessionID is not present")
-  public void getUserFromRoomBox() {
+  @DisplayName("Room: Get user by sessionID if room is not known and null if user with given sessionID is not present")
+  void getUserFromRoomBox() {
     Room roomOne = roomBoxService.addRoom();
     roomOne.addUserToList(userOne);
     roomService.addNewUserToRoom(roomOne, userOne);
 
     Optional<User> getUserBySessionIdPresent = roomBoxService.getUserBySessionID(SESSIONID);
-    assertThat(getUserBySessionIdPresent.isPresent());
+    assertThat(getUserBySessionIdPresent.isPresent()).isTrue();
     assertThat(getUserBySessionIdPresent.get()).isEqualTo(userOne);
 
-    Optional<User> getUserBySessionIdNotPresent =
-        roomBoxService.getUserBySessionID(NOTPRESENTSESSIONID);
-    assertThat(getUserBySessionIdNotPresent.isEmpty());
+    Optional<User> getUserBySessionIdNotPresent = roomBoxService.getUserBySessionID(NOTPRESENTSESSIONID);
+    assertThat(getUserBySessionIdNotPresent.isEmpty()).isTrue();
   }
 }
