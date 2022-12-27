@@ -34,10 +34,20 @@ import * as THREE from "three";
 import { SceneManager } from "@/services/SceneManager";
 import data from "../data/dummy.json";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
+import config from "../../../swtp.config.json";
 
-const { glbState, generateBlockMap } = useGLB();
+const { glbState, loadModel } = useGLB();
 
-generateBlockMap();
+config.miscModels.forEach(element => {
+    glbState.blockMap.set(element.name, loadModel(element.glbPath));
+  });
+
+config.streetTypes.forEach(element => {
+  if (element.glbPath) {
+    glbState.blockMap.set(element.name, loadModel(element.glbPath));
+  }
+});
+
 export default {
   components: {
     Camera,
@@ -50,9 +60,8 @@ export default {
     const blockMap = glbState.blockMap;
     const scene = (this.$refs.scene as typeof Scene).scene;
     const sceneManager = new SceneManager(scene, blockMap, data);
-
     new RGBELoader()
-      .setPath("/src/assets/skybox/")
+      .setPath("/assets/skybox/")
       .load("skylight.hdr", function (texture) {
         texture.mapping = THREE.EquirectangularReflectionMapping;
 
