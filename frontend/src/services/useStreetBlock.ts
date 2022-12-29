@@ -31,12 +31,12 @@ const streetTypesState = reactive<IStreetTypes>({
     ["bike", "bicycle-pictogram.svg"],
   ],
   streetTypes: [
-    new StreetBlock("straight", 0, [0, 90], ["car"]),
-    new StreetBlock("tCrossing", 0, [0, 90, 180, -90], ["car"]),
-    new StreetBlock("curve", 0, [0, 90, 180, -90], ["car"]),
-    new StreetBlock("crossing", 0, [0], ["car"]),
-    new StreetBlock("straight", 0, [0, 90], ["bike"]),
-    new StreetBlock("tCrossing", 0, [0, 90, 180, -90], ["bike"]),
+    new StreetBlock("straight-road", 0, [0, 90], ["car"]),
+    new StreetBlock("t-road", 0, [0, 90, 180, -90], ["car"]),
+    new StreetBlock("curve-road", 0, [0, 90, 180, -90], ["car"]),
+    new StreetBlock("cross-road", 0, [0], ["car"]),
+    new StreetBlock("straight-road", 0, [0, 90], ["bike"]),
+    new StreetBlock("cross-road", 0, [0, 90, 180, -90], ["bike"]),
   ],
   // Active tab is set to car at first initialisation
   currentActiveTab: "car",

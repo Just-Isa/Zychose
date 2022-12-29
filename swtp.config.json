@@ -26,9 +26,9 @@
       ]
     },
     {
-      "name": "road_straight",
+      "name": "straight-road",
       "svgPath": "/assets/img/straight-road.svg",
-      "glbPath": "/assets/models/road_straight.glb",
+      "glbPath": "/assets/models/straight-road.glb",
       "vehicleTypes": [
         "car",
         "bicycle"
