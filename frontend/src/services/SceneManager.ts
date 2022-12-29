@@ -4,22 +4,29 @@ import swtpconfig from "../../../swtp.config.json";
 
 const blockSize = 16;
 
+type StreetBlock = {
+  streetType: string;
+  rotation: number;
+  posX: number;
+  posY: number;
+};
+
 /**
  * Manages Scene with all Objects
  */
 export class SceneManager {
   scene: Scene;
   blockMap: Map<string, Promise<THREE.Group>>;
-  data: object[];
+  data: StreetBlock[];
 
   constructor(
     scene: Scene,
     blockMap: Map<string, Promise<THREE.Group>>,
-    data: object[]
+    data: string
   ) {
     this.scene = scene;
     this.blockMap = blockMap;
-    this.data = data;
+    this.data = JSON.parse(JSON.stringify(data));
   }
 
   /**
@@ -78,15 +85,13 @@ export class SceneManager {
    * generates the objects according to the (json-)array
    */
   createGrid() {
-    this.data.forEach((obj) => {
+    this.data.forEach((obj: StreetBlock) => {
       this.addBlockToScene(
-        Object(obj)["streetType"],
-        (Object(obj)["posX"] - 1 - Object(swtpconfig)["gridSize"] / 2) *
-          blockSize,
+        obj["streetType"],
+        (obj["posX"] - 1 - swtpconfig["gridSize"] / 2) * blockSize,
         0,
-        (Object(obj)["posY"] - 1 - Object(swtpconfig)["gridSize"] / 2) *
-          blockSize,
-        Number(Object(obj)["rotation"]) * (Math.PI / 180)
+        (obj["posY"] - 1 - swtpconfig["gridSize"] / 2) * blockSize,
+        Number(obj["rotation"]) * (Math.PI / 180)
       );
     });
   }
