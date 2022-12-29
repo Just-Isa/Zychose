@@ -22,8 +22,8 @@ const stateStreetBlock = reactive<IStateStreetblock>({
 });
 
 const bulldozerActive = reactive({
-  isActive: false
-})
+  isActive: false,
+});
 
 const streetTypesState = reactive<IStreetTypes>({
   vehicleTypes: [
@@ -65,7 +65,9 @@ export function useStreetBlock() {
    * @param d new rotation
    */
   function changeRotation(s: StreetBlock, d: number) {
-    streetTypesState.streetTypes[streetTypesState.streetTypes.indexOf(s)].currentRotation = d;
+    streetTypesState.streetTypes[
+      streetTypesState.streetTypes.indexOf(s)
+    ].currentRotation = d;
   }
 
   return {
@@ -75,6 +77,6 @@ export function useStreetBlock() {
     changeRotation,
     changeCurrentTab,
     streetTypesState: readonly(streetTypesState),
-    bulldozerActive
+    bulldozerActive,
   };
 }

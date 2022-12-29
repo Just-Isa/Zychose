@@ -34,7 +34,7 @@ const {
   changeCurrentStreetType,
   toggleBulldozer,
   changeRotation,
-  bulldozerActive
+  bulldozerActive,
 } = useStreetBlock();
 
 /**
@@ -42,10 +42,7 @@ const {
  * @param type selected StreetBlock
  */
 function changeActiveStreetBlock(type: StreetBlock) {
-  if (
-    type == activeBlock.streetBlock &&
-    !bulldozerActive.isActive
-  ) {
+  if (type == activeBlock.streetBlock && !bulldozerActive.isActive) {
     const block = document.getElementById(prop.currentBlock.name);
     if (block) {
       let nextRotIndex =
@@ -53,9 +50,7 @@ function changeActiveStreetBlock(type: StreetBlock) {
           activeBlock.streetBlock.currentRotation
         ) + 1;
 
-      if (
-        nextRotIndex >= activeBlock.streetBlock.possibleRotation.length
-      ) {
+      if (nextRotIndex >= activeBlock.streetBlock.possibleRotation.length) {
         nextRotIndex = 0;
       }
       let nextRot = activeBlock.streetBlock.possibleRotation[nextRotIndex];

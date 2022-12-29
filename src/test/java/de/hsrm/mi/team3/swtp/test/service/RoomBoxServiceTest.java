@@ -21,10 +21,8 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 @AutoConfigureMockMvc
 class RoomBoxServiceTest {
 
-  @Autowired
-  RoomBoxService roomBoxService;
-  @Autowired
-  RoomService roomService;
+  @Autowired RoomBoxService roomBoxService;
+  @Autowired RoomService roomService;
 
   private final String SESSIONID = "session-id-test-1";
   private final int USERROOMNUMBER = 1;
@@ -98,7 +96,8 @@ class RoomBoxServiceTest {
   }
 
   @Test
-  @DisplayName("Room: Get user by sessionID if room is not known and null if user with given sessionID is not present")
+  @DisplayName(
+      "Room: Get user by sessionID if room is not known and null if user with given sessionID is not present")
   void getUserFromRoomBox() {
     Room roomOne = roomBoxService.addRoom();
     roomOne.addUserToList(userOne);
@@ -108,7 +107,8 @@ class RoomBoxServiceTest {
     assertThat(getUserBySessionIdPresent.isPresent()).isTrue();
     assertThat(getUserBySessionIdPresent.get()).isEqualTo(userOne);
 
-    Optional<User> getUserBySessionIdNotPresent = roomBoxService.getUserBySessionID(NOTPRESENTSESSIONID);
+    Optional<User> getUserBySessionIdNotPresent =
+        roomBoxService.getUserBySessionID(NOTPRESENTSESSIONID);
     assertThat(getUserBySessionIdNotPresent.isEmpty()).isTrue();
   }
 }

@@ -22,13 +22,7 @@
 </template>
 
 <script lang="ts">
-import {
-  Camera,
-  LambertMaterial,
-  PointLight,
-  Renderer,
-  Scene,
-} from "troisjs";
+import { Camera, PointLight, Renderer, Scene } from "troisjs";
 import { useGLB } from "@/services/glbBlockLoader";
 import * as THREE from "three";
 import { SceneManager } from "@/services/SceneManager";
@@ -38,11 +32,11 @@ import config from "../../../swtp.config.json";
 
 const { glbState, loadModel } = useGLB();
 
-config.miscModels.forEach(element => {
-    glbState.blockMap.set(element.name, loadModel(element.glbPath));
-  });
+config.miscModels.forEach((element) => {
+  glbState.blockMap.set(element.name, loadModel(element.glbPath));
+});
 
-config.streetTypes.forEach(element => {
+config.streetTypes.forEach((element) => {
   if (element.glbPath) {
     glbState.blockMap.set(element.name, loadModel(element.glbPath));
   }
@@ -51,7 +45,6 @@ config.streetTypes.forEach(element => {
 export default {
   components: {
     Camera,
-    LambertMaterial,
     PointLight,
     Renderer,
     Scene,

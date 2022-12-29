@@ -18,8 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 @AutoConfigureMockMvc
 class RoomServiceTest {
 
-  @Autowired
-  RoomService roomService;
+  @Autowired RoomService roomService;
 
   private final String ROOMNAMEONE = "RoomNameOne";
   private final int ROOMNUMBERONE = 1;
