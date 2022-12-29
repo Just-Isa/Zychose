@@ -7,10 +7,10 @@ body {
     scrollbar-width: none;
 }
 
-/* ms-overflow-style for Internet Explorer, Edge */
-/* scrollbar-width for Firefox */
 html {
+    /* ms-overflow-style for Internet Explorer, Edge */
     -ms-overflow-style: none;
+    /* scrollbar-width for Firefox */
     scrollbar-width: none;
     overflow: scroll;
 }
