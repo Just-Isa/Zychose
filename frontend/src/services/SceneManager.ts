@@ -80,13 +80,13 @@ export class SceneManager {
    * generates the objects according to the (json-)array
    */
   createGrid() {
-    this.data.forEach((obj: StreetBlock) => {
+    this.data.forEach((streetBlock: StreetBlock) => {
       this.addBlockToScene(
-        obj.streetType,
-        (obj.posX - 1 - swtpconfig.gridSize / 2) * blockSize,
+        streetBlock.streetType,
+        (streetBlock.posX - 1 - swtpconfig.gridSize / 2) * blockSize,
         0,
-        (obj.posY - 1 - swtpconfig.gridSize / 2) * blockSize,
-        Number(obj.rotation) * (Math.PI / 180)
+        (streetBlock.posY - 1 - swtpconfig.gridSize / 2) * blockSize,
+        Number(streetBlock.rotation) * (Math.PI / 180)
       );
     });
   }
