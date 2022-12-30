@@ -1,15 +1,10 @@
 import * as THREE from "three";
 import type { Scene } from "three";
 import swtpconfig from "../../../swtp.config.json";
+import type { IStreetInformation } from "@/services/useStreets";
 
 const blockSize = 16;
-
-type StreetBlock = {
-  streetType: string;
-  rotation: number;
-  posX: number;
-  posY: number;
-};
+type StreetBlock = IStreetInformation;
 
 /**
  * Manages Scene with all Objects
@@ -87,11 +82,11 @@ export class SceneManager {
   createGrid() {
     this.data.forEach((obj: StreetBlock) => {
       this.addBlockToScene(
-        obj["streetType"],
-        (obj["posX"] - 1 - swtpconfig["gridSize"] / 2) * blockSize,
+        obj.streetType,
+        (obj.posX - 1 - swtpconfig.gridSize / 2) * blockSize,
         0,
-        (obj["posY"] - 1 - swtpconfig["gridSize"] / 2) * blockSize,
-        Number(obj["rotation"]) * (Math.PI / 180)
+        (obj.posY - 1 - swtpconfig.gridSize / 2) * blockSize,
+        Number(obj.rotation) * (Math.PI / 180)
       );
     });
   }
