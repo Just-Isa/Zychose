@@ -1,8 +1,10 @@
 import * as THREE from "three";
 import type { Scene } from "three";
-import { generateMapArray } from "./JSONtoMapArray";
+import swtpconfig from "../../../swtp.config.json";
+import type { IStreetInformation } from "@/services/useStreets";
 
 const blockSize = 16;
+type StreetBlock = IStreetInformation;
 
 /**
  * Manages Scene with all Objects
@@ -10,16 +12,16 @@ const blockSize = 16;
 export class SceneManager {
   scene: Scene;
   blockMap: Map<string, Promise<THREE.Group>>;
-  streetArray: string[][];
+  data: StreetBlock[];
 
   constructor(
     scene: Scene,
     blockMap: Map<string, Promise<THREE.Group>>,
-    data: object[]
+    data: string
   ) {
     this.scene = scene;
     this.blockMap = blockMap;
-    this.streetArray = generateMapArray(data);
+    this.data = JSON.parse(JSON.stringify(data));
   }
 
   /**
@@ -78,23 +80,15 @@ export class SceneManager {
    * generates the objects according to the (json-)array
    */
   createGrid() {
-    for (const i in this.streetArray) {
-      for (const j in this.streetArray[0]) {
-        const values = this.streetArray[i][j].split(":");
-        const name = values[0];
-        let rotation = Number(values[1]) * (Math.PI / 180);
-        if (isNaN(rotation)) rotation = 0;
-        if (name != "") {
-          this.addBlockToScene(
-            name,
-            (Number(i) - this.streetArray.length / 2) * blockSize,
-            0,
-            (Number(j) - this.streetArray.length / 2) * blockSize,
-            rotation
-          );
-        }
-      }
-    }
+    this.data.forEach((streetBlock: StreetBlock) => {
+      this.addBlockToScene(
+        streetBlock.streetType,
+        (streetBlock.posX - 1 - swtpconfig.gridSize / 2) * blockSize,
+        0,
+        (streetBlock.posY - 1 - swtpconfig.gridSize / 2) * blockSize,
+        Number(streetBlock.rotation) * (Math.PI / 180)
+      );
+    });
   }
 
   /**
