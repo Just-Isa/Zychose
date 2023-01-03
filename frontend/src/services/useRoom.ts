@@ -11,7 +11,7 @@ export interface IRoomState {
 }
 
 const roomState = reactive<IRoomState>({
-  room: new Room("", 1, [], ""),
+  room: new Room("", 1, [], "", ""),
   errorMessage: "",
 });
 
@@ -31,7 +31,7 @@ export function useRoom() {
 
 //function to save the roomMap for a Room
 /* eslint-disable @typescript-eslint/no-unused-vars*/
-function updateRoomMap(rMap: String): void {
+function updateRoomMap(rMap: string): void {
   roomState.room.roomMap = rMap;
 }
 /* eslint-enable */

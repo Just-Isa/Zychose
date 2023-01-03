@@ -25,9 +25,8 @@ public class BackendInfoServiceImpl implements BackendInfoService {
    * @param room      room instance
    */
   @Override
-  public void sendRoom(String topicname, BackendOperation operation, Room room) {
-    messaging.convertAndSend(
-        GENERIC_TOPIC_START + topicname, new BackendRoomMessage(operation, room));
+  public void sendRoom(String topicname, BackendOperation operation, BackendRoomMessage room) {
+    messaging.convertAndSend(GENERIC_TOPIC_START + topicname, room);
   }
 
   /**
