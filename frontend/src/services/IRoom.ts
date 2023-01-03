@@ -5,6 +5,7 @@ export interface IRoom {
   roomNumber: number;
   userList: IUser[];
   jythonScript: string;
+  roomMap: string;
 }
 
 export class Room implements IRoom {
@@ -12,16 +13,19 @@ export class Room implements IRoom {
   roomNumber: number;
   userList: IUser[];
   jythonScript: string;
+  roomMap: string;
 
   constructor(
     roomName: string,
     roomNumber: number,
     userList: IUser[],
     jythonScript: string
+    roomMap: string
   ) {
     this.roomName = roomName;
     this.roomNumber = roomNumber;
     this.userList = userList;
     this.jythonScript = jythonScript;
+    this.roomMap = roomMap;
   }
 }

@@ -48,16 +48,18 @@ class DomainTest {
 
   @Test
   @DisplayName("User: toString()")
-  public void userToString() {
+  void userToString() {
     String toStr = userOne.toString();
     String toStrTwo = userTwo.toString();
 
-    assertThat(toStr).contains(SESSIONID);
-    assertThat(toStr).contains(USERNAME);
-    assertThat(toStr).contains(Integer.toString(USERROOMNUMBER));
+    assertThat(toStr)
+        .contains(SESSIONID)
+        .contains(USERNAME)
+        .contains(Integer.toString(USERROOMNUMBER));
 
-    assertThat(toStrTwo).contains(SESSIONIDTWO);
-    assertThat(toStrTwo).contains(USERNAMETWO);
-    assertThat(toStrTwo).contains(Integer.toString(USERROOMNUMBERTWO));
+    assertThat(toStrTwo)
+        .contains(SESSIONIDTWO)
+        .contains(USERNAMETWO)
+        .contains(Integer.toString(USERROOMNUMBERTWO));
   }
 }

@@ -14,7 +14,7 @@ public class RoomBox {
   private Map<Integer, Room> rooms;
 
   public RoomBox() {
-    this.rooms = new HashMap<Integer, Room>();
+    this.rooms = new HashMap<>();
   }
 
   public Map<Integer, Room> getRooms() {
@@ -23,6 +23,10 @@ public class RoomBox {
 
   public void addRoom(int number, Room room) {
     this.rooms.put(number, room);
+  }
+
+  public void removeRoom(Room room) {
+    this.rooms.remove(room.getRoomNumber());
   }
 
   @Bean

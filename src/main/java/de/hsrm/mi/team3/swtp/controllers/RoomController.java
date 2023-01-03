@@ -15,33 +15,22 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 
 @Controller
 public class RoomController {
 
-  @Autowired RoomBoxServiceImplementation roomBoxService;
-  @Autowired RoomServiceImplementation roomService;
-  @Autowired BackendInfoService backservice;
+  @Autowired
+  RoomBoxServiceImplementation roomBoxService;
+  @Autowired
+  RoomServiceImplementation roomService;
+  @Autowired
+  BackendInfoService backservice;
   Logger logger = LoggerFactory.getLogger(RoomController.class);
-
-  /*
-   * This method creates a new room, if there is no room in the RoomBox.
-   */
-  public void init(ModelMap m) {
-    // In this case it creates a new room and leaves that room as the only one.
-    if (roomBoxService.getRoomsFromRoomBox().size() < 1) {
-
-      Room room = roomBoxService.addRoom();
-
-      logger.info("room = {}", room.getRoomNumber());
-    }
-  }
 
   /**
    * Used to differentiate and update specific rooms.
    *
-   * @param operation Operation that is used
+   * @param operation  Operation that is used
    * @param roomNumber Room on which the changes occured
    */
   @MessageMapping("/topic/room/{roomNumber}")
@@ -72,7 +61,8 @@ public class RoomController {
   /**
    * This mapping send the mouse to all other subscribers.
    *
-   * @param mouse
+   * @param mouse      Mouse that is being updated
+   * @param roomNumber Roomnumber of room that is to be updated
    */
   @MessageMapping("/topic/mouse/{roomNumber}")
   public void sendMouseToClients(
@@ -88,18 +78,10 @@ public class RoomController {
    */
   @MessageMapping("/topic/user")
   public void getUser(@Payload User user) {
-    logger.info(
-        "User: ("
-            + user.getSessionID()
-            + ", "
-            + user.getUserName()
-            + ", "
-            + user.getCurrentRoomNumber()
-            + ")");
-
     if (roomBoxService.getRoomsFromRoomBox().size() <= 4) {
       while (roomBoxService.getRoomsFromRoomBox().size() <= 4) {
         roomBoxService.addRoom();
+        logger.info("RoomBox: {}", roomBoxService.getRoomsFromRoomBox());
       }
     }
 

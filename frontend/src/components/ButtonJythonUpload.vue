@@ -39,7 +39,7 @@ function onChangeFile(event: Event) {
 /**
  * asynchronous function to send a selected file from the frontend to the backend
  */
-async function submitForm(roomNumber: number) {
+async function submitForm(roomNumber: any) {
   const formData = new FormData();
   const postURL = "/api/upload/" + roomNumber;
   formData.append("file", files[0]);

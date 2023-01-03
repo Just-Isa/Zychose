@@ -1,15 +1,18 @@
 import { createRouter, createWebHistory } from "vue-router";
 import EditorView from "../views/EditorView.vue";
-import RoomSelect from "@/components/RoomSelect.vue";
-import ButtonJythonUpload from "@/components/ButtonJythonUpload.vue";
+import RoomSelectView from "../views/RoomSelectView.vue";
+import ThreeDView from "../views/ThreeDView.vue";
+import Error500View from "@/views/errors/Error500View.vue";
+import ResetInfoView from "@/views/ResetInfoView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    { path: "/", redirect: "/rooms" },
     {
       path: "/rooms",
       name: "Raumauswahl",
-      component: RoomSelect,
+      component: RoomSelectView,
     },
     {
       path: "/1",
@@ -35,6 +38,21 @@ const router = createRouter({
       path: "/5",
       name: "Raum5",
       component: EditorView,
+    },
+    {
+      path: "/3D",
+      name: "fpv",
+      component: ThreeDView,
+    },
+    {
+      path: "/500",
+      name: "Error500View",
+      component: Error500View,
+    },
+    {
+      path: "/reset",
+      name: "ResetInfoView",
+      component: ResetInfoView,
     },
   ],
 });

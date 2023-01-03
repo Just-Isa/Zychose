@@ -6,6 +6,7 @@ import vue from "@vitejs/plugin-vue";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  assetsInclude: ["**/*.glb", "**/*.gltf"],
   plugins: [vue()],
   resolve: {
     alias: {
@@ -15,15 +16,19 @@ export default defineConfig({
   test: {
     globals: true,
     passWithNoTests: true,
+    watch: false,
   },
   server: {
     proxy: {
       "/api": {
         target: "http://localhost:8080",
+        ws: true,
+        changeOrigin: true,
       },
       "/stompbroker": {
         target: "http://localhost:8080",
         ws: true,
+        changeOrigin: true,
       },
     },
   },
