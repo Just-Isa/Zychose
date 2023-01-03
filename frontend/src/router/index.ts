@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import TitleMenu from "../views/TitleMenu.vue";
 import EditorView from "../views/EditorView.vue";
 import RoomSelectView from "../views/RoomSelectView.vue";
 import ThreeDView from "../views/ThreeDView.vue";
@@ -8,7 +9,7 @@ import ResetInfoView from "@/views/ResetInfoView.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: "/", redirect: "/rooms" },
+    { path: "/", name: "Start", component: TitleMenu },
     {
       path: "/rooms",
       name: "Raumauswahl",
