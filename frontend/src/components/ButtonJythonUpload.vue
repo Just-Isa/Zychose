@@ -1,7 +1,12 @@
 <template>
   <form class="pl-5" @submit.prevent="submitForm">
     <div class="flex items-center h-12">
-      <input type="file" accept=".jy, .py" @change="onChangeFile" />
+      <input
+        class="file:bg-button-blue-bright file:font-semibold file:rounded file:w-40 file:py-1 file:ml-3 file:mr-4 file:text-white file:border-0"
+        type="file"
+        accept=".jy, .py"
+        @change="onChangeFile"
+      />
     </div>
   </form>
 </template>
@@ -25,10 +30,10 @@ function onChangeFile(event: Event) {
   const target = <HTMLInputElement>event.target;
   if (target.files != null) {
     if (
-      (target.files[0].name as string).split(".")[1] == "py" ||
-      (target.files[0].name as string).split(".")[1] == "jy"
+      target.files[0].name.split(".")[1] == "py" ||
+      target.files[0].name.split(".")[1] == "jy"
     ) {
-      files = files.concat(target.files[0] as File);
+      files = files.concat(target.files[0]);
       submitForm(props.roomNumber);
     } else {
       console.log("Only python or jython files allowed!");

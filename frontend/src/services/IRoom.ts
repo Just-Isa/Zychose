@@ -19,7 +19,7 @@ export class Room implements IRoom {
     roomName: string,
     roomNumber: number,
     userList: IUser[],
-    jythonScript: string
+    jythonScript: string,
     roomMap: string
   ) {
     this.roomName = roomName;
