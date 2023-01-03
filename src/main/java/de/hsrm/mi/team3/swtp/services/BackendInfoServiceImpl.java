@@ -16,7 +16,7 @@ public class BackendInfoServiceImpl implements BackendInfoService {
   @Autowired
   SimpMessagingTemplate messaging;
 
-  final String topic_string = "/topic/";
+  final String TOPIC_STRING = "/topic/";
 
   /**
    * hands roomdata from front- to backend
@@ -27,7 +27,7 @@ public class BackendInfoServiceImpl implements BackendInfoService {
    */
   @Override
   public void sendRoom(String topicname, BackendOperation operation, BackendRoomMessage room) {
-    messaging.convertAndSend(topic_string + topicname, room);
+    messaging.convertAndSend(TOPIC_STRING + topicname, room);
   }
 
   /**
@@ -39,7 +39,7 @@ public class BackendInfoServiceImpl implements BackendInfoService {
    */
   @Override
   public void sendUser(String topicname, BackendOperation operation, User user) {
-    messaging.convertAndSend(topic_string + topicname, new BackendUserMessage(operation, user));
+    messaging.convertAndSend(TOPIC_STRING + topicname, new BackendUserMessage(operation, user));
   }
 
   /**
@@ -51,6 +51,6 @@ public class BackendInfoServiceImpl implements BackendInfoService {
    */
   @Override
   public void sendMouse(String topicname, BackendMouseMessage mouse) {
-    messaging.convertAndSend(topic_string + topicname, mouse);
+    messaging.convertAndSend(TOPIC_STRING + topicname, mouse);
   }
 }

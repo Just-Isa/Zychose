@@ -7,8 +7,12 @@ public record BackendRoomMessage(
     String roomName, int roomNumber, List<User> userList, String jythonScript) {
 
   /**
-   * @param room
-   * @return
+   * 
+   * @param roomName
+   * @param roomNumber
+   * @param userList
+   * @param jythonScript
+   * @return BackendRoomMessage
    */
   public static BackendRoomMessage from(
       String roomName, int roomNumber, List<User> userList, String jythonScript) {

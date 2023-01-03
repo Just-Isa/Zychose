@@ -18,26 +18,30 @@ const props = defineProps<{
 
 /**
  * Function that is triggered when a file was selected
- * @param event --
+ *
+ * @param event event that triggers
  */
-function onChangeFile(event: any) {
-  if (
-    (event.target.files[0].name as string).split(".")[1] == "py" ||
-    (event.target.files[0].name as string).split(".")[1] == "jy"
-  ) {
-    files = files.concat(event.target.files[0] as File);
-    submitForm();
-  } else {
-    console.log("Only python or jython files allowed!");
+function onChangeFile(event: Event) {
+  const target = <HTMLInputElement>event.target;
+  if (target.files != null) {
+    if (
+      (target.files[0].name as string).split(".")[1] == "py" ||
+      (target.files[0].name as string).split(".")[1] == "jy"
+    ) {
+      files = files.concat(target.files[0] as File);
+      submitForm(props.roomNumber);
+    } else {
+      console.log("Only python or jython files allowed!");
+    }
   }
 }
 
 /**
  * asynchronous function to send a selected file from the frontend to the backend
  */
-async function submitForm() {
+async function submitForm(roomNumber: number) {
   const formData = new FormData();
-  const postURL = `/api/upload/${props.roomNumber}`;
+  const postURL = "/api/upload/" + roomNumber;
   formData.append("file", files[0]);
 
   const reqOptions = {
