@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import TitleView from "../views/TitleView.vue";
+import TitleView from "@/views/TitleView.vue";
 import EditorView from "../views/EditorView.vue";
 import RoomSelectView from "../views/RoomSelectView.vue";
 import ThreeDView from "../views/ThreeDView.vue";
