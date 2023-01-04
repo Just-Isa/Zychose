@@ -5,7 +5,6 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["Poppins", "sans"],
-        headline: ["BigBoy", "sans"],
       },
       colors: {
         "button-blue-bright": "#00C8FF",
