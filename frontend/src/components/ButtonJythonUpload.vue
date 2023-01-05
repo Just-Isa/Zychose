@@ -54,9 +54,7 @@ async function submitForm(roomNumber: any) {
     headers: {},
     body: formData,
   };
-
   await fetch(postURL, reqOptions);
-
   getRoomList();
 }
 </script>
