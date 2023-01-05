@@ -52,10 +52,10 @@ export default {
   mounted() {
     const blockMap = glbState.blockMap;
     const scene = (this.$refs.scene as typeof Scene).scene;
-    const sceneManager = new SceneManager(scene, blockMap, data);
+    const sceneManager = new SceneManager(scene, blockMap, data as any);
     new RGBELoader()
       .setPath("/assets/skybox/")
-      .load("skylight.hdr", function (texture) {
+      .load("skylight.hdr", function (texture: any) {
         texture.mapping = THREE.EquirectangularReflectionMapping;
 
         scene.background = texture;
