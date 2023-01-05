@@ -1,24 +1,24 @@
 [
   {
-    "streetType": "road_straight",
+    "streetType": "straight-road",
     "rotation": 90,
     "posX": 1,
     "posY": 1
   },
   {
-    "streetType": "road_straight",
+    "streetType": "straight-road",
     "rotation": 90,
     "posX": 1,
     "posY": 3
   },
   {
-    "streetType": "road_straight",
+    "streetType": "straight-road",
     "rotation": 90,
     "posX": 1,
     "posY": 5
   },
   {
-    "streetType": "road_straight",
+    "streetType": "straight-road",
     "rotation": 90,
     "posX": 1,
     "posY": 7

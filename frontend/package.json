@@ -7,10 +7,11 @@
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
-    "lint": "eslint . --ext .js,.ts,.vue --max-warnings=0 --fix && prettier --check .",
+    "lint": "eslint . --ext .js,.ts,.vue --max-warnings=0 --fix && prettier -w .",
     "test": "vitest",
     "bench": "vitest bench",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "prettier": "prettier --write ."
   },
   "dependencies": {
     "@stomp/stompjs": "^6.1.2",

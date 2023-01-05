@@ -9,7 +9,7 @@ import { reactive, readonly } from "vue";
  * @param {number} posY - Position on y axis
  */
 export interface IStreetInformation {
-  streetType: String;
+  streetType: string;
   rotation: number;
   posX: number;
   posY: number;

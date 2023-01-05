@@ -26,9 +26,6 @@ class RoomServiceTest {
   private final String ROOMNAMETWO = "RoomNameTwo";
   private final int ROOMNUMBERTWO = 2;
 
-  private final String ROOMNAME = "RoomName";
-  private final int ROOMNUMBER = 1;
-
   private final String SESSIONID = "session-id-test-1";
   private final int USERROOMNUMBER = 1;
   private final String USERNAME = "User-One";
@@ -65,30 +62,30 @@ class RoomServiceTest {
 
   @Test
   @DisplayName("Room: User present in Room after adding")
-  public void roomAddUser() {
-    assertThat(roomService.getUserList(roomOne).size()).isEqualTo(USERLISTSIZEBEFOREADDITION);
+  void roomAddUser() {
+    assertThat(roomService.getUserList(roomOne)).hasSize(USERLISTSIZEBEFOREADDITION);
     roomService.addNewUserToRoom(roomOne, userOne);
     assertThat(roomService.getUserList(roomOne)).containsExactlyElementsOf(List.of(userOne));
 
-    assertThat(roomService.getUserList(roomOne).size()).isEqualTo(USERLISTSIZEMIDADDITON);
+    assertThat(roomService.getUserList(roomOne)).hasSize(USERLISTSIZEMIDADDITON);
     roomService.addNewUserToRoom(roomOne, userTwo);
     assertThat(roomService.getUserList(roomOne))
         .containsExactlyElementsOf(List.of(userOne, userTwo));
 
-    assertThat(roomService.getUserList(roomOne).size()).isEqualTo(USERLISTSIZEAFTERADDITION);
+    assertThat(roomService.getUserList(roomOne)).hasSize(USERLISTSIZEAFTERADDITION);
     assertThat(roomService.getUserList(roomOne))
         .containsExactlyElementsOf(List.of(userOne, userTwo));
   }
 
   @Test
   @DisplayName("Room: User not present in room after removing")
-  public void roomRemoveUser() {
-    assertThat(roomService.getUserList(roomOne).size()).isEqualTo(USERLISTSIZEBEFOREADDITION);
+  void roomRemoveUser() {
+    assertThat(roomService.getUserList(roomOne)).hasSize(USERLISTSIZEBEFOREADDITION);
     roomService.addNewUserToRoom(roomOne, userOne);
     assertThat(roomService.getUserList(roomOne)).containsExactlyElementsOf(List.of(userOne));
 
     roomService.removeUserFromRoom(roomOne, userOne);
-    assertThat(roomService.getUserList(roomOne).size()).isEqualTo(USERLISTSIZEBEFOREADDITION);
+    assertThat(roomService.getUserList(roomOne)).hasSize(USERLISTSIZEBEFOREADDITION);
     assertThat(roomService.getUserList(roomOne)).containsExactlyElementsOf(List.of());
   }
 }

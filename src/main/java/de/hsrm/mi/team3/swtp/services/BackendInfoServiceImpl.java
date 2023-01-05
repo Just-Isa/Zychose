@@ -1,6 +1,5 @@
 package de.hsrm.mi.team3.swtp.services;
 
-import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendMouseMessage;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class BackendInfoServiceImpl implements BackendInfoService {
 
   @Autowired SimpMessagingTemplate messaging;
+  final String GENERIC_TOPIC_START = "/topic/";
 
   /**
    * hands roomdata from front- to backend
@@ -24,8 +24,8 @@ public class BackendInfoServiceImpl implements BackendInfoService {
    * @param room room instance
    */
   @Override
-  public void sendRoom(String topicname, BackendOperation operation, Room room) {
-    messaging.convertAndSend("/topic/" + topicname, new BackendRoomMessage(operation, room));
+  public void sendRoom(String topicname, BackendOperation operation, BackendRoomMessage room) {
+    messaging.convertAndSend(GENERIC_TOPIC_START + topicname, room);
   }
 
   /**
@@ -37,7 +37,8 @@ public class BackendInfoServiceImpl implements BackendInfoService {
    */
   @Override
   public void sendUser(String topicname, BackendOperation operation, User user) {
-    messaging.convertAndSend("/topic/" + topicname, new BackendUserMessage(operation, user));
+    messaging.convertAndSend(
+        GENERIC_TOPIC_START + topicname, new BackendUserMessage(operation, user));
   }
 
   /**
@@ -48,6 +49,6 @@ public class BackendInfoServiceImpl implements BackendInfoService {
    */
   @Override
   public void sendMouse(String topicname, BackendMouseMessage mouse) {
-    messaging.convertAndSend("/topic/" + topicname, mouse);
+    messaging.convertAndSend(GENERIC_TOPIC_START + topicname, mouse);
   }
 }

@@ -1,7 +1,10 @@
 package de.hsrm.mi.team3.swtp.controllers;
 
+import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendMouseMessage;
+import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
+import de.hsrm.mi.team3.swtp.domain.messaging.BackendRoomMessage;
 import de.hsrm.mi.team3.swtp.services.BackendInfoService;
 import de.hsrm.mi.team3.swtp.services.RoomBoxServiceImplementation;
 import de.hsrm.mi.team3.swtp.services.RoomServiceImplementation;
@@ -22,20 +25,41 @@ public class RoomController {
   Logger logger = LoggerFactory.getLogger(RoomController.class);
 
   /**
-   * Further along, this method can be used for updating a room.
+   * Used to differentiate and update specific rooms.
    *
-   * @param test
-   * @param m
+   * @param operation Operation that is used
+   * @param roomNumber Room on which the changes occured
    */
-  @MessageMapping("/topic/room")
-  public void sendroom(@Payload String test) {
-    logger.info("----------------------" + test + "-------------------------");
+  @MessageMapping("/topic/room/{roomNumber}")
+  public void roomTopic(@Payload BackendOperation operation, @DestinationVariable int roomNumber) {
+    // saves the jython script to the room
+    // this.roomService.saveScriptToRoom(test);
+    switch (operation) {
+      case CREATE:
+        break;
+      case DELETE:
+        break;
+      case UPDATE:
+        Room room = this.roomBoxService.getSpecificRoom(roomNumber);
+
+        backservice.sendRoom(
+            "room/" + roomNumber,
+            BackendOperation.UPDATE,
+            BackendRoomMessage.from(
+                room.getRoomName(),
+                room.getRoomNumber(),
+                room.getUserList(),
+                room.getJythonScript()));
+
+        break;
+    }
   }
 
   /**
    * This mapping send the mouse to all other subscribers.
    *
-   * @param mouse
+   * @param mouse Mouse that is being updated
+   * @param roomNumber Roomnumber of room that is to be updated
    */
   @MessageMapping("/topic/mouse/{roomNumber}")
   public void sendMouseToClients(
@@ -51,15 +75,6 @@ public class RoomController {
    */
   @MessageMapping("/topic/user")
   public void getUser(@Payload User user) {
-    logger.info(
-        "User: ("
-            + user.getSessionID()
-            + ", "
-            + user.getUserName()
-            + ", "
-            + user.getCurrentRoomNumber()
-            + ")");
-
     if (roomBoxService.getRoomsFromRoomBox().size() <= 4) {
       while (roomBoxService.getRoomsFromRoomBox().size() <= 4) {
         roomBoxService.addRoom();

@@ -36,7 +36,7 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
   public Room addRoom() {
     RoomBox roomBox = getRoomBoxSingelton();
     int newRoomNumber = this.nextRoomNumber();
-    logger.info("-------" + newRoomNumber + "---------");
+    logger.info("New Room Number : {} ", newRoomNumber);
     roomBox.addRoom(newRoomNumber, new Room(newRoomNumber));
     return this.getRoomsFromRoomBox().get(newRoomNumber);
   }
@@ -50,10 +50,7 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
   public boolean roomExistsByNumber(int roomNumber) {
     RoomBox roomBox = getRoomBoxSingelton();
     Room room = roomBox.getRooms().get(roomNumber);
-    if (room != null) {
-      return true;
-    }
-    return false;
+    return room != null;
   }
 
   /**

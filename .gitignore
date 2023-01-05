@@ -155,3 +155,6 @@ target/
 node_modules
 !node_modules/husky/
 !node_modules/bin/
+
+# Resources
+src/main/resources/public
