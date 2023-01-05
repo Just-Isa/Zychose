@@ -26,8 +26,8 @@ const props = defineProps<{
  *
  * @param event event that triggers
  */
-function onChangeFile(event: Event) {
-  const target = <HTMLInputElement>event.target;
+function onChangeFile(event: any) {
+  const target = event.target;
   if (target.files != null) {
     if (
       target.files[0].name.split(".")[1] == "py" ||
@@ -55,7 +55,7 @@ async function submitForm(roomNumber: any) {
     body: formData,
   };
 
-  const response = await fetch(postURL, reqOptions);
+  await fetch(postURL, reqOptions);
 
   getRoomList();
 }
