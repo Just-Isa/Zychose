@@ -19,18 +19,15 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class RoomController {
 
-  @Autowired
-  RoomBoxServiceImplementation roomBoxService;
-  @Autowired
-  RoomServiceImplementation roomService;
-  @Autowired
-  BackendInfoService backservice;
+  @Autowired RoomBoxServiceImplementation roomBoxService;
+  @Autowired RoomServiceImplementation roomService;
+  @Autowired BackendInfoService backservice;
   Logger logger = LoggerFactory.getLogger(RoomController.class);
 
   /**
    * Used to differentiate and update specific rooms.
    *
-   * @param operation  Operation that is used
+   * @param operation Operation that is used
    * @param roomNumber Room on which the changes occured
    */
   @MessageMapping("/topic/room/{roomNumber}")
@@ -61,7 +58,7 @@ public class RoomController {
   /**
    * This mapping send the mouse to all other subscribers.
    *
-   * @param mouse      Mouse that is being updated
+   * @param mouse Mouse that is being updated
    * @param roomNumber Roomnumber of room that is to be updated
    */
   @MessageMapping("/topic/mouse/{roomNumber}")

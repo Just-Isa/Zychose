@@ -7,7 +7,6 @@ public record BackendRoomMessage(
     String roomName, int roomNumber, List<User> userList, String jythonScript) {
 
   /**
-   * 
    * @param roomName
    * @param roomNumber
    * @param userList
