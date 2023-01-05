@@ -43,12 +43,14 @@ import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
 
 onMounted(() => {
+  document.addEventListener("contextmenu", (event) => event.preventDefault());
   const gridTable = document.getElementById("gridTable") as HTMLTableElement;
-  gridTable.scrollIntoView({
-    behavior: "auto",
-    block: "center",
-    inline: "center",
-  });
+
+  const entireDoc = document.documentElement;
+  let xCenter = document.documentElement.scrollWidth / 2;
+  let yCenter = document.documentElement.scrollHeight / 2;
+  entireDoc.scroll(xCenter, yCenter);
+  dragThroughWindowView(gridTable, xCenter, yCenter);
 });
 
 /**
@@ -57,6 +59,9 @@ onMounted(() => {
 const props = defineProps<{
   gridSize: any;
 }>();
+
+let isDragging = false;
+
 /**
   //TODO werte für 100 und 20 vllt auch in die config --> können dort aber auch so angepasst werden, dass bullshit drin ist
   * Hardcoded Wert 24, weil 1rem entspricht 16px, also 1920/16 = 120 -> 120/5rem (cell-width) = 24 cells
@@ -255,4 +260,45 @@ document.addEventListener(
   },
   { passive: false }
 );
+
+function dragThroughWindowView(
+  grid: HTMLTableElement,
+  startX: number,
+  startY: number
+) {
+  let currentX: number;
+  let currentY: number;
+  let initialX: number;
+  let initialY: number;
+  let xOffset = startX;
+  let yOffset = startY;
+
+  grid.addEventListener("mousedown", (event: MouseEvent) => {
+    event.preventDefault();
+    initialX = Math.abs(event.clientX - xOffset);
+    initialY = Math.abs(event.clientY - yOffset);
+    isDragging = true;
+  });
+
+  grid.addEventListener("mouseup", () => {
+    initialX = currentX;
+    initialY = currentY;
+    isDragging = false;
+  });
+
+  grid.addEventListener("mousemove", (event: MouseEvent) => {
+    if (isDragging) {
+      event.preventDefault();
+      currentX = event.clientX - initialX;
+      currentY = event.clientY - initialY;
+
+      xOffset = currentX;
+      yOffset = currentY;
+
+      const entireDoc = document.documentElement;
+      entireDoc.scrollTop = -1 * currentY;
+      entireDoc.scrollLeft = -1 * currentX;
+    }
+  });
+}
 </script>
