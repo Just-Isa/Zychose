@@ -41,17 +41,7 @@ import swtpConfigJSON from "../../../swtp.config.json";
 import { computed, onMounted } from "vue";
 import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
-
-onMounted(() => {
-  document.addEventListener("contextmenu", (event) => event.preventDefault());
-  const gridTable = document.getElementById("gridTable") as HTMLTableElement;
-
-  const entireDoc = document.documentElement;
-  let xCenter = document.documentElement.scrollWidth / 2;
-  let yCenter = document.documentElement.scrollHeight / 2;
-  entireDoc.scroll(xCenter, yCenter);
-  dragThroughWindowView(gridTable, xCenter, yCenter);
-});
+import { Mouse } from "@/services/IMouse";
 
 /**
  * @param {number} gridSize defines the size of the grid component
@@ -60,9 +50,25 @@ const props = defineProps<{
   gridSize: any;
 }>();
 
-let isDragging = false;
+let dragging = false;
 
-/**
+onMounted(() => {
+  document.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+  });
+
+  const entireDoc = document.documentElement;
+  const gridTable = document.getElementById("gridTable") as HTMLTableElement;
+
+  // xCenter: ges.Breite, scroll() geht in obere linke Ecke --> Breite des Fenster/2 nochmal subtrahieren, um in der Mitte zu sein
+  let xCenter = gridTable.offsetWidth / 2 - window.innerWidth / 2;
+  let yCenter = gridTable.offsetHeight / 2 - window.innerHeight / 2;
+
+  entireDoc.scroll(xCenter, yCenter);
+  dragThroughWindowView(gridTable, xCenter, yCenter);
+});
+
+/*
   //TODO werte für 100 und 20 vllt auch in die config --> können dort aber auch so angepasst werden, dass bullshit drin ist
   * Hardcoded Wert 24, weil 1rem entspricht 16px, also 1920/16 = 120 -> 120/5rem (cell-width) = 24 cells
   //TODO ?min-gridSize dynamisch berechenbar machen/ cell-size in config einstellbar ----- storyless task oder issue?
@@ -266,38 +272,53 @@ function dragThroughWindowView(
   startX: number,
   startY: number
 ) {
-  let currentX: number;
-  let currentY: number;
-  let initialX: number;
-  let initialY: number;
-  let xOffset = startX;
-  let yOffset = startY;
+  let currX: number;
+  let currY: number;
+  let initX: number;
+  let initY: number;
+  let offsetX = startX;
+  let offsetY = startY;
+  let alreadyDragged = false;
 
   grid.addEventListener("mousedown", (event: MouseEvent) => {
     event.preventDefault();
-    initialX = Math.abs(event.clientX - xOffset);
-    initialY = Math.abs(event.clientY - yOffset);
-    isDragging = true;
+
+    if (event.button === 2) {
+      if (!alreadyDragged) {
+        // Startposition
+        initX = Math.abs(offsetX + event.clientX);
+        initY = Math.abs(offsetY + event.clientY);
+      } else {
+        initX = Math.abs(event.clientX - offsetX);
+        initY = Math.abs(event.clientY - offsetY);
+      }
+      dragging = true;
+    }
   });
 
   grid.addEventListener("mouseup", () => {
-    initialX = currentX;
-    initialY = currentY;
-    isDragging = false;
+    initX = currX;
+    initY = currY;
+    dragging = false;
   });
 
   grid.addEventListener("mousemove", (event: MouseEvent) => {
-    if (isDragging) {
-      event.preventDefault();
-      currentX = event.clientX - initialX;
-      currentY = event.clientY - initialY;
+    if (dragging) {
+      if (!alreadyDragged) {
+        currX = event.clientX + initX;
+        currY = event.clientY + initY;
+        alreadyDragged = true;
+      } else {
+        currX = event.clientX - initX;
+        currY = event.clientY - initY;
+      }
 
-      xOffset = currentX;
-      yOffset = currentY;
+      offsetX = currX;
+      offsetY = currY;
 
       const entireDoc = document.documentElement;
-      entireDoc.scrollTop = -1 * currentY;
-      entireDoc.scrollLeft = -1 * currentX;
+      entireDoc.scrollTop = -1 * currY;
+      entireDoc.scrollLeft = -1 * currX;
     }
   });
 }
