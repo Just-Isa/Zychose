@@ -41,7 +41,7 @@ import swtpConfigJSON from "../../../swtp.config.json";
 import { computed, onMounted } from "vue";
 import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
-import { Mouse } from "@/services/IMouse";
+//import { Mouse } from "@/services/IMouse";
 
 /**
  * @param {number} gridSize defines the size of the grid component
