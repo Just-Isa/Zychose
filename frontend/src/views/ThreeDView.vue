@@ -25,16 +25,18 @@ import {
   Renderer,
   Scene,
 } from "troisjs";
-import { useGLB } from "@/services/glbBlockLoader";
-import { SceneManager } from "@/services/SceneManager";
-import { useKeyInput } from "@/services/useKeyInput";
+import { useGLB } from "@/services/useGlbBlockLoader";
+import { useKeyInput } from "../services/keyInputHandler";
+import { SceneManager } from "../services/SceneManager";
+import { useVehicleCommands } from "@/services/useVehicleCommands";
+import { useVehicle } from "@/services/useVehicle";
 
 const { glbState, generateBlockMap } = useGLB();
-
+const { publishVehicleCommands } = useVehicleCommands();
+const { keysPressed, inputs } = useKeyInput();
+const { receiveVehicle } = useVehicle();
 generateBlockMap();
-
-const { inputs } = useKeyInput();
-
+receiveVehicle();
 export default {
   components: {
     Box,
@@ -48,14 +50,13 @@ export default {
     const blockMap = glbState.blockMap;
     const scene = (this.$refs.scene as any).scene;
     const renderer = (this.$refs.renderer as any).renderer;
-    console.log(blockMap);
     const sceneManager = new SceneManager(scene, blockMap, renderer);
-    console.log("AAAAA");
-    sceneManager.createLandscape();
-    sceneManager.createGrid();
-    sceneManager.addCar();
-    sceneManager.handleRender();
+    sceneManager.initScene();
     inputs();
+
+    setInterval(function () {
+      publishVehicleCommands(Array.from(keysPressed.directions));
+    }, 200);
   },
 };
 </script>

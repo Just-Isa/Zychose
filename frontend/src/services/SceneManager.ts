@@ -1,12 +1,13 @@
 import * as THREE from "three";
 import data from "../data/dummy.json";
 import { generateMapArray } from "./JSONtoMapArray";
-import { ControllableVehicle } from "./ControllableVehicle";
 import { useCamera } from "./useCamera";
-import type { IUpdatable } from "./IUpdatable";
+import { useVehicle } from "@/services/useVehicle";
+import { VehicleCameraContext } from "./VehicleCamera";
 
 const blockSize = 16;
-const { camState } = useCamera();
+const { camState, switchCamera } = useCamera();
+const { vehicleState } = useVehicle();
 
 /**
  * Manages Scene with all Objects
@@ -16,7 +17,8 @@ export class SceneManager {
   private blockMap: Map<string, Promise<THREE.Group>>;
   private streetArray: string[][] = generateMapArray(data);
   private renderer: THREE.Renderer;
-  private updatables: IUpdatable[]; // list of all Object u should update every frame.
+  private vehicles: THREE.Group[]; // list of all Object u should update every frame.
+  private vehicleCamera: VehicleCameraContext = new VehicleCameraContext();
   constructor(
     scene: THREE.Scene,
     blockMap: Map<string, Promise<THREE.Group>>,
@@ -25,7 +27,14 @@ export class SceneManager {
     this.scene = scene;
     this.blockMap = blockMap;
     this.renderer = renderer;
-    this.updatables = [];
+    this.vehicles = [];
+  }
+  initScene() {
+    this.createLandscape();
+    this.createGrid();
+    this.addControllableVehicle();
+    this.handleRender();
+    switchCamera(this.vehicleCamera);
   }
 
   /**
@@ -92,7 +101,7 @@ export class SceneManager {
         const name = values[0];
         let rotation = Number(values[1]) * (Math.PI / 180);
         if (isNaN(rotation)) rotation = 0;
-        if (name != "") {
+        if (name !== "") {
           this.addBlockToScene(
             name,
             (Number(i) - this.streetArray.length / 2) * blockSize,
@@ -115,20 +124,26 @@ export class SceneManager {
   /**
    * adds new car
    */
-  addCar() {
-    const key = "car";
-    const blockPromise = this.blockMap.get(key);
-    if (blockPromise != undefined) {
+  addControllableVehicle() {
+    const blockPromise = this.blockMap.get("car");
+    if (blockPromise !== undefined) {
       blockPromise
         ?.then((block) => {
           const car = block.clone();
-          car.position.set(0, 0, 0);
-          console.log(":(");
-          console.log(camState);
-          this.scene.add(car);
-          this.updatables.push(
-            new ControllableVehicle(car, 1, 0.01, 0.015, 0.05)
+
+          car.position.set(
+            vehicleState.vehicle.postitionX,
+            vehicleState.vehicle.postitionY,
+            vehicleState.vehicle.postitionZ
           );
+          car.rotation.set(
+            vehicleState.vehicle.rotationX,
+            vehicleState.vehicle.rotationX,
+            vehicleState.vehicle.rotationX
+          );
+          this.scene.add(car);
+          this.vehicleCamera.request(vehicleState.vehicle.speed, car);
+          this.vehicles.push(car);
         })
         .catch((error) => {
           this.getErrorBlock(0, 0, 0);
@@ -146,13 +161,43 @@ export class SceneManager {
    */
   handleRender() {
     const animate = () => {
-      //every updatable gets rendered
-      this.updatables.forEach((updatables) => {
-        updatables.update();
+      //every vehicle gets rendered
+      this.vehicles.forEach((vehicle) => {
+        this.updateVehicle(vehicle);
       });
       this.renderer.render(this.scene, camState.cam as THREE.PerspectiveCamera);
       requestAnimationFrame(animate);
     };
     animate();
+  }
+
+  /**
+   *
+   * updates the vehicle
+   *
+   * @param threeVehicle
+   * @param t
+   */
+  updateVehicle(threeVehicle: THREE.Group) {
+    const lerpDuration = 0.075;
+    const quaternion = new THREE.Quaternion();
+
+    const destination = new THREE.Vector3(
+      vehicleState.vehicle.postitionX,
+      vehicleState.vehicle.postitionY,
+      vehicleState.vehicle.postitionZ
+    );
+
+    const newRotation = new THREE.Euler(
+      vehicleState.vehicle.rotationX,
+      vehicleState.vehicle.rotationY,
+      vehicleState.vehicle.rotationZ,
+      "XYZ"
+    );
+
+    const newQuaterion = quaternion.setFromEuler(newRotation);
+    threeVehicle.quaternion.slerp(newQuaterion, lerpDuration);
+    threeVehicle.position.lerp(destination, lerpDuration);
+    this.vehicleCamera.request(vehicleState.vehicle.speed, threeVehicle);
   }
 }

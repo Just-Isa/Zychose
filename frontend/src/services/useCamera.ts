@@ -1,5 +1,6 @@
 import { PerspectiveCamera } from "three";
 import { reactive } from "vue";
+import type { VehicleCameraContext } from "./VehicleCamera";
 
 const aspect = window.innerWidth / window.innerHeight;
 
@@ -14,5 +15,17 @@ const camState = reactive<ICameraState>({
 export function useCamera() {
   return {
     camState,
+    switchCamera,
   };
+}
+/**
+ * Switches Perspective when c is pressed.
+ * Check which perspective is in use and changes it accordingly.
+ */
+export function switchCamera(vCam: VehicleCameraContext) {
+  window.addEventListener("keypress", (event) => {
+    if (event.key === "c") {
+      vCam.switchCameraState();
+    }
+  });
 }

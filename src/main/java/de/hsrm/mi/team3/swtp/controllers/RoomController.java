@@ -16,9 +16,12 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class RoomController {
 
-  @Autowired RoomBoxServiceImplementation roomBoxService;
-  @Autowired RoomServiceImplementation roomService;
-  @Autowired BackendInfoService backservice;
+  @Autowired
+  RoomBoxServiceImplementation roomBoxService;
+  @Autowired
+  RoomServiceImplementation roomService;
+  @Autowired
+  BackendInfoService backservice;
   Logger logger = LoggerFactory.getLogger(RoomController.class);
 
   /**
@@ -51,14 +54,14 @@ public class RoomController {
    */
   @MessageMapping("/topic/user")
   public void getUser(@Payload User user) {
-    logger.info(
-        "User: ("
-            + user.getSessionID()
-            + ", "
-            + user.getUserName()
-            + ", "
-            + user.getCurrentRoomNumber()
-            + ")");
+    // logger.info(
+    // "User: ("
+    // + user.getSessionID()
+    // + ", "
+    // + user.getUserName()
+    // + ", "
+    // + user.getCurrentRoomNumber()
+    // + ")");
 
     if (roomBoxService.getRoomsFromRoomBox().size() <= 4) {
       while (roomBoxService.getRoomsFromRoomBox().size() <= 4) {
