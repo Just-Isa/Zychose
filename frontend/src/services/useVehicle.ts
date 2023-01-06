@@ -30,7 +30,6 @@ function receiveVehicle() {
   };
   stompClient.onConnect = () => {
     stompClient.subscribe(DEST, (message) => {
-      console.log(JSON.parse(message.body))
       vehicleState.vehicle = JSON.parse(message.body);
     });
   };
