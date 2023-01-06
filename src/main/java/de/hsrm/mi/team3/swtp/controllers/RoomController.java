@@ -16,12 +16,9 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class RoomController {
 
-  @Autowired
-  RoomBoxServiceImplementation roomBoxService;
-  @Autowired
-  RoomServiceImplementation roomService;
-  @Autowired
-  BackendInfoService backservice;
+  @Autowired RoomBoxServiceImplementation roomBoxService;
+  @Autowired RoomServiceImplementation roomService;
+  @Autowired BackendInfoService backservice;
   Logger logger = LoggerFactory.getLogger(RoomController.class);
 
   /**
