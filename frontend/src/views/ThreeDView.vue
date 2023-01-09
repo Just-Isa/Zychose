@@ -1,56 +1,86 @@
 <template>
-  <Renderer ref="renderer" resize="window" antialias>
-    <PerspectiveCamera
-      ref="perspectiveCamera"
-      :position="{ y: 100, z: 100 }"
+  <Renderer
+    ref="renderer"
+    resize="window"
+    antialias
+    :orbit-ctrl="{
+      autoRotate: false,
+      enableDamping: true,
+      dampingFactor: 0.05,
+    }"
+  >
+    <Camera
+      :position="{ y: 1500, z: 400 }"
       :look-at="{ x: 0, y: 0, z: 0 }"
-      :near="2"
-      :far="2000"
+      :near="1"
+      :far="5500"
     />
     <Scene ref="scene" background="#fff">
       <PointLight :position="{ y: 5000, z: 50 }" />
-      <Box ref="box1" :scale="{ x: 3, y: 3, z: 3 }">
-        <LambertMaterial />
-      </Box>
     </Scene>
   </Renderer>
 </template>
 
 <script lang="ts">
-import {
-  Box,
-  LambertMaterial,
-  PerspectiveCamera,
-  PointLight,
-  Renderer,
-  Scene,
-} from "troisjs";
-import { useGLB } from "@/services/useGlbBlockLoader";
-import { useKeyInput } from "../services/keyInputHandler";
-import { SceneManager } from "../services/SceneManager";
-import { useVehicleCommands } from "@/services/useVehicleCommands";
+import { Camera, PointLight, Renderer, Scene } from "troisjs";
+import { useGLB } from "@/services/glbBlockLoader";
+import * as THREE from "three";
+import { SceneManager } from "@/services/SceneManager";
+import data from "../data/dummy.json";
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
+import config from "../../../swtp.config.json";
 import { useVehicle } from "@/services/use3DVehicle";
+import { useKeyInput } from "@/services/keyInputHandler";
+import { useVehicleCommands } from "@/services/useVehicleCommands";
 
-const { glbState, generateBlockMap } = useGLB();
+const { glbState, loadModel } = useGLB();
 const { publishVehicleCommands } = useVehicleCommands();
 const { keysPressed, inputs } = useKeyInput();
 const { receiveVehicle } = useVehicle();
-generateBlockMap();
+
 receiveVehicle();
+
+config.miscModels.forEach((element) => {
+  glbState.blockMap.set(element.name, loadModel(element.glbPath));
+});
+
+config.streetTypes.forEach((element) => {
+  if (element.glbPath) {
+    glbState.blockMap.set(element.name, loadModel(element.glbPath));
+  }
+});
+
+config.allVehicleTypes.forEach((element) => {
+  if (element.glbPath) {
+    glbState.blockMap.set(element.name, loadModel(element.glbPath));
+  }
+});
+
 export default {
   components: {
-    Box,
-    LambertMaterial,
+    Camera,
     PointLight,
     Renderer,
     Scene,
-    PerspectiveCamera,
   },
   mounted() {
     const blockMap = glbState.blockMap;
-    const scene = (this.$refs.scene as any).scene;
+    const scene = (this.$refs.scene as typeof Scene).scene;
     const renderer = (this.$refs.renderer as any).renderer;
-    const sceneManager = new SceneManager(scene, blockMap, renderer);
+    const sceneManager = new SceneManager(
+      scene,
+      blockMap,
+      data as any,
+      renderer
+    );
+    new RGBELoader()
+      .setPath("/assets/skybox/")
+      .load("skylight.hdr", function (texture: any) {
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+
+        scene.background = texture;
+        scene.environment = texture;
+      });
     sceneManager.initScene();
     inputs();
 

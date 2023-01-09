@@ -2,11 +2,13 @@ package de.hsrm.mi.team3.swtp.services;
 
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
+import java.io.IOException;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class RoomServiceImplementation implements RoomService {
@@ -40,11 +42,20 @@ public class RoomServiceImplementation implements RoomService {
   /**
    * This method provides a certain room by number.
    *
-   * @param roomNumber
+   * @param room Room of of which the userlist is required
    * @return Room
    */
   @Override
   public List<User> getUserList(Room room) {
     return room.getUserList();
+  }
+
+  @Override
+  public void saveScriptToRoom(MultipartFile file, Room room) {
+    try {
+      room.setJythonScript(new String(file.getBytes()));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }

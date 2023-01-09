@@ -38,7 +38,6 @@ function inputs() {
     keys.delete(event.key);
     updateDirections();
   });
-  console.log("beeep");
 }
 /**
  * Funktion for updating the directions

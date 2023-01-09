@@ -2,32 +2,90 @@
   "streetTypes": [
     {
       "name": "cross-road",
-      "svgPath": "/src/assets/img/cross-road.svg",
+      "svgPath": "/assets/img/cross-road.svg",
       "glbPath": "",
-      "vehicleTypes":["car", "bicycle"],
+      "vehicleTypes": [
+        "car",
+        "bicycle"
+      ],
       "possibleRotations": []
     },
     {
       "name": "curve-road",
-      "svgPath": "/src/assets/img/curve-road.svg",
+      "svgPath": "/assets/img/curve-road.svg",
       "glbPath": "",
-      "vehicleTypes":["car", "bicycle"],
-      "possibleRotations": [0, 90, 180, 270]
+      "vehicleTypes": [
+        "car",
+        "bicycle"
+      ],
+      "possibleRotations": [
+        0,
+        90,
+        180,
+        270
+      ]
     },
     {
       "name": "straight-road",
-      "svgPath": "/src/assets/img/straight-road.svg",
-      "glbPath": "",
-      "vehicleTypes":["car", "bicycle"],
-      "possibleRotations": [0, 90]
+      "svgPath": "/assets/img/straight-road.svg",
+      "glbPath": "/assets/models/straight-road.glb",
+      "vehicleTypes": [
+        "car",
+        "bicycle"
+      ],
+      "possibleRotations": [
+        0,
+        90
+      ]
     },
     {
       "name": "t-road",
-      "svgPath": "/src/assets/img/t-road.svg",
+      "svgPath": "/assets/img/t-road.svg",
       "glbPath": "",
-      "vehicleTypes":["car", "bicycle"],
-      "possibleRotations": [0, 90, 180, 270]
+      "vehicleTypes": [
+        "car",
+        "bicycle"
+      ],
+      "possibleRotations": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "name": "sidewalk-straight",
+      "svgPath": "",
+      "glbPath": "/assets/models/sidewalk_straight.glb",
+      "vehicleTypes": [],
+      "possibleRotations": [
+        0,
+        90,
+        180,
+        270
+      ]
     }
   ],
-  "gridSize": 100
+  "miscModels": [
+    {
+      "name": "grass-plane",
+      "glbPath": "/assets/models/grass_plane.glb"
+    },
+    {
+      "name": "landscape",
+      "glbPath": "/assets/models/landscape.glb"
+    }
+  ],
+  "gridSize": 100,
+  "allVehicleTypes": [
+    {
+      "name": "car",
+      "iconPath": "/src/assets/img/car.png",
+      "glbPath": "/assets/models/car.gltf"
+    },
+    {
+      "name": "bicycle",
+      "iconPath": "/src/assets/img/bicycle.png"
+    }
+  ]
 }

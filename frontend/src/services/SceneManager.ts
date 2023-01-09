@@ -1,35 +1,43 @@
 import * as THREE from "three";
-import data from "../data/dummy.json";
-import { generateMapArray } from "./JSONtoMapArray";
+import type { Scene } from "three";
+import swtpconfig from "../../../swtp.config.json";
+import type { IStreetInformation } from "@/services/useStreets";
 import { useCamera } from "./CameraManager";
-import { useVehicle } from "@/services/use3DVehicle";
+import { useVehicle } from "./use3DVehicle";
 import type { VehicleCameraContext } from "./VehicleCamera";
 
 const blockSize = 16;
 const { camState, switchCamera } = useCamera();
 const { vehicleState } = useVehicle();
+type StreetBlock = IStreetInformation;
 
 /**
  * Manages Scene with all Objects
  */
 export class SceneManager {
-  private scene: THREE.Scene;
-  private blockMap: Map<string, Promise<THREE.Group>>;
-  private streetArray: string[][] = generateMapArray(data);
+  scene: Scene;
+  blockMap: Map<string, Promise<THREE.Group>>;
+  data: StreetBlock[];
   private renderer: THREE.Renderer;
   private vehicles: THREE.Group[]; // list of all Object u should update every frame.
   private vehicleCamera: VehicleCameraContext =
     camState.vehicleCam as VehicleCameraContext;
+
   constructor(
-    scene: THREE.Scene,
+    scene: Scene,
     blockMap: Map<string, Promise<THREE.Group>>,
+    data: StreetBlock[],
     renderer: THREE.Renderer
   ) {
     this.scene = scene;
     this.blockMap = blockMap;
+    this.data = JSON.parse(JSON.stringify(data));
     this.renderer = renderer;
     this.vehicles = [];
   }
+  /**
+   * runs all functions to create the scene
+   */
   initScene() {
     this.createLandscape();
     this.createGrid();
@@ -40,15 +48,13 @@ export class SceneManager {
 
   /**
    *
-   * adds loaded tile to Scene
-   *
    * @param objectKey
    * @param posX
    * @param posY
    * @param posZ
    * @param rotation
    *
-   *
+   * adds loaded tile to Scene
    */
   addBlockToScene(
     objectKey: string,
@@ -96,23 +102,15 @@ export class SceneManager {
    * generates the objects according to the (json-)array
    */
   createGrid() {
-    for (const i in this.streetArray) {
-      for (const j in this.streetArray[0]) {
-        const values = this.streetArray[i][j].split(":");
-        const name = values[0];
-        let rotation = Number(values[1]) * (Math.PI / 180);
-        if (isNaN(rotation)) rotation = 0;
-        if (name !== "") {
-          this.addBlockToScene(
-            name,
-            (Number(i) - this.streetArray.length / 2) * blockSize,
-            0,
-            (Number(j) - this.streetArray.length / 2) * blockSize,
-            rotation
-          );
-        }
-      }
-    }
+    this.data.forEach((streetBlock: StreetBlock) => {
+      this.addBlockToScene(
+        streetBlock.streetType,
+        (streetBlock.posX - 1 - swtpconfig.gridSize / 2) * blockSize,
+        0,
+        (streetBlock.posY - 1 - swtpconfig.gridSize / 2) * blockSize,
+        Number(streetBlock.rotation) * (Math.PI / 180)
+      );
+    });
   }
 
   /**
@@ -121,7 +119,6 @@ export class SceneManager {
   createLandscape() {
     this.addBlockToScene("landscape", 0, -17, 0, 0);
   }
-
   /**
    * adds new car
    */
