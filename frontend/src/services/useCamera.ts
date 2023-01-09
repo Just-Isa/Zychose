@@ -1,19 +1,15 @@
 import { PerspectiveCamera } from "three";
 import { reactive } from "vue";
-import { VehicleCameraContext } from "./VehicleCamera";
+import type { VehicleCameraContext } from "./VehicleCamera";
 
 const aspect = window.innerWidth / window.innerHeight;
 
 export interface ICameraState {
   cam: PerspectiveCamera;
-  vehicleCam: VehicleCameraContext;
 }
 
-const defaultCam = new PerspectiveCamera(70, aspect, 1, 2000);
-
 const camState = reactive<ICameraState>({
-  cam: defaultCam,
-  vehicleCam: new VehicleCameraContext(defaultCam),
+  cam: new PerspectiveCamera(70, aspect, 1, 2000),
 });
 
 export function useCamera() {
