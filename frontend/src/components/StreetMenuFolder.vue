@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import StreetBlockIcon from "./StreetBlockIcon.vue";
 import type { StreetBlock } from "@/services/IStreetBlock";
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 
 const props = defineProps<{
   types: StreetBlock[];
@@ -39,7 +39,8 @@ const props = defineProps<{
 
 let scrollHeight = ref(0);
 const streetBlockSize = 92;
-const maxScrollHeight = Math.floor(props.types.length / 4) * streetBlockSize;
+const maxScrollHeight =
+  Math.ceil(props.types.length / 4) * streetBlockSize - streetBlockSize;
 
 function thereAndBackAgain(additionalInput: number) {
   if (scrollHeight.value == maxScrollHeight) {
