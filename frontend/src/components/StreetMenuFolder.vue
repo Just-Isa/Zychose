@@ -9,18 +9,18 @@
       <div v-for="t in props.types" v-bind:key="t.name">
         <StreetBlockIcon :currentBlock="t" />
       </div>
-      <div class="p-10"></div>
+      <div class="p-[5em]"></div>
     </div>
   </div>
   <div>
     <a
-      @click="thereAndBackAgain(minCeiling)"
+      @click="thereAndBackAgain(streetBlockSize)"
       class="pointer-events-auto h-1em absolute -mt-4 p-3 bg-cyan-400 ml-20"
     >
       DOWN
     </a>
     <a
-      @click="thereAndBackAgain(-1 * minCeiling)"
+      @click="thereAndBackAgain(-1 * streetBlockSize)"
       class="pointer-events-auto h-1em absolute -mt-4 ml-5 p-3 bg-red-400"
     >
       UP
@@ -31,27 +31,36 @@
 <script setup lang="ts">
 import StreetBlockIcon from "./StreetBlockIcon.vue";
 import type { StreetBlock } from "@/services/IStreetBlock";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 const props = defineProps<{
   types: StreetBlock[];
 }>();
 
-let howMuch = ref(0);
-const minCeiling = 92;
+let scrollHeight = ref(0);
+const streetBlockSize = 92;
+const maxScrollHeight = Math.floor(props.types.length / 4) * streetBlockSize;
 
 function thereAndBackAgain(additionalInput: number) {
-  howMuch.value += additionalInput;
-
-  if (howMuch.value < minCeiling) {
-    howMuch.value = 0;
+  if (scrollHeight.value == maxScrollHeight) {
+    if (additionalInput < 0) {
+      scrollHeight.value += additionalInput;
+    } else {
+      scrollHeight.value = maxScrollHeight;
+    }
+  } else if (scrollHeight.value == 0) {
+    if (additionalInput > 0) {
+      scrollHeight.value += additionalInput;
+    } else {
+      scrollHeight.value = 0;
+    }
+  } else {
+    scrollHeight.value += additionalInput;
   }
 
   let currentMenu = document.getElementById("scrollbox") as HTMLElement;
   if (currentMenu) {
-    currentMenu.scrollTop = howMuch.value;
+    currentMenu.scrollTop = scrollHeight.value;
   }
 }
-
-console.log("LÄNGE: " + props.types.length);
 </script>

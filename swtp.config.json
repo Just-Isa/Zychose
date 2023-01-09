@@ -10,26 +10,7 @@
       ],
       "possibleRotations": []
     },
-    {
-      "name": "peepee-road",
-      "svgPath": "/assets/img/cross-road.svg",
-      "glbPath": "",
-      "vehicleTypes": [
-        "car",
-        "bicycle"
-      ],
-      "possibleRotations": []
-    },
-    {
-      "name": "poopoo-road",
-      "svgPath": "/assets/img/cross-road.svg",
-      "glbPath": "",
-      "vehicleTypes": [
-        "car",
-        "bicycle"
-      ],
-      "possibleRotations": []
-    },
+
     {
       "name": "curve-road",
       "svgPath": "/assets/img/curve-road.svg",
@@ -72,6 +53,39 @@
         180,
         270
       ]
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {
+      "name": "peepee-road",
+      "svgPath": "/assets/img/cross-road.svg",
+      "glbPath": "",
+      "vehicleTypes": [
+        "car",
+        "bicycle"
+      ],
+      "possibleRotations": []
+    },
+    {
+      "name": "poopoo-road",
+      "svgPath": "/assets/img/cross-road.svg",
+      "glbPath": "",
+      "vehicleTypes": [
+        "car",
+        "bicycle"
+      ],
+      "possibleRotations": []
     },
 
     {
@@ -144,21 +158,18 @@
         180,
         270
       ]
-    },{
-      "name": "t-road",
-      "svgPath": "/assets/img/t-road.svg",
-      "glbPath": "",
-      "vehicleTypes": [
-        "car",
-        "bicycle"
-      ],
-      "possibleRotations": [
-        0,
-        90,
-        180,
-        270
-      ]
     },
+
+
+
+
+
+
+
+
+
+
+
 
 
     {
