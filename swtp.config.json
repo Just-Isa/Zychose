@@ -11,6 +11,26 @@
       "possibleRotations": []
     },
     {
+      "name": "peepee-road",
+      "svgPath": "/assets/img/cross-road.svg",
+      "glbPath": "",
+      "vehicleTypes": [
+        "car",
+        "bicycle"
+      ],
+      "possibleRotations": []
+    },
+    {
+      "name": "poopoo-road",
+      "svgPath": "/assets/img/cross-road.svg",
+      "glbPath": "",
+      "vehicleTypes": [
+        "car",
+        "bicycle"
+      ],
+      "possibleRotations": []
+    },
+    {
       "name": "curve-road",
       "svgPath": "/assets/img/curve-road.svg",
       "glbPath": "",
@@ -53,6 +73,94 @@
         270
       ]
     },
+
+    {
+      "name": "t-road",
+      "svgPath": "/assets/img/t-road.svg",
+      "glbPath": "",
+      "vehicleTypes": [
+        "car",
+        "bicycle"
+      ],
+      "possibleRotations": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },{
+      "name": "t-road",
+      "svgPath": "/assets/img/t-road.svg",
+      "glbPath": "",
+      "vehicleTypes": [
+        "car",
+        "bicycle"
+      ],
+      "possibleRotations": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },{
+      "name": "t-road",
+      "svgPath": "/assets/img/t-road.svg",
+      "glbPath": "",
+      "vehicleTypes": [
+        "car",
+        "bicycle"
+      ],
+      "possibleRotations": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },{
+      "name": "t-road",
+      "svgPath": "/assets/img/t-road.svg",
+      "glbPath": "",
+      "vehicleTypes": [
+        "car",
+        "bicycle"
+      ],
+      "possibleRotations": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },{
+      "name": "t-road",
+      "svgPath": "/assets/img/t-road.svg",
+      "glbPath": "",
+      "vehicleTypes": [
+        "car",
+        "bicycle"
+      ],
+      "possibleRotations": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },{
+      "name": "t-road",
+      "svgPath": "/assets/img/t-road.svg",
+      "glbPath": "",
+      "vehicleTypes": [
+        "car",
+        "bicycle"
+      ],
+      "possibleRotations": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+
+
     {
       "name": "sidewalk-straight",
       "svgPath": "",
@@ -80,11 +188,11 @@
   "allVehicleTypes": [
     {
       "name": "car",
-      "iconPath": "/src/assets/img/car.png"
+      "iconPath": "/src/assets/img/car-pictogram.svg"
     },
     {
       "name": "bicycle",
-      "iconPath": "/src/assets/img/bicycle.png"
+      "iconPath": "/src/assets/img/bicycle-pictogram.svg"
     }
   ]
 }

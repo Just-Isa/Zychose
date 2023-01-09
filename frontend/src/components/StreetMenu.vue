@@ -5,13 +5,13 @@
     <div class="tabs flex gap-3">
       <div
         v-for="vehicle in streetTypesState.vehicleTypes"
-        v-bind:key="vehicle[1]"
+        v-bind:key="vehicle.name"
       >
         <StreetMenuTab
-          :vehicleType="vehicle[0]"
-          :imgSrc="vehicle[1]"
-          :isActive="streetTypesState.currentActiveTab === vehicle[0]"
-          @click="changeCurrentTab(vehicle[0])"
+          :vehicleType="vehicle.name"
+          :imgSrc="vehicle.iconPath"
+          :isActive="streetTypesState.currentActiveTab === vehicle.name"
+          @click="changeCurrentTab(vehicle.name)"
         />
       </div>
     </div>
@@ -49,8 +49,8 @@ const { changeCurrentTab, streetTypesState } = useStreetBlock();
 const vehicleTypeDict: { [type: string]: StreetBlock[] } = {};
 
 streetTypesState.vehicleTypes.forEach((type) => {
-  vehicleTypeDict[type[0]] = streetTypesState.streetTypes.filter((obj) => {
-    return obj.vehicleTypes.includes(type[0]);
+  vehicleTypeDict[type.name] = streetTypesState.streetTypes.filter((obj) => {
+    return obj.vehicleTypes.includes(type.name);
   }) as StreetBlock[];
 });
 

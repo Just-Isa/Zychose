@@ -5,10 +5,7 @@
       isActive ? 'bg-street-menu-bg-gray shadow-lg' : 'bg-inactive-folder-gray',
     ]"
   >
-    <img
-      :src="`src/assets/img/${props.imgSrc}`"
-      :alt="props.vehicleType + ' icon'"
-    />
+    <img :src="`${props.imgSrc}`" :alt="props.vehicleType + ' icon'" />
   </button>
 </template>
 

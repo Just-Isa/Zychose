@@ -1,11 +1,13 @@
 import { StreetBlock } from "@/services/IStreetBlock";
 import { reactive, readonly } from "vue";
+import type { VehicleType } from "./IVehicleType";
+import swtpConfigJSON from "../../../swtp.config.json";
 /**
  * State Interface for information on street menus
  * WIP: might change when street types are in json-format
  */
 export interface IStreetTypes {
-  vehicleTypes: string[][];
+  vehicleTypes: VehicleType[];
   streetTypes: StreetBlock[];
   currentActiveTab: string;
 }
@@ -25,21 +27,20 @@ const bulldozerActive = reactive({
   isActive: false,
 });
 
+const streetTypesFromJson = <StreetBlock[]>(
+  JSON.parse(JSON.stringify(swtpConfigJSON.streetTypes))
+);
+
+const vehicleTypesFromJson = <VehicleType[]>(
+  JSON.parse(JSON.stringify(swtpConfigJSON.allVehicleTypes))
+);
+
 const streetTypesState = reactive<IStreetTypes>({
-  vehicleTypes: [
-    ["car", "car-pictogram.svg"],
-    ["bike", "bicycle-pictogram.svg"],
-  ],
-  streetTypes: [
-    new StreetBlock("straight-road", 0, [0, 90], ["car"]),
-    new StreetBlock("t-road", 0, [0, 90, 180, -90], ["car"]),
-    new StreetBlock("curve-road", 0, [0, 90, 180, -90], ["car"]),
-    new StreetBlock("cross-road", 0, [0], ["car"]),
-    new StreetBlock("straight-road", 0, [0, 90], ["bike"]),
-    new StreetBlock("cross-road", 0, [0, 90, 180, -90], ["bike"]),
-  ],
+  streetTypes: streetTypesFromJson,
+  vehicleTypes: vehicleTypesFromJson,
+
   // Active tab is set to car at first initialisation
-  currentActiveTab: "car",
+  currentActiveTab: vehicleTypesFromJson[0].name,
 });
 
 export function useStreetBlock() {
