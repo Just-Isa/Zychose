@@ -1,11 +1,13 @@
 import * as THREE from "three";
-import { useCamera } from "./useCamera";
-
-const { camState } = useCamera();
 
 export class VehicleCameraContext {
-  private states = [new FirstPersonState(), new ThirdPersonState()];
+  private states: CameraState[];
   private curstateCount = 0;
+
+  constructor(camera: THREE.PerspectiveCamera) {
+    this.states = [new FirstPersonState(camera), new ThirdPersonState(camera)];
+  }
+
   /**
    * fullfills the updateMethode from the current cameraState
    * @param speed
@@ -25,8 +27,10 @@ export class VehicleCameraContext {
 abstract class CameraState {
   protected _currentCameraPos = new THREE.Vector3();
   protected _currentCameraLookAt = new THREE.Vector3();
-  protected _camera: THREE.PerspectiveCamera = camState.cam;
-
+  protected _camera: THREE.PerspectiveCamera;
+  constructor(camera: THREE.PerspectiveCamera) {
+    this._camera = camera;
+  }
   /**
    * Fixes camera to vehicle by updating camera position with an offset and a lookAt direction.
    * @param speed
