@@ -15,7 +15,9 @@ const vehicleState = reactive<IVehicleState>({
 export function useVehicle() {
   return { vehicleState: readonly(vehicleState), receiveVehicle };
 }
-
+/**
+ * Subscribes to the Vehicle-Topic and updates the vehicleState.
+ */
 function receiveVehicle() {
   const webSocketUrl = `ws://${window.location.host}/stompbroker`;
   const DEST = "/topic/vehicle/";

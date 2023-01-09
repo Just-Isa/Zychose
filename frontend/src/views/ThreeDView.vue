@@ -29,7 +29,7 @@ import { useGLB } from "@/services/useGlbBlockLoader";
 import { useKeyInput } from "../services/keyInputHandler";
 import { SceneManager } from "../services/SceneManager";
 import { useVehicleCommands } from "@/services/useVehicleCommands";
-import { useVehicle } from "@/services/useVehicle";
+import { useVehicle } from "@/services/use3DVehicle";
 
 const { glbState, generateBlockMap } = useGLB();
 const { publishVehicleCommands } = useVehicleCommands();

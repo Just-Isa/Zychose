@@ -1,9 +1,9 @@
 import * as THREE from "three";
 import data from "../data/dummy.json";
 import { generateMapArray } from "./JSONtoMapArray";
-import { useCamera } from "./useCamera";
-import { useVehicle } from "@/services/useVehicle";
-import { VehicleCameraContext } from "./VehicleCamera";
+import { useCamera } from "./CameraManager";
+import { useVehicle } from "@/services/use3DVehicle";
+import type { VehicleCameraContext } from "./VehicleCamera";
 
 const blockSize = 16;
 const { camState, switchCamera } = useCamera();
@@ -18,7 +18,8 @@ export class SceneManager {
   private streetArray: string[][] = generateMapArray(data);
   private renderer: THREE.Renderer;
   private vehicles: THREE.Group[]; // list of all Object u should update every frame.
-  private vehicleCamera: VehicleCameraContext = new VehicleCameraContext();
+  private vehicleCamera: VehicleCameraContext =
+    camState.vehicleCam as VehicleCameraContext;
   constructor(
     scene: THREE.Scene,
     blockMap: Map<string, Promise<THREE.Group>>,
@@ -173,7 +174,7 @@ export class SceneManager {
 
   /**
    *
-   * updates the vehicle
+   * updates the vehicle with lerping
    *
    * @param threeVehicle
    * @param t

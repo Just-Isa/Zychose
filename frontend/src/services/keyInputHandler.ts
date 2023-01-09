@@ -41,7 +41,7 @@ function inputs() {
   console.log("beeep");
 }
 /**
- * Funktion for
+ * Funktion for updating the directions
  */
 function updateDirections() {
   directionCommands.directions.clear();

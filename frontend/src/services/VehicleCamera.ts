@@ -1,13 +1,14 @@
 import * as THREE from "three";
-import { useCamera } from "./useCamera";
-
-const { camState } = useCamera();
-
 export class VehicleCameraContext {
-  private states = [new FirstPersonState(), new ThirdPersonState()];
+  private states: CameraState[];
   private curstateCount = 0;
+
+  constructor(camera: THREE.PerspectiveCamera) {
+    this.states = [new FirstPersonState(camera), new ThirdPersonState(camera)];
+  }
+
   /**
-   * fullfills the updateMethode from the current cameraState
+   * fullfills the updateMethode of the current cameraState
    * @param speed
    * @param vehicle
    */
@@ -25,26 +26,30 @@ export class VehicleCameraContext {
 abstract class CameraState {
   protected _currentCameraPos = new THREE.Vector3();
   protected _currentCameraLookAt = new THREE.Vector3();
-  protected _camera: THREE.PerspectiveCamera = camState.cam;
+  protected _camera: THREE.PerspectiveCamera;
+
+  constructor(camera: THREE.PerspectiveCamera) {
+    this._camera = camera;
+  }
 
   /**
    * Fixes camera to vehicle by updating camera position with an offset and a lookAt direction.
-   * @param speed
+   * @param vehicleSpeed
    */
-  public abstract update(updatespeed: number, vehicle: THREE.Group): void;
+  public abstract update(vehicleSpeed: number, vehicle: THREE.Group): void;
 
   /**
-   * calculates lookAt or offset relative to car position
-   * @param speed
+   * calculates lookAt or offset relative to vehicle position
+   * @param vehicleSpeed
    * @param vector
-   * @returns
+   * @returns vector
    */
   protected calcVectorsOfVehiclePos(
     vector: THREE.Vector3,
-    speed: number,
+    vehicleSpeed: number,
     vehicle: THREE.Group
   ) {
-    if (speed < 0) {
+    if (vehicleSpeed < 0) {
       vector.set(vector.x, vector.y, -vector.z);
     }
     vector.applyQuaternion(vehicle.quaternion);
@@ -56,17 +61,17 @@ abstract class CameraState {
 class FirstPersonState extends CameraState {
   /**
    * Fixes camera to vehicle by updating camera position with an offset and a lookAt direction.
-   * @param speed
+   * @param vehicleSpeed
    */
-  public update(speed: number, vehicle: THREE.Group): void {
+  public update(vehicleSpeed: number, vehicle: THREE.Group): void {
     const idealOffset = super.calcVectorsOfVehiclePos(
       new THREE.Vector3(0, 4, -1), //vector for camera offset in realtion to vehicle
-      speed,
+      vehicleSpeed,
       vehicle
     );
     const idealLookat = super.calcVectorsOfVehiclePos(
       new THREE.Vector3(0, 3, 15), //vector for camera lookat in realtion to vehicle
-      speed,
+      vehicleSpeed,
       vehicle
     );
 
@@ -81,18 +86,18 @@ class FirstPersonState extends CameraState {
 class ThirdPersonState extends CameraState {
   /**
    * Fixes camera to vehicle by updating camera position with an offset and a lookAt direction.
-   * @param speed
+   * @param vehicleSpeed
    */
-  public update(speed: number, vehicle: THREE.Group): void {
+  public update(vehicleSpeed: number, vehicle: THREE.Group): void {
     const lerpDuration = 0.5;
     const idealOffset = super.calcVectorsOfVehiclePos(
       new THREE.Vector3(0, 17, -30), //vector for camera offset in realtion to vehicle
-      speed,
+      vehicleSpeed,
       vehicle
     );
     const idealLookat = super.calcVectorsOfVehiclePos(
       new THREE.Vector3(0, 10, 20), //vector for camera lookat in realtion to vehicle
-      speed,
+      vehicleSpeed,
       vehicle
     );
 

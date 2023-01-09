@@ -4,7 +4,10 @@ import { Client } from "@stomp/stompjs";
 export function useVehicleCommands() {
   return { publishVehicleCommands };
 }
-
+/**
+ * sends the commands to the backend
+ * @param commands
+ */
 function publishVehicleCommands(commands: Direction[]) {
   const webSocketUrl = `ws://${window.location.host}/stompbroker`;
   const DEST = "/topic/3d/commands";
