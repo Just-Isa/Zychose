@@ -125,7 +125,7 @@ public class VehicleServiceImplementation implements VehicleService {
    *
    * @param vehicle
    * @param acceleration
-   * @return
+   * @return new speed of vehicle (double)
    */
   private double accelerate(Vehicle vehicle, double acceleration) {
     return vehicle.getCurrentSpeed() + acceleration;

@@ -25,6 +25,7 @@ export function useCamera() {
 /**
  * Switches Perspective when c is pressed.
  * Check which perspective is in use and changes it accordingly.
+ * @param vCam VehicleCameraContext
  */
 export function switchCamera(vCam: VehicleCameraContext) {
   window.addEventListener("keypress", (event) => {

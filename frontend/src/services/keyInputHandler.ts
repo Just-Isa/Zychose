@@ -40,7 +40,7 @@ function inputs() {
   });
 }
 /**
- * Funktion for updating the directions
+ * Function for updating the directions
  */
 function updateDirections() {
   directionCommands.directions.clear();

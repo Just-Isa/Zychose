@@ -37,7 +37,7 @@ const { glbState, loadModel } = useGLB();
 const { publishVehicleCommands } = useVehicleCommands();
 const { keysPressed, inputs } = useKeyInput();
 const { receiveVehicle } = useVehicle();
-
+const sendInterval = 200;
 receiveVehicle();
 
 config.miscModels.forEach((element) => {
@@ -83,10 +83,10 @@ export default {
       });
     sceneManager.initScene();
     inputs();
-
+    //sends VehicleCommands to backend in a set interval
     setInterval(function () {
       publishVehicleCommands(Array.from(keysPressed.directions));
-    }, 200);
+    }, sendInterval);
   },
 };
 </script>
