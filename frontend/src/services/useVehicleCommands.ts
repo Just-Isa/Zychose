@@ -1,3 +1,4 @@
+import { logger } from "@/helpers/ConsoleLoggingManager";
 import type { Direction } from "@/services/keyInputHandler";
 import { Client } from "@stomp/stompjs";
 
@@ -13,10 +14,10 @@ function publishVehicleCommands(commands: Direction[]) {
   const DEST = "/topic/3d/commands";
   const userClient = new Client({ brokerURL: webSocketUrl });
   userClient.onWebSocketError = () => {
-    console.log("WS-error"); /* WS-Error */
+    logger.log("WS-error"); /* WS-Error */
   };
   userClient.onStompError = () => {
-    console.log("STOMP-error"); /* STOMP-Error */
+    logger.log("STOMP-error"); /* STOMP-Error */
   };
   userClient.onConnect = () => {
     try {
@@ -27,7 +28,7 @@ function publishVehicleCommands(commands: Direction[]) {
       });
     } catch (err) {
       // in case of an error
-      console.log("Error while Publishing User! ", err);
+      logger.log("Error while Publishing User! ", err);
     }
   };
   userClient.activate();

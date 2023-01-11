@@ -4,11 +4,7 @@ import { Room, type IRoom } from "./IRoom";
 import { useRoomBox } from "./useRoomList";
 import { MessageOperator } from "./MessageOperators";
 import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
-import swtpConfigJSON from "../../../swtp.config.json";
-
-if (!swtpConfigJSON.consoleLogging) {
-  console.log = function () {};
-}
+import { logger } from "@/helpers/ConsoleLoggingManager";
 
 export interface IRoomState {
   room: IRoom;
@@ -51,15 +47,15 @@ function receiveRoom() {
   const DEST = "/topic/room/" + roomState.room.roomNumber;
   const stompClient = new Client({ brokerURL: webSocketUrl });
   stompClient.onWebSocketError = () => {
-    console.log("WS-error"); /* WS-Error */
+    logger.log("WS-error"); /* WS-Error */
   };
   stompClient.onStompError = () => {
-    console.log("STOMP-error"); /* STOMP-Error */
+    logger.log("STOMP-error"); /* STOMP-Error */
   };
   stompClient.onConnect = () => {
     stompClient.subscribe(DEST, (message) => {
       roomState.room = JSON.parse(message.body);
-      console.log(roomState.room);
+      logger.log(roomState.room);
     });
   };
   stompClient.activate();
@@ -78,13 +74,13 @@ function updateRoom(operator: MessageOperator, roomNumber: number) {
   const DEST = "/topic/room/" + roomNumber;
   const roomClient = new Client({ brokerURL: webSocketUrl });
   roomClient.onWebSocketError = () => {
-    console.log("WS-error"); /* WS-Error */
+    logger.log("WS-error"); /* WS-Error */
   };
   roomClient.onStompError = () => {
-    console.log("STOMP-error"); /* STOMP-Error */
+    logger.log("STOMP-error"); /* STOMP-Error */
   };
   roomClient.onConnect = (frame) => {
-    console.log("connected", frame);
+    logger.log("connected", frame);
     try {
       roomClient.publish({
         destination: DEST,
@@ -93,7 +89,7 @@ function updateRoom(operator: MessageOperator, roomNumber: number) {
       });
     } catch (err) {
       // in case of an error
-      console.log("Error while Publishing User! ", err);
+      logger.log("Error while Publishing User! ", err);
     }
   };
   roomClient.activate();

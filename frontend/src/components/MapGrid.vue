@@ -41,10 +41,7 @@ import swtpConfigJSON from "../../../swtp.config.json";
 import { computed } from "vue";
 import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
-
-if (!swtpConfigJSON.consoleLogging) {
-  console.log = function () {};
-}
+import { logger } from "@/helpers/ConsoleLoggingManager";
 
 /**
  * @param {number} gridSize defines the size of the grid component
@@ -81,7 +78,7 @@ const streetTypes = swtpConfigJSON.streetTypes;
  * @param {number} posY position on y axis (click)
  */
 function cellClicked(posX: number, posY: number): void {
-  console.log("(posX,posY): ", [posX, posY]);
+  logger.log("(posX,posY): ", [posX, posY]);
   const table = document.getElementById("gridTable") as HTMLTableElement;
   const cell = table.rows[posX - 1].cells[posY - 1];
   /* testInput has to be hard coded as long as we're not able to get the informations from the states of the streetTileMenu */
@@ -101,7 +98,7 @@ function cellClicked(posX: number, posY: number): void {
  */
 function onDrop(posX: number, posY: number) {
   //TODO posX und posY müssen statt geloggt zu werden, ans backend gesendet werden an dieser Stelle
-  console.log("Vehicle-Position: ", posX, posY);
+  logger.log("Vehicle-Position: ", posX, posY);
   changeTo3DView();
 }
 /**
@@ -219,7 +216,7 @@ function setCellBackgroundStyle(
  * Dann wird das loeschen der Zelle ueber die cellClicked Methode gemacht.
  */
 function clearCell(posX: number, posY: number): void {
-  console.log("clearCell aufgerufen!");
+  logger.log("clearCell aufgerufen!");
   let neuerInput: IStreetInformation = {
     streetType: "delete",
     rotation: 90,

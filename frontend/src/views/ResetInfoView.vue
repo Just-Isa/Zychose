@@ -6,11 +6,7 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import { deleteSessionId } from "@/helpers/SessionIDHelper";
-import swtpConfigJSON from "../../../swtp.config.json";
-
-if (!swtpConfigJSON.consoleLogging) {
-  console.log = function () {};
-}
+import { logger } from "@/helpers/ConsoleLoggingManager";
 
 onMounted(() => {
   deleteSessionId();
@@ -31,16 +27,16 @@ function resetEverything() {
   })
     .then((response) => {
       if (!response.ok) {
-        console.log("Error @ Restarting everything.");
+        logger.log("Error @ Restarting everything.");
       } else {
         return response.text();
       }
     })
     .then(() => {
-      console.log("Done! Game has been reset. Please refresh.");
+      logger.log("Done! Game has been reset. Please refresh.");
     })
     .catch(() => {
-      console.log("Error @ Restarting everything.");
+      logger.log("Error @ Restarting everything.");
     });
 }
 </script>

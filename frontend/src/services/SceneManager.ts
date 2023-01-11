@@ -6,10 +6,7 @@ import { useCamera } from "./CameraManager";
 import { useVehicle } from "./use3DVehicle";
 import type { VehicleCameraContext } from "./VehicleCamera";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
-
-if (!swtpconfig.consoleLogging) {
-  console.error = function () {};
-}
+import { logger } from "@/helpers/ConsoleLoggingManager";
 
 const blockSize = 16;
 const { camState, switchCamera } = useCamera();
@@ -80,7 +77,7 @@ export class SceneManager {
         })
         .catch((error) => {
           this.getErrorBlock(posX, posY, posZ);
-          console.error(error);
+          logger.error(error);
         });
     } else {
       this.getErrorBlock(posX, posY, posZ);
@@ -151,7 +148,7 @@ export class SceneManager {
         })
         .catch((error) => {
           this.getErrorBlock(0, 0, 0);
-          console.error(error);
+          logger.error(error);
         });
     } else {
       this.getErrorBlock(0, 0, 0);
