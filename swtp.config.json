@@ -81,7 +81,8 @@
   "allVehicleTypes": [
     {
       "name": "car",
-      "iconPath": "/src/assets/img/car.png"
+      "iconPath": "/src/assets/img/car.png",
+      "glbPath": "/assets/models/car.gltf"
     },
     {
       "name": "bicycle",

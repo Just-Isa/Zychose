@@ -1,10 +1,12 @@
 package de.hsrm.mi.team3.swtp.services;
 
 import de.hsrm.mi.team3.swtp.domain.User;
+import de.hsrm.mi.team3.swtp.domain.Vehicle;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendMouseMessage;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendRoomMessage;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendUserMessage;
+import de.hsrm.mi.team3.swtp.domain.messaging.BackendVehicleMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -50,5 +52,17 @@ public class BackendInfoServiceImpl implements BackendInfoService {
   @Override
   public void sendMouse(String topicname, BackendMouseMessage mouse) {
     messaging.convertAndSend(GENERIC_TOPIC_START + topicname, mouse);
+  }
+
+  /**
+   * sends vehicle data to frontend
+   *
+   * @param topicname
+   * @param operation
+   * @param vehicle
+   */
+  @Override
+  public void sendVehicle(String topicname, BackendOperation operation, Vehicle vehicle) {
+    messaging.convertAndSend("/topic/" + topicname, BackendVehicleMessage.from(vehicle));
   }
 }
