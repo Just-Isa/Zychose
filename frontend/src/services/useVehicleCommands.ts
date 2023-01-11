@@ -10,7 +10,9 @@ export function useVehicleCommands() {
  */
 function publishVehicleCommands(commands: Direction[]) {
   const webSocketUrl = `ws://${window.location.host}/stompbroker`;
-  const DEST = "/topic/3d/commands";
+  const DEST =
+    "/topic/3d/commands/" +
+    (location.pathname.split("/")[1] as unknown as number);
   const userClient = new Client({ brokerURL: webSocketUrl });
   userClient.onWebSocketError = () => {
     console.log("WS-error"); /* WS-Error */

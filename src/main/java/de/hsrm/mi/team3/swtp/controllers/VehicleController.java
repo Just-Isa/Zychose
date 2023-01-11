@@ -8,6 +8,7 @@ import de.hsrm.mi.team3.swtp.services.VehicleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
@@ -19,9 +20,11 @@ public class VehicleController {
   Logger logger = LoggerFactory.getLogger(VehicleController.class);
   Vehicle vehicleDummy = new Vehicle();
 
-  @Autowired VehicleService vehicleService;
+  @Autowired
+  VehicleService vehicleService;
 
-  @Autowired BackendInfoService bInfoService;
+  @Autowired
+  BackendInfoService bInfoService;
 
   @ModelAttribute
   public void initVehicle(Model m) {
@@ -30,11 +33,12 @@ public class VehicleController {
 
   /**
    * Receives a command from client to execute vehicleservice Methods
-   *
+   * 
    * @param commands
+   * @param roomNumber
    */
-  @MessageMapping("topic/3d/commands")
-  public void getCars(@Payload String commands) {
+  @MessageMapping("topic/3d/commands/{roomNumber}")
+  public void getCars(@Payload String commands, @DestinationVariable int roomNumber) {
     if (!commands.contains(VehicleCommands.FORWARD.getCommand())
         && !commands.contains(VehicleCommands.BACKWARD.getCommand())) {
       vehicleService.carRunOutSpeed(vehicleDummy);
@@ -51,6 +55,6 @@ public class VehicleController {
     if (commands.contains(VehicleCommands.RIGHT.getCommand())) {
       vehicleService.rotateRight(vehicleDummy);
     }
-    bInfoService.sendVehicle("vehicle/", BackendOperation.UPDATE, vehicleDummy);
+    bInfoService.sendVehicle("vehicle/" + roomNumber, BackendOperation.UPDATE, vehicleDummy);
   }
 }
