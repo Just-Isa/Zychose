@@ -24,10 +24,8 @@
 <script lang="ts">
 import { Camera, PointLight, Renderer, Scene } from "troisjs";
 import { useGLB } from "@/services/glbBlockLoader";
-import * as THREE from "three";
 import { SceneManager } from "@/services/SceneManager";
 import data from "../data/dummy.json";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import config from "../../../swtp.config.json";
 import { useVehicle } from "@/services/use3DVehicle";
 import { useKeyInput } from "@/services/keyInputHandler";
@@ -73,14 +71,6 @@ export default {
       data as any,
       renderer
     );
-    new RGBELoader()
-      .setPath("/assets/skybox/")
-      .load("skylight.hdr", function (texture: any) {
-        texture.mapping = THREE.EquirectangularReflectionMapping;
-
-        scene.background = texture;
-        scene.environment = texture;
-      });
     sceneManager.initScene();
     inputs();
     //sends VehicleCommands to backend in a set interval

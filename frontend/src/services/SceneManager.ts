@@ -5,6 +5,7 @@ import type { IStreetInformation } from "@/services/useStreets";
 import { useCamera } from "./CameraManager";
 import { useVehicle } from "./use3DVehicle";
 import type { VehicleCameraContext } from "./VehicleCamera";
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 
 const blockSize = 16;
 const { camState, switchCamera } = useCamera();
@@ -43,6 +44,7 @@ export class SceneManager {
     this.createGrid();
     this.addControllableVehicle();
     this.handleRender();
+    this.addSkybox();
     switchCamera(this.vehicleCamera);
   }
 
@@ -151,7 +153,20 @@ export class SceneManager {
       this.getErrorBlock(0, 0, 0);
     }
   }
+  /**
+   * adds skybox to the scene.
+   */
+  addSkybox() {
+    const scene = this.scene;
+    new RGBELoader()
+      .setPath("/assets/skybox/")
+      .load("skylight.hdr", function (texture: any) {
+        texture.mapping = THREE.EquirectangularReflectionMapping;
 
+        scene.background = texture;
+        scene.environment = texture;
+      });
+  }
   /**
    *
    * Renders and animates the scene.
@@ -174,7 +189,6 @@ export class SceneManager {
    * updates the vehicle with lerping
    *
    * @param threeVehicle
-   * @param t
    */
   updateVehicle(threeVehicle: THREE.Group) {
     const lerpDuration = 0.075;
