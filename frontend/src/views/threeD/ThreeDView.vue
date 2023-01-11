@@ -28,7 +28,7 @@ import { SceneManager } from "@/views/threeD/SceneManager";
 import data from "../../data/dummy.json";
 import config from "../../../../swtp.config.json";
 import { useVehicle } from "@/services/use3DVehicle";
-import { useVehicleCommands } from "./useVehicleCommands";
+import { useVehicleCommands } from "../../services/useVehicleCommands";
 import { useKeyInput } from "./keyInputHandler";
 
 const { glbState, loadModel } = useGLB();
