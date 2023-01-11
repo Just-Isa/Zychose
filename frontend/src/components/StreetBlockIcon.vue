@@ -22,8 +22,8 @@
 </template>
 
 <script setup lang="ts">
-import { useStreetBlock } from "@/services/useStreetBlock";
 import type { StreetBlock } from "@/services/IStreetBlock";
+import { useStreetBlock } from "@/services/useStreetBlock";
 
 const prop = defineProps<{
   currentBlock: StreetBlock;
@@ -42,24 +42,28 @@ const {
  * @param type selected StreetBlock
  */
 function changeActiveStreetBlock(type: StreetBlock) {
+  changeCurrentStreetType(type);
+  console.log("ROTATION", activeBlock);
   if (type == activeBlock.streetBlock && !bulldozerActive.isActive) {
+    //if gibt kein true zurück
+    console.log("ROTATE", activeBlock);
     const block = document.getElementById(prop.currentBlock.name);
+    console.log(block);
     if (block) {
       let nextRotIndex =
-        activeBlock.streetBlock.possibleRotation.indexOf(
+        activeBlock.streetBlock.possibleRotations.indexOf(
           activeBlock.streetBlock.currentRotation
         ) + 1;
 
-      if (nextRotIndex >= activeBlock.streetBlock.possibleRotation.length) {
+      if (nextRotIndex >= activeBlock.streetBlock.possibleRotations.length) {
         nextRotIndex = 0;
       }
-      let nextRot = activeBlock.streetBlock.possibleRotation[nextRotIndex];
+      let nextRot = activeBlock.streetBlock.possibleRotations[nextRotIndex];
       block.style.rotate = `${nextRot}deg`;
-      changeRotation(prop.currentBlock, nextRot);
+      changeRotation(nextRot);
     }
     return;
   }
-  changeCurrentStreetType(type);
 
   toggleBulldozer(false);
   const entireDoc = document.documentElement;
