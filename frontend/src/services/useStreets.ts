@@ -1,5 +1,6 @@
 import { gridToJson } from "./JSONparser";
 import { reactive, readonly } from "vue";
+import { useRoom } from "./useRoom";
 
 /**
  * Interface to save street information

@@ -15,10 +15,12 @@ public class RoomServiceImplementation implements RoomService {
 
   Logger logger = LoggerFactory.getLogger(RoomServiceImplementation.class);
 
-  @Autowired RoomBoxServiceImplementation roomBoxService;
+  @Autowired
+  RoomBoxServiceImplementation roomBoxService;
 
   /**
-   * This method adds a new user to a room, and changed the users currentRoomNumber respectively.
+   * This method adds a new user to a room, and changed the users
+   * currentRoomNumber respectively.
    *
    * @param room
    * @param user
@@ -57,5 +59,20 @@ public class RoomServiceImplementation implements RoomService {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  /**
+   * Updates room to be room2
+   * 
+   * @param room
+   * @param room2
+   */
+  public void updateRoom(Room room, String jythonScript, String roomMap, String roomName, int roomNumber,
+      List<User> userList) {
+    room.setJythonScript(jythonScript);
+    room.setRoomMap(roomMap);
+    room.setRoomName(roomName);
+    room.setRoomNumber(roomNumber);
+    room.setUserList(userList);
   }
 }

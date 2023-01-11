@@ -4,7 +4,7 @@ import de.hsrm.mi.team3.swtp.domain.User;
 import java.util.List;
 
 public record BackendRoomMessage(
-    String roomName, int roomNumber, List<User> userList, String jythonScript) {
+    String roomName, int roomNumber, List<User> userList, String jythonScript, String roomMap) {
 
   /**
    * @param roomName
@@ -14,7 +14,7 @@ public record BackendRoomMessage(
    * @return BackendRoomMessage
    */
   public static BackendRoomMessage from(
-      String roomName, int roomNumber, List<User> userList, String jythonScript) {
-    return new BackendRoomMessage(roomName, roomNumber, userList, jythonScript);
+      String roomName, int roomNumber, List<User> userList, String jythonScript, String roomMap) {
+    return new BackendRoomMessage(roomName, roomNumber, userList, jythonScript, roomMap);
   }
 }

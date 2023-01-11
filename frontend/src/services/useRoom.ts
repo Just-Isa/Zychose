@@ -33,6 +33,7 @@ export function useRoom() {
 /* eslint-disable @typescript-eslint/no-unused-vars*/
 function updateRoomMap(rMap: string): void {
   roomState.room.roomMap = rMap;
+  updateRoom(roomState.room.roomNumber);
 }
 /* eslint-enable */
 
@@ -44,6 +45,7 @@ const { getRoomList } = useRoomBox();
 function receiveRoom() {
   const webSocketUrl = `ws://${window.location.host}/stompbroker`;
   const DEST = "/topic/room/" + roomState.room.roomNumber;
+  console.log(DEST)
   const stompClient = new Client({ brokerURL: webSocketUrl });
   stompClient.onWebSocketError = () => {
     console.log("WS-error"); /* WS-Error */
@@ -54,7 +56,7 @@ function receiveRoom() {
   stompClient.onConnect = () => {
     stompClient.subscribe(DEST, (message) => {
       roomState.room = JSON.parse(message.body);
-      console.log(roomState.room);
+      console.log(roomState.room.roomMap);
     });
   };
   stompClient.activate();
@@ -68,7 +70,7 @@ function receiveRoom() {
  * @param operator Operation type
  * @param user User that is to be published
  */
-function updateRoom(operator: MessageOperator, roomNumber: number) {
+function updateRoom(roomNumber: number) {
   const webSocketUrl = `ws://${window.location.host}/stompbroker`;
   const DEST = "/topic/room/" + roomNumber;
   const roomClient = new Client({ brokerURL: webSocketUrl });
@@ -84,7 +86,7 @@ function updateRoom(operator: MessageOperator, roomNumber: number) {
       roomClient.publish({
         destination: DEST,
         headers: {},
-        body: JSON.stringify(operator),
+        body: JSON.stringify(roomState.room),
       });
     } catch (err) {
       // in case of an error
@@ -119,7 +121,7 @@ function swapRooms(roomNumber: number) {
     })
     .then(() => {
       roomState.room.roomNumber = roomNumber;
-      updateRoom(MessageOperator.UPDATE, roomNumber);
+      updateRoom(roomNumber);
       getRoomList();
     })
     .catch(() => {
