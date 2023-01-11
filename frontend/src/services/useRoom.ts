@@ -4,6 +4,11 @@ import { Room, type IRoom } from "./IRoom";
 import { useRoomBox } from "./useRoomList";
 import { MessageOperator } from "./MessageOperators";
 import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
+import swtpConfigJSON from "../../../swtp.config.json";
+
+if(!swtpConfigJSON.consoleLogging) {
+  console.log = function() {}
+}
 
 export interface IRoomState {
   room: IRoom;

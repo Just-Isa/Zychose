@@ -42,6 +42,10 @@ import { computed } from "vue";
 import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
 
+if(!swtpConfigJSON.consoleLogging) {
+  console.log = function() {}
+}
+
 /**
  * @param {number} gridSize defines the size of the grid component
  */

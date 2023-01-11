@@ -6,6 +6,11 @@ import {
   getSessionIDFromCookie,
   checkIfSessionIDCookieExists,
 } from "@/helpers/SessionIDHelper";
+import swtpConfigJSON from "../../../swtp.config.json";
+
+if(!swtpConfigJSON.consoleLogging) {
+  console.log = function() {}
+}
 
 export interface IMouseState {
   mouse: IMouse;
