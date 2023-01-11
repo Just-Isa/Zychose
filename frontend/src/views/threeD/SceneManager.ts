@@ -1,9 +1,9 @@
 import * as THREE from "three";
 import type { Scene } from "three";
-import swtpconfig from "../../../swtp.config.json";
+import swtpconfig from "../../../../swtp.config.json";
 import type { IStreetInformation } from "@/services/useStreets";
 import { useCamera } from "./CameraManager";
-import { useVehicle } from "./use3DVehicle";
+import { useVehicle } from "../../services/use3DVehicle";
 import type { VehicleCameraContext } from "./VehicleCamera";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 

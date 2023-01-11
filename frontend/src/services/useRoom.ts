@@ -1,9 +1,9 @@
 import { Client } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
-import { Room, type IRoom } from "./IRoom";
 import { useRoomBox } from "./useRoomList";
-import { MessageOperator } from "./MessageOperators";
+import { MessageOperator } from "../model/MessageOperators";
 import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
+import { Room, type IRoom } from "../model/IRoom";
 
 export interface IRoomState {
   room: IRoom;

@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import StreetBlockIcon from "./StreetBlockIcon.vue";
-import type { StreetBlock } from "@/services/IStreetBlock";
+import type { StreetBlock } from "@/model/IStreetBlock";
 
 const props = defineProps<{
   types: StreetBlock[];

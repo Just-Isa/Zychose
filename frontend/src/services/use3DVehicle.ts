@@ -1,6 +1,6 @@
 import { Client } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
-import { Vehicle, type IVehicle } from "./IVehicle";
+import { Vehicle, type IVehicle } from "../model/IVehicle";
 
 export interface IVehicleState {
   vehicle: IVehicle;

@@ -1,7 +1,7 @@
 import { Client } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
-import { Mouse, type IMouse } from "./IMouse";
-import { User, type IUser } from "./IUser";
+import { Mouse, type IMouse } from "../model/IMouse";
+import { User, type IUser } from "../model/IUser";
 import {
   getSessionIDFromCookie,
   checkIfSessionIDCookieExists,
