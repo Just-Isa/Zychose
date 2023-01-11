@@ -42,8 +42,8 @@ import { computed } from "vue";
 import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
 
-if(!swtpConfigJSON.consoleLogging) {
-  console.log = function() {}
+if (!swtpConfigJSON.consoleLogging) {
+  console.log = function () {};
 }
 
 /**

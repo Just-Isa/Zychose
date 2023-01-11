@@ -8,8 +8,8 @@ import { onMounted } from "vue";
 import { deleteSessionId } from "@/helpers/SessionIDHelper";
 import swtpConfigJSON from "../../../swtp.config.json";
 
-if(!swtpConfigJSON.consoleLogging) {
-  console.log = function() {}
+if (!swtpConfigJSON.consoleLogging) {
+  console.log = function () {};
 }
 
 onMounted(() => {

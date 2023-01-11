@@ -3,8 +3,8 @@ import type { Scene } from "three";
 import swtpconfig from "../../../swtp.config.json";
 import type { IStreetInformation } from "@/services/useStreets";
 
-if(!swtpconfig.consoleLogging) {
-  console.error = function() {}
+if (!swtpconfig.consoleLogging) {
+  console.error = function () {};
 }
 
 const blockSize = 16;

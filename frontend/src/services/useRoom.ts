@@ -6,8 +6,8 @@ import { MessageOperator } from "./MessageOperators";
 import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
 import swtpConfigJSON from "../../../swtp.config.json";
 
-if(!swtpConfigJSON.consoleLogging) {
-  console.log = function() {}
+if (!swtpConfigJSON.consoleLogging) {
+  console.log = function () {};
 }
 
 export interface IRoomState {
