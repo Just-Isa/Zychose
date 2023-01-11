@@ -9,7 +9,7 @@
   >
     <table
       id="gridTable"
-      class="bg-[#008000] w-full border-spacing-0 border-separate table-fixed"
+      class="bg-[#008000] w-full border-spacing-0 border-separate table-fixed max-h-full overflow-hidden"
     >
       <tr
         v-for="row in checkedGridSize"
@@ -66,6 +66,26 @@ onMounted(() => {
 
   entireDoc.scroll(xCenter, yCenter);
   dragThroughWindowView(gridTable, xCenter, yCenter);
+
+  /*
+    two EventListeners on the wheel-scrool to prevent the default browser functionalities and
+    instead scale the component independently with CSS, so no other ui parts are effected.
+*/
+  let scale = 1;
+  gridTable.addEventListener(
+    "wheel",
+    (event) => {
+      event.preventDefault();
+      scale += event.deltaY * -0.01;
+      scale = Math.min(Math.max(1, scale), 4);
+      const element = document.getElementById("wrapper");
+      if (element != null) {
+        element.classList.add("origin-left-top");
+        element.style.transform = `scale(${scale})`; // muss direkt über style geändert werden, lösung mit tailwind nicht möglich
+      }
+    },
+    { passive: false }
+  );
 });
 
 /*
@@ -247,25 +267,6 @@ function clearCell(posX: number, posY: number): void {
   const cell = table.rows[posX - 1].cells[posY - 1];
   cell.style.backgroundImage = "";
 }
-/*
-    two EventListeners on the wheel-scrool to prevent the default browser functionalities and
-    instead scale the component independently with CSS, so no other ui parts are effected.
-*/
-let scale = 1;
-document.addEventListener(
-  "wheel",
-  (event) => {
-    event.preventDefault();
-    scale += event.deltaY * -0.01;
-    scale = Math.min(Math.max(1, scale), 4);
-    const element = document.getElementById("wrapper");
-    if (element != null) {
-      element.classList.add("origin-left-top");
-      element.style.transform = `scale(${scale})`; // muss direkt über style geändert werden, lösung mit tailwind nicht möglich
-    }
-  },
-  { passive: false }
-);
 
 function dragThroughWindowView(
   grid: HTMLTableElement,

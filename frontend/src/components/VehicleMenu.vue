@@ -1,6 +1,7 @@
 <template>
   <div
-    class="bg-[#e4f9ff] rounded-3xl border-street-menu-bg-gray border-[0.5rem] fixed z-[99] right-8 bottom-8 p-2 text-center shadow-[5px_5px_10px_rgba(0,0,0,0.25)]"
+    id="vehicleMenu"
+    class="overscroll-contain overflow-auto max-h-[41rem] bg-[#e4f9ff] rounded-3xl border-street-menu-bg-gray border-[0.5rem] fixed z-[99] right-8 bottom-8 p-2 text-center shadow-[5px_5px_10px_rgba(0,0,0,0.25)]"
     @dragover.prevent
     @dragenter.prevent
   >

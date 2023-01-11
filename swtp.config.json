@@ -199,7 +199,7 @@
     }
   ],
   "gridSize": 100,
-  "allVehicleTypes": [
+  "vehicleTabs":[
     {
       "name": "car",
       "iconPath": "/src/assets/img/car-pictogram.svg"
@@ -207,6 +207,16 @@
     {
       "name": "bicycle",
       "iconPath": "/src/assets/img/bicycle-pictogram.svg"
+    }
+  ],
+  "allVehicleTypes": [
+    {
+      "name": "car",
+      "iconPath": "/src/assets/img/car.png"
+    },
+    {
+      "name": "bicycle",
+      "iconPath": "/src/assets/img/bicycle.png"
     }
   ]
 }

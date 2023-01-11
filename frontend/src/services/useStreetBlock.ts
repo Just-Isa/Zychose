@@ -32,7 +32,7 @@ const streetTypesFromJson = <StreetBlock[]>(
 );
 
 const vehicleTypesFromJson = <VehicleType[]>(
-  JSON.parse(JSON.stringify(swtpConfigJSON.allVehicleTypes))
+  JSON.parse(JSON.stringify(swtpConfigJSON.vehicleTabs))
 );
 
 const streetTypesState = reactive<IStreetTypes>({
