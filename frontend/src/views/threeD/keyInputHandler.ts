@@ -1,6 +1,6 @@
 import { reactive } from "vue";
 
-import type{ Direction } from "@/model/DirektionCommands";
+import type { Direction } from "@/model/DirektionCommands";
 
 const keys: Set<string> = new Set();
 const keyMap = {
