@@ -57,8 +57,8 @@ const router = createRouter({
       component: ResetInfoView,
     },
     {
-      path: '/:pathMatch(.*)*',
-      name: 'notFound',
+      path: "/:pathMatch(.*)*",
+      name: "notFound",
       component: Error404View,
     },
   ],
