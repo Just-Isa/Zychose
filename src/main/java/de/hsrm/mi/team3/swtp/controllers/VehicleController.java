@@ -20,11 +20,9 @@ public class VehicleController {
   Logger logger = LoggerFactory.getLogger(VehicleController.class);
   Vehicle vehicleDummy = new Vehicle();
 
-  @Autowired
-  VehicleService vehicleService;
+  @Autowired VehicleService vehicleService;
 
-  @Autowired
-  BackendInfoService bInfoService;
+  @Autowired BackendInfoService bInfoService;
 
   @ModelAttribute
   public void initVehicle(Model m) {
@@ -33,7 +31,7 @@ public class VehicleController {
 
   /**
    * Receives a command from client to execute vehicleservice Methods
-   * 
+   *
    * @param commands
    * @param roomNumber
    */
