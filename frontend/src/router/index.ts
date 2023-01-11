@@ -42,8 +42,28 @@ const router = createRouter({
       component: EditorView,
     },
     {
-      path: "/3D",
-      name: "fpv",
+      path: "/1/3D",
+      name: "Raum1-3D",
+      component: ThreeDView,
+    },
+    {
+      path: "/2/3D",
+      name: "Raum2-3D",
+      component: ThreeDView,
+    },
+    {
+      path: "/3/3D",
+      name: "Raum3-3D",
+      component: ThreeDView,
+    },
+    {
+      path: "/4/3D",
+      name: "Raum4-3D",
+      component: ThreeDView,
+    },
+    {
+      path: "/5/3D",
+      name: "Raum5-3D",
       component: ThreeDView,
     },
     {

@@ -63,6 +63,6 @@ public class BackendInfoServiceImpl implements BackendInfoService {
    */
   @Override
   public void sendVehicle(String topicname, BackendOperation operation, Vehicle vehicle) {
-    messaging.convertAndSend("/topic/" + topicname, BackendVehicleMessage.from(vehicle));
+    messaging.convertAndSend(GENERIC_TOPIC_START + topicname, BackendVehicleMessage.from(vehicle));
   }
 }
