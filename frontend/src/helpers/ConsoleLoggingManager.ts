@@ -11,8 +11,8 @@ if (jsonconfig.showConsoleOutput) {
   logger = window.console;
 } else {
   logger = {
-    log: (...args: any) => {},
-    error: (...args: any) => {},
+    log: () => {},
+    error: () => {},
   };
 }
 
