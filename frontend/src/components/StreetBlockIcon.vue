@@ -42,19 +42,16 @@ const {
  * @param type selected StreetBlock
  */
 function changeActiveStreetBlock(type: StreetBlock) {
-  changeCurrentStreetType(type);
-  console.log("ROTATION", activeBlock.streetBlock);
   if (type.name == activeBlock.streetBlock.name && !bulldozerActive.isActive) {
     const block = document.getElementById(prop.currentBlock.name);
     if (block) {
       let nextRotIndex =
-        activeBlock.streetBlock.possibleRotations.indexOf(
+        (activeBlock.streetBlock.possibleRotations.indexOf(
           activeBlock.streetBlock.currentRotation
-        ) + 1;
+        ) +
+          1) %
+        activeBlock.streetBlock.possibleRotations.length;
 
-      if (nextRotIndex >= activeBlock.streetBlock.possibleRotations.length) {
-        nextRotIndex = 0;
-      }
       let nextRot = activeBlock.streetBlock.possibleRotations[nextRotIndex];
       block.style.rotate = `${nextRot}deg`;
       changeRotation(nextRot);
@@ -62,6 +59,7 @@ function changeActiveStreetBlock(type: StreetBlock) {
     return;
   }
 
+  changeCurrentStreetType(type);
   toggleBulldozer(false);
   const entireDoc = document.documentElement;
   entireDoc.style.cursor = "default";
