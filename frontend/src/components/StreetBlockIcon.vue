@@ -43,12 +43,9 @@ const {
  */
 function changeActiveStreetBlock(type: StreetBlock) {
   changeCurrentStreetType(type);
-  console.log("ROTATION", activeBlock);
-  if (type == activeBlock.streetBlock && !bulldozerActive.isActive) {
-    //if gibt kein true zurück
-    console.log("ROTATE", activeBlock);
+  console.log("ROTATION", activeBlock.streetBlock);
+  if (type.name == activeBlock.streetBlock.name && !bulldozerActive.isActive) {
     const block = document.getElementById(prop.currentBlock.name);
-    console.log(block);
     if (block) {
       let nextRotIndex =
         activeBlock.streetBlock.possibleRotations.indexOf(
