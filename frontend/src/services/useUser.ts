@@ -7,7 +7,7 @@ import {
   checkIfSessionIDCookieExists,
 } from "@/helpers/SessionIDHelper";
 const webSocketUrl = `ws://${window.location.host}/stompbroker`;
-const userStompClient = new Client({ brokerURL: webSocketUrl });
+const publishUserStompClient = new Client({ brokerURL: webSocketUrl });
 const publishMouseStompClient = new Client({ brokerURL: webSocketUrl });
 const receiveMouseStompClient = new Client({ brokerURL: webSocketUrl });
 
@@ -48,19 +48,19 @@ export function useUser() {
  */
 function publishUser(operator: string, user: IUser) {
   const DEST = "/topic/user";
-  if (!userStompClient.connected) {
-    userStompClient.activate();
+  if (!publishUserStompClient.connected) {
+    publishUserStompClient.activate();
   }
-  console.log("connected: ", userStompClient.connected);
-  userStompClient.onWebSocketError = () => {
+  console.log("connected: ", publishUserStompClient.connected);
+  publishUserStompClient.onWebSocketError = () => {
     console.log("WS-error"); /* WS-Error */
   };
-  userStompClient.onStompError = () => {
+  publishUserStompClient.onStompError = () => {
     console.log("STOMP-error"); /* STOMP-Error */
   };
-  userStompClient.onConnect = () => {
+  publishUserStompClient.onConnect = () => {
     try {
-      userStompClient.publish({
+      publishUserStompClient.publish({
         destination: DEST,
         headers: {},
         body: JSON.stringify(user),
