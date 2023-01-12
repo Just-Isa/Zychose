@@ -60,18 +60,22 @@ onMounted(() => {
 });
 
 setInterval(function () {
-  lastXsent = x.value;
-  lastYsent = y.value;
-  publishMouse(
-    new Mouse(
-      getSessionIDFromCookie(),
-      roomState.room.roomNumber,
-      x.value,
-      y.value
-    ),
-    location.pathname.split("/")[1] as unknown as number
-  );
-
+  if (
+    Math.abs(lastXsent - x.value) > 0.1 ||
+    Math.abs(lastYsent - y.value) > 0.1
+  ) {
+    lastXsent = x.value;
+    lastYsent = y.value;
+    publishMouse(
+      new Mouse(
+        getSessionIDFromCookie(),
+        roomState.room.roomNumber,
+        x.value,
+        y.value
+      ),
+      location.pathname.split("/")[1] as unknown as number
+    );
+  }
   //mouseMap.set(mouseState.mouse.sessionID, [x.value, y.value]);
   if (
     mouseState.mouse.sessionID != "" &&
@@ -83,5 +87,5 @@ setInterval(function () {
       mouseState.mouse.y,
     ];
   }
-}, 100);
+}, 15);
 </script>
