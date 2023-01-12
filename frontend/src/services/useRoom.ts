@@ -6,7 +6,8 @@ import { MessageOperator } from "./MessageOperators";
 import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
 
 const webSocketUrl = `ws://${window.location.host}/stompbroker`;
-const stompClient = new Client({ brokerURL: webSocketUrl });
+const receiveRoomstompClient = new Client({ brokerURL: webSocketUrl });
+const upsateRoomStompClient = new Client({ brokerURL: webSocketUrl });
 
 export interface IRoomState {
   room: IRoom;
@@ -46,15 +47,15 @@ const { getRoomList } = useRoomBox();
  */
 function receiveRoom() {
   const DEST = "/topic/room/" + roomState.room.roomNumber;
-  stompClient.activate();
-  stompClient.onWebSocketError = () => {
+  receiveRoomstompClient.activate();
+  receiveRoomstompClient.onWebSocketError = () => {
     console.log("WS-error"); /* WS-Error */
   };
-  stompClient.onStompError = () => {
+  receiveRoomstompClient.onStompError = () => {
     console.log("STOMP-error"); /* STOMP-Error */
   };
-  stompClient.onConnect = () => {
-    stompClient.subscribe(DEST, (message) => {
+  receiveRoomstompClient.onConnect = () => {
+    receiveRoomstompClient.subscribe(DEST, (message) => {
       roomState.room = JSON.parse(message.body);
       console.log(roomState.room);
     });
@@ -69,17 +70,17 @@ function receiveRoom() {
 function updateRoom(operator: MessageOperator, roomNumber: number) {
   const DEST = "/topic/room/" + roomNumber;
 
-  if (!stompClient.connected) {
-    stompClient.activate();
+  if (!upsateRoomStompClient.connected) {
+    upsateRoomStompClient.activate();
   }
-  stompClient.onWebSocketError = () => {
+  upsateRoomStompClient.onWebSocketError = () => {
     console.log("WS-error"); /* WS-Error */
   };
-  stompClient.onStompError = () => {
+  upsateRoomStompClient.onStompError = () => {
     console.log("STOMP-error"); /* STOMP-Error */
   };
   try {
-    stompClient.publish({
+    upsateRoomStompClient.publish({
       destination: DEST,
       headers: {},
       body: JSON.stringify(operator),
