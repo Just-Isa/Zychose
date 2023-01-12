@@ -119,7 +119,7 @@ function changeTo3DView() {
   //TODO die 800ms sind gesetzt, weil es sonst keine richtige fade-to-white transition gibt !
   //TODO manchmal wechselt der router die seite nicht! --> außerdem wird ein *[Violation]'requestAnimationFrame' handler took XYZms* Hinweis geworfen --> die Performance der 3D-View ist also nicht so toll!
   setTimeout(function () {
-    router.push("/3d");
+    router.push((location.pathname.split("/")[1] as unknown as number) + "/3d");
   }, 800);
 }
 /**
