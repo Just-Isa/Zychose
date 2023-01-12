@@ -48,9 +48,11 @@ function receiveRoom() {
   const stompClient = new Client({ brokerURL: webSocketUrl });
   stompClient.onWebSocketError = () => {
     logger.log("WS-error"); /* WS-Error */
+    location.href = "/500";
   };
   stompClient.onStompError = () => {
     logger.log("STOMP-error"); /* STOMP-Error */
+    location.href = "/500";
   };
   stompClient.onConnect = () => {
     stompClient.subscribe(DEST, (message) => {
@@ -75,9 +77,11 @@ function updateRoom(operator: MessageOperator, roomNumber: number) {
   const roomClient = new Client({ brokerURL: webSocketUrl });
   roomClient.onWebSocketError = () => {
     logger.log("WS-error"); /* WS-Error */
+    location.href = "/500";
   };
   roomClient.onStompError = () => {
     logger.log("STOMP-error"); /* STOMP-Error */
+    location.href = "/500";
   };
   roomClient.onConnect = (frame) => {
     logger.log("connected", frame);
@@ -90,6 +94,7 @@ function updateRoom(operator: MessageOperator, roomNumber: number) {
     } catch (err) {
       // in case of an error
       logger.log("Error while Publishing User! ", err);
+      location.href = "/500";
     }
   };
   roomClient.activate();

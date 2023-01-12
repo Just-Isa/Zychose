@@ -28,6 +28,7 @@ function resetEverything() {
     .then((response) => {
       if (!response.ok) {
         logger.log("Error @ Restarting everything.");
+        location.href = "/500";
       } else {
         return response.text();
       }
@@ -37,6 +38,7 @@ function resetEverything() {
     })
     .catch(() => {
       logger.log("Error @ Restarting everything.");
+      location.href = "/500";
     });
 }
 </script>

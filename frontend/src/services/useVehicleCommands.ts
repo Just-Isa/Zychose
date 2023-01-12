@@ -15,9 +15,11 @@ function publishVehicleCommands(commands: Direction[]) {
   const userClient = new Client({ brokerURL: webSocketUrl });
   userClient.onWebSocketError = () => {
     logger.log("WS-error"); /* WS-Error */
+    location.href = "/500";
   };
   userClient.onStompError = () => {
     logger.log("STOMP-error"); /* STOMP-Error */
+    location.href = "/500";
   };
   userClient.onConnect = () => {
     try {
@@ -29,6 +31,7 @@ function publishVehicleCommands(commands: Direction[]) {
     } catch (err) {
       // in case of an error
       logger.log("Error while Publishing User! ", err);
+      location.href = "/500";
     }
   };
   userClient.activate();

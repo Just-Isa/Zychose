@@ -49,9 +49,11 @@ function publishUser(operator: string, user: IUser) {
   const userClient = new Client({ brokerURL: webSocketUrl });
   userClient.onWebSocketError = () => {
     logger.log("WS-error"); /* WS-Error */
+    location.href = "/500";
   };
   userClient.onStompError = () => {
     logger.log("STOMP-error"); /* STOMP-Error */
+    location.href = "/500";
   };
   userClient.onConnect = (frame) => {
     logger.log("connected", frame);
@@ -64,6 +66,7 @@ function publishUser(operator: string, user: IUser) {
     } catch (err) {
       // in case of an error
       logger.log("Error while Publishing User! ", err);
+      location.href = "/500";
     }
   };
   userClient.activate();
@@ -84,9 +87,11 @@ function publishMouse(mouse: IMouse, roomNumber: number) {
   const userClient = new Client({ brokerURL: webSocketUrl });
   userClient.onWebSocketError = () => {
     logger.log("WS-error-mouse"); /* WS-Error */
+    location.href = "/500";
   };
   userClient.onStompError = () => {
     logger.log("STOMP-error-mouse"); /* STOMP-Error */
+    location.href = "/500";
   };
   userClient.onConnect = () => {
     try {
@@ -98,6 +103,7 @@ function publishMouse(mouse: IMouse, roomNumber: number) {
     } catch (fehler) {
       // In case of an error
       logger.log("Es gab ein fehler", fehler);
+      location.href = "/500";
     }
   };
   userClient.activate();
@@ -116,9 +122,11 @@ function receiveMouse(roomNumber: number) {
   const stompClient = new Client({ brokerURL: WebSocketUrl });
   stompClient.onWebSocketError = () => {
     logger.log("WS-error"); /* WS-Error */
+    location.href = "/500";
   };
   stompClient.onStompError = () => {
     logger.log("STOMP-error"); /* STOMP-Error */
+    location.href = "/500";
   };
   stompClient.onConnect = () => {
     stompClient.subscribe(DEST, (message) => {
