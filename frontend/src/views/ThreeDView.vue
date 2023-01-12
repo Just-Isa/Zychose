@@ -35,7 +35,7 @@ const { glbState, loadModel } = useGLB();
 const { publishVehicleCommands } = useVehicleCommands();
 const { keysPressed, inputs } = useKeyInput();
 const { receiveVehicle } = useVehicle();
-const sendInterval = 200;
+const sendInterval = 100;
 
 config.miscModels.forEach((element) => {
   glbState.blockMap.set(element.name, loadModel(element.glbPath));

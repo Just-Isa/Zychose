@@ -1,21 +1,22 @@
 package de.hsrm.mi.team3.swtp.domain;
 
 public class Vehicle {
-  private final double runOutSpeed = -0.2;
-  private final double maxSpeed = 1;
-  private final double handling = 0.2;
+  private final double runOutSpeed = -0.1;
+  private final double maxSpeed = 0.6;
+  private final double handling = 0.15;
   private final double acceleration = 0.2;
-  private final double brakeSpeed = 0.4;
+  private final double brakeSpeed = 0.3;
 
   private double currentSpeed = 0;
-  private double[] rotationVector = {0, 0, 0};
-  private double[] posVector = {0, 0, 0};
+  private double[] rotationVector = { 0, 0, 0 };
+  private double[] posVector = { 0, 0, 0 };
 
   public Vehicle(double[] posVector) {
     this.posVector = posVector;
   }
 
-  public Vehicle() {}
+  public Vehicle() {
+  }
 
   public double getCurrentSpeed() {
     return currentSpeed;

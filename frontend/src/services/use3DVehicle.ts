@@ -1,6 +1,8 @@
 import { Client } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
 import { Vehicle, type IVehicle } from "./IVehicle";
+const webSocketUrl = `ws://${window.location.host}/stompbroker`;
+const stompClient = new Client({ brokerURL: webSocketUrl });
 
 export interface IVehicleState {
   vehicle: IVehicle;
@@ -19,10 +21,11 @@ export function useVehicle() {
  * Subscribes to the Vehicle-Topic and updates the vehicleState.
  */
 function receiveVehicle() {
-  const webSocketUrl = `ws://${window.location.host}/stompbroker`;
   const DEST =
     "/topic/vehicle/" + (location.pathname.split("/")[1] as unknown as number);
-  const stompClient = new Client({ brokerURL: webSocketUrl });
+  if (!stompClient.connected) {
+    stompClient.activate();
+  }
   stompClient.onWebSocketError = () => {
     vehicleState.errorMessage = "WS-error";
     console.log("WS-error"); /* WS-Error */
@@ -34,10 +37,7 @@ function receiveVehicle() {
   stompClient.onConnect = () => {
     stompClient.subscribe(DEST, (message) => {
       vehicleState.vehicle = JSON.parse(message.body);
+      console.log("vehicleState.vehicle", vehicleState.vehicle);
     });
-  };
-  stompClient.activate();
-  stompClient.onDisconnect = () => {
-    /* Verbindung abgebaut*/
   };
 }

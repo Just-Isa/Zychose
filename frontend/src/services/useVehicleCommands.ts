@@ -1,6 +1,9 @@
 import type { Direction } from "@/services/keyInputHandler";
 import { Client } from "@stomp/stompjs";
 
+const webSocketUrl = `ws://${window.location.host}/stompbroker`;
+const stompClient = new Client({ brokerURL: webSocketUrl });
+
 export function useVehicleCommands() {
   return { publishVehicleCommands };
 }
@@ -9,31 +12,26 @@ export function useVehicleCommands() {
  * @param commands
  */
 function publishVehicleCommands(commands: Direction[]) {
-  const webSocketUrl = `ws://${window.location.host}/stompbroker`;
+  if (!stompClient.connected) {
+    stompClient.activate();
+  }
   const DEST =
     "/topic/3d/commands/" +
     (location.pathname.split("/")[1] as unknown as number);
-  const userClient = new Client({ brokerURL: webSocketUrl });
-  userClient.onWebSocketError = () => {
-    console.log("WS-error"); /* WS-Error */
+  stompClient.onWebSocketError = (event) => {
+    console.log("WS-error", JSON.stringify(event)); /* WS-Error */
   };
-  userClient.onStompError = () => {
-    console.log("STOMP-error"); /* STOMP-Error */
+  stompClient.onStompError = (frame) => {
+    console.log("STOMP-error", JSON.stringify(frame)); /* STOMP-Error */
   };
-  userClient.onConnect = () => {
-    try {
-      userClient.publish({
-        destination: DEST,
-        headers: {},
-        body: JSON.stringify(commands),
-      });
-    } catch (err) {
-      // in case of an error
-      console.log("Error while Publishing User! ", err);
-    }
-  };
-  userClient.activate();
-  userClient.onDisconnect = () => {
-    /* Verbindung abgebaut*/
-  };
+  try {
+    console.log("onconnect");
+    stompClient.publish({
+      destination: DEST,
+      headers: {},
+      body: JSON.stringify(commands),
+    });
+  } catch (err) {
+    console.log("Error while Publishing User! ", err);
+  }
 }

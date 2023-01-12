@@ -5,6 +5,9 @@ import { useRoomBox } from "./useRoomList";
 import { MessageOperator } from "./MessageOperators";
 import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
 
+const webSocketUrl = `ws://${window.location.host}/stompbroker`;
+const stompClient = new Client({ brokerURL: webSocketUrl });
+
 export interface IRoomState {
   room: IRoom;
   errorMessage: string;
@@ -42,9 +45,8 @@ const { getRoomList } = useRoomBox();
  *
  */
 function receiveRoom() {
-  const webSocketUrl = `ws://${window.location.host}/stompbroker`;
   const DEST = "/topic/room/" + roomState.room.roomNumber;
-  const stompClient = new Client({ brokerURL: webSocketUrl });
+  stompClient.activate();
   stompClient.onWebSocketError = () => {
     console.log("WS-error"); /* WS-Error */
   };
@@ -57,10 +59,6 @@ function receiveRoom() {
       console.log(roomState.room);
     });
   };
-  stompClient.activate();
-  stompClient.onDisconnect = () => {
-    /* Verbindung abgebaut*/
-  };
 }
 
 /** Publishes Room to the rooms specific topic
@@ -69,32 +67,27 @@ function receiveRoom() {
  * @param user User that is to be published
  */
 function updateRoom(operator: MessageOperator, roomNumber: number) {
-  const webSocketUrl = `ws://${window.location.host}/stompbroker`;
   const DEST = "/topic/room/" + roomNumber;
-  const roomClient = new Client({ brokerURL: webSocketUrl });
-  roomClient.onWebSocketError = () => {
+
+  if (!stompClient.connected) {
+    stompClient.activate();
+  }
+  stompClient.onWebSocketError = () => {
     console.log("WS-error"); /* WS-Error */
   };
-  roomClient.onStompError = () => {
+  stompClient.onStompError = () => {
     console.log("STOMP-error"); /* STOMP-Error */
   };
-  roomClient.onConnect = (frame) => {
-    console.log("connected", frame);
-    try {
-      roomClient.publish({
-        destination: DEST,
-        headers: {},
-        body: JSON.stringify(operator),
-      });
-    } catch (err) {
-      // in case of an error
-      console.log("Error while Publishing User! ", err);
-    }
-  };
-  roomClient.activate();
-  roomClient.onDisconnect = () => {
-    /* Verbindung abgebaut*/
-  };
+  try {
+    stompClient.publish({
+      destination: DEST,
+      headers: {},
+      body: JSON.stringify(operator),
+    });
+  } catch (err) {
+    // in case of an error
+    console.log("Error while Publishing User! ", err);
+  }
 }
 
 /** Changes Room a User is in to another
