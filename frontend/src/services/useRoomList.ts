@@ -19,7 +19,7 @@ export function getRoomList(): void {
       if (!response.ok) {
         roomListState.errorMessage =
           "Could not GET RoomBoxSingleton!" + response.status;
-          location.href = "/500";
+        location.href = "/500";
       }
       return response.json();
     })
