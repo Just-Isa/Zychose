@@ -19,3 +19,12 @@ html {
 html::-webkit-scrollbar {
   display: none;
 }
+
+#vehicleMenu {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+}
+/*for Chrome, Safari, and Opera*/
+#vehicleMenu::-webkit-scrollbar {
+  display: none;
+}
