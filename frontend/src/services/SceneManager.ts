@@ -17,7 +17,7 @@ export class SceneManager {
   constructor(
     scene: Scene,
     blockMap: Map<string, Promise<THREE.Group>>,
-    data: StreetBlock[]
+    data: string
   ) {
     this.scene = scene;
     this.blockMap = blockMap;
