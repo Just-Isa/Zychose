@@ -39,8 +39,6 @@ const { changeCurrentTab, menuTabState } = useStreetBlock();
 
 const streetTypes = swtpConfigJSON.streetTypes;
 
-const vehicleTypes = swtpConfigJSON.allVehicleTypes;
-
 const vehicleTabs = swtpConfigJSON.vehicleTabs;
 
 const filteredStreetBlocks = computed(() => {
