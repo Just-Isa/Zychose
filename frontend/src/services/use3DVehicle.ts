@@ -1,6 +1,7 @@
 import { Client } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
 import { Vehicle, type IVehicle } from "./IVehicle";
+import { checkStompConnect, stompErrors } from "./stompFunc";
 const webSocketUrl = `ws://${window.location.host}/stompbroker`;
 const stompClient = new Client({ brokerURL: webSocketUrl });
 
@@ -23,21 +24,11 @@ export function useVehicle() {
 function receiveVehicle() {
   const DEST =
     "/topic/vehicle/" + (location.pathname.split("/")[1] as unknown as number);
-  if (!stompClient.connected) {
-    stompClient.activate();
-  }
-  stompClient.onWebSocketError = () => {
-    vehicleState.errorMessage = "WS-error";
-    console.log("WS-error"); /* WS-Error */
-  };
-  stompClient.onStompError = () => {
-    vehicleState.errorMessage = "STOMP-ERROR";
-    console.log("STOMP-error"); /* STOMP-Error */
-  };
+  checkStompConnect(stompClient);
+  stompErrors(stompClient);
   stompClient.onConnect = () => {
     stompClient.subscribe(DEST, (message) => {
       vehicleState.vehicle = JSON.parse(message.body);
-      console.log("vehicleState.vehicle", vehicleState.vehicle);
     });
   };
 }

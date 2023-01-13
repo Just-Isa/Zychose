@@ -4,10 +4,11 @@ import { Room, type IRoom } from "./IRoom";
 import { useRoomBox } from "./useRoomList";
 import { MessageOperator } from "./MessageOperators";
 import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
+import { checkStompConnect, stompErrors, stompPublishData } from "./stompFunc";
 
 const webSocketUrl = `ws://${window.location.host}/stompbroker`;
 const receiveRoomStompClient = new Client({ brokerURL: webSocketUrl });
-const upsateRoomStompClient = new Client({ brokerURL: webSocketUrl });
+const updateRoomStompClient = new Client({ brokerURL: webSocketUrl });
 
 export interface IRoomState {
   room: IRoom;
@@ -47,13 +48,8 @@ const { getRoomList } = useRoomBox();
  */
 function receiveRoom() {
   const DEST = "/topic/room/" + roomState.room.roomNumber;
-  receiveRoomStompClient.activate();
-  receiveRoomStompClient.onWebSocketError = () => {
-    console.log("WS-error"); /* WS-Error */
-  };
-  receiveRoomStompClient.onStompError = () => {
-    console.log("STOMP-error"); /* STOMP-Error */
-  };
+  checkStompConnect(receiveRoomStompClient);
+  stompErrors(receiveRoomStompClient);
   receiveRoomStompClient.onConnect = () => {
     receiveRoomStompClient.subscribe(DEST, (message) => {
       roomState.room = JSON.parse(message.body);
@@ -69,26 +65,11 @@ function receiveRoom() {
  */
 function updateRoom(operator: MessageOperator, roomNumber: number) {
   const DEST = "/topic/room/" + roomNumber;
-
-  if (!upsateRoomStompClient.connected) {
-    upsateRoomStompClient.activate();
-  }
-  upsateRoomStompClient.onWebSocketError = () => {
-    console.log("WS-error"); /* WS-Error */
+  checkStompConnect(updateRoomStompClient);
+  stompErrors(updateRoomStompClient);
+  updateRoomStompClient.onConnect = () => {
+    stompPublishData(updateRoomStompClient, DEST, operator);
   };
-  upsateRoomStompClient.onStompError = () => {
-    console.log("STOMP-error"); /* STOMP-Error */
-  };
-  try {
-    receiveRoomStompClient.publish({
-      destination: DEST,
-      headers: {},
-      body: JSON.stringify(operator),
-    });
-  } catch (err) {
-    // in case of an error
-    console.log("Error while Publishing User! ", err);
-  }
 }
 
 /** Changes Room a User is in to another
