@@ -3,7 +3,7 @@
     class="fixed bottom-6 left-1/2 -translate-x-1/2 pointer-events-none z-50"
   >
     <div class="tabs flex gap-3">
-      <div v-for="vehicle in vehicleTypes" v-bind:key="vehicle.name">
+      <div v-for="vehicle in vehicleTabs" v-bind:key="vehicle.name">
         <StreetMenuTab
           :vehicleType="vehicle.name"
           :imgSrc="vehicle.iconPath"
@@ -40,6 +40,8 @@ const { changeCurrentTab, menuTabState } = useStreetBlock();
 const streetTypes = swtpConfigJSON.streetTypes;
 
 const vehicleTypes = swtpConfigJSON.allVehicleTypes;
+
+const vehicleTabs = swtpConfigJSON.vehicleTabs;
 
 const filteredStreetBlocks = computed(() => {
   let streetBlocks: StreetBlock[] = [];
