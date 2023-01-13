@@ -3,7 +3,7 @@
     {
       "name": "cross-road",
       "svgPath": "/assets/img/cross-road.svg",
-      "glbPath": "",
+      "glbPath": "/assets/models/road_cross.glb",
       "vehicleTypes": [
         "car",
         "bicycle"
@@ -13,7 +13,7 @@
     {
       "name": "curve-road",
       "svgPath": "/assets/img/curve-road.svg",
-      "glbPath": "",
+      "glbPath": "/assets/models/road_curve.glb",
       "vehicleTypes": [
         "car",
         "bicycle"
@@ -28,7 +28,7 @@
     {
       "name": "straight-road",
       "svgPath": "/assets/img/straight-road.svg",
-      "glbPath": "/assets/models/straight-road.glb",
+      "glbPath": "/assets/models/road_straight.glb",
       "vehicleTypes": [
         "car",
         "bicycle"
@@ -41,7 +41,7 @@
     {
       "name": "t-road",
       "svgPath": "/assets/img/t-road.svg",
-      "glbPath": "",
+      "glbPath": "/assets/models/road_t.glb",
       "vehicleTypes": [
         "car",
         "bicycle"
@@ -76,5 +76,16 @@
       "glbPath": "/assets/models/landscape.glb"
     }
   ],
-  "gridSize": 100
+  "gridSize": 100,
+  "allVehicleTypes": [
+    {
+      "name": "car",
+      "iconPath": "/src/assets/img/car.png",
+      "glbPath": "/assets/models/car.gltf"
+    },
+    {
+      "name": "bicycle",
+      "iconPath": "/src/assets/img/bicycle.png"
+    }
+  ]
 }

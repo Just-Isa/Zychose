@@ -24,19 +24,30 @@
 <script lang="ts">
 import { Camera, PointLight, Renderer, Scene } from "troisjs";
 import { useGLB } from "@/services/glbBlockLoader";
-import * as THREE from "three";
 import { SceneManager } from "@/services/SceneManager";
 import data from "../data/dummy.json";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import config from "../../../swtp.config.json";
+import { useVehicle } from "@/services/use3DVehicle";
+import { useKeyInput } from "@/services/keyInputHandler";
+import { useVehicleCommands } from "@/services/useVehicleCommands";
 
 const { glbState, loadModel } = useGLB();
+const { publishVehicleCommands } = useVehicleCommands();
+const { keysPressed, inputs } = useKeyInput();
+const { receiveVehicle } = useVehicle();
+const sendInterval = 200;
 
 config.miscModels.forEach((element) => {
   glbState.blockMap.set(element.name, loadModel(element.glbPath));
 });
 
 config.streetTypes.forEach((element) => {
+  if (element.glbPath) {
+    glbState.blockMap.set(element.name, loadModel(element.glbPath));
+  }
+});
+
+config.allVehicleTypes.forEach((element) => {
   if (element.glbPath) {
     glbState.blockMap.set(element.name, loadModel(element.glbPath));
   }
@@ -50,20 +61,22 @@ export default {
     Scene,
   },
   mounted() {
+    receiveVehicle();
     const blockMap = glbState.blockMap;
     const scene = (this.$refs.scene as typeof Scene).scene;
-    const sceneManager = new SceneManager(scene, blockMap, data);
-    new RGBELoader()
-      .setPath("/assets/skybox/")
-      .load("skylight.hdr", function (texture) {
-        texture.mapping = THREE.EquirectangularReflectionMapping;
-
-        scene.background = texture;
-        scene.environment = texture;
-      });
-
-    sceneManager.createLandscape();
-    sceneManager.createGrid();
+    const renderer = (this.$refs.renderer as any).renderer;
+    const sceneManager = new SceneManager(
+      scene,
+      blockMap,
+      data as any,
+      renderer
+    );
+    sceneManager.initScene();
+    inputs();
+    //sends VehicleCommands to backend in a set interval
+    setInterval(function () {
+      publishVehicleCommands(Array.from(keysPressed.directions));
+    }, sendInterval);
   },
 };
 </script>

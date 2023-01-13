@@ -1,5 +1,12 @@
 <template>
-  <div id="wrapper">
+  <div
+    id="wrapper"
+    v-bind:class="
+      currentVehicle.type !== ''
+        ? `duration-1000 bg-white opacity-70 h-screen`
+        : ``
+    "
+  >
     <table
       id="gridTable"
       class="bg-[#008000] w-full border-spacing-0 border-separate table-fixed"
@@ -14,6 +21,10 @@
           v-for="col in checkedGridSize"
           class="box-border w-20 p-0 border border-white/20 hover:border-white hover:shadow-[inset_0_0_4px_1px_#fff] hover:opacity-50 bg-cover bg-no-repeat bg-center"
           v-bind:key="col"
+          @dragover.prevent="dragOver(row, col)"
+          @dragleave="dragLeave(row, col)"
+          @dragenter.prevent
+          v-on:drop="onDrop(row, col)"
           v-on:click="cellClicked(row, col)"
           v-on:dblclick="clearCell(row, col)"
           v-on:mouseover="onHover(row, col)"
@@ -28,6 +39,8 @@
 import { useStreets, type IStreetInformation } from "../services/useStreets";
 import swtpConfigJSON from "../../../swtp.config.json";
 import { computed } from "vue";
+import { useVehicle } from "@/services/useVehicle";
+import router from "@/router";
 
 /**
  * @param {number} gridSize defines the size of the grid component
@@ -52,6 +65,7 @@ const checkedGridSize = computed(() => {
   }
 });
 const { updateStreetState, isStreetPlaced, streets } = useStreets();
+const { currentVehicle } = useVehicle();
 const streetTypes = swtpConfigJSON.streetTypes;
 //TODO
 //Hier wird der Input(strassentyp und rotation), sobald es moeglich ist, aus dem anderen state geholt und zusammen mit den Positionen fuer die Achsen im state fuer die strassen gespeichert
@@ -76,7 +90,63 @@ function cellClicked(posX: number, posY: number): void {
   setCellBackgroundStyle(cell, testInput);
   updateStreetState(testInput);
 }
-
+/**
+ * onDrop function for the drag&drop process
+ * @param {number} posX position on x axis (click)
+ * @param {number} posY position on y axis (click)
+ */
+function onDrop(posX: number, posY: number) {
+  //TODO posX und posY müssen statt geloggt zu werden, ans backend gesendet werden an dieser Stelle
+  console.log("Vehicle-Position: ", posX, posY);
+  changeTo3DView();
+}
+/**
+ * Changes the View to the 3D-View
+ */
+function changeTo3DView() {
+  let wrapper = document.getElementById("wrapper");
+  if (wrapper != null) {
+    wrapper.classList.add(
+      "absolute",
+      "duration-1000",
+      "bg-white",
+      "opacity-0",
+      "h-screen",
+      "w-screen"
+    );
+  }
+  //TODO die 800ms sind gesetzt, weil es sonst keine richtige fade-to-white transition gibt !
+  //TODO manchmal wechselt der router die seite nicht! --> außerdem wird ein *[Violation]'requestAnimationFrame' handler took XYZms* Hinweis geworfen --> die Performance der 3D-View ist also nicht so toll!
+  setTimeout(function () {
+    router.push((location.pathname.split("/")[1] as unknown as number) + "/3d");
+  }, 800);
+}
+/**
+ * dragOver function of the drag&drop process
+ * @param {number} posX position on the x axis while dragging over the grid
+ * @param {number} posY position on the y axis while dragging over the grid
+ */
+function dragOver(posX: number, posY: number) {
+  const table = document.getElementById("gridTable") as HTMLTableElement;
+  const cell = table.rows[posX - 1].cells[posY - 1] as HTMLTableCellElement;
+  cell.classList.add(
+    "shadow-[inset_0_0_4px_1px_rgba(255,255,0,1)]",
+    "border-yellow-300"
+  );
+}
+/**
+ * dragLeave function of the drag&drop process
+ * @param {number} posX position on the x axis while leaving a cell on the grid
+ * @param {number} posY position on the y axis while leaving a cell on the grid
+ */
+function dragLeave(posX: number, posY: number) {
+  const table = document.getElementById("gridTable") as HTMLTableElement;
+  const cell = table.rows[posX - 1].cells[posY - 1] as HTMLTableCellElement;
+  cell.classList.remove(
+    "shadow-[inset_0_0_4px_1px_rgba(255,255,0,1)]",
+    "border-yellow-300"
+  );
+}
 /**
  * getting the hovered cell and changing the backgroundImage to 50% opaque "new" road.
  * the image is hardcoded right now, but it will change as soon as we get the streets from the state
@@ -170,8 +240,8 @@ document.addEventListener(
     scale = Math.min(Math.max(1, scale), 4);
     const element = document.getElementById("wrapper");
     if (element != null) {
-      element.style.transformOrigin = "left top 0";
-      element.style.transform = `scale(${scale})`;
+      element.classList.add("origin-left-top");
+      element.style.transform = `scale(${scale})`; // muss direkt über style geändert werden, lösung mit tailwind nicht möglich
     }
   },
   { passive: false }
