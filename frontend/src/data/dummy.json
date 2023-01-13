@@ -18,9 +18,33 @@
     "posY": 5
   },
   {
-    "streetType": "straight-road",
+    "streetType": "sidewalk-straight",
     "rotation": 90,
     "posX": 1,
+    "posY": 5
+  },
+  {
+    "streetType": "sidewalk-cross",
+    "rotation": 90,
+    "posX": 1,
+    "posY": 6
+  },
+  {
+    "streetType": "sidewalk-curve",
+    "rotation": 0,
+    "posX": 1,
     "posY": 7
+  },
+  {
+    "streetType": "sidewalk-t",
+    "rotation": 90,
+    "posX": 0,
+    "posY": 7
+  },
+  {
+    "streetType": "sidewalk-dead-end",
+    "rotation": 270,
+    "posX": 0,
+    "posY": 8
   }
 ]

@@ -60,6 +60,49 @@
       "vehicleTypes": [],
       "possibleRotations": [
         0,
+        90
+      ]
+    },
+    {
+      "name": "sidewalk-cross",
+      "svgPath": "",
+      "glbPath": "/assets/models/sidewalk_cross.glb",
+      "vehicleTypes": [],
+      "possibleRotations": [
+        0      
+      ]
+    },
+    {
+      "name": "sidewalk-curve",
+      "svgPath": "",
+      "glbPath": "/assets/models/sidewalk_curve.glb",
+      "vehicleTypes": [],
+      "possibleRotations": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "name": "sidewalk-t",
+      "svgPath": "",
+      "glbPath": "/assets/models/sidewalk_t.glb",
+      "vehicleTypes": [],
+      "possibleRotations": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "name": "sidewalk-dead-end",
+      "svgPath": "",
+      "glbPath": "/assets/models/sidewalk_dead_end.glb",
+      "vehicleTypes": [],
+      "possibleRotations": [
+        0,
         90,
         180,
         270
