@@ -1,18 +1,14 @@
 package de.hsrm.mi.team3.swtp.controllers;
 
-import de.hsrm.mi.team3.swtp.domain.User;
 import de.hsrm.mi.team3.swtp.domain.Vehicle;
 import de.hsrm.mi.team3.swtp.domain.VehicleCommands;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackenVehicleCommandMessage;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
-import de.hsrm.mi.team3.swtp.domain.messaging.BackendVehicleMessage;
 import de.hsrm.mi.team3.swtp.services.BackendInfoService;
 import de.hsrm.mi.team3.swtp.services.RoomBoxService;
 import de.hsrm.mi.team3.swtp.services.RoomService;
 import de.hsrm.mi.team3.swtp.services.VehicleService;
-
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,12 +40,16 @@ public class VehicleController {
    * @param roomNumber
    */
   @MessageMapping("topic/3d/commands/{roomNumber}")
-  public void getCars(@Payload BackenVehicleCommandMessage commandVehicleMessage, @DestinationVariable int roomNumber) {
+  public void getCars(
+      @Payload BackenVehicleCommandMessage commandVehicleMessage,
+      @DestinationVariable int roomNumber) {
 
     List<VehicleCommands> commands = commandVehicleMessage.commands();
     Vehicle vehicle = roomService.getUserByID(roomNumber, commandVehicleMessage.userSessionId()).getVehicle();
     if (vehicle == null) {
-      roomService.getUserByID(roomNumber, commandVehicleMessage.userSessionId()).setVehicle(new Vehicle());
+      roomService
+          .getUserByID(roomNumber, commandVehicleMessage.userSessionId())
+          .setVehicle(new Vehicle());
       vehicle = roomService.getUserByID(roomNumber, commandVehicleMessage.userSessionId()).getVehicle();
     }
     if (!commands.contains(VehicleCommands.FORWARD)
@@ -69,7 +69,10 @@ public class VehicleController {
       vehicleService.rotateRight(vehicle);
     }
     logger.info(commandVehicleMessage.userSessionId() + " - " + vehicle.toString());
-    bInfoService.sendVehicle("vehicle/" + roomNumber, commandVehicleMessage.userSessionId(), BackendOperation.UPDATE,
+    bInfoService.sendVehicle(
+        "vehicle/" + roomNumber,
+        commandVehicleMessage.userSessionId(),
+        BackendOperation.UPDATE,
         vehicle);
   }
 }

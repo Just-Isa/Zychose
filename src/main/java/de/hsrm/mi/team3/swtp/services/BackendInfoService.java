@@ -15,5 +15,6 @@ public interface BackendInfoService {
 
   public void sendMouse(String topicname, BackendMouseMessage mouse);
 
-  public void sendVehicle(String topicname, String sessionID, BackendOperation operation, Vehicle vehicle);
+  public void sendVehicle(
+      String topicname, String sessionID, BackendOperation operation, Vehicle vehicle);
 }

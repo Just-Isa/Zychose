@@ -15,8 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class BackendInfoServiceImpl implements BackendInfoService {
 
-  @Autowired
-  SimpMessagingTemplate messaging;
+  @Autowired SimpMessagingTemplate messaging;
   final String GENERIC_TOPIC_START = "/topic/";
 
   /**
@@ -24,7 +23,7 @@ public class BackendInfoServiceImpl implements BackendInfoService {
    *
    * @param topicname object of action
    * @param operation type of action (defined by enum BackendOperation)
-   * @param room      room instance
+   * @param room room instance
    */
   @Override
   public void sendRoom(String topicname, BackendOperation operation, BackendRoomMessage room) {
@@ -36,7 +35,7 @@ public class BackendInfoServiceImpl implements BackendInfoService {
    *
    * @param topicname object of action
    * @param operation type of action (defined by enum BackendOperation)
-   * @param user      user instance
+   * @param user user instance
    */
   @Override
   public void sendUser(String topicname, BackendOperation operation, User user) {
@@ -48,8 +47,7 @@ public class BackendInfoServiceImpl implements BackendInfoService {
    * hands mouse position from front- to backend
    *
    * @param topicname object of action
-   * @param mouse     mouse message with current mouse position and room
-   *                  information
+   * @param mouse mouse message with current mouse position and room information
    */
   @Override
   public void sendMouse(String topicname, BackendMouseMessage mouse) {
@@ -64,8 +62,9 @@ public class BackendInfoServiceImpl implements BackendInfoService {
    * @param vehicle
    */
   @Override
-  public void sendVehicle(String topicname, String sessionID, BackendOperation operation, Vehicle vehicle) {
-    messaging.convertAndSend(GENERIC_TOPIC_START + topicname,
-        BackendVehicleMessage.from(operation, sessionID, vehicle));
+  public void sendVehicle(
+      String topicname, String sessionID, BackendOperation operation, Vehicle vehicle) {
+    messaging.convertAndSend(
+        GENERIC_TOPIC_START + topicname, BackendVehicleMessage.from(operation, sessionID, vehicle));
   }
 }

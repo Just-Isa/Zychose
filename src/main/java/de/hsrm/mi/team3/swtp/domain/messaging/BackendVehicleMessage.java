@@ -16,17 +16,19 @@ public record BackendVehicleMessage(
     double rotationZ,
     double speed) {
 
-  public static BackendVehicleMessage from(BackendOperation operator, String userSessionId, Vehicle vehicle) {
-    BackendVehicleMessage dto = new BackendVehicleMessage(
-        operator,
-        userSessionId,
-        vehicle.getPosVector()[0],
-        vehicle.getPosVector()[1],
-        vehicle.getPosVector()[2],
-        vehicle.getRotationX(),
-        vehicle.getRotationY(),
-        vehicle.getRotationZ(),
-        vehicle.getCurrentSpeed());
+  public static BackendVehicleMessage from(
+      BackendOperation operator, String userSessionId, Vehicle vehicle) {
+    BackendVehicleMessage dto =
+        new BackendVehicleMessage(
+            operator,
+            userSessionId,
+            vehicle.getPosVector()[0],
+            vehicle.getPosVector()[1],
+            vehicle.getPosVector()[2],
+            vehicle.getRotationX(),
+            vehicle.getRotationY(),
+            vehicle.getRotationZ(),
+            vehicle.getCurrentSpeed());
     return dto;
   }
 }

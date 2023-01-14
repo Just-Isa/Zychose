@@ -10,15 +10,14 @@ public class Vehicle {
   private final double brakeSpeed = 0.4;
 
   private double currentSpeed = 0;
-  private double[] rotationVector = { 0, 0, 0 };
-  private double[] posVector = { 0, 0, 0 };
+  private double[] rotationVector = {0, 0, 0};
+  private double[] posVector = {0, 0, 0};
 
   public Vehicle(double[] posVector) {
     this.posVector = posVector;
   }
 
-  public Vehicle() {
-  }
+  public Vehicle() {}
 
   public double getCurrentSpeed() {
     return currentSpeed;
@@ -114,7 +113,12 @@ public class Vehicle {
 
   @Override
   public String toString() {
-    return "Vehicle [currentSpeed=" + currentSpeed + ", rotationVector=" + Arrays.toString(rotationVector)
-        + ", posVector=" + Arrays.toString(posVector) + "]";
+    return "Vehicle [currentSpeed="
+        + currentSpeed
+        + ", rotationVector="
+        + Arrays.toString(rotationVector)
+        + ", posVector="
+        + Arrays.toString(posVector)
+        + "]";
   }
 }
