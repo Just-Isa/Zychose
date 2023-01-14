@@ -4,7 +4,7 @@
   >
     <div
       id="scrollbox"
-      class="flex flex-wrap mh-[6.3rem] w-[23.5rem] h-[6.3rem] min-w-[23.5rem] overflow-hidden scroll-smooth"
+      class="flex flex-wrap mh-[6.3rem] w-[23.5rem] h-[6.3rem] min-w-[23.5rem] overflow-hidden"
     >
       <div v-for="t in props.types" v-bind:key="t.name">
         <StreetBlockIcon :currentBlock="t" />
@@ -51,7 +51,10 @@
 <script setup lang="ts">
 import StreetBlockIcon from "./StreetBlockIcon.vue";
 import type { StreetBlock } from "@/services/IStreetBlock";
-import { ref } from "vue";
+import { ref, watch } from "vue";
+import { useStreetBlock } from "@/services/useStreetBlock";
+
+const { resetCurrentChangedTab, menuTabState } = useStreetBlock();
 
 const props = defineProps<{
   types: StreetBlock[];
@@ -61,6 +64,21 @@ let scrollHeight = ref(0);
 const streetBlockSize = 92;
 const maxScrollHeight =
   Math.ceil(props.types.length / 4) * streetBlockSize - streetBlockSize;
+
+watch(menuTabState, () => {
+  if (menuTabState.currentTabChanged) {
+    let currentMenu = document.getElementById("scrollbox") as HTMLElement;
+
+    if (currentMenu) {
+      currentMenu.scroll({
+        top: 0,
+        behavior: "auto",
+      });
+    }
+    scrollHeight.value = 0;
+    resetCurrentChangedTab();
+  }
+});
 
 function thereAndBackAgain(additionalInput: number) {
   if (scrollHeight.value == maxScrollHeight) {
@@ -81,7 +99,10 @@ function thereAndBackAgain(additionalInput: number) {
 
   let currentMenu = document.getElementById("scrollbox") as HTMLElement;
   if (currentMenu) {
-    currentMenu.scrollTop = scrollHeight.value;
+    currentMenu.scroll({
+      top: scrollHeight.value,
+      behavior: "smooth",
+    });
   }
 }
 </script>

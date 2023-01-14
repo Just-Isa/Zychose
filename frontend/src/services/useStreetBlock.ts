@@ -24,6 +24,7 @@ const vehicleTypes = swtpConfigJSON.allVehicleTypes;
 const menuTabState = reactive({
   // Active tab is set to car at first initialisation
   currentActiveTab: vehicleTypes[0].name,
+  currentTabChanged: false,
 });
 
 export function useStreetBlock() {
@@ -37,6 +38,11 @@ export function useStreetBlock() {
 
   function changeCurrentTab(s: string) {
     menuTabState.currentActiveTab = s;
+    menuTabState.currentTabChanged = true;
+  }
+
+  function resetCurrentChangedTab() {
+    menuTabState.currentTabChanged = false;
   }
 
   /**
@@ -58,5 +64,6 @@ export function useStreetBlock() {
     changeCurrentTab,
     bulldozerActive,
     menuTabState,
+    resetCurrentChangedTab,
   };
 }
