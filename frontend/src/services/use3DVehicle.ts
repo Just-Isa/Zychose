@@ -1,16 +1,28 @@
 import { Client } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
-import { Vehicle, type IVehicle } from "./IVehicle";
+import { Vehicle, type IVehicle, type IVehicleMessage } from "./IVehicle";
+import { MessageOperator } from "./MessageOperators";
 
 export interface IVehicleState {
-  vehicle: IVehicle;
+  vehicles: Map<string, IVehicle>;
   errorMessage: string;
 }
 
 const vehicleState = reactive<IVehicleState>({
-  vehicle: new Vehicle(0, 0, 0, 0, 0, 0, 0),
+  vehicles: new Map<string, IVehicle>(),
   errorMessage: "",
 });
+export interface IReceiveVehicleMessage {
+  operator: MessageOperator;
+  userSessionId: string;
+  postitionX: number;
+  postitionY: number;
+  postitionZ: number;
+  rotationX: number;
+  rotationY: number;
+  rotationZ: number;
+  speed: number;
+}
 
 export function useVehicle() {
   return { vehicleState: readonly(vehicleState), receiveVehicle };
@@ -33,11 +45,44 @@ function receiveVehicle() {
   };
   stompClient.onConnect = () => {
     stompClient.subscribe(DEST, (message) => {
-      vehicleState.vehicle = JSON.parse(message.body);
+      handleMessage(JSON.parse(message.body));
     });
   };
   stompClient.activate();
   stompClient.onDisconnect = () => {
     /* Verbindung abgebaut*/
   };
+}
+function handleMessage(jsonObject: IVehicleMessage) {
+  if (jsonObject.operator == MessageOperator.DELETE) {
+    vehicleState.vehicles.delete(jsonObject.userSessionId);
+  }
+  if (jsonObject.operator === MessageOperator.CREATE) {
+    vehicleState.vehicles.set(
+      jsonObject.userSessionId,
+      new Vehicle(
+        jsonObject.postitionX,
+        jsonObject.postitionY,
+        jsonObject.postitionZ,
+        jsonObject.rotationX,
+        jsonObject.rotationY,
+        jsonObject.rotationZ,
+        jsonObject.speed
+      )
+    );
+  }
+  if (jsonObject.operator === MessageOperator.UPDATE) {
+    vehicleState.vehicles.set(
+      jsonObject.userSessionId,
+      new Vehicle(
+        jsonObject.postitionX,
+        jsonObject.postitionY,
+        jsonObject.postitionZ,
+        jsonObject.rotationX,
+        jsonObject.rotationY,
+        jsonObject.rotationZ,
+        jsonObject.speed
+      )
+    );
+  }
 }

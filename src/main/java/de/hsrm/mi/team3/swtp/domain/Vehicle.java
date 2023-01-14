@@ -1,5 +1,7 @@
 package de.hsrm.mi.team3.swtp.domain;
 
+import java.util.Arrays;
+
 public class Vehicle {
   private final double runOutSpeed = -0.2;
   private final double maxSpeed = 1;
@@ -8,14 +10,15 @@ public class Vehicle {
   private final double brakeSpeed = 0.4;
 
   private double currentSpeed = 0;
-  private double[] rotationVector = {0, 0, 0};
-  private double[] posVector = {0, 0, 0};
+  private double[] rotationVector = { 0, 0, 0 };
+  private double[] posVector = { 0, 0, 0 };
 
   public Vehicle(double[] posVector) {
     this.posVector = posVector;
   }
 
-  public Vehicle() {}
+  public Vehicle() {
+  }
 
   public double getCurrentSpeed() {
     return currentSpeed;
@@ -107,5 +110,11 @@ public class Vehicle {
 
   public void setPosVector(double[] posVector) {
     this.posVector = posVector;
+  }
+
+  @Override
+  public String toString() {
+    return "Vehicle [currentSpeed=" + currentSpeed + ", rotationVector=" + Arrays.toString(rotationVector)
+        + ", posVector=" + Arrays.toString(posVector) + "]";
   }
 }

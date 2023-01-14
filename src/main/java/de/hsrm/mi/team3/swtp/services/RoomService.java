@@ -15,4 +15,6 @@ public interface RoomService {
   public List<User> getUserList(Room room);
 
   public void saveScriptToRoom(MultipartFile file, Room room);
+
+  public User getUserByID(int roomNumber, String sessionID);
 }

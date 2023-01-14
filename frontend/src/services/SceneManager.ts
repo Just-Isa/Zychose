@@ -6,6 +6,8 @@ import { useCamera } from "./CameraManager";
 import { useVehicle } from "./use3DVehicle";
 import type { VehicleCameraContext } from "./VehicleCamera";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
+import type { IVehicle } from "./IVehicle";
+import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
 
 const blockSize = 16;
 const { camState, switchCamera } = useCamera();
@@ -20,7 +22,7 @@ export class SceneManager {
   blockMap: Map<string, Promise<THREE.Group>>;
   data: StreetBlock[];
   private renderer: THREE.Renderer;
-  private vehicles: THREE.Group[]; // list of all Object u should update every frame.
+  private vehicles: Map<string, THREE.Group> = new Map<string, THREE.Group>(); // list of all Object u should update every frame.
   private vehicleCamera: VehicleCameraContext =
     camState.vehicleCam as VehicleCameraContext;
 
@@ -34,7 +36,6 @@ export class SceneManager {
     this.blockMap = blockMap;
     this.data = JSON.parse(JSON.stringify(data));
     this.renderer = renderer;
-    this.vehicles = [];
   }
   /**
    * runs all functions to create the scene
@@ -42,7 +43,6 @@ export class SceneManager {
   initScene() {
     this.createLandscape();
     this.createGrid();
-    this.addControllableVehicle();
     this.handleRender();
     this.addSkybox();
     switchCamera(this.vehicleCamera);
@@ -124,26 +124,29 @@ export class SceneManager {
   /**
    * adds new car
    */
-  addControllableVehicle() {
+  addVehicle(vehicle: IVehicle, vehicleSessionId: string) {
     const blockPromise = this.blockMap.get("car");
-    if (blockPromise !== undefined) {
+
+    if (blockPromise !== undefined && !this.vehicles.has(vehicleSessionId)) {
       blockPromise
         ?.then((block) => {
           const car = block.clone();
 
           car.position.set(
-            vehicleState.vehicle.postitionX,
-            vehicleState.vehicle.postitionY,
-            vehicleState.vehicle.postitionZ
+            vehicle.postitionX,
+            vehicle.postitionY,
+            vehicle.postitionZ
           );
           car.rotation.set(
-            vehicleState.vehicle.rotationX,
-            vehicleState.vehicle.rotationX,
-            vehicleState.vehicle.rotationX
+            vehicle.rotationX,
+            vehicle.rotationX,
+            vehicle.rotationX
           );
           this.scene.add(car);
-          this.vehicleCamera.request(vehicleState.vehicle.speed, car);
-          this.vehicles.push(car);
+          if (vehicleSessionId === getSessionIDFromCookie()) {
+            this.vehicleCamera.request(vehicle.speed, car);
+          }
+          this.vehicles.set(vehicleSessionId, car);
         })
         .catch((error) => {
           this.getErrorBlock(0, 0, 0);
@@ -174,10 +177,15 @@ export class SceneManager {
    */
   handleRender() {
     const animate = () => {
+      this.updateVehicleMap();
+      for (const [key, val] of this.vehicles) {
+        this.updateVehicle(
+          val,
+          vehicleState.vehicles.get(key) as IVehicle,
+          key
+        );
+      }
       //every vehicle gets rendered
-      this.vehicles.forEach((vehicle) => {
-        this.updateVehicle(vehicle);
-      });
       this.renderer.render(this.scene, camState.cam as THREE.PerspectiveCamera);
       requestAnimationFrame(animate);
     };
@@ -190,26 +198,49 @@ export class SceneManager {
    *
    * @param threeVehicle
    */
-  updateVehicle(threeVehicle: THREE.Group) {
+  updateVehicle(
+    threeVehicle: THREE.Group,
+    vehicle: IVehicle,
+    sessionID: string
+  ) {
     const lerpDuration = 0.075;
     const quaternion = new THREE.Quaternion();
 
     const destination = new THREE.Vector3(
-      vehicleState.vehicle.postitionX,
-      vehicleState.vehicle.postitionY,
-      vehicleState.vehicle.postitionZ
+      vehicle.postitionX,
+      vehicle.postitionY,
+      vehicle.postitionZ
     );
 
     const newRotation = new THREE.Euler(
-      vehicleState.vehicle.rotationX,
-      vehicleState.vehicle.rotationY,
-      vehicleState.vehicle.rotationZ,
+      vehicle.rotationX,
+      vehicle.rotationY,
+      vehicle.rotationZ,
       "XYZ"
     );
 
     const newQuaterion = quaternion.setFromEuler(newRotation);
     threeVehicle.quaternion.slerp(newQuaterion, lerpDuration);
     threeVehicle.position.lerp(destination, lerpDuration);
-    this.vehicleCamera.request(vehicleState.vehicle.speed, threeVehicle);
+    if (sessionID === getSessionIDFromCookie()) {
+      this.vehicleCamera.request(vehicle.speed, threeVehicle);
+    }
+  }
+
+  /**
+   * checks if vehicles are added or removed and updates the map
+   */
+  updateVehicleMap() {
+    for (const [key, val] of vehicleState.vehicles) {
+      if (!this.vehicles.has(key)) {
+        this.addVehicle(val, key);
+      }
+    }
+    for (const [key, val] of this.vehicles) {
+      if (!vehicleState.vehicles.has(key)) {
+        this.scene.remove(val);
+        this.vehicles.delete(key);
+      }
+    }
   }
 }

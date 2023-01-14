@@ -1,3 +1,5 @@
+import type { MessageOperator } from "./MessageOperators";
+
 export interface IVehicle {
   postitionX: number;
   postitionY: number;
@@ -32,4 +34,15 @@ export class Vehicle implements IVehicle {
     this.rotationZ = rotationZ;
     this.speed = speed;
   }
+}
+export interface IVehicleMessage {
+  operator: MessageOperator;
+  userSessionId: string;
+  postitionX: number;
+  postitionY: number;
+  postitionZ: number;
+  rotationX: number;
+  rotationY: number;
+  rotationZ: number;
+  speed: number;
 }

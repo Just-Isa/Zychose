@@ -11,6 +11,8 @@ public class User {
 
   private String userName;
 
+  private Vehicle vehicle = null;
+
   public User(String sessionID, int currentRoomNumber, String userName) {
     this.sessionID = sessionID;
     this.currentRoomNumber = currentRoomNumber;
@@ -45,6 +47,14 @@ public class User {
 
   public void setUserName(String userName) {
     this.userName = userName;
+  }
+
+  public Vehicle getVehicle() {
+    return vehicle;
+  }
+
+  public void setVehicle(Vehicle vehicle) {
+    this.vehicle = vehicle;
   }
 
   @Override
