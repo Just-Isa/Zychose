@@ -1,8 +1,8 @@
 {
   "streetTypes": [
     {
-      "name": "cross-road",
-      "svgPath": "/assets/img/cross-road.svg",
+      "name": "road-cross",
+      "svgPath": "",
       "glbPath": "/assets/models/road_cross.glb",
       "vehicleTypes": [
         "car",
@@ -11,8 +11,8 @@
       "possibleRotations": []
     },
     {
-      "name": "curve-road",
-      "svgPath": "/assets/img/curve-road.svg",
+      "name": "road-curve",
+      "svgPath": "",
       "glbPath": "/assets/models/road_curve.glb",
       "vehicleTypes": [
         "car",
@@ -26,8 +26,8 @@
       ]
     },
     {
-      "name": "straight-road",
-      "svgPath": "/assets/img/straight-road.svg",
+      "name": "road-straight",
+      "svgPath": "",
       "glbPath": "/assets/models/road_straight.glb",
       "vehicleTypes": [
         "car",
@@ -39,13 +39,47 @@
       ]
     },
     {
-      "name": "t-road",
-      "svgPath": "/assets/img/t-road.svg",
+      "name": "road-t",
+      "svgPath": "",
       "glbPath": "/assets/models/road_t.glb",
       "vehicleTypes": [
         "car",
         "bicycle"
       ],
+      "possibleRotations": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "name": "road-dead-end",
+      "svgPath": "",
+      "glbPath": "/assets/models/road_dead_end.glb",
+      "vehicleTypes": [
+        "car",
+        "bicycle"
+      ],
+      "possibleRotations": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "name": "sidewalk-cross",
+      "svgPath": "",
+      "glbPath": "/assets/models/sidewalk_cross.glb",
+      "vehicleTypes": [],
+      "possibleRotations": []
+    },
+    {
+      "name": "sidewalk-curve",
+      "svgPath": "",
+      "glbPath": "/assets/models/sidewalk_curve.glb",
+      "vehicleTypes": [],
       "possibleRotations": [
         0,
         90,
@@ -61,27 +95,6 @@
       "possibleRotations": [
         0,
         90
-      ]
-    },
-    {
-      "name": "sidewalk-cross",
-      "svgPath": "",
-      "glbPath": "/assets/models/sidewalk_cross.glb",
-      "vehicleTypes": [],
-      "possibleRotations": [
-        0      
-      ]
-    },
-    {
-      "name": "sidewalk-curve",
-      "svgPath": "",
-      "glbPath": "/assets/models/sidewalk_curve.glb",
-      "vehicleTypes": [],
-      "possibleRotations": [
-        0,
-        90,
-        180,
-        270
       ]
     },
     {

@@ -157,7 +157,7 @@ function onHover(x: number, y: number): void {
   const table = document.getElementById("gridTable") as HTMLTableElement;
   const cell = table.rows[x - 1].cells[y - 1];
   //TODO sobald man die Informationen ueber streetType und rotation aus dem State lesen kann, muss der code unterhalb angepasst werden
-  cell.style.backgroundImage = "url(/src/assets/img/cross-road.svg)";
+  cell.style.backgroundImage = "url(/src/assets/img/sidewalk_straight.png)";
 }
 
 /**
