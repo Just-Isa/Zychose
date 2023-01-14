@@ -2,7 +2,6 @@ import { Client } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
 import { Room, type IRoom } from "./IRoom";
 import { useRoomBox } from "./useRoomList";
-import { MessageOperator } from "./MessageOperators";
 import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
 
 export interface IRoomState {
@@ -78,7 +77,7 @@ function updateRoom(roomNumber: number) {
   roomClient.onStompError = () => {
     console.log("STOMP-error"); /* STOMP-Error */
   };
-  roomClient.onConnect = (frame) => {
+  roomClient.onConnect = () => {
     try {
       roomClient.publish({
         destination: DEST,

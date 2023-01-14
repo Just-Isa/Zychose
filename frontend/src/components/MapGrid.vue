@@ -16,7 +16,6 @@
         v-bind:key="row"
         class="box-border h-20 p-0"
       >
-        <!-- //TODO sobald die Informationen ueber streetType und rotation aus dem State gelesen werden koennen, muss die zeile v-on:dblclick="clearCell(row, col)" geloescht werden -->
         <td
           v-for="col in checkedGridSize"
           class="box-border w-20 p-0 border border-white/20 hover:border-white hover:shadow-[inset_0_0_4px_1px_#fff] hover:opacity-50 bg-cover bg-no-repeat bg-center"
@@ -223,25 +222,6 @@ function setCellBackgroundStyle(
       cell.style.transform = `rotate(${street.rotation}deg)`;
     }
   }
-}
-
-/**
- * //TODO
- * Diese Methode ist nur zum testen gedacht, um zu sehen, ob Strassen richtig aus dem state geloescht werden.
- * Sie wird entfernt, sobald der Strassentyp und die Rotation ueber einen weiteren State ausgelesen werden koennen.
- * Dann wird das loeschen der Zelle ueber die cellClicked Methode gemacht.
- */
-function clearCell(posX: number, posY: number): void {
-  let neuerInput: IStreetInformation = {
-    streetType: "delete",
-    rotation: 90,
-    posX: posX,
-    posY: posY,
-  };
-  const table = document.getElementById("gridTable") as HTMLTableElement;
-  updateStreetState(neuerInput);
-  const cell = table.rows[posX - 1].cells[posY - 1];
-  cell.style.backgroundImage = "";
 }
 
 /*
