@@ -45,7 +45,6 @@ const { getRoomList } = useRoomBox();
 function receiveRoom() {
   const webSocketUrl = `ws://${window.location.host}/stompbroker`;
   const DEST = "/topic/room/" + roomState.room.roomNumber;
-  console.log(DEST)
   const stompClient = new Client({ brokerURL: webSocketUrl });
   stompClient.onWebSocketError = () => {
     console.log("WS-error"); /* WS-Error */
@@ -56,7 +55,6 @@ function receiveRoom() {
   stompClient.onConnect = () => {
     stompClient.subscribe(DEST, (message) => {
       roomState.room = JSON.parse(message.body);
-      console.log(roomState.room.roomMap);
     });
   };
   stompClient.activate();
@@ -81,7 +79,6 @@ function updateRoom(roomNumber: number) {
     console.log("STOMP-error"); /* STOMP-Error */
   };
   roomClient.onConnect = (frame) => {
-    console.log("connected", frame);
     try {
       roomClient.publish({
         destination: DEST,

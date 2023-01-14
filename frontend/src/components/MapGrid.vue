@@ -26,7 +26,6 @@
           @dragenter.prevent
           v-on:drop="onDrop(row, col)"
           v-on:click="cellClicked(row, col)"
-          v-on:dblclick="clearCell(row, col)"
           v-on:mouseover="onHover(row, col)"
           v-on:mouseleave="onEndHover(row, col)"
         ></td>
@@ -38,7 +37,7 @@
 <script setup lang="ts">
 import { useStreets, type IStreetInformation } from "../services/useStreets";
 import swtpConfigJSON from "../../../swtp.config.json";
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
 
@@ -48,6 +47,7 @@ import router from "@/router";
 const props = defineProps<{
   gridSize: any;
 }>();
+
 /**
   //TODO werte für 100 und 20 vllt auch in die config --> können dort aber auch so angepasst werden, dass bullshit drin ist
   * Hardcoded Wert 24, weil 1rem entspricht 16px, also 1920/16 = 120 -> 120/5rem (cell-width) = 24 cells
@@ -64,9 +64,23 @@ const checkedGridSize = computed(() => {
     }
   }
 });
-const { updateStreetState, isStreetPlaced, streets } = useStreets();
+
+const {
+  updateStreetState,
+  isStreetPlaced,
+  streetsState,
+  initializeStreetState,
+} = useStreets();
 const { currentVehicle } = useVehicle();
 const streetTypes = swtpConfigJSON.streetTypes;
+
+onMounted(() => {
+  initializeStreetState();
+  setTimeout(function () {
+    stateToGrid();
+  }, 700);
+});
+
 //TODO
 //Hier wird der Input(strassentyp und rotation), sobald es moeglich ist, aus dem anderen state geholt und zusammen mit den Positionen fuer die Achsen im state fuer die strassen gespeichert
 /**
@@ -77,7 +91,6 @@ const streetTypes = swtpConfigJSON.streetTypes;
  * @param {number} posY position on y axis (click)
  */
 function cellClicked(posX: number, posY: number): void {
-  console.log("(posX,posY): ", [posX, posY]);
   const table = document.getElementById("gridTable") as HTMLTableElement;
   const cell = table.rows[posX - 1].cells[posY - 1];
   /* testInput has to be hard coded as long as we're not able to get the informations from the states of the streetTileMenu */
@@ -90,6 +103,7 @@ function cellClicked(posX: number, posY: number): void {
   setCellBackgroundStyle(cell, testInput);
   updateStreetState(testInput);
 }
+
 /**
  * onDrop function for the drag&drop process
  * @param {number} posX position on x axis (click)
@@ -97,9 +111,9 @@ function cellClicked(posX: number, posY: number): void {
  */
 function onDrop(posX: number, posY: number) {
   //TODO posX und posY müssen statt geloggt zu werden, ans backend gesendet werden an dieser Stelle
-  console.log("Vehicle-Position: ", posX, posY);
   changeTo3DView();
 }
+
 /**
  * Changes the View to the 3D-View
  */
@@ -121,6 +135,7 @@ function changeTo3DView() {
     router.push((location.pathname.split("/")[1] as unknown as number) + "/3d");
   }, 800);
 }
+
 /**
  * dragOver function of the drag&drop process
  * @param {number} posX position on the x axis while dragging over the grid
@@ -134,6 +149,7 @@ function dragOver(posX: number, posY: number) {
     "border-yellow-300"
   );
 }
+
 /**
  * dragLeave function of the drag&drop process
  * @param {number} posX position on the x axis while leaving a cell on the grid
@@ -147,6 +163,7 @@ function dragLeave(posX: number, posY: number) {
     "border-yellow-300"
   );
 }
+
 /**
  * getting the hovered cell and changing the backgroundImage to 50% opaque "new" road.
  * the image is hardcoded right now, but it will change as soon as we get the streets from the state
@@ -184,7 +201,7 @@ function onEndHover(x: number, y: number): void {
  */
 function stateToGrid(): void {
   const table = document.getElementById("gridTable") as HTMLTableElement;
-  for (const street of streets) {
+  for (const street of streetsState.streets) {
     const cell = table.rows[street.posX - 1].cells[street.posY - 1];
     setCellBackgroundStyle(cell, street);
   }
@@ -215,7 +232,6 @@ function setCellBackgroundStyle(
  * Dann wird das loeschen der Zelle ueber die cellClicked Methode gemacht.
  */
 function clearCell(posX: number, posY: number): void {
-  console.log("clearCell aufgerufen!");
   let neuerInput: IStreetInformation = {
     streetType: "delete",
     rotation: 90,
@@ -227,6 +243,7 @@ function clearCell(posX: number, posY: number): void {
   const cell = table.rows[posX - 1].cells[posY - 1];
   cell.style.backgroundImage = "";
 }
+
 /*
     two EventListeners on the wheel-scrool to prevent the default browser functionalities and
     instead scale the component independently with CSS, so no other ui parts are effected.
