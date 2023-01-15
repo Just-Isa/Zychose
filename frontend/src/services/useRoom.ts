@@ -2,7 +2,6 @@ import { Client } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
 import { Room, type IRoom } from "./IRoom";
 import { useRoomBox } from "./useRoomList";
-import { MessageOperator } from "./MessageOperators";
 import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
 
 export interface IRoomState {
@@ -33,6 +32,7 @@ export function useRoom() {
 /* eslint-disable @typescript-eslint/no-unused-vars*/
 function updateRoomMap(rMap: string): void {
   roomState.room.roomMap = rMap;
+  updateRoom(roomState.room.roomNumber);
 }
 /* eslint-enable */
 
@@ -54,7 +54,6 @@ function receiveRoom() {
   stompClient.onConnect = () => {
     stompClient.subscribe(DEST, (message) => {
       roomState.room = JSON.parse(message.body);
-      console.log(roomState.room);
     });
   };
   stompClient.activate();
@@ -68,7 +67,7 @@ function receiveRoom() {
  * @param operator Operation type
  * @param user User that is to be published
  */
-function updateRoom(operator: MessageOperator, roomNumber: number) {
+function updateRoom(roomNumber: number) {
   const webSocketUrl = `ws://${window.location.host}/stompbroker`;
   const DEST = "/topic/room/" + roomNumber;
   const roomClient = new Client({ brokerURL: webSocketUrl });
@@ -78,13 +77,12 @@ function updateRoom(operator: MessageOperator, roomNumber: number) {
   roomClient.onStompError = () => {
     console.log("STOMP-error"); /* STOMP-Error */
   };
-  roomClient.onConnect = (frame) => {
-    console.log("connected", frame);
+  roomClient.onConnect = () => {
     try {
       roomClient.publish({
         destination: DEST,
         headers: {},
-        body: JSON.stringify(operator),
+        body: JSON.stringify(roomState.room),
       });
     } catch (err) {
       // in case of an error
@@ -119,7 +117,7 @@ function swapRooms(roomNumber: number) {
     })
     .then(() => {
       roomState.room.roomNumber = roomNumber;
-      updateRoom(MessageOperator.UPDATE, roomNumber);
+      updateRoom(roomNumber);
       getRoomList();
     })
     .catch(() => {
