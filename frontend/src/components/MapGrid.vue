@@ -75,6 +75,7 @@ const streetTypes = swtpConfigJSON.streetTypes;
 
 onMounted(() => {
   initializeStreetState();
+  // Template loads table first, slower connections need extra time -> 700 ms tested to be sufficient
   setTimeout(function () {
     stateToGrid();
   }, 700);
