@@ -36,7 +36,6 @@ const { publishVehicleCommands } = useVehicleCommands();
 const { keysPressed, inputs } = useKeyInput();
 const { receiveVehicle } = useVehicle();
 const sendInterval = 200;
-receiveVehicle();
 
 config.miscModels.forEach((element) => {
   glbState.blockMap.set(element.name, loadModel(element.glbPath));
@@ -62,6 +61,7 @@ export default {
     Scene,
   },
   mounted() {
+    receiveVehicle();
     const blockMap = glbState.blockMap;
     const scene = (this.$refs.scene as typeof Scene).scene;
     const renderer = (this.$refs.renderer as any).renderer;

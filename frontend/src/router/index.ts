@@ -5,6 +5,7 @@ import RoomSelectView from "../views/RoomSelectView.vue";
 import ThreeDView from "../views/ThreeDView.vue";
 import Error500View from "@/views/errors/Error500View.vue";
 import ResetInfoView from "@/views/ResetInfoView.vue";
+import Error404View from "@/views/errors/Error404View.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,19 +42,44 @@ const router = createRouter({
       component: EditorView,
     },
     {
-      path: "/3D",
-      name: "fpv",
+      path: "/1/3D",
+      name: "Raum1-3D",
+      component: ThreeDView,
+    },
+    {
+      path: "/2/3D",
+      name: "Raum2-3D",
+      component: ThreeDView,
+    },
+    {
+      path: "/3/3D",
+      name: "Raum3-3D",
+      component: ThreeDView,
+    },
+    {
+      path: "/4/3D",
+      name: "Raum4-3D",
+      component: ThreeDView,
+    },
+    {
+      path: "/5/3D",
+      name: "Raum5-3D",
       component: ThreeDView,
     },
     {
       path: "/500",
-      name: "Error500View",
+      name: "genericError",
       component: Error500View,
     },
     {
       path: "/reset",
       name: "ResetInfoView",
       component: ResetInfoView,
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "notFound",
+      component: Error404View,
     },
   ],
 });

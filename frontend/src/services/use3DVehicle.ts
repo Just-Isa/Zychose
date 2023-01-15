@@ -20,7 +20,8 @@ export function useVehicle() {
  */
 function receiveVehicle() {
   const webSocketUrl = `ws://${window.location.host}/stompbroker`;
-  const DEST = "/topic/vehicle/";
+  const DEST =
+    "/topic/vehicle/" + (location.pathname.split("/")[1] as unknown as number);
   const stompClient = new Client({ brokerURL: webSocketUrl });
   stompClient.onWebSocketError = () => {
     vehicleState.errorMessage = "WS-error";
