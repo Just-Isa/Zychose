@@ -6,7 +6,7 @@ public class VehicleBot {
 
 	private VehicleBehaviour behaviour = VehicleBehaviour.DEFENSIVE;
 	private int[] currentPos = { 0, 0 };
-	private int currentRotation = 90;
+	private int currentRotation = 0;
 	private Map<VehicleNeighbour, Tile> neighbours;
 	private Room room;
 
@@ -24,12 +24,23 @@ public class VehicleBot {
 	}
 
 	public void moveToNextTile() {
-		// Idee: this.currentPos[0]=room.getMap().getX[this.getCurrentX()+direction]
 		refreshNeighbours();
+		Tile destination = this.neighbours.get(VehicleNeighbour.VEHICLETOP);
+		if (destination == null) {
+			// kein Anschlussteil vorhanden -> U-Wende?
+		} else if (destination.isBlocked()) {
+			// warten
+		} else {
+			this.currentPos[0] = destination.getTilePosition()[0];
+			this.currentPos[1] = destination.getTilePosition()[1];
+		}
 	}
 
+	/**
+	 * @param rotation ist die Rotationsstufe, auf die sich das Fahrzeug drehen soll
+	 */
 	public void turn(int rotation) {
-		this.currentRotation += rotation;
+		this.setCurrentRotation(rotation);
 		moveToNextTile();
 	}
 
@@ -66,6 +77,7 @@ public class VehicleBot {
 	}
 
 	public void refreshNeighbours() {
-		neighbours = this.room.getNeighbours(this.currentPos[0], this.currentPos[1], this.currentRotation);
+		this.neighbours = this.room.getRoomMap().getNeighbours(this.currentPos[0], this.currentPos[1],
+				this.currentRotation);
 	}
 }
