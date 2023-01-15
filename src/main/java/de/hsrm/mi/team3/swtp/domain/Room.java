@@ -9,72 +9,71 @@ import java.util.List;
  */
 public class Room {
 
-	private String roomName;
-	private int roomNumber;
-	private List<User> userList;
-	private String jythonScript;
-	private Roadmap roadMap;
+  private String roomName;
+  private int roomNumber;
+  private List<User> userList;
+  private String jythonScript;
+  private Roadmap roadMap;
 
-	public Room(int roomNumber) {
-		this.roomName = "default-name";
-		this.roomNumber = roomNumber;
-		this.userList = new ArrayList<User>();
-		this.jythonScript = "";
-	}
+  public Room(int roomNumber) {
+    this.roomName = "default-name";
+    this.roomNumber = roomNumber;
+    this.userList = new ArrayList<User>();
+    this.jythonScript = "";
+  }
 
-	public Room(String roomName, int roomNumber) {
-		this.roomName = roomName;
-		this.roomNumber = roomNumber;
-		this.userList = new ArrayList<User>();
-		this.jythonScript = "";
-	}
+  public Room(String roomName, int roomNumber) {
+    this.roomName = roomName;
+    this.roomNumber = roomNumber;
+    this.userList = new ArrayList<User>();
+    this.jythonScript = "";
+  }
 
-	public String getRoomName() {
-		return roomName;
-	}
+  public String getRoomName() {
+    return roomName;
+  }
 
-	public void setRoomName(String roomName) {
-		this.roomName = roomName;
-	}
+  public void setRoomName(String roomName) {
+    this.roomName = roomName;
+  }
 
-	public List<User> getUserList() {
-		return userList;
-	}
+  public List<User> getUserList() {
+    return userList;
+  }
 
-	public void addUserToList(User user) {
-		this.userList.add(user);
-	}
+  public void addUserToList(User user) {
+    this.userList.add(user);
+  }
 
-	public void removeUserFromList(User user) {
-		this.userList.remove(user);
-	}
+  public void removeUserFromList(User user) {
+    this.userList.remove(user);
+  }
 
-	public int getRoomNumber() {
-		return roomNumber;
-	}
+  public int getRoomNumber() {
+    return roomNumber;
+  }
 
-	public void setRoomNumber(int roomNumber) {
-		this.roomNumber = roomNumber;
-	}
+  public void setRoomNumber(int roomNumber) {
+    this.roomNumber = roomNumber;
+  }
 
-	public String getJythonScript() {
-		return jythonScript;
-	}
+  public String getJythonScript() {
+    return jythonScript;
+  }
 
-	public void setJythonScript(String jythonScript) {
-		this.jythonScript = jythonScript;
-	}
+  public void setJythonScript(String jythonScript) {
+    this.jythonScript = jythonScript;
+  }
 
-	public void setRoomMap(String map) {
-		this.roadMap = new Roadmap(map);
-	}
+  public void setRoomMap(String map) {
+    this.roadMap = new Roadmap(map);
+  }
 
-	public void setRoomMap(Roadmap existingMap) {
-		this.roadMap = new Roadmap(existingMap);
-	}
+  public void setRoomMap(Roadmap existingMap) {
+    this.roadMap = new Roadmap(existingMap);
+  }
 
-	public Roadmap getRoomMap() {
-		return this.roadMap;
-	}
-
+  public Roadmap getRoomMap() {
+    return this.roadMap;
+  }
 }
