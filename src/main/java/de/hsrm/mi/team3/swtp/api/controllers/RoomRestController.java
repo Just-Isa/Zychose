@@ -43,6 +43,21 @@ public class RoomRestController {
   }
 
   /**
+   * Retrieve room map of a specific room
+   *
+   * @param roomNumber
+   * @return
+   */
+  @GetMapping(value = "/room/map/{number}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public String getRoomMap(@PathVariable("number") String roomNumber) {
+    Room room = roomBoxService.getSpecificRoom(Integer.parseInt(roomNumber));
+    if (room.getRoomMap().isEmpty() || room.getRoomMap().isBlank()) {
+      return "[]";
+    }
+    return room.getRoomMap();
+  }
+
+  /**
    * Changes the Room a User is in to another.
    *
    * @param roomNumber Room number of room that the User is supposed to be swapped into

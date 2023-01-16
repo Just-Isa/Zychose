@@ -6,7 +6,7 @@
     ]"
   >
     <img
-      :src="`src/assets/img/${props.imgSrc}`"
+      :src="`/assets/img/${props.imgSrc}`"
       :alt="props.vehicleType + ' icon'"
     />
   </button>

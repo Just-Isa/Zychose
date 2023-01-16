@@ -16,7 +16,6 @@
         v-bind:key="row"
         class="box-border h-20 p-0"
       >
-        <!-- //TODO sobald die Informationen ueber streetType und rotation aus dem State gelesen werden koennen, muss die zeile v-on:dblclick="clearCell(row, col)" geloescht werden -->
         <td
           v-for="col in checkedGridSize"
           class="box-border w-20 p-0 border border-white/20 hover:border-white hover:shadow-[inset_0_0_4px_1px_#fff] hover:opacity-50 bg-cover bg-no-repeat bg-center"
@@ -26,7 +25,6 @@
           @dragenter.prevent
           v-on:drop="onDrop(row, col)"
           v-on:click="cellClicked(row, col)"
-          v-on:dblclick="clearCell(row, col)"
           v-on:mouseover="onHover(row, col)"
           v-on:mouseleave="onEndHover(row, col)"
         ></td>
@@ -38,7 +36,7 @@
 <script setup lang="ts">
 import { useStreets, type IStreetInformation } from "../services/useStreets";
 import swtpConfigJSON from "../../../swtp.config.json";
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
 import { logger } from "@/helpers/Logger";
@@ -49,6 +47,7 @@ import { logger } from "@/helpers/Logger";
 const props = defineProps<{
   gridSize: any;
 }>();
+
 /**
   //TODO werte für 100 und 20 vllt auch in die config --> können dort aber auch so angepasst werden, dass bullshit drin ist
   * Hardcoded Wert 24, weil 1rem entspricht 16px, also 1920/16 = 120 -> 120/5rem (cell-width) = 24 cells
@@ -65,9 +64,24 @@ const checkedGridSize = computed(() => {
     }
   }
 });
-const { updateStreetState, isStreetPlaced, streets } = useStreets();
+
+const {
+  updateStreetState,
+  isStreetPlaced,
+  streetsState,
+  initializeStreetState,
+} = useStreets();
 const { currentVehicle } = useVehicle();
 const streetTypes = swtpConfigJSON.streetTypes;
+
+onMounted(() => {
+  initializeStreetState();
+  // Template loads table first, slower connections need extra time -> 700 ms tested to be sufficient
+  setTimeout(function () {
+    stateToGrid();
+  }, 700);
+});
+
 //TODO
 //Hier wird der Input(strassentyp und rotation), sobald es moeglich ist, aus dem anderen state geholt und zusammen mit den Positionen fuer die Achsen im state fuer die strassen gespeichert
 /**
@@ -91,6 +105,7 @@ function cellClicked(posX: number, posY: number): void {
   setCellBackgroundStyle(cell, testInput);
   updateStreetState(testInput);
 }
+
 /**
  * onDrop function for the drag&drop process
  * @param {number} posX position on x axis (click)
@@ -101,6 +116,7 @@ function onDrop(posX: number, posY: number) {
   logger.log("Vehicle-Position: ", posX, posY);
   changeTo3DView();
 }
+
 /**
  * Changes the View to the 3D-View
  */
@@ -122,6 +138,7 @@ function changeTo3DView() {
     router.push((location.pathname.split("/")[1] as unknown as number) + "/3d");
   }, 800);
 }
+
 /**
  * dragOver function of the drag&drop process
  * @param {number} posX position on the x axis while dragging over the grid
@@ -135,6 +152,7 @@ function dragOver(posX: number, posY: number) {
     "border-yellow-300"
   );
 }
+
 /**
  * dragLeave function of the drag&drop process
  * @param {number} posX position on the x axis while leaving a cell on the grid
@@ -148,6 +166,7 @@ function dragLeave(posX: number, posY: number) {
     "border-yellow-300"
   );
 }
+
 /**
  * getting the hovered cell and changing the backgroundImage to 50% opaque "new" road.
  * the image is hardcoded right now, but it will change as soon as we get the streets from the state
@@ -158,7 +177,7 @@ function onHover(x: number, y: number): void {
   const table = document.getElementById("gridTable") as HTMLTableElement;
   const cell = table.rows[x - 1].cells[y - 1];
   //TODO sobald man die Informationen ueber streetType und rotation aus dem State lesen kann, muss der code unterhalb angepasst werden
-  cell.style.backgroundImage = "url(/src/assets/img/cross-road.svg)";
+  cell.style.backgroundImage = "url(/assets/img/cross-road.svg)";
 }
 
 /**
@@ -185,7 +204,7 @@ function onEndHover(x: number, y: number): void {
  */
 function stateToGrid(): void {
   const table = document.getElementById("gridTable") as HTMLTableElement;
-  for (const street of streets) {
+  for (const street of streetsState.streets) {
     const cell = table.rows[street.posX - 1].cells[street.posY - 1];
     setCellBackgroundStyle(cell, street);
   }
@@ -209,25 +228,6 @@ function setCellBackgroundStyle(
   }
 }
 
-/**
- * //TODO
- * Diese Methode ist nur zum testen gedacht, um zu sehen, ob Strassen richtig aus dem state geloescht werden.
- * Sie wird entfernt, sobald der Strassentyp und die Rotation ueber einen weiteren State ausgelesen werden koennen.
- * Dann wird das loeschen der Zelle ueber die cellClicked Methode gemacht.
- */
-function clearCell(posX: number, posY: number): void {
-  logger.log("clearCell aufgerufen!");
-  let neuerInput: IStreetInformation = {
-    streetType: "delete",
-    rotation: 90,
-    posX: posX,
-    posY: posY,
-  };
-  const table = document.getElementById("gridTable") as HTMLTableElement;
-  updateStreetState(neuerInput);
-  const cell = table.rows[posX - 1].cells[posY - 1];
-  cell.style.backgroundImage = "";
-}
 /*
     two EventListeners on the wheel-scrool to prevent the default browser functionalities and
     instead scale the component independently with CSS, so no other ui parts are effected.

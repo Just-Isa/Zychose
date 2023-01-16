@@ -31,28 +31,26 @@ public class RoomController {
    * @param roomNumber Room on which the changes occured
    */
   @MessageMapping("/topic/room/{roomNumber}")
-  public void roomTopic(@Payload BackendOperation operation, @DestinationVariable int roomNumber) {
+  public void roomTopic(
+      @Payload BackendRoomMessage frontendRoom, @DestinationVariable int roomNumber) {
     // saves the jython script to the room
-    // this.roomService.saveScriptToRoom(test);
-    switch (operation) {
-      case CREATE:
-        break;
-      case DELETE:
-        break;
-      case UPDATE:
-        Room room = this.roomBoxService.getSpecificRoom(roomNumber);
-
-        backservice.sendRoom(
-            "room/" + roomNumber,
-            BackendOperation.UPDATE,
-            BackendRoomMessage.from(
-                room.getRoomName(),
-                room.getRoomNumber(),
-                room.getUserList(),
-                room.getJythonScript()));
-
-        break;
-    }
+    Room backendRoom = this.roomBoxService.getSpecificRoom(roomNumber);
+    this.roomService.updateRoom(
+        backendRoom,
+        frontendRoom.jythonScript(),
+        frontendRoom.roomMap(),
+        frontendRoom.roomName(),
+        frontendRoom.roomNumber(),
+        frontendRoom.userList());
+    backservice.sendRoom(
+        "room/" + roomNumber,
+        BackendOperation.UPDATE,
+        BackendRoomMessage.from(
+            backendRoom.getRoomName(),
+            backendRoom.getRoomNumber(),
+            backendRoom.getUserList(),
+            backendRoom.getJythonScript(),
+            backendRoom.getRoomMap()));
   }
 
   /**
