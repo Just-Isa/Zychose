@@ -6,7 +6,6 @@ import {
   getSessionIDFromCookie,
   checkIfSessionIDCookieExists,
 } from "@/helpers/SessionIDHelper";
-import { checkStompConnect, stompErrors, stompPublishData } from "./stompFunc";
 
 const webSocketUrl = `ws://${window.location.host}/stompbroker`;
 const publishUserStompClient = new Client({ brokerURL: webSocketUrl });
@@ -50,8 +49,15 @@ export function useUser() {
  */
 function publishUser(operator: string, user: IUser) {
   const DEST = "/topic/user";
-  checkStompConnect(publishUserStompClient);
-  stompErrors(publishUserStompClient);
+  if (!publishUserStompClient.connected) {
+    publishUserStompClient.activate();
+  }
+  publishUserStompClient.onWebSocketError = (event) => {
+    console.error("WS-error", JSON.stringify(event)); /* WS-Error */
+  };
+  publishUserStompClient.onStompError = (frame) => {
+    console.error("STOMP-error", JSON.stringify(frame)); /* STOMP-Error */
+  };
   publishUserStompClient.onConnect = () => {
     try {
       publishUserStompClient.publish({
@@ -60,7 +66,7 @@ function publishUser(operator: string, user: IUser) {
         body: JSON.stringify(user),
       });
     } catch (err) {
-      console.error("Error while Publishing User! ", err);
+      console.error("Error while publishing user! ", err);
     }
   };
 }
@@ -73,9 +79,24 @@ function publishUser(operator: string, user: IUser) {
  */
 function publishMouse(mouse: IMouse, roomNumber: number) {
   const DEST = "/topic/mouse/" + roomNumber;
-  checkStompConnect(publishMouseStompClient);
-  stompErrors(publishMouseStompClient);
-  stompPublishData(publishMouseStompClient, DEST, mouse);
+  if (!publishMouseStompClient.connected) {
+    publishMouseStompClient.activate();
+  }
+  publishMouseStompClient.onWebSocketError = (event) => {
+    console.error("WS-error", JSON.stringify(event)); /* WS-Error */
+  };
+  publishMouseStompClient.onStompError = (frame) => {
+    console.error("STOMP-error", JSON.stringify(frame)); /* STOMP-Error */
+  };
+  try {
+    publishMouseStompClient.publish({
+      destination: DEST,
+      headers: {},
+      body: JSON.stringify(mouse),
+    });
+  } catch (err) {
+    console.error("Error while publishing mouse", err);
+  }
 }
 
 /** Subscribes to rooms mouseTopic
@@ -85,8 +106,16 @@ function publishMouse(mouse: IMouse, roomNumber: number) {
 function receiveMouse(roomNumber: number) {
   const DEST = "/topic/mouse/" + roomNumber;
 
-  checkStompConnect(receiveMouseStompClient);
-  stompErrors(receiveMouseStompClient);
+  if (!receiveMouseStompClient.connected) {
+    receiveMouseStompClient.activate();
+  }
+  receiveMouseStompClient.onWebSocketError = (event) => {
+    console.error("WS-error", JSON.stringify(event)); /* WS-Error */
+  };
+  receiveMouseStompClient.onStompError = (frame) => {
+    console.error("STOMP-error", JSON.stringify(frame)); /* STOMP-Error */
+  };
+
   receiveMouseStompClient.onConnect = () => {
     receiveMouseStompClient.subscribe(DEST, (message) => {
       mouseState.mouse = JSON.parse(message.body);

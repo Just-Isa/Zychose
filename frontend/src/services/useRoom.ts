@@ -4,7 +4,6 @@ import { Room, type IRoom } from "./IRoom";
 import { useRoomBox } from "./useRoomList";
 import { MessageOperator } from "./MessageOperators";
 import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
-import { checkStompConnect, stompErrors, stompPublishData } from "./stompFunc";
 
 const webSocketUrl = `ws://${window.location.host}/stompbroker`;
 const receiveRoomStompClient = new Client({ brokerURL: webSocketUrl });
@@ -48,8 +47,15 @@ const { getRoomList } = useRoomBox();
  */
 function receiveRoom() {
   const DEST = "/topic/room/" + roomState.room.roomNumber;
-  checkStompConnect(receiveRoomStompClient);
-  stompErrors(receiveRoomStompClient);
+  if (!receiveRoomStompClient.connected) {
+    receiveRoomStompClient.activate();
+  }
+  receiveRoomStompClient.onWebSocketError = (event) => {
+    console.error("WS-error", JSON.stringify(event)); /* WS-Error */
+  };
+  receiveRoomStompClient.onStompError = (frame) => {
+    console.error("STOMP-error", JSON.stringify(frame)); /* STOMP-Error */
+  };
   receiveRoomStompClient.onConnect = () => {
     receiveRoomStompClient.subscribe(DEST, (message) => {
       roomState.room = JSON.parse(message.body);
@@ -61,14 +67,30 @@ function receiveRoom() {
 /** Publishes Room to the rooms specific topic
  *
  * @param operator Operation type
- * @param user User that is to be published
+ * @param roomNumber Roomnumber
  */
 function updateRoom(operator: MessageOperator, roomNumber: number) {
   const DEST = "/topic/room/" + roomNumber;
-  checkStompConnect(updateRoomStompClient);
-  stompErrors(updateRoomStompClient);
+  if (!updateRoomStompClient.connected) {
+    updateRoomStompClient.activate();
+  }
+
+  updateRoomStompClient.onWebSocketError = (event) => {
+    console.error("WS-error", JSON.stringify(event)); /* WS-Error */
+  };
+  updateRoomStompClient.onStompError = (frame) => {
+    console.error("STOMP-error", JSON.stringify(frame)); /* STOMP-Error */
+  };
   updateRoomStompClient.onConnect = () => {
-    stompPublishData(updateRoomStompClient, DEST, operator);
+    try {
+      updateRoomStompClient.publish({
+        destination: DEST,
+        headers: {},
+        body: JSON.stringify(operator),
+      });
+    } catch (err) {
+      console.error("Error while publishing room", err);
+    }
   };
 }
 
