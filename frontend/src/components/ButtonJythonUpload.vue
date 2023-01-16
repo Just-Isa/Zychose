@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { logger } from "@/helpers/ConsoleLoggingManager";
+import { logger } from "@/helpers/Logger";
 import { getRoomList } from "@/services/useRoomList";
 import { reactive } from "vue";
 

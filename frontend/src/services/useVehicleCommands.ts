@@ -1,4 +1,4 @@
-import { logger } from "@/helpers/ConsoleLoggingManager";
+import { logger } from "@/helpers/Logger";
 import type { Direction } from "@/services/keyInputHandler";
 import { Client } from "@stomp/stompjs";
 

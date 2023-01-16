@@ -6,7 +6,7 @@ import {
   getSessionIDFromCookie,
   checkIfSessionIDCookieExists,
 } from "@/helpers/SessionIDHelper";
-import { logger } from "@/helpers/ConsoleLoggingManager";
+import { logger } from "@/helpers/Logger";
 
 export interface IMouseState {
   mouse: IMouse;

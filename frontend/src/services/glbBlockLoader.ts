@@ -1,4 +1,4 @@
-import { logger } from "@/helpers/ConsoleLoggingManager";
+import { logger } from "@/helpers/Logger";
 import type * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { reactive } from "vue";

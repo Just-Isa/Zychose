@@ -4,7 +4,7 @@ import { Room, type IRoom } from "./IRoom";
 import { useRoomBox } from "./useRoomList";
 import { MessageOperator } from "./MessageOperators";
 import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
-import { logger } from "@/helpers/ConsoleLoggingManager";
+import { logger } from "@/helpers/Logger";
 
 export interface IRoomState {
   room: IRoom;

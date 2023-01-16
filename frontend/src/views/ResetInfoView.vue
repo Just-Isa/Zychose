@@ -6,7 +6,7 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import { deleteSessionId } from "@/helpers/SessionIDHelper";
-import { logger } from "@/helpers/ConsoleLoggingManager";
+import { logger } from "@/helpers/Logger";
 
 onMounted(() => {
   deleteSessionId();

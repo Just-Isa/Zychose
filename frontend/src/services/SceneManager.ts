@@ -6,7 +6,7 @@ import { useCamera } from "./CameraManager";
 import { useVehicle } from "./use3DVehicle";
 import type { VehicleCameraContext } from "./VehicleCamera";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
-import { logger } from "@/helpers/ConsoleLoggingManager";
+import { logger } from "@/helpers/Logger";
 
 const blockSize = 16;
 const { camState, switchCamera } = useCamera();

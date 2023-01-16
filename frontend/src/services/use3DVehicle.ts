@@ -1,4 +1,4 @@
-import { logger } from "@/helpers/ConsoleLoggingManager";
+import { logger } from "@/helpers/Logger";
 import { Client } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
 import { Vehicle, type IVehicle } from "./IVehicle";
