@@ -36,56 +36,56 @@ const streetTypesState = reactive<IStreetTypes>({
       0,
       [0, 90],
       ["car"],
-      "src/assets/img/road_straight.png"
+      "/assets/img/road_straight.png"
     ),
     new StreetBlock(
       "road_t",
       0,
       [0, 90, 180, -90],
       ["car"],
-      "src/assets/img/road_t.png"
+      "/assets/img/road_t.png"
     ),
     new StreetBlock(
       "road_curve",
       0,
       [0, 90, 180, -90],
       ["car"],
-      "src/assets/img/road_curve.png"
+      "/assets/img/road_curve.png"
     ),
     new StreetBlock(
       "road_cross",
       0,
       [0],
       ["car"],
-      "src/assets/img/road_cross.png"
+      "/assets/img/road_cross.png"
     ),
     new StreetBlock(
       "sidewalk_straight",
       0,
       [0, 90],
       ["bike"],
-      "src/assets/img/sidewalk_straight.png"
+      "/assets/img/sidewalk_straight.png"
     ),
     new StreetBlock(
       "sidewalk_t",
       0,
       [0, 90, 180, -90],
       ["bike"],
-      "src/assets/img/sidewalk_t.png"
+      "/assets/img/sidewalk_t.png"
     ),
     new StreetBlock(
       "sidewalk_curve",
       0,
       [0, 90, 180, -90],
       ["bike"],
-      "src/assets/img/sidewalk_curve.png"
+      "/assets/img/sidewalk_curve.png"
     ),
     new StreetBlock(
       "sidewalk_cross",
       0,
       [0],
       ["bike"],
-      "src/assets/img/sidewalk_cross.png"
+      "/assets/img/sidewalk_cross.png"
     ),
   ],
   // Active tab is set to car at first initialisation
