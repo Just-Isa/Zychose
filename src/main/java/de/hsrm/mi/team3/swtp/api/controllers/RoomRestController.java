@@ -51,10 +51,10 @@ public class RoomRestController {
   @GetMapping(value = "/room/map/{number}", produces = MediaType.APPLICATION_JSON_VALUE)
   public String getRoomMap(@PathVariable("number") String roomNumber) {
     Room room = roomBoxService.getSpecificRoom(Integer.parseInt(roomNumber));
-    if (room.getRoomMap().isEmpty() || room.getRoomMap().isBlank()) {
+    if (room.getRoomMapString().isEmpty() || room.getRoomMapString().isBlank()) {
       return "[]";
     }
-    return room.getRoomMap();
+    return room.getRoomMapString();
   }
 
   /**
