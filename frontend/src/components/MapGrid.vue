@@ -11,7 +11,7 @@
       id="gridTable"
       class="bg-[#008000] w-full border-spacing-0 border-separate table-fixed"
       @mousedown="startDragThroughGrid($event)"
-      @mouseup="stopDragThroughGrid($event)"
+      @mouseup="stopDragThroughGrid()"
       @mousemove="dragToNewPosition($event)"
     >
       <tr
@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import { useStreets, type IStreetInformation } from "../services/useStreets";
 import swtpConfigJSON from "../../../swtp.config.json";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted } from "vue";
 import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
 //import { Mouse } from "@/services/IMouse";
@@ -96,7 +96,7 @@ function startDragThroughGrid(event: MouseEvent) {
   }
 }
 
-function stopDragThroughGrid(event: MouseEvent) {
+function stopDragThroughGrid() {
   initX = currX;
   initY = currY;
   isDragging = false;
@@ -320,10 +320,4 @@ document.addEventListener(
   },
   { passive: false }
 );
-
-function dragThroughWindowView(
-  grid: HTMLTableElement,
-  startX: number,
-  startY: number
-) {}
 </script>
