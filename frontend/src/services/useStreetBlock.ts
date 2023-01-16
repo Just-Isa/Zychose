@@ -10,8 +10,8 @@ const stateStreetBlock = reactive({
     name: "",
     currentRotation: 0,
     svgPath: "",
-    possibleRotations: [0],
-    possibleVehicleTypes: [""],
+    possibleRotations: new Array<number>(),
+    possibleVehicleTypes: new Array<string>(),
   },
 });
 
