@@ -7,7 +7,7 @@ interface NullConsole {
 
 let logger: Console | NullConsole = {} as Console;
 
-if (jsonconfig.showConsoleOutput) {
+if (jsonconfig.debugConsole) {
   logger = window.console;
 } else {
   logger = {

@@ -27,12 +27,12 @@ function receiveVehicle() {
   stompClient.onWebSocketError = () => {
     vehicleState.errorMessage = "WS-error";
     logger.log("WS-error"); /* WS-Error */
-    location.href = "/400";
+    location.href = "/500";
   };
   stompClient.onStompError = () => {
     vehicleState.errorMessage = "STOMP-ERROR";
     logger.log("STOMP-error"); /* STOMP-Error */
-    location.href = "/400";
+    location.href = "/500";
   };
   stompClient.onConnect = () => {
     stompClient.subscribe(DEST, (message) => {

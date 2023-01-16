@@ -77,7 +77,7 @@
     }
   ],
   "gridSize": 100,
-  "showConsoleOutput": false,
+  "debugConsole": false,
   "allVehicleTypes": [
     {
       "name": "car",
