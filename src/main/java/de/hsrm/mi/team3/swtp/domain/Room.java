@@ -14,12 +14,14 @@ public class Room {
   private List<User> userList;
   private String jythonScript;
   private Roadmap roadMap;
+  private String roomMap;
 
   public Room(int roomNumber) {
     this.roomName = "default-name";
     this.roomNumber = roomNumber;
     this.userList = new ArrayList<User>();
     this.jythonScript = "";
+    this.roomMap = "";
   }
 
   public Room(String roomName, int roomNumber) {
@@ -27,6 +29,7 @@ public class Room {
     this.roomNumber = roomNumber;
     this.userList = new ArrayList<User>();
     this.jythonScript = "";
+    this.roomMap = "";
   }
 
   public String getRoomName() {
@@ -67,13 +70,14 @@ public class Room {
 
   public void setRoomMap(String map) {
     this.roadMap = new Roadmap(map);
-  }
-
-  public void setRoomMap(Roadmap existingMap) {
-    this.roadMap = new Roadmap(existingMap);
+    this.roomMap = map;
   }
 
   public Roadmap getRoomMap() {
     return this.roadMap;
+  }
+
+  public void setUserList(List<User> userList) {
+    this.userList = userList;
   }
 }

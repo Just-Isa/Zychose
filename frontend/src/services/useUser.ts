@@ -122,14 +122,6 @@ function receiveMouse(roomNumber: number) {
   stompClient.onConnect = () => {
     stompClient.subscribe(DEST, (message) => {
       mouseState.mouse = JSON.parse(message.body);
-      console.log(
-        "mouse-x: " +
-          mouseState.mouse.x +
-          " mouse-y: " +
-          mouseState.mouse.y +
-          " user: " +
-          mouseState.mouse.sessionID
-      );
     });
   };
   stompClient.activate();
