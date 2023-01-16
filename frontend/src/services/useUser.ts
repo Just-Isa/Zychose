@@ -6,6 +6,7 @@ import {
   getSessionIDFromCookie,
   checkIfSessionIDCookieExists,
 } from "@/helpers/SessionIDHelper";
+import { logger } from "@/helpers/Logger";
 
 export interface IMouseState {
   mouse: IMouse;
@@ -47,13 +48,15 @@ function publishUser(operator: string, user: IUser) {
   const DEST = "/topic/user";
   const userClient = new Client({ brokerURL: webSocketUrl });
   userClient.onWebSocketError = () => {
-    console.log("WS-error"); /* WS-Error */
+    logger.log("WS-error"); /* WS-Error */
+    location.href = "/500";
   };
   userClient.onStompError = () => {
-    console.log("STOMP-error"); /* STOMP-Error */
+    logger.log("STOMP-error"); /* STOMP-Error */
+    location.href = "/500";
   };
   userClient.onConnect = (frame) => {
-    console.log("connected", frame);
+    logger.log("connected", frame);
     try {
       userClient.publish({
         destination: DEST,
@@ -62,7 +65,8 @@ function publishUser(operator: string, user: IUser) {
       });
     } catch (err) {
       // in case of an error
-      console.log("Error while Publishing User! ", err);
+      logger.log("Error while Publishing User! ", err);
+      location.href = "/500";
     }
   };
   userClient.activate();
@@ -82,10 +86,12 @@ function publishMouse(mouse: IMouse, roomNumber: number) {
   const DEST = "/topic/mouse/" + roomNumber;
   const userClient = new Client({ brokerURL: webSocketUrl });
   userClient.onWebSocketError = () => {
-    console.log("WS-error-mouse"); /* WS-Error */
+    logger.log("WS-error-mouse"); /* WS-Error */
+    location.href = "/500";
   };
   userClient.onStompError = () => {
-    console.log("STOMP-error-mouse"); /* STOMP-Error */
+    logger.log("STOMP-error-mouse"); /* STOMP-Error */
+    location.href = "/500";
   };
   userClient.onConnect = () => {
     try {
@@ -96,7 +102,8 @@ function publishMouse(mouse: IMouse, roomNumber: number) {
       });
     } catch (fehler) {
       // In case of an error
-      console.log("Es gab ein fehler", fehler);
+      logger.log("Es gab ein fehler", fehler);
+      location.href = "/500";
     }
   };
   userClient.activate();
@@ -114,18 +121,28 @@ function receiveMouse(roomNumber: number) {
   const DEST = "/topic/mouse/" + roomNumber;
   const stompClient = new Client({ brokerURL: WebSocketUrl });
   stompClient.onWebSocketError = () => {
-    console.log("WS-error"); /* WS-Error */
+    logger.log("WS-error"); /* WS-Error */
+    location.href = "/500";
   };
   stompClient.onStompError = () => {
-    console.log("STOMP-error"); /* STOMP-Error */
+    logger.log("STOMP-error"); /* STOMP-Error */
+    location.href = "/500";
   };
   stompClient.onConnect = () => {
     stompClient.subscribe(DEST, (message) => {
       mouseState.mouse = JSON.parse(message.body);
+      logger.log(
+        "mouse-x: " +
+          mouseState.mouse.x +
+          " mouse-y: " +
+          mouseState.mouse.y +
+          " user: " +
+          mouseState.mouse.sessionID
+      );
     });
   };
   stompClient.activate();
-  console.log("Activated: " + DEST);
+  logger.log("Activated: " + DEST);
   stompClient.onDisconnect = () => {
     stompClient.unsubscribe(DEST);
   };

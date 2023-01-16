@@ -12,6 +12,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from "@/helpers/Logger";
 import { getRoomList } from "@/services/useRoomList";
 import { reactive } from "vue";
 
@@ -36,7 +37,7 @@ function onChangeFile(event: any) {
       files = files.concat(target.files[0]);
       submitForm(props.roomNumber);
     } else {
-      console.log("Only python or jython files allowed!");
+      logger.log("Only python or jython files allowed!");
     }
   }
 }

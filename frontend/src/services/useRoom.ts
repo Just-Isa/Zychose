@@ -3,6 +3,7 @@ import { reactive, readonly } from "vue";
 import { Room, type IRoom } from "./IRoom";
 import { useRoomBox } from "./useRoomList";
 import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
+import { logger } from "@/helpers/Logger";
 
 export interface IRoomState {
   room: IRoom;
@@ -46,14 +47,17 @@ function receiveRoom() {
   const DEST = "/topic/room/" + roomState.room.roomNumber;
   const stompClient = new Client({ brokerURL: webSocketUrl });
   stompClient.onWebSocketError = () => {
-    console.log("WS-error"); /* WS-Error */
+    logger.log("WS-error"); /* WS-Error */
+    location.href = "/500";
   };
   stompClient.onStompError = () => {
-    console.log("STOMP-error"); /* STOMP-Error */
+    logger.log("STOMP-error"); /* STOMP-Error */
+    location.href = "/500";
   };
   stompClient.onConnect = () => {
     stompClient.subscribe(DEST, (message) => {
       roomState.room = JSON.parse(message.body);
+      logger.log(roomState.room);
     });
   };
   stompClient.activate();
@@ -72,12 +76,15 @@ function updateRoom(roomNumber: number) {
   const DEST = "/topic/room/" + roomNumber;
   const roomClient = new Client({ brokerURL: webSocketUrl });
   roomClient.onWebSocketError = () => {
-    console.log("WS-error"); /* WS-Error */
+    logger.log("WS-error"); /* WS-Error */
+    location.href = "/500";
   };
   roomClient.onStompError = () => {
-    console.log("STOMP-error"); /* STOMP-Error */
+    logger.log("STOMP-error"); /* STOMP-Error */
+    location.href = "/500";
   };
-  roomClient.onConnect = () => {
+  roomClient.onConnect = (frame) => {
+    logger.log("connected", frame);
     try {
       roomClient.publish({
         destination: DEST,
@@ -86,7 +93,8 @@ function updateRoom(roomNumber: number) {
       });
     } catch (err) {
       // in case of an error
-      console.log("Error while Publishing User! ", err);
+      logger.log("Error while Publishing User! ", err);
+      location.href = "/500";
     }
   };
   roomClient.activate();

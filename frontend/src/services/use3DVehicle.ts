@@ -1,3 +1,4 @@
+import { logger } from "@/helpers/Logger";
 import { Client } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
 import { Vehicle, type IVehicle } from "./IVehicle";
@@ -25,11 +26,13 @@ function receiveVehicle() {
   const stompClient = new Client({ brokerURL: webSocketUrl });
   stompClient.onWebSocketError = () => {
     vehicleState.errorMessage = "WS-error";
-    console.log("WS-error"); /* WS-Error */
+    logger.log("WS-error"); /* WS-Error */
+    location.href = "/500";
   };
   stompClient.onStompError = () => {
     vehicleState.errorMessage = "STOMP-ERROR";
-    console.log("STOMP-error"); /* STOMP-Error */
+    logger.log("STOMP-error"); /* STOMP-Error */
+    location.href = "/500";
   };
   stompClient.onConnect = () => {
     stompClient.subscribe(DEST, (message) => {
