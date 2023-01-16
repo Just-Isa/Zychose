@@ -2,6 +2,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* Sämtliches CSS nur dafür da, um Scrollbars auszublenden.*/
 
 body {
   scrollbar-width: none;

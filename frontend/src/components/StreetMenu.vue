@@ -19,7 +19,7 @@
       </div>
 
       <BullDozerBtn
-        cursorSrc="src/assets/img/bulldozer-cursor.svg"
+        cursorSrc="/assets/img/bulldozer-cursor.svg"
         class="pointer-events-auto"
       />
     </div>
@@ -33,7 +33,7 @@ import StreetMenuTab from "./StreetMenuTab.vue";
 import { useStreetBlock } from "@/services/useStreetBlock";
 import swtpConfigJSON from "../../../swtp.config.json";
 import { computed } from "vue";
-import type { StreetBlock } from "@/services/IStreetBlock";
+import { StreetBlock } from "@/services/IStreetBlock";
 
 const { changeCurrentTab, menuTabState } = useStreetBlock();
 
@@ -46,17 +46,16 @@ const filteredStreetBlocks = computed(() => {
   let filtered = streetTypes.filter((street) =>
     street.vehicleTypes.includes(menuTabState.currentActiveTab)
   );
-  filtered.forEach((street) => {
-    let streetBlock: StreetBlock = {
-      name: street.name,
-      currentRotation: 0,
-      svgPath: street.svgPath,
-      possibleRotations: street.possibleRotations,
-      possibleVehicleTypes: street.vehicleTypes,
-    };
-    console.log(streetBlock.possibleRotations);
-    streetBlocks.push(streetBlock);
-  });
+  streetBlocks = filtered.map(
+    (street) =>
+      new StreetBlock(
+        street.name,
+        0,
+        street.svgPath,
+        street.possibleRotations,
+        street.vehicleTypes
+      )
+  );
   return streetBlocks;
 });
 </script>

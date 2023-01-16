@@ -2,8 +2,8 @@
   <div
     class="tile-ele m-1.5 inline-block hover:cursor-pointer h-20 w-20 bg-street-menu-tile-bg-turquoise rounded-lg"
     :class="
-      prop.currentBlock.name == activeBlock.streetBlock.name
-        ? 'active outline bg-active-block-turquoise outline-white outline-[3px]'
+      prop.currentBlock.name === activeBlock.streetBlock.name
+        ? 'active outline bg-active-block-turquoise outline-white -outline-offset-2'
         : 'inactive'
     "
   >
@@ -42,7 +42,7 @@ const {
  * @param type selected StreetBlock
  */
 function changeActiveStreetBlock(type: StreetBlock) {
-  if (type.name == activeBlock.streetBlock.name && !bulldozerActive.isActive) {
+  if (type.name === activeBlock.streetBlock.name && !bulldozerActive.isActive) {
     const block = document.getElementById(prop.currentBlock.name);
     if (block) {
       let nextRotIndex =

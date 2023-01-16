@@ -13,36 +13,24 @@
     </div>
     <div>
       <a
-        @click="thereAndBackAgain(-1 * streetBlockSize)"
+        @click="scrollByGivenValue(-1 * streetBlockSize)"
         class="pointer-events-auto absolute -mt-8 -ml-[0.45rem]"
       >
-        <svg
-          width="512"
-          height="512"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-          class="absolute h-7 w-7 fill-street-menu-tile-bg-turquoise"
-        >
-          <path
-            d="M18,15.5a1,1,0,0,1-.71-.29l-4.58-4.59a1,1,0,0,0-1.42,0L6.71,15.21a1,1,0,0,1-1.42-1.42L9.88,9.21a3.06,3.06,0,0,1,4.24,0l4.59,4.58a1,1,0,0,1,0,1.42A1,1,0,0,1,18,15.5Z"
-          />
-        </svg>
+        <img
+          src="/assets/img/arrow-pictogram.svg"
+          alt="arrow-up"
+          class="h-7 w-7 rotate-180"
+        />
       </a>
       <a
-        @click="thereAndBackAgain(streetBlockSize)"
+        @click="scrollByGivenValue(streetBlockSize)"
         class="pointer-events-auto absolute -ml-[0.45rem]"
       >
-        <svg
-          width="512"
-          height="512"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-          class="absolute h-7 w-7 fill-street-menu-tile-bg-turquoise"
-        >
-          <path
-            d="m18.71 8.21a1 1 0 0 0-1.42 0l-4.58 4.58a1 1 0 0 1-1.42 0l-4.58-4.58a1 1 0 0 0-1.42 0 1 1 0 0 0 0 1.41l4.59 4.59a3 3 0 0 0 4.24 0l4.59-4.59a1 1 0 0 0 0-1.41z"
-          />
-        </svg>
+        <img
+          src="/assets/img/arrow-pictogram.svg"
+          alt="arrow-down"
+          class="h-7 w-7"
+        />
       </a>
     </div>
   </div>
@@ -61,6 +49,7 @@ const props = defineProps<{
 }>();
 
 let scrollHeight = ref(0);
+// Größe des StreetBlocks - ergo Reihenhöhe beim Scrollen.
 const streetBlockSize = 92;
 const maxScrollHeight =
   Math.ceil(props.types.length / 4) * streetBlockSize - streetBlockSize;
@@ -80,7 +69,7 @@ watch(menuTabState, () => {
   }
 });
 
-function thereAndBackAgain(additionalInput: number) {
+function scrollByGivenValue(additionalInput: number) {
   if (scrollHeight.value == maxScrollHeight) {
     if (additionalInput < 0) {
       scrollHeight.value += additionalInput;

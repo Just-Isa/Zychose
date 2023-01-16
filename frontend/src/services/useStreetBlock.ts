@@ -22,7 +22,7 @@ const bulldozerActive = reactive({
 const vehicleTypes = swtpConfigJSON.allVehicleTypes;
 
 const menuTabState = reactive({
-  // Active tab is set to car at first initialisation
+  // Active tab is set to first entry in SWTPConfig at first initialisation
   currentActiveTab: vehicleTypes[0].name,
   currentTabChanged: false,
 });
@@ -52,8 +52,8 @@ export function useStreetBlock() {
    * @param s currently selected StreetBlock
    * @param d new rotation
    */
-  function changeRotation(d: number) {
-    stateStreetBlock.streetBlock.currentRotation = d;
+  function changeRotation(degree: number) {
+    stateStreetBlock.streetBlock.currentRotation = degree;
   }
 
   return {

@@ -10,6 +10,8 @@
     <table
       id="gridTable"
       class="bg-[#008000] w-full border-spacing-0 border-separate table-fixed max-h-full overflow-hidden"
+      @wheel="zoomOnWheel($event)"
+      @wheel.prevent
     >
       <tr
         v-for="row in checkedGridSize"
@@ -38,7 +40,7 @@
 <script setup lang="ts">
 import { useStreets, type IStreetInformation } from "../services/useStreets";
 import swtpConfigJSON from "../../../swtp.config.json";
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
 //import { Mouse } from "@/services/IMouse";
@@ -49,44 +51,6 @@ import router from "@/router";
 const props = defineProps<{
   gridSize: any;
 }>();
-
-let dragging = false;
-
-onMounted(() => {
-  document.addEventListener("contextmenu", (event) => {
-    event.preventDefault();
-  });
-
-  const entireDoc = document.documentElement;
-  const gridTable = document.getElementById("gridTable") as HTMLTableElement;
-
-  // xCenter: ges.Breite, scroll() geht in obere linke Ecke --> Breite des Fenster/2 nochmal subtrahieren, um in der Mitte zu sein
-  let xCenter = gridTable.offsetWidth / 2 - window.innerWidth / 2;
-  let yCenter = gridTable.offsetHeight / 2 - window.innerHeight / 2;
-
-  entireDoc.scroll(xCenter, yCenter);
-  dragThroughWindowView(gridTable, xCenter, yCenter);
-
-  /*
-    two EventListeners on the wheel-scrool to prevent the default browser functionalities and
-    instead scale the component independently with CSS, so no other ui parts are effected.
-*/
-  let scale = 1;
-  gridTable.addEventListener(
-    "wheel",
-    (event) => {
-      event.preventDefault();
-      scale += event.deltaY * -0.01;
-      scale = Math.min(Math.max(1, scale), 4);
-      const element = document.getElementById("wrapper");
-      if (element != null) {
-        element.classList.add("origin-left-top");
-        element.style.transform = `scale(${scale})`; // muss direkt über style geändert werden, lösung mit tailwind nicht möglich
-      }
-    },
-    { passive: false }
-  );
-});
 
 /*
   //TODO werte für 100 und 20 vllt auch in die config --> können dort aber auch so angepasst werden, dass bullshit drin ist
@@ -161,6 +125,20 @@ function changeTo3DView() {
     router.push("/3d");
   }, 800);
 }
+
+let scale = 1;
+function zoomOnWheel(event: WheelEvent) {
+  event.preventDefault();
+  scale += event.deltaY * -0.01;
+  scale = Math.min(Math.max(1, scale), 4);
+  const element = document.getElementById("wrapper");
+
+  if (element) {
+    element.classList.add("origin-left-top");
+    element.style.transform = `scale(${scale})`; // muss direkt über style geändert werden, lösung mit tailwind nicht möglich
+  }
+}
+
 /**
  * dragOver function of the drag&drop process
  * @param {number} posX position on the x axis while dragging over the grid
@@ -266,61 +244,5 @@ function clearCell(posX: number, posY: number): void {
   updateStreetState(neuerInput);
   const cell = table.rows[posX - 1].cells[posY - 1];
   cell.style.backgroundImage = "";
-}
-
-function dragThroughWindowView(
-  grid: HTMLTableElement,
-  startX: number,
-  startY: number
-) {
-  let currX: number;
-  let currY: number;
-  let initX: number;
-  let initY: number;
-  let offsetX = startX;
-  let offsetY = startY;
-  let alreadyDragged = false;
-
-  grid.addEventListener("mousedown", (event: MouseEvent) => {
-    event.preventDefault();
-
-    if (event.button === 2) {
-      if (!alreadyDragged) {
-        // Startposition
-        initX = Math.abs(offsetX + event.clientX);
-        initY = Math.abs(offsetY + event.clientY);
-      } else {
-        initX = Math.abs(event.clientX - offsetX);
-        initY = Math.abs(event.clientY - offsetY);
-      }
-      dragging = true;
-    }
-  });
-
-  grid.addEventListener("mouseup", () => {
-    initX = currX;
-    initY = currY;
-    dragging = false;
-  });
-
-  grid.addEventListener("mousemove", (event: MouseEvent) => {
-    if (dragging) {
-      if (!alreadyDragged) {
-        currX = event.clientX + initX;
-        currY = event.clientY + initY;
-        alreadyDragged = true;
-      } else {
-        currX = event.clientX - initX;
-        currY = event.clientY - initY;
-      }
-
-      offsetX = currX;
-      offsetY = currY;
-
-      const entireDoc = document.documentElement;
-      entireDoc.scrollTop = -1 * currY;
-      entireDoc.scrollLeft = -1 * currX;
-    }
-  });
 }
 </script>

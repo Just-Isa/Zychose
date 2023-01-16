@@ -54,80 +54,6 @@
         270
       ]
     },
-
-
-
-
-
-
-
-
-
-
-
-
-    {
-      "name": "poopoo-road",
-      "svgPath": "/assets/img/poopooo-road.svg",
-      "glbPath": "",
-      "vehicleTypes": [
-        "car"
-      ],
-      "possibleRotations": []
-    },
-
-
-    {
-      "name": "straight-road",
-      "svgPath": "/assets/img/straight-road.svg",
-      "glbPath": "/assets/models/straight-road.glb",
-      "vehicleTypes": [
-        "car"
-      ],
-      "possibleRotations": [
-        0,
-        90
-      ]
-    },{
-      "name": "t-road",
-      "svgPath": "/assets/img/t-road.svg",
-      "glbPath": "",
-      "vehicleTypes": [
-        "bicycle"
-      ],
-      "possibleRotations": [
-        0,
-        90,
-        180,
-        270
-      ]
-    },{
-      "name": "t-road",
-      "svgPath": "/assets/img/t-road.svg",
-      "glbPath": "",
-      "vehicleTypes": [
-        "bicycle"
-      ],
-      "possibleRotations": [
-        0,
-        90,
-        180,
-        270
-      ]
-    },
-    {
-      "name": "peepee-road",
-      "svgPath": "/assets/img/peepee-road.svg",
-      "glbPath": "",
-      "vehicleTypes": [
-        "bicycle"
-      ],
-      "possibleRotations": []
-    },
-
-
-
-
     {
       "name": "sidewalk-straight",
       "svgPath": "",
@@ -155,21 +81,21 @@
   "vehicleTabs":[
     {
       "name": "car",
-      "iconPath": "/src/assets/img/car-pictogram.svg"
+      "iconPath": "/assets/img/car-pictogram.svg"
     },
     {
       "name": "bicycle",
-      "iconPath": "/src/assets/img/bicycle-pictogram.svg"
+      "iconPath": "/assets/img/bicycle-pictogram.svg"
     }
   ],
   "allVehicleTypes": [
     {
       "name": "car",
-      "iconPath": "/src/assets/img/car.png"
+      "iconPath": "/assets/img/car.png"
     },
     {
       "name": "bicycle",
-      "iconPath": "/src/assets/img/bicycle.png"
+      "iconPath": "/assets/img/bicycle.png"
     }
   ]
 }
