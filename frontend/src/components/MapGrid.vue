@@ -10,6 +10,9 @@
     <table
       id="gridTable"
       class="bg-[#008000] w-full border-spacing-0 border-separate table-fixed"
+      @mousedown="startDragThroughGrid($event)"
+      @mouseup="stopDragThroughGrid($event)"
+      @mousemove="dragToNewPosition($event)"
     >
       <tr
         v-for="row in checkedGridSize"
@@ -38,7 +41,7 @@
 <script setup lang="ts">
 import { useStreets, type IStreetInformation } from "../services/useStreets";
 import swtpConfigJSON from "../../../swtp.config.json";
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
 //import { Mouse } from "@/services/IMouse";
@@ -50,7 +53,15 @@ const props = defineProps<{
   gridSize: any;
 }>();
 
-let dragging = false;
+let isDragging = false;
+let alreadyDragged = false;
+
+let currX: number;
+let currY: number;
+let initX: number;
+let initY: number;
+let offsetX = 0;
+let offsetY = 0;
 
 onMounted(() => {
   document.addEventListener("contextmenu", (event) => {
@@ -58,15 +69,58 @@ onMounted(() => {
   });
 
   const entireDoc = document.documentElement;
-  const gridTable = document.getElementById("gridTable") as HTMLTableElement;
+  const grid = document.getElementById("gridTable") as HTMLTableElement;
 
-  // xCenter: ges.Breite, scroll() geht in obere linke Ecke --> Breite des Fenster/2 nochmal subtrahieren, um in der Mitte zu sein
-  let xCenter = gridTable.offsetWidth / 2 - window.innerWidth / 2;
-  let yCenter = gridTable.offsetHeight / 2 - window.innerHeight / 2;
+  // xCenter: ges.Breite --> Breite des Fenster/2 nochmal subtrahieren, um in der Mitte zu sein
+  let xCenter = grid.offsetWidth / 2 - window.innerWidth / 2;
+  let yCenter = grid.offsetHeight / 2 - window.innerHeight / 2;
 
   entireDoc.scroll(xCenter, yCenter);
-  dragThroughWindowView(gridTable, xCenter, yCenter);
+  offsetX = xCenter;
+  offsetY = yCenter;
 });
+
+function startDragThroughGrid(event: MouseEvent) {
+  event.preventDefault();
+
+  if (event.button === 2) {
+    if (!alreadyDragged) {
+      // Startposition
+      initX = offsetX + event.clientX;
+      initY = offsetY + event.clientY;
+    } else {
+      initX = event.clientX - offsetX;
+      initY = event.clientY - offsetY;
+    }
+    isDragging = true;
+  }
+}
+
+function stopDragThroughGrid(event: MouseEvent) {
+  initX = currX;
+  initY = currY;
+  isDragging = false;
+}
+
+function dragToNewPosition(event: MouseEvent) {
+  if (isDragging) {
+    if (!alreadyDragged) {
+      currX = event.clientX + initX;
+      currY = event.clientY + initY;
+      alreadyDragged = true;
+    } else {
+      currX = event.clientX - initX;
+      currY = event.clientY - initY;
+    }
+
+    offsetX = currX;
+    offsetY = currY;
+
+    const entireDoc = document.documentElement;
+    entireDoc.scrollTop = -1 * currY;
+    entireDoc.scrollLeft = -1 * currX;
+  }
+}
 
 /*
   //TODO werte für 100 und 20 vllt auch in die config --> können dort aber auch so angepasst werden, dass bullshit drin ist
@@ -271,55 +325,5 @@ function dragThroughWindowView(
   grid: HTMLTableElement,
   startX: number,
   startY: number
-) {
-  let currX: number;
-  let currY: number;
-  let initX: number;
-  let initY: number;
-  let offsetX = startX;
-  let offsetY = startY;
-  let alreadyDragged = false;
-
-  grid.addEventListener("mousedown", (event: MouseEvent) => {
-    event.preventDefault();
-
-    if (event.button === 2) {
-      if (!alreadyDragged) {
-        // Startposition
-        initX = Math.abs(offsetX + event.clientX);
-        initY = Math.abs(offsetY + event.clientY);
-      } else {
-        initX = Math.abs(event.clientX - offsetX);
-        initY = Math.abs(event.clientY - offsetY);
-      }
-      dragging = true;
-    }
-  });
-
-  grid.addEventListener("mouseup", () => {
-    initX = currX;
-    initY = currY;
-    dragging = false;
-  });
-
-  grid.addEventListener("mousemove", (event: MouseEvent) => {
-    if (dragging) {
-      if (!alreadyDragged) {
-        currX = event.clientX + initX;
-        currY = event.clientY + initY;
-        alreadyDragged = true;
-      } else {
-        currX = event.clientX - initX;
-        currY = event.clientY - initY;
-      }
-
-      offsetX = currX;
-      offsetY = currY;
-
-      const entireDoc = document.documentElement;
-      entireDoc.scrollTop = -1 * currY;
-      entireDoc.scrollLeft = -1 * currX;
-    }
-  });
-}
+) {}
 </script>
