@@ -77,10 +77,6 @@ public class Room {
     return this.roadMap;
   }
 
-  public String getRoomMapString() {
-    return this.roomMap;
-  }
-
   public void setUserList(List<User> userList) {
     this.userList = userList;
   }
