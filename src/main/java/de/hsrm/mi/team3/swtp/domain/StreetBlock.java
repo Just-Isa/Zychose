@@ -1,17 +1,18 @@
 package de.hsrm.mi.team3.swtp.domain;
 
 /**
- * Tile repraesentiert das einzelne Strassenstueck Es beinhaltet alle Informationen, die fuer die
+ * Tile repraesentiert das einzelne Strassenstueck Es beinhaltet alle
+ * Informationen, die fuer die
  * Bot Fahrzeuge relevant sind Tiles landen in der RoadMap
  */
-public class Tile {
+public class StreetBlock {
 
   private String type;
   private int rotation;
   private int[] position;
   private boolean blocked;
 
-  public Tile(String tileType, int rotation, int posX, int posY, boolean blocked) {
+  public StreetBlock(String tileType, int rotation, int posX, int posY, boolean blocked) {
     this.type = tileType;
     this.rotation = rotation;
     this.position[0] = posX;

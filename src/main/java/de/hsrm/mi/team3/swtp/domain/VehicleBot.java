@@ -5,9 +5,9 @@ import java.util.Map;
 public class VehicleBot {
 
   private VehicleBehaviour behaviour = VehicleBehaviour.DEFENSIVE;
-  private int[] currentPos = {0, 0};
+  private int[] currentPos = { 0, 0 };
   private int currentRotation = 0;
-  private Map<VehicleNeighbour, Tile> neighbours;
+  private Map<VehicleNeighbour, StreetBlock> neighbours;
   private Room room;
 
   public VehicleBot(int[] positon, int rotation, VehicleBehaviour behaviour, Room room) {
@@ -25,7 +25,7 @@ public class VehicleBot {
 
   public void moveToNextTile() {
     refreshNeighbours();
-    Tile destination = this.neighbours.get(VehicleNeighbour.VEHICLETOP);
+    StreetBlock destination = this.neighbours.get(VehicleNeighbour.VEHICLETOP);
     if (destination == null) {
       // kein Anschlussteil vorhanden -> U-Wende?
     } else if (destination.isBlocked()) {
@@ -77,9 +77,8 @@ public class VehicleBot {
   }
 
   public void refreshNeighbours() {
-    this.neighbours =
-        this.room
-            .getRoomMap()
-            .getNeighbours(this.currentPos[0], this.currentPos[1], this.currentRotation);
+    this.neighbours = this.room
+        .getRoomMap()
+        .getNeighbours(this.currentPos[0], this.currentPos[1], this.currentRotation);
   }
 }

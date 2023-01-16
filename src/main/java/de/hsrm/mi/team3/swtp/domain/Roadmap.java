@@ -4,12 +4,13 @@ import java.util.EnumMap;
 import java.util.Map;
 
 /**
- * RoadMap wird aus dem roomMap String erstellt und mit Tiles gefuellt, damit nicht bei jeder
+ * RoadMap wird aus dem roomMap String erstellt und mit Tiles gefuellt, damit
+ * nicht bei jeder
  * Bewegung eines Fahrzeugs der String neu analysiert werden muss
  */
 public class Roadmap {
 
-  private Tile[][] tileMap;
+  private StreetBlock[][] tileMap;
 
   public Roadmap(String mapstring) {
     // TODO split String and convert into Tiles
@@ -20,13 +21,13 @@ public class Roadmap {
   }
 
   /**
-   * @param x Koordinate von der die Nachbarn geholt werden sollen
-   * @param y Koordinate von der die Nachbarn geholt werden sollen
+   * @param x        Koordinate von der die Nachbarn geholt werden sollen
+   * @param y        Koordinate von der die Nachbarn geholt werden sollen
    * @param rotation Richtung in welche nach Nachbarn gesucht werden soll
    * @return EnumMap mit den Nachbar Tiles
    */
-  public Map<VehicleNeighbour, Tile> getNeighbours(int x, int y, int rotation) {
-    Map<VehicleNeighbour, Tile> neighbours = new EnumMap<>(VehicleNeighbour.class);
+  public Map<VehicleNeighbour, StreetBlock> getNeighbours(int x, int y, int rotation) {
+    Map<VehicleNeighbour, StreetBlock> neighbours = new EnumMap<>(VehicleNeighbour.class);
     if (rotation == 90) {
       // Drehung nach Bildschirm-rechts
       neighbours.put(VehicleNeighbour.VEHICLELEFT, getTile(x, y - 1));
@@ -63,15 +64,14 @@ public class Roadmap {
   }
 
   public void setTile(String tilename, int rotation, int x, int y, boolean blocked) {
-    this.tileMap[x][y] = new Tile(tilename, rotation, x, y, blocked);
+    this.tileMap[x][y] = new StreetBlock(tilename, rotation, x, y, blocked);
   }
 
-  public void setTile(Tile existingTile) {
-    this.tileMap[existingTile.getTilePosition()[0]][existingTile.getTilePosition()[1]] =
-        existingTile;
+  public void setTile(StreetBlock existingTile) {
+    this.tileMap[existingTile.getTilePosition()[0]][existingTile.getTilePosition()[1]] = existingTile;
   }
 
-  public Tile getTile(int x, int y) {
+  public StreetBlock getTile(int x, int y) {
     if (this.tileMap[x][y] != null) {
       return this.tileMap[x][y];
     } else {
