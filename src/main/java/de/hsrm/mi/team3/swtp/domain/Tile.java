@@ -1,5 +1,10 @@
 package de.hsrm.mi.team3.swtp.domain;
 
+/**
+ * Tile repraesentiert das einzelne Strassenstueck
+ * Es beinhaltet alle Informationen, die fuer die Bot Fahrzeuge relevant sind
+ * Tiles landen in der RoadMap
+ */
 public class Tile {
 
   private String type;
@@ -27,6 +32,10 @@ public class Tile {
     return this.position;
   }
 
+  /*
+   * blocked und isBlocked geben an,
+   * ob sich ein anderes Fahrzeug auf dem Feld befindet
+   */
   public void isBlocked(boolean hasVehicle) {
     this.blocked = hasVehicle;
   }

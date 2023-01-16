@@ -5,7 +5,7 @@ import java.util.Map;
 public class VehicleBot {
 
   private VehicleBehaviour behaviour = VehicleBehaviour.DEFENSIVE;
-  private int[] currentPos = {0, 0};
+  private int[] currentPos = { 0, 0 };
   private int currentRotation = 0;
   private Map<VehicleNeighbour, Tile> neighbours;
   private Room room;
@@ -29,7 +29,7 @@ public class VehicleBot {
     if (destination == null) {
       // kein Anschlussteil vorhanden -> U-Wende?
     } else if (destination.isBlocked()) {
-      // warten
+      // TODO warten
     } else {
       this.currentPos[0] = destination.getTilePosition()[0];
       this.currentPos[1] = destination.getTilePosition()[1];
@@ -77,9 +77,8 @@ public class VehicleBot {
   }
 
   public void refreshNeighbours() {
-    this.neighbours =
-        this.room
-            .getRoomMap()
-            .getNeighbours(this.currentPos[0], this.currentPos[1], this.currentRotation);
+    this.neighbours = this.room
+        .getRoomMap()
+        .getNeighbours(this.currentPos[0], this.currentPos[1], this.currentRotation);
   }
 }

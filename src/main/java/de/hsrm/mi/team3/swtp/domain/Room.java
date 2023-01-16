@@ -6,6 +6,9 @@ import java.util.List;
 /*
  * Room class that is used within the RoomBox.
  * This class has two different constructors.
+ * 
+ * Room enthaelt zusaetzlich zum roomMap String auch eine Instanz der RoadMap (Tile Array),
+ * um globale Sicht der Fahrzeuge zu verhindern
  */
 public class Room {
 
@@ -69,6 +72,7 @@ public class Room {
   }
 
   public void setRoomMap(String map) {
+    // setzt vorerst beide Werte, spaeter anpassen
     this.roadMap = new Roadmap(map);
     this.roomMap = map;
   }

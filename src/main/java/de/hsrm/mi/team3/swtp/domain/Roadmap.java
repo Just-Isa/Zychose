@@ -3,18 +3,30 @@ package de.hsrm.mi.team3.swtp.domain;
 import java.util.EnumMap;
 import java.util.Map;
 
+/**
+ * RoadMap wird aus dem roomMap String erstellt und mit Tiles gefuellt,
+ * damit nicht bei jeder Bewegung eines Fahrzeugs der String neu analysiert
+ * werden muss
+ */
 public class Roadmap {
 
   private Tile[][] tileMap;
 
   public Roadmap(String mapstring) {
-    // split String and convert into Tiles
+    // TODO split String and convert into Tiles
   }
 
   public Roadmap(Roadmap existingMap) {
-    // copy maps
+    // TODO copy maps?
   }
 
+  /**
+   * 
+   * @param x        Koordinate von der die Nachbarn geholt werden sollen
+   * @param y        Koordinate von der die Nachbarn geholt werden sollen
+   * @param rotation Richtung in welche nach Nachbarn gesucht werden soll
+   * @return EnumMap mit den Nachbar Tiles
+   */
   public Map<VehicleNeighbour, Tile> getNeighbours(int x, int y, int rotation) {
     Map<VehicleNeighbour, Tile> neighbours = new EnumMap<>(VehicleNeighbour.class);
     if (rotation == 90) {
@@ -57,8 +69,7 @@ public class Roadmap {
   }
 
   public void setTile(Tile existingTile) {
-    this.tileMap[existingTile.getTilePosition()[0]][existingTile.getTilePosition()[1]] =
-        existingTile;
+    this.tileMap[existingTile.getTilePosition()[0]][existingTile.getTilePosition()[1]] = existingTile;
   }
 
   public Tile getTile(int x, int y) {
