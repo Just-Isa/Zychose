@@ -4,8 +4,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 /**
- * RoadMap wird aus dem roomMap String erstellt und mit Tiles gefuellt, damit
- * nicht bei jeder
+ * RoadMap wird aus dem roomMap String erstellt und mit Tiles gefuellt, damit nicht bei jeder
  * Bewegung eines Fahrzeugs der String neu analysiert werden muss
  */
 public class Roadmap {
@@ -21,8 +20,8 @@ public class Roadmap {
   }
 
   /**
-   * @param x        Koordinate von der die Nachbarn geholt werden sollen
-   * @param y        Koordinate von der die Nachbarn geholt werden sollen
+   * @param x Koordinate von der die Nachbarn geholt werden sollen
+   * @param y Koordinate von der die Nachbarn geholt werden sollen
    * @param rotation Richtung in welche nach Nachbarn gesucht werden soll
    * @return EnumMap mit den Nachbar Tiles
    */
@@ -68,7 +67,8 @@ public class Roadmap {
   }
 
   public void setTile(StreetBlock existingTile) {
-    this.tileMap[existingTile.getTilePosition()[0]][existingTile.getTilePosition()[1]] = existingTile;
+    this.tileMap[existingTile.getTilePosition()[0]][existingTile.getTilePosition()[1]] =
+        existingTile;
   }
 
   public StreetBlock getTile(int x, int y) {
