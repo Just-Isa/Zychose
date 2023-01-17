@@ -61,8 +61,8 @@ onMounted(() => {
 
 setInterval(function () {
   if (
-    Math.abs(lastXsent - x.value) > 10 ||
-    Math.abs(lastYsent - y.value) > 10
+    Math.abs(lastXsent - x.value) > 0.1 ||
+    Math.abs(lastYsent - y.value) > 0.1
   ) {
     lastXsent = x.value;
     lastYsent = y.value;
@@ -87,5 +87,5 @@ setInterval(function () {
       mouseState.mouse.y,
     ];
   }
-}, 300);
+}, 15);
 </script>
