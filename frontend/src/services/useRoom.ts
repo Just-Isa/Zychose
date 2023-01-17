@@ -1,8 +1,8 @@
 import { Client } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
-import { Room, type IRoom } from "./IRoom";
 import { useRoomBox } from "./useRoomList";
 import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
+import { Room, type IRoom } from "../model/IRoom";
 import { logger } from "@/helpers/Logger";
 
 const webSocketUrl = `ws://${window.location.host}/stompbroker`;

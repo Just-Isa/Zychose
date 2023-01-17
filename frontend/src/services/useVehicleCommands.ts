@@ -1,5 +1,5 @@
 import { logger } from "@/helpers/Logger";
-import type { Direction } from "@/services/keyInputHandler";
+import type { Direction } from "@/model/DirektionCommands";
 import { Client } from "@stomp/stompjs";
 
 const webSocketUrl = `ws://${window.location.host}/stompbroker`;

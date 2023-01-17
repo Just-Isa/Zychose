@@ -24,12 +24,12 @@
 <script lang="ts">
 import { Camera, PointLight, Renderer, Scene } from "troisjs";
 import { useGLB } from "@/services/glbBlockLoader";
-import { SceneManager } from "@/services/SceneManager";
-import data from "../data/dummy.json";
-import config from "../../../swtp.config.json";
+import { SceneManager } from "@/views/threeD/SceneManager";
+import data from "../../data/dummy.json";
+import config from "../../../../swtp.config.json";
 import { useVehicle } from "@/services/use3DVehicle";
-import { useKeyInput } from "@/services/keyInputHandler";
-import { useVehicleCommands } from "@/services/useVehicleCommands";
+import { useVehicleCommands } from "../../services/useVehicleCommands";
+import { useKeyInput } from "./keyInputHandler";
 
 const { glbState, loadModel } = useGLB();
 const { publishVehicleCommands } = useVehicleCommands();

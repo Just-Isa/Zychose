@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { useStreetBlock } from "@/services/useStreetBlock";
-import type { StreetBlock } from "@/services/IStreetBlock";
+import type { StreetBlock } from "@/model/IStreetBlock";
 
 const prop = defineProps<{
   currentBlock: StreetBlock;

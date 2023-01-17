@@ -1,7 +1,7 @@
 import { logger } from "@/helpers/Logger";
 import { Client } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
-import { Vehicle, type IVehicle } from "./IVehicle";
+import { Vehicle, type IVehicle } from "../model/IVehicle";
 const webSocketUrl = `ws://${window.location.host}/stompbroker`;
 const stompClient = new Client({ brokerURL: webSocketUrl });
 

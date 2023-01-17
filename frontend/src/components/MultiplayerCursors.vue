@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { Mouse } from "@/services/IMouse";
+import { Mouse } from "@/model/IMouse";
 import { useRoom } from "@/services/useRoom";
 import { useUser } from "@/services/useUser";
 import { onMounted, reactive, ref } from "vue";
