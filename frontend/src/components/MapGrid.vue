@@ -10,6 +10,9 @@
     <table
       id="gridTable"
       class="bg-[#008000] w-full border-spacing-0 border-separate table-fixed"
+      @mousedown="startDragThroughGrid($event)"
+      @mouseup="stopDragThroughGrid()"
+      @mousemove="dragToNewPosition($event)"
     >
       <tr
         v-for="row in checkedGridSize"
@@ -40,6 +43,7 @@ import { computed, onMounted } from "vue";
 import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
 import { logger } from "@/helpers/Logger";
+//import { Mouse } from "@/services/IMouse";
 
 /**
  * @param {number} gridSize defines the size of the grid component
@@ -48,7 +52,76 @@ const props = defineProps<{
   gridSize: any;
 }>();
 
-/**
+let isDragging = false;
+let isFirstDrag = false;
+
+let currX: number;
+let currY: number;
+let initX: number;
+let initY: number;
+let offsetX = 0;
+let offsetY = 0;
+const entireDoc = document.documentElement;
+
+onMounted(() => {
+  document.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+  });
+
+  const grid = document.getElementById("gridTable") as HTMLTableElement;
+
+  // xCenter: ges.Breite --> Breite des Fenster/2 nochmal subtrahieren, um in der Mitte zu sein
+  let xCenter = grid.offsetWidth / 2 - window.innerWidth / 2;
+  let yCenter = grid.offsetHeight / 2 - window.innerHeight / 2;
+
+  entireDoc.scroll(xCenter, yCenter);
+  offsetX = xCenter;
+  offsetY = yCenter;
+});
+
+function startDragThroughGrid(event: MouseEvent) {
+  event.preventDefault();
+
+  // 2 -> rechter Mausbutton
+  if (event.button === 2) {
+    if (!isFirstDrag) {
+      // Startposition
+      initX = offsetX + event.clientX;
+      initY = offsetY + event.clientY;
+    } else {
+      initX = event.clientX - offsetX;
+      initY = event.clientY - offsetY;
+    }
+    isDragging = true;
+  }
+}
+
+function stopDragThroughGrid() {
+  initX = currX;
+  initY = currY;
+  isDragging = false;
+}
+
+function dragToNewPosition(event: MouseEvent) {
+  if (isDragging) {
+    if (!isFirstDrag) {
+      currX = event.clientX + initX;
+      currY = event.clientY + initY;
+      isFirstDrag = true;
+    } else {
+      currX = event.clientX - initX;
+      currY = event.clientY - initY;
+    }
+
+    offsetX = currX;
+    offsetY = currY;
+
+    entireDoc.scrollTop = -1 * currY;
+    entireDoc.scrollLeft = -1 * currX;
+  }
+}
+
+/*
   //TODO werte für 100 und 20 vllt auch in die config --> können dort aber auch so angepasst werden, dass bullshit drin ist
   * Hardcoded Wert 24, weil 1rem entspricht 16px, also 1920/16 = 120 -> 120/5rem (cell-width) = 24 cells
   //TODO ?min-gridSize dynamisch berechenbar machen/ cell-size in config einstellbar ----- storyless task oder issue?
