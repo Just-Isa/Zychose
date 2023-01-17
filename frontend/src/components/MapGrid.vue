@@ -54,7 +54,7 @@ const props = defineProps<{
 }>();
 
 let isDragging = false;
-let alreadyDragged = false;
+let isFirstDrag = false;
 
 let currX: number;
 let currY: number;
@@ -62,13 +62,13 @@ let initX: number;
 let initY: number;
 let offsetX = 0;
 let offsetY = 0;
+const entireDoc = document.documentElement;
 
 onMounted(() => {
   document.addEventListener("contextmenu", (event) => {
     event.preventDefault();
   });
 
-  const entireDoc = document.documentElement;
   const grid = document.getElementById("gridTable") as HTMLTableElement;
 
   // xCenter: ges.Breite --> Breite des Fenster/2 nochmal subtrahieren, um in der Mitte zu sein
@@ -83,8 +83,9 @@ onMounted(() => {
 function startDragThroughGrid(event: MouseEvent) {
   event.preventDefault();
 
+  // 2 -> rechter Mausbutton
   if (event.button === 2) {
-    if (!alreadyDragged) {
+    if (!isFirstDrag) {
       // Startposition
       initX = offsetX + event.clientX;
       initY = offsetY + event.clientY;
@@ -104,10 +105,10 @@ function stopDragThroughGrid() {
 
 function dragToNewPosition(event: MouseEvent) {
   if (isDragging) {
-    if (!alreadyDragged) {
+    if (!isFirstDrag) {
       currX = event.clientX + initX;
       currY = event.clientY + initY;
-      alreadyDragged = true;
+      isFirstDrag = true;
     } else {
       currX = event.clientX - initX;
       currY = event.clientY - initY;
@@ -116,7 +117,6 @@ function dragToNewPosition(event: MouseEvent) {
     offsetX = currX;
     offsetY = currY;
 
-    const entireDoc = document.documentElement;
     entireDoc.scrollTop = -1 * currY;
     entireDoc.scrollLeft = -1 * currX;
   }
