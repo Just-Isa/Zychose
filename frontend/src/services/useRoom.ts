@@ -86,17 +86,15 @@ function updateRoom(roomNumber: number) {
     logger.error("STOMP-error", JSON.stringify(frame)); /* STOMP-Error */
     location.href = "/500";
   };
-  updateRoomStompClient.onConnect = () => {
-    try {
-      updateRoomStompClient.publish({
-        destination: DEST,
-        headers: {},
-        body: JSON.stringify(roomState.room),
-      });
-    } catch (err) {
-      console.log("Error while publishing room! ", err);
-    }
-  };
+  try {
+    updateRoomStompClient.publish({
+      destination: DEST,
+      headers: {},
+      body: JSON.stringify(roomState.room),
+    });
+  } catch (err) {
+    console.log("Error while publishing room! ", err);
+  }
 }
 
 /** Changes Room a User is in to another
