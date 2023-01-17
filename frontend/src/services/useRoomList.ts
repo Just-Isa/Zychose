@@ -1,5 +1,5 @@
 import { reactive, readonly } from "vue";
-import { RoomList, type IRoomList } from "./IRoomList";
+import { RoomList, type IRoomList } from "../model/IRoomList";
 
 export interface IRoomListState {
   rooms: IRoomList;
@@ -19,6 +19,7 @@ export function getRoomList(): void {
       if (!response.ok) {
         roomListState.errorMessage =
           "Could not GET RoomBoxSingleton!" + response.status;
+        location.href = "/500";
       }
       return response.json();
     })

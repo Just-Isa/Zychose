@@ -1,4 +1,4 @@
-import { StreetBlock } from "@/services/IStreetBlock";
+import { StreetBlock } from "@/model/IStreetBlock";
 import { reactive, readonly } from "vue";
 /**
  * State Interface for information on street menus
