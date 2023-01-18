@@ -18,8 +18,6 @@ const blockSize = 16;
 const { camState, switchCamera } = useCamera();
 const { vehicleState } = useVehicle();
 type StreetBlock = IStreetInformation;
-
-const textPosOverVehicle = new THREE.Vector3(0, 7, 0);
 /**
  * Manages Scene with all Objects
  */
@@ -235,9 +233,6 @@ export class SceneManager {
     if (sessionID === getSessionIDFromCookie()) {
       this.vehicleCamera.request(vehicle.speed, threeVehicle);
     } else {
-      // threeVehicle
-      //   .getObjectByName("text")
-      //   ?.quaternion.copy(camState.cam.quaternion);
       threeVehicle.getObjectByName("text")?.lookAt(camState.cam.position);
     }
   }
