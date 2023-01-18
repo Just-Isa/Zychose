@@ -3,11 +3,8 @@ package de.hsrm.mi.team3.swtp.domain;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.python.core.PyException;
-import org.python.core.PyObject;
 import org.python.util.PythonInterpreter;
-import org.python.util.jython;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,9 +43,7 @@ public class Room {
     this.roomMap = "";
   }
 
-  /**
-   * executes the uploaded python script
-   */
+  /** executes the uploaded python script */
   public void executeJython() {
     try (PythonInterpreter pyInterp = new PythonInterpreter()) {
       StringWriter output = new StringWriter();

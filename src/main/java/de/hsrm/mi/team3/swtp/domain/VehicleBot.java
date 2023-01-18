@@ -6,14 +6,14 @@ import java.util.Map;
 public class VehicleBot {
 
   private VehicleBehaviour behaviour = VehicleBehaviour.DEFENSIVE;
-  private int[] currentPos = { 0, 0 };
+  private int[] currentPos = {0, 0};
   private int currentRotation = 0;
   private Map<VehicleNeighbour, StreetBlock> neighbours;
   private Room room = null;
 
   /*
    * TODO EINEN geeigneten Konstruktor überlegen
-   * 
+   *
    * public VehicleBot(int[] positon, int rotation, VehicleBehaviour behaviour,
    * Room room) {
    * this.currentPos = positon;
@@ -81,15 +81,22 @@ public class VehicleBot {
   }
 
   public void refreshNeighbours() {
-    this.neighbours = this.room
-        .getRoomMap()
-        .getNeighbours(this.currentPos[0], this.currentPos[1], this.currentRotation);
+    this.neighbours =
+        this.room
+            .getRoomMap()
+            .getNeighbours(this.currentPos[0], this.currentPos[1], this.currentRotation);
   }
 
   @Override
   public String toString() {
-    return "VehicleBot [behaviour=" + behaviour + ", currentPos=" + Arrays.toString(currentPos) + ", currentRotation="
-        + currentRotation + ", room=" + room.getRoomNumber() + "]";
+    return "VehicleBot [behaviour="
+        + behaviour
+        + ", currentPos="
+        + Arrays.toString(currentPos)
+        + ", currentRotation="
+        + currentRotation
+        + ", room="
+        + room.getRoomNumber()
+        + "]";
   }
-
 }
