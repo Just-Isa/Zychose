@@ -51,9 +51,19 @@ const props = defineProps<{
 let scrollHeight = ref(0);
 // Größe des StreetBlocks - ergo Reihenhöhe beim Scrollen. Hat sich so nach mehrfachem Testen als bester Wert erwiesen
 const streetBlockSize = 92;
+
+/**
+ * Dynamische Berechnung der höchsten Scrollhöhe: Anzahl der Straßenblöcke aus JSON durch 4, aufgerundet damit man die
+ * Anzahl der Reihen hat (jeweils 4 in einer Reihe). Multiplizert mit der Streetblocksize damit die Höhe gesamt stimmt,
+ * davon nochmal eine Streetblocksize abgezogen (höchste Höhe ist oben, ergo muss eine Reihe abgezogen werden).
+ */
 const maxScrollHeight =
   Math.ceil(props.types.length / 4) * streetBlockSize - streetBlockSize;
 
+/**
+ * Wenn ich den Tab wechsle, möchte ich dass die aktuelle Reihe ohne smoothes Scrollen wieder direkt oben beginnt.
+ * watch hört, ob der aktuelle Tab geändert wurde, reagiert in dem aktuellen Folder und resettet den State.
+ */
 watch(menuTabState, () => {
   if (menuTabState.currentTabChanged) {
     let currentMenu = document.getElementById("scrollbox") as HTMLElement;
@@ -70,13 +80,13 @@ watch(menuTabState, () => {
 });
 
 function scrollByGivenValue(additionalInput: number) {
-  if (scrollHeight.value == maxScrollHeight) {
+  if (scrollHeight.value === maxScrollHeight) {
     if (additionalInput < 0) {
       scrollHeight.value += additionalInput;
     } else {
       scrollHeight.value = maxScrollHeight;
     }
-  } else if (scrollHeight.value == 0) {
+  } else if (scrollHeight.value === 0) {
     if (additionalInput > 0) {
       scrollHeight.value += additionalInput;
     } else {

@@ -19,11 +19,11 @@ const bulldozerActive = reactive({
   isActive: false,
 });
 
-const vehicleTypes = swtpConfigJSON.allVehicleTypes;
+const vehicleTabs = swtpConfigJSON.vehicleTabs;
 
 const menuTabState = reactive({
   // Active tab is set to first entry in SWTPConfig at first initialisation
-  currentActiveTab: vehicleTypes[0].name,
+  currentActiveTab: vehicleTabs[0].name,
   currentTabChanged: false,
 });
 

@@ -126,6 +126,9 @@ function changeTo3DView() {
   }, 800);
 }
 
+/**
+ * Zoom mit Mausrad, scale = aktuelle Skalierung
+ */
 let scale = 1;
 function zoomOnWheel(event: WheelEvent) {
   event.preventDefault();
