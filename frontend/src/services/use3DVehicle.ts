@@ -58,7 +58,6 @@ function receiveVehicle() {
   };
 }
 function handleMessage(jsonObject: IVehicleMessage) {
-  console.log("car: ", jsonObject);
   if (jsonObject.operator === MessageOperator.DELETE) {
     vehicleState.vehicles.delete(jsonObject.userSessionId);
   }
