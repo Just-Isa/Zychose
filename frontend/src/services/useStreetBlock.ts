@@ -1,4 +1,4 @@
-import { StreetBlock } from "@/services/IStreetBlock";
+import { StreetBlock } from "@/model/IStreetBlock";
 import { reactive, readonly } from "vue";
 /**
  * State Interface for information on street menus
@@ -18,7 +18,7 @@ export interface IStateStreetblock {
 }
 
 const stateStreetBlock = reactive<IStateStreetblock>({
-  streetBlock: new StreetBlock("", 0, [], [""]),
+  streetBlock: new StreetBlock("", 0, [], [""], ""),
 });
 
 const bulldozerActive = reactive({
@@ -31,12 +31,62 @@ const streetTypesState = reactive<IStreetTypes>({
     ["bike", "bicycle-pictogram.svg"],
   ],
   streetTypes: [
-    new StreetBlock("straight-road", 0, [0, 90], ["car"]),
-    new StreetBlock("t-road", 0, [0, 90, 180, -90], ["car"]),
-    new StreetBlock("curve-road", 0, [0, 90, 180, -90], ["car"]),
-    new StreetBlock("cross-road", 0, [0], ["car"]),
-    new StreetBlock("straight-road", 0, [0, 90], ["bike"]),
-    new StreetBlock("cross-road", 0, [0, 90, 180, -90], ["bike"]),
+    new StreetBlock(
+      "road_straight",
+      0,
+      [0, 90],
+      ["car"],
+      "/assets/img/road_straight.png"
+    ),
+    new StreetBlock(
+      "road_t",
+      0,
+      [0, 90, 180, -90],
+      ["car"],
+      "/assets/img/road_t.png"
+    ),
+    new StreetBlock(
+      "road_curve",
+      0,
+      [0, 90, 180, -90],
+      ["car"],
+      "/assets/img/road_curve.png"
+    ),
+    new StreetBlock(
+      "road_cross",
+      0,
+      [0],
+      ["car"],
+      "/assets/img/road_cross.png"
+    ),
+    new StreetBlock(
+      "sidewalk_straight",
+      0,
+      [0, 90],
+      ["bike"],
+      "/assets/img/sidewalk_straight.png"
+    ),
+    new StreetBlock(
+      "sidewalk_t",
+      0,
+      [0, 90, 180, -90],
+      ["bike"],
+      "/assets/img/sidewalk_t.png"
+    ),
+    new StreetBlock(
+      "sidewalk_curve",
+      0,
+      [0, 90, 180, -90],
+      ["bike"],
+      "/assets/img/sidewalk_curve.png"
+    ),
+    new StreetBlock(
+      "sidewalk_cross",
+      0,
+      [0],
+      ["bike"],
+      "/assets/img/sidewalk_cross.png"
+    ),
   ],
   // Active tab is set to car at first initialisation
   currentActiveTab: "car",
@@ -53,7 +103,7 @@ export function useStreetBlock() {
 
   function changeCurrentTab(s: string) {
     streetTypesState.currentActiveTab = s;
-    changeCurrentStreetType(new StreetBlock("", 0, [], [""]));
+    changeCurrentStreetType(new StreetBlock("", 0, [], [""], ""));
     toggleBulldozer(false);
   }
 

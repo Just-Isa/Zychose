@@ -30,7 +30,7 @@
       </div>
 
       <BullDozerBtn
-        cursorSrc="src/assets/img/bulldozer-cursor.svg"
+        cursorSrc="/assets/img/bulldozer-cursor.svg"
         class="pointer-events-auto"
       />
     </div>
@@ -42,7 +42,7 @@ import StreetMenuFolder from "./StreetMenuFolder.vue";
 import BullDozerBtn from "./BullDozerBtn.vue";
 import StreetMenuTab from "./StreetMenuTab.vue";
 import { useStreetBlock } from "@/services/useStreetBlock";
-import type { StreetBlock } from "@/services/IStreetBlock";
+import type { StreetBlock } from "@/model/IStreetBlock";
 
 const { changeCurrentTab, streetTypesState } = useStreetBlock();
 

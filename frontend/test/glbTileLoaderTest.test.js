@@ -4,7 +4,7 @@ test.skip("useGLBSuccess", () => {
   const { generateTileMap } = useGLB();
   generateTileMap();
 
-  const assetNames = import.meta.glob(`/src/assets/models/*`);
+  const assetNames = import.meta.glob(`/assets/models/*`);
   let keys = new Array();
   for (const path in assetNames) {
     let key = path.toString().split("/")[4].split(".")[0];

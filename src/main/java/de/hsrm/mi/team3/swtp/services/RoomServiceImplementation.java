@@ -16,10 +16,12 @@ public class RoomServiceImplementation implements RoomService {
 
   Logger logger = LoggerFactory.getLogger(RoomServiceImplementation.class);
 
-  @Autowired RoomBoxServiceImplementation roomBoxService;
+  @Autowired
+  RoomBoxServiceImplementation roomBoxService;
 
   /**
-   * This method adds a new user to a room, and changed the users currentRoomNumber respectively.
+   * This method adds a new user to a room, and changed the users
+   * currentRoomNumber respectively.
    *
    * @param room
    * @param user
@@ -70,12 +72,35 @@ public class RoomServiceImplementation implements RoomService {
   @Override
   public User getUserByID(int roomNumber, String sessionID) {
     Room room = roomBoxService.getSpecificRoom(roomNumber);
-    Optional<User> user =
-        room.getUserList().stream().filter(u -> u.getSessionID().equals(sessionID)).findFirst();
+    Optional<User> user = room.getUserList().stream().filter(u -> u.getSessionID().equals(sessionID)).findFirst();
     if (user.isEmpty()) {
       logger.error("User not found");
       return null;
     }
     return user.get();
+  }
+
+  /**
+   * Updates Room with new Variables
+   *
+   * @param room         Room that is to be updated
+   * @param jythonScript new jythonScript for room
+   * @param roomMap      new roomMap for room
+   * @param roomName     new roomName for room
+   * @param roomNumber   new roomNumber for room
+   * @param userList     new userList for room
+   */
+  public void updateRoom(
+      Room room,
+      String jythonScript,
+      String roomMap,
+      String roomName,
+      int roomNumber,
+      List<User> userList) {
+    room.setJythonScript(jythonScript);
+    room.setRoomMap(roomMap);
+    room.setRoomName(roomName);
+    room.setRoomNumber(roomNumber);
+    room.setUserList(userList);
   }
 }

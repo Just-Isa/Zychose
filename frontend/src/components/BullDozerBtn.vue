@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import { StreetBlock } from "@/services/IStreetBlock";
+import { StreetBlock } from "@/model/IStreetBlock";
 import { useStreetBlock } from "@/services/useStreetBlock";
 import { watch } from "vue";
 
@@ -74,7 +74,7 @@ function changeBulldozerState() {
 
   if (entireDoc) {
     if (!bulldozerActive.isActive) {
-      changeCurrentStreetType(new StreetBlock("", 0, [], [""]));
+      changeCurrentStreetType(new StreetBlock("", 0, [], [""], ""));
       toggleBulldozer(true);
     } else {
       toggleBulldozer(false);

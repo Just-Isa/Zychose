@@ -1,6 +1,10 @@
+import { logger } from "@/helpers/Logger";
 import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
-import type { Direction } from "@/services/keyInputHandler";
+import type { Direction } from "@/model/DirektionCommands";
 import { Client } from "@stomp/stompjs";
+
+const webSocketUrl = `ws://${window.location.host}/stompbroker`;
+const stompClient = new Client({ brokerURL: webSocketUrl });
 
 export function useVehicleCommands() {
   return { publishVehicleCommands };
@@ -25,31 +29,27 @@ export class VehicleCommandMessage implements IVehicleCommandMessage {
  */
 function publishVehicleCommands(commands: Direction[]) {
   const message = new VehicleCommandMessage(commands, getSessionIDFromCookie());
-  const webSocketUrl = `ws://${window.location.host}/stompbroker`;
   const DEST =
     "/topic/3d/commands/" +
     (location.pathname.split("/")[1] as unknown as number);
-  const userClient = new Client({ brokerURL: webSocketUrl });
-  userClient.onWebSocketError = () => {
-    console.log("WS-error"); /* WS-Error */
+  if (!stompClient.connected) {
+    stompClient.activate();
+  }
+  stompClient.onWebSocketError = (event) => {
+    logger.error("WS-error", JSON.stringify(event)); /* WS-Error */
+    location.href = "/500";
   };
-  userClient.onStompError = () => {
-    console.log("STOMP-error"); /* STOMP-Error */
+  stompClient.onStompError = (frame) => {
+    logger.error("STOMP-error", JSON.stringify(frame)); /* STOMP-Error */
+    location.href = "/500";
   };
-  userClient.onConnect = () => {
-    try {
-      userClient.publish({
-        destination: DEST,
-        headers: {},
-        body: JSON.stringify(message),
-      });
-    } catch (err) {
-      // in case of an error
-      console.log("Error while Publishing User! ", err);
-    }
-  };
-  userClient.activate();
-  userClient.onDisconnect = () => {
-    /* Verbindung abgebaut*/
-  };
+  try {
+    stompClient.publish({
+      destination: DEST,
+      headers: {},
+      body: JSON.stringify(message),
+    });
+  } catch (err) {
+    console.error("Error while publishing VehicleCommands", err);
+  }
 }

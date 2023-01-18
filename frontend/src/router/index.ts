@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import TitleView from "@/views/TitleView.vue";
 import EditorView from "../views/EditorView.vue";
 import RoomSelectView from "../views/RoomSelectView.vue";
-import ThreeDView from "../views/ThreeDView.vue";
+import ThreeDView from "../views/threeD/ThreeDView.vue";
 import Error500View from "@/views/errors/Error500View.vue";
 import ResetInfoView from "@/views/ResetInfoView.vue";
 import Error404View from "@/views/errors/Error404View.vue";
