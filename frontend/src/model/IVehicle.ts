@@ -28,7 +28,7 @@ export class Vehicle implements IVehicle {
   ) {
     this.postitionX = postitionX;
     this.postitionY = postitionY;
-    this.postitionZ = postitionY;
+    this.postitionZ = postitionZ;
     this.rotationX = rotationX;
     this.rotationY = rotationY;
     this.rotationZ = rotationZ;

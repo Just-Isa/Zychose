@@ -140,8 +140,8 @@ export class SceneManager {
           );
           car.rotation.set(
             vehicle.rotationX,
-            vehicle.rotationX,
-            vehicle.rotationX
+            vehicle.rotationY,
+            vehicle.rotationZ
           );
           this.scene.add(car);
           if (vehicleSessionId === getSessionIDFromCookie()) {
@@ -233,12 +233,14 @@ export class SceneManager {
    */
   updateVehicleMap() {
     for (const [key, val] of vehicleState.vehicles) {
+      logger.log("Vehicle von " + key + " wurde hinzugefügt");
       if (!this.vehicles.has(key)) {
         this.addVehicle(val, key);
       }
     }
     for (const [key, val] of this.vehicles) {
       if (!vehicleState.vehicles.has(key)) {
+        logger.log("Vehicle von " + key + " wurde gelöscht");
         this.scene.remove(val);
         this.vehicles.delete(key);
       }

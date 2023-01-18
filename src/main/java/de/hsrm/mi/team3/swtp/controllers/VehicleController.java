@@ -21,13 +21,17 @@ import org.springframework.stereotype.Controller;
 public class VehicleController {
   Logger logger = LoggerFactory.getLogger(VehicleController.class);
 
-  @Autowired VehicleService vehicleService;
+  @Autowired
+  VehicleService vehicleService;
 
-  @Autowired BackendInfoService bInfoService;
+  @Autowired
+  BackendInfoService bInfoService;
 
-  @Autowired RoomBoxService roomBoxService;
+  @Autowired
+  RoomBoxService roomBoxService;
 
-  @Autowired RoomService roomService;
+  @Autowired
+  RoomService roomService;
 
   /**
    * Receives a command from client to execute vehicleservice Methods
@@ -41,14 +45,12 @@ public class VehicleController {
       @DestinationVariable int roomNumber) {
 
     List<VehicleCommands> commands = commandVehicleMessage.commands();
-    Vehicle vehicle =
-        roomService.getUserByID(roomNumber, commandVehicleMessage.userSessionId()).getVehicle();
+    Vehicle vehicle = roomService.getUserByID(roomNumber, commandVehicleMessage.userSessionId()).getVehicle();
     if (vehicle == null) {
       roomService
           .getUserByID(roomNumber, commandVehicleMessage.userSessionId())
           .setVehicle(new Vehicle());
-      vehicle =
-          roomService.getUserByID(roomNumber, commandVehicleMessage.userSessionId()).getVehicle();
+      vehicle = roomService.getUserByID(roomNumber, commandVehicleMessage.userSessionId()).getVehicle();
     }
     if (!commands.contains(VehicleCommands.FORWARD)
         && !commands.contains(VehicleCommands.BACKWARD)) {
@@ -66,8 +68,8 @@ public class VehicleController {
     if (commands.contains(VehicleCommands.RIGHT)) {
       vehicleService.rotateRight(vehicle);
     }
-    // logger.info(commandVehicleMessage.userSessionId() + " - " +
-    // vehicle.toString());
+    logger.info(commandVehicleMessage.userSessionId() + " - " +
+        vehicle.toString());
     bInfoService.sendVehicle(
         "vehicle/" + roomNumber,
         commandVehicleMessage.userSessionId(),
