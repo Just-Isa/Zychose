@@ -20,18 +20,22 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 public class FileUploadController {
 
-  @Autowired private RoomBoxService roomBoxService;
+  @Autowired
+  private RoomBoxService roomBoxService;
 
-  @Autowired private RoomService roomService;
+  @Autowired
+  private RoomService roomService;
 
-  @Autowired private BackendInfoService backservice;
+  @Autowired
+  private BackendInfoService backservice;
 
   Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 
   /**
-   * Function to save the received script file to the selected room and update all other rooms.
+   * Function to save the received script file to the selected room and update all
+   * other rooms.
    *
-   * @param file The received File
+   * @param file       The received File
    * @param roomNumber The room number
    */
   @PostMapping("/api/upload/{roomNumber}")
@@ -56,10 +60,12 @@ public class FileUploadController {
             new String(room.getJythonScript().getBytes()),
             room.getRoomMapString()));
 
-    // just for testing-purposes, to show that you can execute the received file
-    try (PythonInterpreter pyInt = new PythonInterpreter()) {
-      pyInt.exec(room.getJythonScript());
-    }
+    // TODO testing puposes
+    /*
+     * try (PythonInterpreter pyInt = new PythonInterpreter()) {
+     * pyInt.exec(room.getJythonScript());
+     * }
+     */
   }
 
   @GetMapping("/api/upload/{roomNumber}")
