@@ -49,7 +49,7 @@ const props = defineProps<{
 }>();
 
 let scrollHeight = ref(0);
-// Größe des StreetBlocks - ergo Reihenhöhe beim Scrollen.
+// Größe des StreetBlocks - ergo Reihenhöhe beim Scrollen. Hat sich so nach mehrfachem Testen als bester Wert erwiesen
 const streetBlockSize = 92;
 const maxScrollHeight =
   Math.ceil(props.types.length / 4) * streetBlockSize - streetBlockSize;
