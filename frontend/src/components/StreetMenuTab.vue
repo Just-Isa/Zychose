@@ -8,6 +8,7 @@
     <img
       :src="`/assets/img/${props.imgSrc}`"
       :alt="props.vehicleType + ' icon'"
+      draggable="false"
     />
   </button>
 </template>
