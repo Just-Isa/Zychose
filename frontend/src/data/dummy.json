@@ -1,26 +1,74 @@
 [
   {
-    "streetType": "straight-road",
+    "streetType": "road-cross",
     "rotation": 90,
     "posX": 1,
     "posY": 1
   },
   {
-    "streetType": "straight-road",
-    "rotation": 90,
+    "streetType": "road-curve",
+    "rotation": 270,
     "posX": 1,
-    "posY": 3
+    "posY": 2
   },
   {
-    "streetType": "straight-road",
+    "streetType": "road-straight",
+    "rotation": 0,
+    "posX": 2,
+    "posY": 2
+  },
+  {
+    "streetType": "road-t",
+    "rotation": 0,
+    "posX": 3,
+    "posY": 2
+  },
+  {
+    "streetType": "road-dead-end",
+    "rotation": 90,
+    "posX": 3,
+    "posY": 1
+  },
+  {
+    "streetType": "sidewalk-cross",
+    "rotation": 90,
+    "posX": 1,
+    "posY": 6
+  },
+  {
+    "streetType": "sidewalk-curve",
+    "rotation": 0,
+    "posX": 1,
+    "posY": 7
+  },
+  {
+    "streetType": "sidewalk-straight",
     "rotation": 90,
     "posX": 1,
     "posY": 5
   },
   {
-    "streetType": "straight-road",
+    "streetType": "sidewalk-t",
     "rotation": 90,
-    "posX": 1,
+    "posX": 0,
     "posY": 7
+  },
+  {
+    "streetType": "sidewalk-dead-end",
+    "rotation": 270,
+    "posX": 0,
+    "posY": 8
+  },
+  {
+    "streetType": "road-straight",
+    "rotation": 0,
+    "posX": 5,
+    "posY": 5
+  },
+  {
+    "streetType": "sidewalk-straight",
+    "rotation": 0,
+    "posX": 5,
+    "posY": 5
   }
 ]
