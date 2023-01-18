@@ -9,12 +9,17 @@ import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import type { IVehicle } from "../../model/IVehicle";
 import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
 import { logger } from "@/helpers/Logger";
+import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
+import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
+import { TTFLoader } from "three/examples/jsm/loaders/TTFLoader.js";
+import config from "../../../../swtp.config.json";
 
 const blockSize = 16;
 const { camState, switchCamera } = useCamera();
 const { vehicleState } = useVehicle();
 type StreetBlock = IStreetInformation;
 
+const textPosOverVehicle = new THREE.Vector3(0, 7, 0);
 /**
  * Manages Scene with all Objects
  */
@@ -144,9 +149,12 @@ export class SceneManager {
             vehicle.rotationZ
           );
           this.scene.add(car);
+          this.addTextToVehicle(vehicleSessionId, car);
+
           if (vehicleSessionId === getSessionIDFromCookie()) {
             this.vehicleCamera.request(vehicle.speed, car);
           }
+
           this.vehicles.set(vehicleSessionId, car);
         })
         .catch((error) => {
@@ -199,7 +207,7 @@ export class SceneManager {
    *
    * @param threeVehicle
    */
-  updateVehicle(
+  private updateVehicle(
     threeVehicle: THREE.Group,
     vehicle: IVehicle,
     sessionID: string
@@ -223,15 +231,21 @@ export class SceneManager {
     const newQuaterion = quaternion.setFromEuler(newRotation);
     threeVehicle.quaternion.slerp(newQuaterion, lerpDuration);
     threeVehicle.position.lerp(destination, lerpDuration);
+
     if (sessionID === getSessionIDFromCookie()) {
       this.vehicleCamera.request(vehicle.speed, threeVehicle);
+    } else {
+      // threeVehicle
+      //   .getObjectByName("text")
+      //   ?.quaternion.copy(camState.cam.quaternion);
+      threeVehicle.getObjectByName("text")?.lookAt(camState.cam.position);
     }
   }
 
   /**
    * checks if vehicles are added or removed and updates the map
    */
-  updateVehicleMap() {
+  private updateVehicleMap() {
     for (const [key, val] of vehicleState.vehicles) {
       logger.log("Vehicle von " + key + " wurde hinzugefügt");
       if (!this.vehicles.has(key)) {
@@ -245,5 +259,25 @@ export class SceneManager {
         this.vehicles.delete(key);
       }
     }
+  }
+  private addTextToVehicle(text: string, vehicle: THREE.Group) {
+    const fontLoader = new FontLoader();
+    const ttfloader = new TTFLoader();
+    const textHightOverVehicle = 7;
+    ttfloader.load(config.font, function (json) {
+      const font = fontLoader.parse(json);
+      const textGeometry = new TextGeometry(text, {
+        font: font,
+        height: 0.1,
+        size: 0.75,
+      });
+      textGeometry.center();
+      const textmesh = new THREE.Mesh(textGeometry);
+      textmesh.position.set(0, textHightOverVehicle, 0);
+
+      textmesh.name = "text";
+      textmesh.quaternion.copy(camState.cam.quaternion);
+      vehicle.add(textmesh);
+    });
   }
 }

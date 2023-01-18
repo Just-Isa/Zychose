@@ -129,5 +129,6 @@
       "name": "bicycle",
       "iconPath": "/assets/img/bicycle.png"
     }
-  ]
+  ],
+  "font": "/fonts/poppins-semiBold.ttf"
 }
