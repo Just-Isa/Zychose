@@ -1,6 +1,7 @@
 package de.hsrm.mi.team3.swtp.domain;
 
 import java.util.Map;
+import java.util.Random;
 
 public class VehicleBot {
 
@@ -9,6 +10,8 @@ public class VehicleBot {
   private int currentRotation = 0;
   private Map<VehicleNeighbour, Tile> neighbours;
   private Room room;
+  private VehicleType vehicleType;
+  private boolean fixRoute;
 
   public VehicleBot(int[] positon, int rotation, VehicleBehaviour behaviour, Room room) {
     this.currentPos = positon;
@@ -21,15 +24,18 @@ public class VehicleBot {
     this.currentPos = positon;
     this.currentRotation = rotation;
     this.room = room;
+    // choose random Model from VehicleType Enum
+    int pick = new Random().nextInt(VehicleType.values().length);
+    this.vehicleType = VehicleType.values()[pick];
   }
 
   public void moveToNextTile() {
     refreshNeighbours();
     Tile destination = this.neighbours.get(VehicleNeighbour.VEHICLETOP);
     if (destination == null) {
-      // kein Anschlussteil vorhanden -> U-Wende?
+      // TODO kein Anschlussteil vorhanden -> U-Wende?
     } else if (destination.isBlocked()) {
-      // TODO warten
+      // TODO warten bis Kachel frei
     } else {
       this.currentPos[0] = destination.getTilePosition()[0];
       this.currentPos[1] = destination.getTilePosition()[1];
@@ -40,8 +46,12 @@ public class VehicleBot {
    * @param rotation ist die Rotationsstufe, auf die sich das Fahrzeug drehen soll
    */
   public void turn(int rotation) {
-    this.setCurrentRotation(rotation);
-    moveToNextTile();
+    if (!this.hasFixRoute()) {
+      // TODO Fahrzeug entscheidet zufaellig ob es abbiegt
+    } else {
+      this.setCurrentRotation(rotation);
+      moveToNextTile();
+    }
   }
 
   public int getCurrentX() {
@@ -76,10 +86,26 @@ public class VehicleBot {
     this.behaviour = behave;
   }
 
+  public VehicleType getVehicleModel() {
+    return this.vehicleType;
+  }
+
+  public void setVehicleModel(VehicleType model) {
+    this.vehicleType = model;
+  }
+
   public void refreshNeighbours() {
     this.neighbours =
         this.room
             .getRoomMap()
             .getNeighbours(this.currentPos[0], this.currentPos[1], this.currentRotation);
+  }
+
+  public void setFixRoute(boolean fix) {
+    this.fixRoute = fix;
+  }
+
+  public boolean hasFixRoute() {
+    return this.fixRoute;
   }
 }
