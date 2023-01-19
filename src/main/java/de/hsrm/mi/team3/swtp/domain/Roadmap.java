@@ -2,6 +2,8 @@ package de.hsrm.mi.team3.swtp.domain;
 
 import java.util.EnumMap;
 import java.util.Map;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * RoadMap wird aus dem roomMap String erstellt und mit Tiles gefuellt, damit nicht bei jeder
@@ -9,10 +11,23 @@ import java.util.Map;
  */
 public class Roadmap {
 
-  private Tile[][] tileMap;
+  final int SIZE = 100;
+  private Tile[][] tileMap = new Tile[SIZE][SIZE];
 
   public Roadmap(String mapstring) {
-    // TODO split String and convert into Tiles
+    JSONArray jsonArray = new JSONArray(mapstring);
+    for (int i = 0; i < jsonArray.length(); i++) {
+      JSONObject obj = jsonArray.getJSONObject(i);
+      int x = Integer.parseInt(obj.getString("posX"));
+      int y = Integer.parseInt(obj.getString("posY"));
+      this.tileMap[x][y] =
+          new Tile(
+              obj.getString("streetType"),
+              Integer.parseInt(obj.getString("rotation")),
+              x,
+              y,
+              false);
+    }
   }
 
   public Roadmap(Roadmap existingMap) {
@@ -72,10 +87,12 @@ public class Roadmap {
   }
 
   public Tile getTile(int x, int y) {
-    if (this.tileMap[x][y] != null) {
-      return this.tileMap[x][y];
-    } else {
+    if (x < 0 || y < 0) {
       return null;
     }
+    if (this.tileMap[x][y] != null) {
+      return this.tileMap[x][y];
+    }
+    return null;
   }
 }
