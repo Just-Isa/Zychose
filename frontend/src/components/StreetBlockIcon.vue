@@ -16,6 +16,7 @@
         class="h-16 w-16 m-2"
         :src="prop.currentBlock.imgPath"
         :alt="prop.currentBlock.name"
+        draggable="false"
       />
     </div>
   </div>
