@@ -170,7 +170,7 @@ function cellClicked(posX: number, posY: number): void {
   const cell = table.rows[posX - 1].cells[posY - 1];
   /* testInput has to be hard coded as long as we're not able to get the informations from the states of the streetTileMenu */
   let testInput: IStreetInformation = {
-    streetType: "straight-road",
+    streetType: "road-straight",
     rotation: 90,
     posX: posX,
     posY: posY,
@@ -295,7 +295,7 @@ function setCellBackgroundStyle(
 ): void {
   for (const streetType of streetTypes) {
     if (streetType.name === street.streetType) {
-      cell.style.backgroundImage = `url(${streetType.svgPath})`;
+      cell.style.backgroundImage = `url(${streetType.imgPath})`;
       cell.style.transform = `rotate(${street.rotation}deg)`;
     }
   }
