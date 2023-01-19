@@ -67,6 +67,11 @@ onMounted(() => {
   document.addEventListener("contextmenu", (event) => {
     event.preventDefault();
   });
+  initializeStreetState();
+  // Template loads table first, slower connections need extra time -> 700 ms tested to be sufficient
+  setTimeout(function () {
+    stateToGrid();
+  }, 700);
 
   const grid = document.getElementById("gridTable") as HTMLTableElement;
 
@@ -122,7 +127,6 @@ function dragToNewPosition(event: MouseEvent) {
 }
 
 /*
-  //TODO werte für 100 und 20 vllt auch in die config --> können dort aber auch so angepasst werden, dass bullshit drin ist
   * Hardcoded Wert 24, weil 1rem entspricht 16px, also 1920/16 = 120 -> 120/5rem (cell-width) = 24 cells
   //TODO ?min-gridSize dynamisch berechenbar machen/ cell-size in config einstellbar ----- storyless task oder issue?
  */
@@ -146,14 +150,6 @@ const {
 } = useStreets();
 const { currentVehicle } = useVehicle();
 const streetTypes = swtpConfigJSON.streetTypes;
-
-onMounted(() => {
-  initializeStreetState();
-  // Template loads table first, slower connections need extra time -> 700 ms tested to be sufficient
-  setTimeout(function () {
-    stateToGrid();
-  }, 700);
-});
 
 //TODO
 //Hier wird der Input(strassentyp und rotation), sobald es moeglich ist, aus dem anderen state geholt und zusammen mit den Positionen fuer die Achsen im state fuer die strassen gespeichert
@@ -196,6 +192,7 @@ function onDrop(posX: number, posY: number) {
 function changeTo3DView() {
   let wrapper = document.getElementById("wrapper");
   if (wrapper != null) {
+    wrapper.classList.remove("opacity-70");
     wrapper.classList.add(
       "absolute",
       "duration-1000",
@@ -271,7 +268,6 @@ function onEndHover(x: number, y: number): void {
   }
 }
 
-/* eslint-disable @typescript-eslint/no-unused-vars*/
 /**
  * Function to display the streets that are saved in the state.
  */
@@ -282,7 +278,6 @@ function stateToGrid(): void {
     setCellBackgroundStyle(cell, street);
   }
 }
-/* eslint-enable */
 
 /**
  * Function that sets the style of the given Cell. The given street is needed for information about the streetType and rotation.
