@@ -12,7 +12,7 @@ import org.json.JSONObject;
 public class Roadmap {
 
   final int SIZE = 100;
-  private Tile[][] tileMap = new Tile[SIZE][SIZE];
+  private StreetBlock[][] tileMap = new StreetBlock[SIZE][SIZE];
 
   public Roadmap(String mapstring) {
     JSONArray jsonArray = new JSONArray(mapstring);
@@ -21,7 +21,7 @@ public class Roadmap {
       int x = Integer.parseInt(obj.getString("posX"));
       int y = Integer.parseInt(obj.getString("posY"));
       this.tileMap[x][y] =
-          new Tile(
+          new StreetBlock(
               obj.getString("streetType"),
               Integer.parseInt(obj.getString("rotation")),
               x,
@@ -40,8 +40,8 @@ public class Roadmap {
    * @param rotation Richtung in welche nach Nachbarn gesucht werden soll
    * @return EnumMap mit den Nachbar Tiles
    */
-  public Map<VehicleNeighbour, Tile> getNeighbours(int x, int y, int rotation) {
-    Map<VehicleNeighbour, Tile> neighbours = new EnumMap<>(VehicleNeighbour.class);
+  public Map<VehicleNeighbour, StreetBlock> getNeighbours(int x, int y, int rotation) {
+    Map<VehicleNeighbour, StreetBlock> neighbours = new EnumMap<>(VehicleNeighbour.class);
     if (rotation == 90) {
       // Drehung nach Bildschirm-rechts
       neighbours.put(VehicleNeighbour.VEHICLELEFT, getTile(x, y - 1));
@@ -78,15 +78,15 @@ public class Roadmap {
   }
 
   public void setTile(String tilename, int rotation, int x, int y, boolean blocked) {
-    this.tileMap[x][y] = new Tile(tilename, rotation, x, y, blocked);
+    this.tileMap[x][y] = new StreetBlock(tilename, rotation, x, y, blocked);
   }
 
-  public void setTile(Tile existingTile) {
+  public void setTile(StreetBlock existingTile) {
     this.tileMap[existingTile.getTilePosition()[0]][existingTile.getTilePosition()[1]] =
         existingTile;
   }
 
-  public Tile getTile(int x, int y) {
+  public StreetBlock getTile(int x, int y) {
     if (x < 0 || y < 0) {
       return null;
     }

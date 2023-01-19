@@ -8,7 +8,7 @@ public class VehicleBot {
   private VehicleBehaviour behaviour = VehicleBehaviour.DEFENSIVE;
   private int[] currentPos = {0, 0};
   private int currentRotation = 0;
-  private Map<VehicleNeighbour, Tile> neighbours;
+  private Map<VehicleNeighbour, StreetBlock> neighbours;
   private Room room;
   private VehicleType vehicleType;
   private boolean fixRoute;
@@ -31,7 +31,7 @@ public class VehicleBot {
 
   public void moveToNextTile() {
     refreshNeighbours();
-    Tile destination = this.neighbours.get(VehicleNeighbour.VEHICLETOP);
+    StreetBlock destination = this.neighbours.get(VehicleNeighbour.VEHICLETOP);
     if (destination == null) {
       // TODO kein Anschlussteil vorhanden -> U-Wende?
     } else if (destination.isBlocked()) {
