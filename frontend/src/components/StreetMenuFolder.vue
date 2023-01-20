@@ -19,12 +19,12 @@
         <img
           src="/assets/img/arrow-pictogram.svg"
           alt="arrow-up"
-          class="h-7 w-7 rotate-180"
+          class="h-7 w-7 rotate-180 cursor-pointer"
         />
       </a>
       <a
         @click="scrollByGivenValue(streetBlockSize)"
-        class="pointer-events-auto absolute -ml-[0.45rem]"
+        class="pointer-events-auto absolute -ml-[0.45rem] cursor-pointer"
       >
         <img
           src="/assets/img/arrow-pictogram.svg"
