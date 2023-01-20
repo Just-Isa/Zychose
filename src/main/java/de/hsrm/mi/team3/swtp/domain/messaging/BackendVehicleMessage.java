@@ -8,6 +8,7 @@ import de.hsrm.mi.team3.swtp.domain.Vehicle;
 public record BackendVehicleMessage(
     BackendOperation operator,
     String userSessionId,
+    String vehicleType,
     double postitionX,
     double postitionY,
     double postitionZ,
@@ -22,6 +23,7 @@ public record BackendVehicleMessage(
         new BackendVehicleMessage(
             operator,
             userSessionId,
+            vehicle.getVehicleType(),
             vehicle.getPosVector()[0],
             vehicle.getPosVector()[1],
             vehicle.getPosVector()[2],

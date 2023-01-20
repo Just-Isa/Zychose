@@ -3,6 +3,8 @@ package de.hsrm.mi.team3.swtp.domain;
 import java.util.Arrays;
 
 public class Vehicle {
+  private String vehicleType;
+
   private final double runOutSpeed = -0.1;
   private final double maxSpeed = 0.6;
   private final double handling = 0.15;
@@ -13,11 +15,14 @@ public class Vehicle {
   private double[] rotationVector = {0, 0, 0};
   private double[] posVector = {0, 0, 0};
 
-  public Vehicle(double[] posVector) {
-    this.posVector = posVector;
+  public Vehicle(String vehicleType) {
+    this.vehicleType = vehicleType;
   }
 
-  public Vehicle() {}
+  public Vehicle(String vehicleType, double[] posVector) {
+    this.vehicleType = vehicleType;
+    this.posVector = posVector;
+  }
 
   public double getCurrentSpeed() {
     return currentSpeed;
@@ -109,6 +114,14 @@ public class Vehicle {
 
   public void setPosVector(double[] posVector) {
     this.posVector = posVector;
+  }
+
+  public String getVehicleType() {
+    return vehicleType;
+  }
+
+  public void setVehicleType(String vehicleType) {
+    this.vehicleType = vehicleType;
   }
 
   @Override

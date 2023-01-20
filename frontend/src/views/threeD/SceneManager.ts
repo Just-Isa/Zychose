@@ -258,7 +258,7 @@ export class SceneManager {
       const font = fontLoader.parse(json);
       const textGeometry = new TextGeometry(text, {
         font: font,
-        height:0.1,
+        height: 0.1,
         size: config.fontSize,
       });
       textGeometry.center();

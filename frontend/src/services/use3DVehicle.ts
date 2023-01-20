@@ -50,7 +50,10 @@ function handleMessage(jsonObject: IVehicleMessage) {
   if (jsonObject.operator === MessageOperator.DELETE) {
     vehicleState.vehicles.delete(jsonObject.userSessionId);
   }
-  if (jsonObject.operator === MessageOperator.CREATE || jsonObject.operator === MessageOperator.UPDATE) {
+  if (
+    jsonObject.operator === MessageOperator.CREATE ||
+    jsonObject.operator === MessageOperator.UPDATE
+  ) {
     vehicleState.vehicles.set(
       jsonObject.userSessionId,
       new Vehicle(
