@@ -1,5 +1,9 @@
 package de.hsrm.mi.team3.swtp.test.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import de.hsrm.mi.team3.swtp.domain.Vehicle;
+import de.hsrm.mi.team3.swtp.services.VehicleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -7,11 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-import de.hsrm.mi.team3.swtp.domain.Vehicle;
-import de.hsrm.mi.team3.swtp.services.VehicleService;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -38,7 +37,6 @@ public class VehicleServiceTest {
         assertThat(vehicle.getCurrentSpeed()).isZero();
         vehicleService.rotateLeft(vehicle);
         assertThat(vehicle.getRotationY()).isEqualTo(rotationYBefore);
-
     }
 
     @Test
@@ -59,7 +57,6 @@ public class VehicleServiceTest {
         assertThat(vehicle.getCurrentSpeed()).isZero();
         vehicleService.rotateRight(vehicle);
         assertThat(vehicle.getRotationY()).isEqualTo(rotationYBefore);
-
     }
 
     @Test
@@ -82,7 +79,8 @@ public class VehicleServiceTest {
         double xPosAfter = DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
         assertThat(vehicle.getPosX()).isEqualTo(xPosAfter);
         assertThat(vehicle.getPosZ())
-                .isEqualTo(DISTANCE * vehicle.getCurrentSpeed() * Math.cos(vehicle.getRotationY()) + zPosBefore);
+                .isEqualTo(
+                        DISTANCE * vehicle.getCurrentSpeed() * Math.cos(vehicle.getRotationY()) + zPosBefore);
     }
 
     @Test
@@ -95,7 +93,8 @@ public class VehicleServiceTest {
         double xPosAfter = DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
         assertThat(vehicle.getPosX()).isEqualTo(xPosAfter);
         assertThat(vehicle.getPosZ())
-                .isEqualTo(DISTANCE * vehicle.getCurrentSpeed() * Math.cos(vehicle.getRotationY()) + zPosBefore);
+                .isEqualTo(
+                        DISTANCE * vehicle.getCurrentSpeed() * Math.cos(vehicle.getRotationY()) + zPosBefore);
     }
 
     @Test
@@ -108,7 +107,8 @@ public class VehicleServiceTest {
         double xPosAfter = DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
         assertThat(vehicle.getPosX()).isEqualTo(xPosAfter);
         assertThat(vehicle.getPosZ())
-                .isEqualTo(DISTANCE * vehicle.getCurrentSpeed() * Math.cos(vehicle.getRotationY()) + zPosBefore);
+                .isEqualTo(
+                        DISTANCE * vehicle.getCurrentSpeed() * Math.cos(vehicle.getRotationY()) + zPosBefore);
     }
 
     @Test
@@ -121,7 +121,8 @@ public class VehicleServiceTest {
         double xPosAfter = DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
         assertThat(vehicle.getPosX()).isEqualTo(xPosAfter);
         assertThat(vehicle.getPosZ())
-                .isEqualTo(DISTANCE * vehicle.getCurrentSpeed() * Math.cos(vehicle.getRotationY()) + zPosBefore);
+                .isEqualTo(
+                        DISTANCE * vehicle.getCurrentSpeed() * Math.cos(vehicle.getRotationY()) + zPosBefore);
     }
 
     @Test
@@ -159,5 +160,4 @@ public class VehicleServiceTest {
         vehicleService.carRunOutSpeed(vehicle);
         assertThat(vehicle.getCurrentSpeed()).isZero();
     }
-
 }

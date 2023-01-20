@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
 import de.hsrm.mi.team3.swtp.services.RoomService;
-
 import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,8 +20,7 @@ import org.springframework.mock.web.MockMultipartFile;
 @AutoConfigureMockMvc
 class RoomServiceTest {
 
-  @Autowired
-  RoomService roomService;
+  @Autowired RoomService roomService;
 
   private final String ROOMNAMEONE = "RoomNameOne";
   private final String ROOMNAME_POST_UPDATE = "RoomNamePostUpdate";
@@ -42,8 +40,8 @@ class RoomServiceTest {
   private final int USERLIST_SIZE_MIDADDITON = 1;
   private final int USERLISTSIZE_AFTER_ADDITION = 2;
 
-  private final MockMultipartFile FIRST_JYTHON_FILE = new MockMultipartFile("data", "jythonScript.py", "text/plain",
-      "print('test!')".getBytes());
+  private final MockMultipartFile FIRST_JYTHON_FILE =
+      new MockMultipartFile("data", "jythonScript.py", "text/plain", "print('test!')".getBytes());
 
   User userOne = null;
   User userTwo = null;
