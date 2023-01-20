@@ -313,24 +313,4 @@ function setCellBackgroundStyle(
     }
   }
 }
-
-/**
- * //TODO
- * Diese Methode ist nur zum testen gedacht, um zu sehen, ob Strassen richtig aus dem state geloescht werden.
- * Sie wird entfernt, sobald der Strassentyp und die Rotation ueber einen weiteren State ausgelesen werden koennen.
- * Dann wird das loeschen der Zelle ueber die cellClicked Methode gemacht.
- */
-function clearCell(posX: number, posY: number): void {
-  console.log("clearCell aufgerufen!");
-  let neuerInput: IStreetInformation = {
-    streetType: "delete",
-    rotation: 90,
-    posX: posX,
-    posY: posY,
-  };
-  const table = document.getElementById("gridTable") as HTMLTableElement;
-  updateStreetState(neuerInput);
-  const cell = table.rows[posX - 1].cells[posY - 1];
-  cell.style.backgroundImage = "";
-}
 </script>
