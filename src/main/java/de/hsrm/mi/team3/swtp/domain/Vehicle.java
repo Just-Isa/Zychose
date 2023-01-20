@@ -8,15 +8,14 @@ public class Vehicle {
   private static final double BRAKE_SPEED = 0.3;
 
   private double currentSpeed = 0;
-  private double[] rotationVector = { 0, 0, 0 };
-  private double[] posVector = { 0, 0, 0 };
+  private double[] rotationVector = {0, 0, 0};
+  private double[] posVector = {0, 0, 0};
 
   public Vehicle(double[] posVector) {
     this.posVector = posVector;
   }
 
-  public Vehicle() {
-  }
+  public Vehicle() {}
 
   public double getCurrentSpeed() {
     return currentSpeed;
