@@ -15,15 +15,13 @@ public record BackendVehicleMessage(
     double speed) {
 
   public static BackendVehicleMessage from(Vehicle vehicle) {
-    BackendVehicleMessage dto =
-        new BackendVehicleMessage(
-            vehicle.getPosVector()[0],
-            vehicle.getPosVector()[1],
-            vehicle.getPosVector()[2],
-            vehicle.getRotationX(),
-            vehicle.getRotationY(),
-            vehicle.getRotationZ(),
-            vehicle.getCurrentSpeed());
-    return dto;
+    return new BackendVehicleMessage(
+        vehicle.getPosVector()[0],
+        vehicle.getPosVector()[1],
+        vehicle.getPosVector()[2],
+        vehicle.getRotationX(),
+        vehicle.getRotationY(),
+        vehicle.getRotationZ(),
+        vehicle.getCurrentSpeed());
   }
 }

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class VehicleServiceImplementation implements VehicleService {
-  final float DISTANCE = 8;
+  static final float DISTANCE = 8;
 
   /**
    * rotates the given vehicle to the left
@@ -70,14 +70,14 @@ public class VehicleServiceImplementation implements VehicleService {
   public void carRunOutSpeed(Vehicle vehicle) {
     if (vehicle.getCurrentSpeed() > 0) {
       double newSpeed = this.accelerate(vehicle, vehicle.getRunOutSpeed());
-      if (newSpeed < 0) {
+      if (newSpeed < 0.001 && newSpeed > -0.001) {
         vehicle.setCurrentSpeed(0);
       } else {
         vehicle.setCurrentSpeed(newSpeed);
       }
     } else if (vehicle.getCurrentSpeed() < 0) {
-      double newSpeed = -this.accelerate(vehicle, vehicle.getRunOutSpeed());
-      if (newSpeed > 0) {
+      double newSpeed = this.accelerate(vehicle, -vehicle.getRunOutSpeed());
+      if (newSpeed < 0.001 && newSpeed > -0.001) {
         vehicle.setCurrentSpeed(0);
       } else {
         vehicle.setCurrentSpeed(newSpeed);
