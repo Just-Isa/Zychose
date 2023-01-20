@@ -18,15 +18,10 @@ public class Roadmap {
     JSONArray jsonArray = new JSONArray(mapstring);
     for (int i = 0; i < jsonArray.length(); i++) {
       JSONObject obj = jsonArray.getJSONObject(i);
-      int x = Integer.parseInt(obj.getString("posX"));
-      int y = Integer.parseInt(obj.getString("posY"));
+      int x = obj.getInt("posX");
+      int y = obj.getInt("posY");
       this.tileMap[x][y] =
-          new StreetBlock(
-              obj.getString("streetType"),
-              Integer.parseInt(obj.getString("rotation")),
-              x,
-              y,
-              false);
+          new StreetBlock(obj.get("streetType").toString(), obj.getInt("rotation"), x, y, false);
     }
   }
 

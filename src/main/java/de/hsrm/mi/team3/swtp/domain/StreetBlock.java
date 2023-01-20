@@ -8,7 +8,7 @@ public class StreetBlock {
 
   private String type;
   private int rotation;
-  private int[] position;
+  private int[] position = {0, 0};
   private boolean blocked;
 
   public StreetBlock(String tileType, int rotation, int posX, int posY, boolean blocked) {
