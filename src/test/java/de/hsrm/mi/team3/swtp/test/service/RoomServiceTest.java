@@ -4,9 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
+import de.hsrm.mi.team3.swtp.services.RoomBoxService;
 import de.hsrm.mi.team3.swtp.services.RoomService;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +23,11 @@ import org.springframework.mock.web.MockMultipartFile;
 @AutoConfigureMockMvc
 class RoomServiceTest {
 
-  @Autowired RoomService roomService;
+  @Autowired
+  RoomService roomService;
+
+  @Autowired
+  RoomBoxService roomBoxService;
 
   private final String ROOMNAMEONE = "RoomNameOne";
   private final String ROOMNAME_POST_UPDATE = "RoomNamePostUpdate";
@@ -32,16 +39,19 @@ class RoomServiceTest {
   private final String SESSIONID = "session-id-test-1";
   private final int USERROOMNUMBER = 1;
   private final String USERNAME = "User-One";
+
   private final String SESSIONIDTWO = "session-id-test-2";
   private final int USERROOMNUMBERTWO = 1;
   private final String USERNAMETWO = "User-Two";
+
+  private final String NOTPRESENTSESSIONID = "not-present";
 
   private final int USERLISTSIZE_BEFORE_ADDITION = 0;
   private final int USERLIST_SIZE_MIDADDITON = 1;
   private final int USERLISTSIZE_AFTER_ADDITION = 2;
 
-  private final MockMultipartFile FIRST_JYTHON_FILE =
-      new MockMultipartFile("data", "jythonScript.py", "text/plain", "print('test!')".getBytes());
+  private final MockMultipartFile FIRST_JYTHON_FILE = new MockMultipartFile("data", "jythonScript.py", "text/plain",
+      "print('test!')".getBytes());
 
   User userOne = null;
   User userTwo = null;
@@ -112,5 +122,19 @@ class RoomServiceTest {
     assertThat(roomOne.getRoomName()).isEqualTo(ROOMNAME_POST_UPDATE);
     assertThat(roomOne.getRoomNumber()).isEqualTo(ROOMNUMBERONE);
     assertThat(roomOne.getUserList()).containsExactlyElementsOf(List.of());
+  }
+
+  @Test
+  @DisplayName("Room: Get user by sessionID if room is not known and null if user with given sessionID is not present")
+  void getUserFromRoomBox() {
+    Room roomOne = roomBoxService.addRoom();
+    roomOne.addUserToList(userOne);
+    roomService.addNewUserToRoom(roomOne, userOne);
+
+    Optional<User> getUserBySessionIdPresent = roomBoxService.getUserBySessionID(SESSIONID);
+    assertThat(getUserBySessionIdPresent).isPresent().contains(userOne);
+
+    Optional<User> getUserBySessionIdNotPresent = roomBoxService.getUserBySessionID(NOTPRESENTSESSIONID);
+    assertThat(getUserBySessionIdNotPresent).isEmpty();
   }
 }
