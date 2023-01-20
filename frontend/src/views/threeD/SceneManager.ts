@@ -1,6 +1,5 @@
 import * as THREE from "three";
 import type { Scene } from "three";
-import swtpconfig from "../../../../swtp.config.json";
 import type { IStreetInformation } from "@/services/useStreets";
 import { useCamera } from "./CameraManager";
 import { useVehicle } from "../../services/use3DVehicle";
@@ -14,7 +13,6 @@ import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 import { TTFLoader } from "three/examples/jsm/loaders/TTFLoader.js";
 import config from "../../../../swtp.config.json";
 
-const blockSize = 16;
 const { camState, switchCamera } = useCamera();
 const { vehicleState } = useVehicle();
 type StreetBlock = IStreetInformation;
@@ -97,7 +95,7 @@ export class SceneManager {
    *
    */
   private getErrorBlock(posX: number, posY: number, posZ: number) {
-    const geometry = new THREE.BoxGeometry(blockSize, 1, blockSize);
+    const geometry = new THREE.BoxGeometry(config.bocksize, 1, config.bocksize);
     const material = new THREE.MeshBasicMaterial({ color: "#FF0000" });
     const cube = new THREE.Mesh(geometry, material);
     cube.position.set(posX, posY, posZ);
@@ -111,9 +109,9 @@ export class SceneManager {
     this.data.forEach((streetBlock: StreetBlock) => {
       this.addBlockToScene(
         streetBlock.streetType,
-        (streetBlock.posX - 1 - swtpconfig.gridSize / 2) * blockSize,
+        (streetBlock.posX - 1 - config.gridSize / 2) * config.bocksize,
         0,
-        (streetBlock.posY - 1 - swtpconfig.gridSize / 2) * blockSize,
+        (streetBlock.posY - 1 - config.gridSize / 2) * config.bocksize,
         Number(streetBlock.rotation) * (Math.PI / 180)
       );
     });
@@ -129,7 +127,7 @@ export class SceneManager {
    * adds new car
    */
   addVehicle(vehicle: IVehicle, vehicleSessionId: string) {
-    const blockPromise = this.blockMap.get("car");
+    const blockPromise = this.blockMap.get(vehicle.vehicleType);
 
     if (blockPromise !== undefined && !this.vehicles.has(vehicleSessionId)) {
       blockPromise
@@ -210,9 +208,7 @@ export class SceneManager {
     vehicle: IVehicle,
     sessionID: string
   ) {
-    const lerpDuration = 0.075;
     const quaternion = new THREE.Quaternion();
-
     const destination = new THREE.Vector3(
       vehicle.postitionX,
       vehicle.postitionY,
@@ -227,8 +223,8 @@ export class SceneManager {
     );
 
     const newQuaterion = quaternion.setFromEuler(newRotation);
-    threeVehicle.quaternion.slerp(newQuaterion, lerpDuration);
-    threeVehicle.position.lerp(destination, lerpDuration);
+    threeVehicle.quaternion.slerp(newQuaterion, config.VehilceLerpSpeed);
+    threeVehicle.position.lerp(destination, config.VehilceLerpSpeed);
 
     if (sessionID === getSessionIDFromCookie()) {
       this.vehicleCamera.request(vehicle.speed, threeVehicle);
@@ -258,17 +254,16 @@ export class SceneManager {
   private addTextToVehicle(text: string, vehicle: THREE.Group) {
     const fontLoader = new FontLoader();
     const ttfloader = new TTFLoader();
-    const textHightOverVehicle = 7;
-    ttfloader.load(config.font, function (json) {
+    ttfloader.load(config.fontPath, function (json) {
       const font = fontLoader.parse(json);
       const textGeometry = new TextGeometry(text, {
         font: font,
-        height: 0.1,
-        size: 0.75,
+        height:0.1,
+        size: config.fontSize,
       });
       textGeometry.center();
       const textmesh = new THREE.Mesh(textGeometry);
-      textmesh.position.set(0, textHightOverVehicle, 0);
+      textmesh.position.set(0, config.textHightOverVehicle, 0);
 
       textmesh.name = "text";
       textmesh.quaternion.copy(camState.cam.quaternion);

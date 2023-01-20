@@ -19,17 +19,6 @@ const vehicleState = reactive<IVehicleState>({
   vehicles: new Map<string, IVehicle>(),
   errorMessage: "",
 });
-export interface IReceiveVehicleMessage {
-  operator: MessageOperator;
-  userSessionId: string;
-  postitionX: number;
-  postitionY: number;
-  postitionZ: number;
-  rotationX: number;
-  rotationY: number;
-  rotationZ: number;
-  speed: number;
-}
 
 export function useVehicle() {
   return { vehicleState: readonly(vehicleState), receiveVehicle };
@@ -61,10 +50,11 @@ function handleMessage(jsonObject: IVehicleMessage) {
   if (jsonObject.operator === MessageOperator.DELETE) {
     vehicleState.vehicles.delete(jsonObject.userSessionId);
   }
-  if (jsonObject.operator === MessageOperator.CREATE) {
+  if (jsonObject.operator === MessageOperator.CREATE || jsonObject.operator === MessageOperator.UPDATE) {
     vehicleState.vehicles.set(
       jsonObject.userSessionId,
       new Vehicle(
+        jsonObject.vehicleType,
         jsonObject.postitionX,
         jsonObject.postitionY,
         jsonObject.postitionZ,
@@ -74,19 +64,6 @@ function handleMessage(jsonObject: IVehicleMessage) {
         jsonObject.speed
       )
     );
-  }
-  if (jsonObject.operator === MessageOperator.UPDATE) {
-    vehicleState.vehicles.set(
-      jsonObject.userSessionId,
-      new Vehicle(
-        jsonObject.postitionX,
-        jsonObject.postitionY,
-        jsonObject.postitionZ,
-        jsonObject.rotationX,
-        jsonObject.rotationY,
-        jsonObject.rotationZ,
-        jsonObject.speed
-      )
-    );
+    console.log(vehicleState.vehicles.get(jsonObject.userSessionId));
   }
 }

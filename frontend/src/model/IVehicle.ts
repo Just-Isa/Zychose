@@ -1,6 +1,7 @@
 import type { MessageOperator } from "./MessageOperators";
 
 export interface IVehicle {
+  vehicleType: string;
   postitionX: number;
   postitionY: number;
   postitionZ: number;
@@ -10,6 +11,7 @@ export interface IVehicle {
   speed: number;
 }
 export class Vehicle implements IVehicle {
+  vehicleType: string;
   postitionX: number;
   postitionY: number;
   postitionZ: number;
@@ -18,6 +20,7 @@ export class Vehicle implements IVehicle {
   rotationZ: number;
   speed: number;
   constructor(
+    vehicleType: string,
     postitionX: number,
     postitionY: number,
     postitionZ: number,
@@ -26,6 +29,7 @@ export class Vehicle implements IVehicle {
     rotationZ: number,
     speed: number
   ) {
+    this.vehicleType = vehicleType;
     this.postitionX = postitionX;
     this.postitionY = postitionY;
     this.postitionZ = postitionZ;
@@ -38,6 +42,7 @@ export class Vehicle implements IVehicle {
 export interface IVehicleMessage {
   operator: MessageOperator;
   userSessionId: string;
+  vehicleType: string;
   postitionX: number;
   postitionY: number;
   postitionZ: number;
