@@ -13,20 +13,22 @@ public class Room {
   private int roomNumber;
   private List<User> userList;
   private String jythonScript;
+  private String roomMap;
 
   public Room(int roomNumber) {
     this.roomName = "default-name";
     this.roomNumber = roomNumber;
-    this.userList = new ArrayList<User>();
+    this.userList = new ArrayList<>();
     this.jythonScript = "";
+    this.roomMap = "";
   }
 
   public Room(String roomName, int roomNumber) {
     this.roomName = roomName;
     this.roomNumber = roomNumber;
-    this.userList = new ArrayList<User>();
+    this.userList = new ArrayList<>();
     this.jythonScript = "";
-    ;
+    this.roomMap = "";
   }
 
   public String getRoomName() {
@@ -63,5 +65,17 @@ public class Room {
 
   public void setJythonScript(String jythonScript) {
     this.jythonScript = jythonScript;
+  }
+
+  public void setUserList(List<User> userList) {
+    this.userList = userList;
+  }
+
+  public String getRoomMap() {
+    return roomMap;
+  }
+
+  public void setRoomMap(String roomMap) {
+    this.roomMap = roomMap;
   }
 }

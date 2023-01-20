@@ -6,7 +6,7 @@
       <div v-for="vehicle in vehicleTabs" v-bind:key="vehicle.name">
         <StreetMenuTab
           :vehicleType="vehicle.name"
-          :imgSrc="vehicle.iconPath"
+          :imgSrc="`${vehicle.name}-pictogram.svg`"
           :isActive="menuTabState.currentActiveTab === vehicle.name"
           @click="changeCurrentTab(vehicle.name)"
         />
@@ -33,7 +33,7 @@ import StreetMenuTab from "./StreetMenuTab.vue";
 import { useStreetBlock } from "@/services/useStreetBlock";
 import swtpConfigJSON from "../../../swtp.config.json";
 import { computed } from "vue";
-import { StreetBlock } from "@/services/IStreetBlock";
+import { StreetBlock } from "@/model/IStreetBlock";
 
 const { changeCurrentTab, menuTabState } = useStreetBlock();
 
@@ -51,7 +51,7 @@ const filteredStreetBlocks = computed(() => {
       new StreetBlock(
         street.name,
         0,
-        street.svgPath,
+        street.imgPath,
         street.possibleRotations,
         street.vehicleTypes
       )

@@ -38,9 +38,9 @@
 
 <script setup lang="ts">
 import StreetBlockIcon from "./StreetBlockIcon.vue";
-import type { StreetBlock } from "@/services/IStreetBlock";
 import { ref, watch } from "vue";
 import { useStreetBlock } from "@/services/useStreetBlock";
+import type { StreetBlock } from "@/model/IStreetBlock";
 
 const { resetCurrentChangedTab, menuTabState } = useStreetBlock();
 

@@ -14,16 +14,17 @@
     >
       <img
         class="h-16 w-16 m-2"
-        :src="`src/assets/img/${prop.currentBlock.name}.svg`"
+        :src="prop.currentBlock.imgPath"
         :alt="prop.currentBlock.name"
+        draggable="false"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { StreetBlock } from "@/services/IStreetBlock";
 import { useStreetBlock } from "@/services/useStreetBlock";
+import type { StreetBlock } from "@/model/IStreetBlock";
 
 const prop = defineProps<{
   currentBlock: StreetBlock;

@@ -1,5 +1,8 @@
 import { gridToJson } from "./JSONparser";
 import { reactive, readonly } from "vue";
+import { useRoom } from "./useRoom";
+
+const { updateRoomMap } = useRoom();
 
 /**
  * Interface to save street information
@@ -20,6 +23,7 @@ export interface IStreetInformation {
 const state = reactive({
   streets: Array<IStreetInformation>(),
 });
+
 /**
  * State Management for the streets
  * @see {@link updateStreetState} function that handles the onGridClickObject
@@ -27,6 +31,31 @@ const state = reactive({
  * @returns Returns the Array of streets (readonly) and the functions updateStreetState, isStreetPlaced and recieveNewStreetState,
  */
 export function useStreets() {
+  /**
+   * Initializes the streetState
+   */
+  function initializeStreetState(): void {
+    const DEST =
+      "/api/room/map/" + (location.pathname.split("/")[1] as any as number);
+
+    fetch(DEST, {
+      method: "GET",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          console.log(response);
+        }
+        return response.json();
+      })
+      .then((jsondata) => {
+        updateRoomMap(JSON.stringify(jsondata));
+        recieveNewStreetState(jsondata as Array<IStreetInformation>);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }
+
   /**
    * Function of the State to handle the onGridClickObject.
    * If delete is selected the street in the array needs to be removed.
@@ -41,19 +70,24 @@ export function useStreets() {
           street.posY !== onGridClickObject.posY
       );
     } else {
-      const foundStreet = state.streets.find(
-        (street) =>
-          street.posX === onGridClickObject.posX &&
-          street.posY === onGridClickObject.posY
-      );
-      if (foundStreet) {
-        foundStreet.rotation = onGridClickObject.rotation;
-        foundStreet.streetType = onGridClickObject.streetType;
+      if (state.streets.length) {
+        const foundStreet = state.streets.find(
+          (street) =>
+            street.posX === onGridClickObject.posX &&
+            street.posY === onGridClickObject.posY
+        );
+        if (foundStreet) {
+          foundStreet.rotation = onGridClickObject.rotation;
+          foundStreet.streetType = onGridClickObject.streetType;
+        } else {
+          state.streets.push(onGridClickObject);
+        }
       } else {
         state.streets.push(onGridClickObject);
       }
     }
     gridToJson(state.streets);
+    updateRoomMap(JSON.stringify(state.streets));
   }
 
   /**
@@ -72,6 +106,7 @@ export function useStreets() {
    */
   function isStreetPlaced(row: number, col: number) {
     if (
+      state.streets.length &&
       state.streets.find((street) => street.posX === row && street.posY === col)
     ) {
       return true;
@@ -81,9 +116,10 @@ export function useStreets() {
   }
 
   return {
-    streets: readonly(state.streets),
+    streetsState: readonly(state),
     updateStreetState,
     isStreetPlaced,
     recieveNewStreetState,
+    initializeStreetState,
   };
 }

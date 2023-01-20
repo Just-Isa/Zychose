@@ -4,15 +4,15 @@
 export interface IStreetBlock {
   name: string;
   currentRotation: number;
-  svgPath: string;
   possibleRotations: number[];
   possibleVehicleTypes: string[];
+  imgPath: string;
 }
 
 export class StreetBlock implements IStreetBlock {
   name = "";
   currentRotation = 0;
-  svgPath = "";
+  imgPath = "";
   possibleRotations = new Array<number>();
   possibleVehicleTypes = new Array<string>();
 
@@ -22,17 +22,18 @@ export class StreetBlock implements IStreetBlock {
    * @param currentRotation
    * @param possibleRotations array with possible rotations of this StreetBlock
    * @param possibleVehicleTypes array that specifies which vehicle types this StreetBlock is used for
+   * @param imgPath path to 2D-image to show in StreetMenu
    */
   constructor(
     name: string,
     currentRotation: number,
-    svgPath: string,
+    imgPath: string,
     possibleRotations: number[],
     possibleVehicleTypes: string[]
   ) {
     this.name = name;
     this.currentRotation = currentRotation;
-    this.svgPath = svgPath;
+    this.imgPath = imgPath;
     this.possibleRotations = possibleRotations;
     this.possibleVehicleTypes = possibleVehicleTypes;
   }

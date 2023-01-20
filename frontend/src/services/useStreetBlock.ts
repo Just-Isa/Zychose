@@ -1,6 +1,6 @@
 import { reactive, readonly } from "vue";
 import swtpConfigJSON from "../../../swtp.config.json";
-import type { StreetBlock } from "./IStreetBlock";
+import type { StreetBlock } from "@/model/IStreetBlock";
 
 /**
  * State Interface for information on active StreetBlock and Bulldozer
@@ -9,7 +9,7 @@ const stateStreetBlock = reactive({
   streetBlock: {
     name: "",
     currentRotation: 0,
-    svgPath: "",
+    imgPath: "",
     possibleRotations: new Array<number>(),
     possibleVehicleTypes: new Array<string>(),
   },

@@ -1,3 +1,4 @@
+import { logger } from "@/helpers/Logger";
 import type * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { reactive } from "vue";
@@ -26,12 +27,12 @@ async function loadModel(filepath: string): Promise<THREE.Group> {
         filepath,
         (data) => resolve(data.scene),
         function (xhr) {
-          console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+          logger.log((xhr.loaded / xhr.total) * 100 + "% loaded");
         },
         reject
       );
     } catch (error) {
-      console.error(error);
+      logger.error(error);
     }
   });
 }

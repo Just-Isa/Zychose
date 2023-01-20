@@ -42,18 +42,6 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
   }
 
   /**
-   * checks if room number is already taken
-   *
-   * @param roomNumber requested room number
-   * @return true or false
-   */
-  public boolean roomExistsByNumber(int roomNumber) {
-    RoomBox roomBox = getRoomBoxSingelton();
-    Room room = roomBox.getRooms().get(roomNumber);
-    return room != null;
-  }
-
-  /**
    * get map with all existing romms
    *
    * @return map with all existing romms
@@ -121,5 +109,10 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
       this.getRoomBoxSingelton().removeRoom(roomToRemove);
     }
     logger.info("ROOMBOXSIZE AFTER = {}", this.getRoomsFromRoomBox().size());
+  }
+
+  @Override
+  public void removeSpecificRoom(int roomNumber) {
+    this.getRoomBoxSingelton().removeRoom(this.getSpecificRoom(roomNumber));
   }
 }

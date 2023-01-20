@@ -53,7 +53,8 @@ public class FileUploadController {
             room.getRoomName(),
             room.getRoomNumber(),
             room.getUserList(),
-            new String(room.getJythonScript().getBytes())));
+            new String(room.getJythonScript().getBytes()),
+            room.getRoomMap()));
 
     // just for testing-purposes, to show that you can execute the received file
     try (PythonInterpreter pyInt = new PythonInterpreter()) {

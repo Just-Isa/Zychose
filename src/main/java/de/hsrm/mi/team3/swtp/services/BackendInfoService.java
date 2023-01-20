@@ -1,6 +1,7 @@
 package de.hsrm.mi.team3.swtp.services;
 
 import de.hsrm.mi.team3.swtp.domain.User;
+import de.hsrm.mi.team3.swtp.domain.Vehicle;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendMouseMessage;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendRoomMessage;
@@ -13,4 +14,6 @@ public interface BackendInfoService {
   public void sendUser(String topicname, BackendOperation operation, User user);
 
   public void sendMouse(String topicname, BackendMouseMessage mouse);
+
+  public void sendVehicle(String topicname, BackendOperation operation, Vehicle vehicle);
 }

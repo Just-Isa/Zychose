@@ -12,13 +12,15 @@
       class="bg-[#008000] w-full border-spacing-0 border-separate table-fixed max-h-full overflow-hidden"
       @wheel="zoomOnWheel($event)"
       @wheel.prevent
+      @mousedown="startDragThroughGrid($event)"
+      @mouseup="stopDragThroughGrid()"
+      @mousemove="dragToNewPosition($event)"
     >
       <tr
         v-for="row in checkedGridSize"
         v-bind:key="row"
         class="box-border h-20 p-0"
       >
-        <!-- //TODO sobald die Informationen ueber streetType und rotation aus dem State gelesen werden koennen, muss die zeile v-on:dblclick="clearCell(row, col)" geloescht werden -->
         <td
           v-for="col in checkedGridSize"
           class="box-border w-20 p-0 border border-white/20 hover:border-white hover:shadow-[inset_0_0_4px_1px_#fff] hover:opacity-50 bg-cover bg-no-repeat bg-center"
@@ -28,7 +30,6 @@
           @dragenter.prevent
           v-on:drop="onDrop(row, col)"
           v-on:click="cellClicked(row, col)"
-          v-on:dblclick="clearCell(row, col)"
           v-on:mouseover="onHover(row, col)"
           v-on:mouseleave="onEndHover(row, col)"
         ></td>
@@ -40,9 +41,10 @@
 <script setup lang="ts">
 import { useStreets, type IStreetInformation } from "../services/useStreets";
 import swtpConfigJSON from "../../../swtp.config.json";
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
+import { logger } from "@/helpers/Logger";
 //import { Mouse } from "@/services/IMouse";
 
 /**
@@ -52,8 +54,81 @@ const props = defineProps<{
   gridSize: any;
 }>();
 
+let isDragging = false;
+let isFirstDrag = false;
+
+let currX: number;
+let currY: number;
+let initX: number;
+let initY: number;
+let offsetX = 0;
+let offsetY = 0;
+const entireDoc = document.documentElement;
+
+onMounted(() => {
+  document.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+  });
+  initializeStreetState();
+  // Template loads table first, slower connections need extra time -> 700 ms tested to be sufficient
+  setTimeout(function () {
+    stateToGrid();
+  }, 700);
+
+  const grid = document.getElementById("gridTable") as HTMLTableElement;
+
+  // xCenter: ges.Breite --> Breite des Fenster/2 nochmal subtrahieren, um in der Mitte zu sein
+  let xCenter = grid.offsetWidth / 2 - window.innerWidth / 2;
+  let yCenter = grid.offsetHeight / 2 - window.innerHeight / 2;
+
+  entireDoc.scroll(xCenter, yCenter);
+  offsetX = xCenter;
+  offsetY = yCenter;
+});
+
+function startDragThroughGrid(event: MouseEvent) {
+  event.preventDefault();
+
+  // 2 -> rechter Mausbutton
+  if (event.button === 2) {
+    if (!isFirstDrag) {
+      // Startposition
+      initX = offsetX + event.clientX;
+      initY = offsetY + event.clientY;
+    } else {
+      initX = event.clientX - offsetX;
+      initY = event.clientY - offsetY;
+    }
+    isDragging = true;
+  }
+}
+
+function stopDragThroughGrid() {
+  initX = currX;
+  initY = currY;
+  isDragging = false;
+}
+
+function dragToNewPosition(event: MouseEvent) {
+  if (isDragging) {
+    if (!isFirstDrag) {
+      currX = event.clientX + initX;
+      currY = event.clientY + initY;
+      isFirstDrag = true;
+    } else {
+      currX = event.clientX - initX;
+      currY = event.clientY - initY;
+    }
+
+    offsetX = currX;
+    offsetY = currY;
+
+    entireDoc.scrollTop = -1 * currY;
+    entireDoc.scrollLeft = -1 * currX;
+  }
+}
+
 /*
-  //TODO werte für 100 und 20 vllt auch in die config --> können dort aber auch so angepasst werden, dass bullshit drin ist
   * Hardcoded Wert 24, weil 1rem entspricht 16px, also 1920/16 = 120 -> 120/5rem (cell-width) = 24 cells
   //TODO ?min-gridSize dynamisch berechenbar machen/ cell-size in config einstellbar ----- storyless task oder issue?
  */
@@ -68,9 +143,16 @@ const checkedGridSize = computed(() => {
     }
   }
 });
-const { updateStreetState, isStreetPlaced, streets } = useStreets();
+
+const {
+  updateStreetState,
+  isStreetPlaced,
+  streetsState,
+  initializeStreetState,
+} = useStreets();
 const { currentVehicle } = useVehicle();
 const streetTypes = swtpConfigJSON.streetTypes;
+
 //TODO
 //Hier wird der Input(strassentyp und rotation), sobald es moeglich ist, aus dem anderen state geholt und zusammen mit den Positionen fuer die Achsen im state fuer die strassen gespeichert
 /**
@@ -81,12 +163,12 @@ const streetTypes = swtpConfigJSON.streetTypes;
  * @param {number} posY position on y axis (click)
  */
 function cellClicked(posX: number, posY: number): void {
-  console.log("(posX,posY): ", [posX, posY]);
+  logger.log("(posX,posY): ", [posX, posY]);
   const table = document.getElementById("gridTable") as HTMLTableElement;
   const cell = table.rows[posX - 1].cells[posY - 1];
   /* testInput has to be hard coded as long as we're not able to get the informations from the states of the streetTileMenu */
   let testInput: IStreetInformation = {
-    streetType: "straight-road",
+    streetType: "road-straight",
     rotation: 90,
     posX: posX,
     posY: posY,
@@ -94,6 +176,7 @@ function cellClicked(posX: number, posY: number): void {
   setCellBackgroundStyle(cell, testInput);
   updateStreetState(testInput);
 }
+
 /**
  * onDrop function for the drag&drop process
  * @param {number} posX position on x axis (click)
@@ -101,15 +184,17 @@ function cellClicked(posX: number, posY: number): void {
  */
 function onDrop(posX: number, posY: number) {
   //TODO posX und posY müssen statt geloggt zu werden, ans backend gesendet werden an dieser Stelle
-  console.log("Vehicle-Position: ", posX, posY);
+  logger.log("Vehicle-Position: ", posX, posY);
   changeTo3DView();
 }
+
 /**
  * Changes the View to the 3D-View
  */
 function changeTo3DView() {
   let wrapper = document.getElementById("wrapper");
   if (wrapper != null) {
+    wrapper.classList.remove("opacity-70");
     wrapper.classList.add(
       "absolute",
       "duration-1000",
@@ -122,7 +207,7 @@ function changeTo3DView() {
   //TODO die 800ms sind gesetzt, weil es sonst keine richtige fade-to-white transition gibt !
   //TODO manchmal wechselt der router die seite nicht! --> außerdem wird ein *[Violation]'requestAnimationFrame' handler took XYZms* Hinweis geworfen --> die Performance der 3D-View ist also nicht so toll!
   setTimeout(function () {
-    router.push("/3d");
+    router.push((location.pathname.split("/")[1] as unknown as number) + "/3d");
   }, 800);
 }
 
@@ -155,6 +240,7 @@ function dragOver(posX: number, posY: number) {
     "border-yellow-300"
   );
 }
+
 /**
  * dragLeave function of the drag&drop process
  * @param {number} posX position on the x axis while leaving a cell on the grid
@@ -168,6 +254,7 @@ function dragLeave(posX: number, posY: number) {
     "border-yellow-300"
   );
 }
+
 /**
  * getting the hovered cell and changing the backgroundImage to 50% opaque "new" road.
  * the image is hardcoded right now, but it will change as soon as we get the streets from the state
@@ -178,7 +265,7 @@ function onHover(x: number, y: number): void {
   const table = document.getElementById("gridTable") as HTMLTableElement;
   const cell = table.rows[x - 1].cells[y - 1];
   //TODO sobald man die Informationen ueber streetType und rotation aus dem State lesen kann, muss der code unterhalb angepasst werden
-  cell.style.backgroundImage = "url(/src/assets/img/cross-road.svg)";
+  cell.style.backgroundImage = "url(/assets/img/road_cross.png)";
 }
 
 /**
@@ -199,18 +286,16 @@ function onEndHover(x: number, y: number): void {
   }
 }
 
-/* eslint-disable @typescript-eslint/no-unused-vars*/
 /**
  * Function to display the streets that are saved in the state.
  */
 function stateToGrid(): void {
   const table = document.getElementById("gridTable") as HTMLTableElement;
-  for (const street of streets) {
+  for (const street of streetsState.streets) {
     const cell = table.rows[street.posX - 1].cells[street.posY - 1];
     setCellBackgroundStyle(cell, street);
   }
 }
-/* eslint-enable */
 
 /**
  * Function that sets the style of the given Cell. The given street is needed for information about the streetType and rotation.
@@ -223,7 +308,7 @@ function setCellBackgroundStyle(
 ): void {
   for (const streetType of streetTypes) {
     if (streetType.name === street.streetType) {
-      cell.style.backgroundImage = `url(${streetType.svgPath})`;
+      cell.style.backgroundImage = `url(${streetType.imgPath})`;
       cell.style.transform = `rotate(${street.rotation}deg)`;
     }
   }
