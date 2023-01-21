@@ -37,7 +37,7 @@ public class VehicleBot {
   public VehicleBot(Room room) {
     this.room = room;
     this.route = new ArrayList<>();
-    this.currentPos = new int[] { 0, 0 };
+    this.currentPos = new int[] {0, 0};
     this.currentRotation = 0;
   }
 
@@ -95,9 +95,10 @@ public class VehicleBot {
   }
 
   public void refreshNeighbours() {
-    this.neighbours = this.room
-        .getRoomMap()
-        .getNeighbours(this.currentPos[0], this.currentPos[1], this.currentRotation);
+    this.neighbours =
+        this.room
+            .getRoomMap()
+            .getNeighbours(this.currentPos[0], this.currentPos[1], this.currentRotation);
   }
 
   @Override
