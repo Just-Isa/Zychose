@@ -46,9 +46,10 @@ public class VehicleBot {
   public void turn(int rotation) {
     if (!this.hasFixRoute()) {
       // TODO Fahrzeug entscheidet zufaellig ob es abbiegt
-    } else {
       this.setCurrentRotation(rotation);
       moveToNextTile();
+    } else {
+      // TODO follow fixRoute
     }
   }
 
