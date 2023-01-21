@@ -67,6 +67,5 @@ function handleMessage(jsonObject: IVehicleMessage) {
         jsonObject.speed
       )
     );
-    console.log(vehicleState.vehicles.get(jsonObject.userSessionId));
   }
 }

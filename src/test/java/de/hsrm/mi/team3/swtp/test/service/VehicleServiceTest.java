@@ -15,7 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class VehicleServiceTest {
-  @Autowired VehicleService vehicleService;
+  @Autowired
+  VehicleService vehicleService;
 
   private Vehicle vehicle;
 
@@ -25,7 +26,7 @@ public class VehicleServiceTest {
 
   @BeforeEach
   public void vehicleInit() {
-    vehicle = new Vehicle();
+    vehicle = new Vehicle("car");
   }
 
   @Test
@@ -75,8 +76,7 @@ public class VehicleServiceTest {
     double zPosBefore = vehicle.getPosZ();
     vehicle.setCurrentSpeed(NO_SPEED);
     vehicleService.moveForward(vehicle);
-    double xPosAfter =
-        DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
+    double xPosAfter = DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
     assertThat(vehicle.getPosX()).isEqualTo(xPosAfter);
     assertThat(vehicle.getPosZ())
         .isEqualTo(
@@ -90,8 +90,7 @@ public class VehicleServiceTest {
     double zPosBefore = vehicle.getPosZ();
     vehicle.setCurrentSpeed(-MAX_SPEED);
     vehicleService.moveForward(vehicle);
-    double xPosAfter =
-        DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
+    double xPosAfter = DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
     assertThat(vehicle.getPosX()).isEqualTo(xPosAfter);
     assertThat(vehicle.getPosZ())
         .isEqualTo(
@@ -105,8 +104,7 @@ public class VehicleServiceTest {
     double zPosBefore = vehicle.getPosZ();
     vehicle.setCurrentSpeed(NO_SPEED);
     vehicleService.moveBackward(vehicle);
-    double xPosAfter =
-        DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
+    double xPosAfter = DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
     assertThat(vehicle.getPosX()).isEqualTo(xPosAfter);
     assertThat(vehicle.getPosZ())
         .isEqualTo(
@@ -120,8 +118,7 @@ public class VehicleServiceTest {
     double zPosBefore = vehicle.getPosZ();
     vehicle.setCurrentSpeed(-MAX_SPEED);
     vehicleService.moveBackward(vehicle);
-    double xPosAfter =
-        DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
+    double xPosAfter = DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
     assertThat(vehicle.getPosX()).isEqualTo(xPosAfter);
     assertThat(vehicle.getPosZ())
         .isEqualTo(

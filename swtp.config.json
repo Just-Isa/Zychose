@@ -129,7 +129,7 @@
       "iconPath": "/bicycle-pictogram.svg"
     }
   ],
-  "bocksize":16,
+  "blocksize":16,
   "debugConsole": false,
   "allVehicleTypes": [
     {
@@ -160,6 +160,5 @@
   "fontPath":"/fonts/poppins-semiBold.ttf",
   "fontSize":0.75,
   "VehilceLerpSpeed": 0.075,
-  "textHightOverVehicle":7,
-  "vehicleCommandSendInterval": 100
+  "textHightOverVehicle":7
 }

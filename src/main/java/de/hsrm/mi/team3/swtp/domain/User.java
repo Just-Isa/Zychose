@@ -11,18 +11,21 @@ public class User {
 
   private String userName;
 
-  private Vehicle vehicle = null;
+  private Vehicle vehicle;
 
   public User(String sessionID, int currentRoomNumber, String userName) {
     this.sessionID = sessionID;
     this.currentRoomNumber = currentRoomNumber;
     this.userName = userName;
+    vehicle = null;
   }
 
   public User() {
     this.sessionID = "";
     this.currentRoomNumber = 0;
     this.userName = "";
+    vehicle = null;
+
   }
 
   public String getSessionID() {

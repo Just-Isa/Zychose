@@ -95,7 +95,11 @@ export class SceneManager {
    *
    */
   private getErrorBlock(posX: number, posY: number, posZ: number) {
-    const geometry = new THREE.BoxGeometry(config.bocksize, 1, config.bocksize);
+    const geometry = new THREE.BoxGeometry(
+      config.blocksize,
+      1,
+      config.blocksize
+    );
     const material = new THREE.MeshBasicMaterial({ color: "#FF0000" });
     const cube = new THREE.Mesh(geometry, material);
     cube.position.set(posX, posY, posZ);
@@ -109,9 +113,9 @@ export class SceneManager {
     this.data.forEach((streetBlock: StreetBlock) => {
       this.addBlockToScene(
         streetBlock.streetType,
-        (streetBlock.posX - 1 - config.gridSize / 2) * config.bocksize,
+        (streetBlock.posX - 1 - config.gridSize / 2) * config.blocksize,
         0,
-        (streetBlock.posY - 1 - config.gridSize / 2) * config.bocksize,
+        (streetBlock.posY - 1 - config.gridSize / 2) * config.blocksize,
         Number(streetBlock.rotation) * (Math.PI / 180)
       );
     });
