@@ -6,8 +6,6 @@ import { Room, type IRoom } from "../model/IRoom";
 import { logger } from "@/helpers/Logger";
 
 const webSocketUrl = `ws://${window.location.host}/stompbroker`;
-const receiveRoomStompClient = new Client({ brokerURL: webSocketUrl });
-const updateRoomStompClient = new Client({ brokerURL: webSocketUrl });
 
 export interface IRoomState {
   room: IRoom;
@@ -47,10 +45,9 @@ const { getRoomList } = useRoomBox();
  *
  */
 function receiveRoom() {
+  const receiveRoomStompClient = new Client({ brokerURL: webSocketUrl });
   const DEST = "/topic/room/" + roomState.room.roomNumber;
-  if (!receiveRoomStompClient.connected) {
-    receiveRoomStompClient.activate();
-  }
+
   receiveRoomStompClient.onWebSocketError = (event) => {
     logger.error("WS-error", JSON.stringify(event)); /* WS-Error */
     location.href = "/500";
@@ -62,9 +59,10 @@ function receiveRoom() {
   receiveRoomStompClient.onConnect = () => {
     receiveRoomStompClient.subscribe(DEST, (message) => {
       roomState.room = JSON.parse(message.body);
-      logger.log(roomState.room);
+      console.log(roomState.room);
     });
   };
+  receiveRoomStompClient.activate();
 }
 
 /** Publishes Room to the rooms specific topic
@@ -73,11 +71,8 @@ function receiveRoom() {
  * @param roomNumber Roomnumber
  */
 function updateRoom(roomNumber: number) {
+  const updateRoomStompClient = new Client({ brokerURL: webSocketUrl });
   const DEST = "/topic/room/" + roomNumber;
-  if (!updateRoomStompClient.connected) {
-    updateRoomStompClient.activate();
-  }
-
   updateRoomStompClient.onWebSocketError = (event) => {
     logger.error("WS-error", JSON.stringify(event)); /* WS-Error */
     location.href = "/500";
@@ -86,15 +81,18 @@ function updateRoom(roomNumber: number) {
     logger.error("STOMP-error", JSON.stringify(frame)); /* STOMP-Error */
     location.href = "/500";
   };
-  try {
-    updateRoomStompClient.publish({
-      destination: DEST,
-      headers: {},
-      body: JSON.stringify(roomState.room),
-    });
-  } catch (err) {
-    console.log("Error while publishing room! ", err);
-  }
+  updateRoomStompClient.onConnect = () => {
+    try {
+      updateRoomStompClient.publish({
+        destination: DEST,
+        headers: {},
+        body: JSON.stringify(roomState.room),
+      });
+    } catch (err) {
+      console.log("Error while publishing room! ", err);
+    }
+  };
+  updateRoomStompClient.activate();
 }
 
 /** Changes Room a User is in to another

@@ -87,5 +87,5 @@ setInterval(function () {
       mouseState.mouse.y,
     ];
   }
-}, 15);
+}, 100);
 </script>
