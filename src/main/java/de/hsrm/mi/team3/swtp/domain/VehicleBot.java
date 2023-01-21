@@ -1,15 +1,18 @@
 package de.hsrm.mi.team3.swtp.domain;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class VehicleBot {
 
   private VehicleBehaviour behaviour = VehicleBehaviour.DEFENSIVE;
-  private int[] currentPos = {0, 0};
-  private int currentRotation = 0;
+  private int[] currentPos;
+  private int currentRotation;
   private Map<VehicleNeighbour, StreetBlock> neighbours;
   private Room room = null;
+  private List<Character> route;
 
   /*
    * TODO EINEN geeigneten Konstruktor überlegen
@@ -33,6 +36,9 @@ public class VehicleBot {
 
   public VehicleBot(Room room) {
     this.room = room;
+    this.route = new ArrayList<>();
+    this.currentPos = new int[] { 0, 0 };
+    this.currentRotation = 0;
   }
 
   public void moveToNextTile() {
@@ -54,6 +60,14 @@ public class VehicleBot {
   public void turn(int rotation) {
     this.setCurrentRotation(rotation);
     moveToNextTile();
+  }
+
+  public List<Character> getRoute() {
+    return route;
+  }
+
+  public void setRoute(List<Character> route) {
+    this.route = route;
   }
 
   public int[] getCurrentPos() {
@@ -81,10 +95,9 @@ public class VehicleBot {
   }
 
   public void refreshNeighbours() {
-    this.neighbours =
-        this.room
-            .getRoomMap()
-            .getNeighbours(this.currentPos[0], this.currentPos[1], this.currentRotation);
+    this.neighbours = this.room
+        .getRoomMap()
+        .getNeighbours(this.currentPos[0], this.currentPos[1], this.currentRotation);
   }
 
   @Override
