@@ -30,8 +30,13 @@ public class VehicleBot {
     } else if (destination.isBlocked()) {
       // TODO warten bis Kachel frei
     } else {
+      this.room
+          .getRoomMap()
+          .getStreetBlock(this.getCurrentX() - 1, this.getCurrentY() - 1)
+          .isBlocked(false);
       this.currentPos[0] = destination.getTilePosition()[1] + 1;
       this.currentPos[1] = destination.getTilePosition()[0] + 1;
+      destination.isBlocked(true);
     }
   }
 
