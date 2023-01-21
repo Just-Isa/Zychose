@@ -10,10 +10,12 @@ public class Vehicle {
   private static final double ACCELERATION = 0.2;
   private static final double BRAKE_SPEED = 0.3;
 
-  private String vehicleType;
+  private String vehicleType = "car";
   private double currentSpeed = 0;
   private double[] rotationVector = {0, 0, 0};
   private double[] posVector = {0, 0, 0};
+
+  public Vehicle() {}
 
   public Vehicle(String vehicleType) {
     this.vehicleType = vehicleType;
