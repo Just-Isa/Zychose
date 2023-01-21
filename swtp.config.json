@@ -2,14 +2,15 @@
   "streetTypes": [
     {
       "name": "road-cross",
-      "svgPath": "",
+      "imgPath": "/assets/img/road_cross.png",
       "glbPath": "/assets/models/road_cross.glb",
       "vehicleTypes": ["car"],
       "possibleRotations": []
     },
+
     {
       "name": "road-curve",
-      "svgPath": "",
+      "imgPath": "/assets/img/road_curve.png",
       "glbPath": "/assets/models/road_curve.glb",
       "vehicleTypes": ["car"],
       "possibleRotations": [
@@ -21,7 +22,7 @@
     },
     {
       "name": "road-straight",
-      "svgPath": "",
+      "imgPath": "/assets/img/road_straight.png",
       "glbPath": "/assets/models/road_straight.glb",
       "vehicleTypes": ["car"],
       "possibleRotations": [
@@ -31,7 +32,7 @@
     },
     {
       "name": "road-t",
-      "svgPath": "",
+      "imgPath": "/assets/img/road_t.png",
       "glbPath": "/assets/models/road_t.glb",
       "vehicleTypes": ["car"],
       "possibleRotations": [
@@ -43,7 +44,7 @@
     },
     {
       "name": "road-dead-end",
-      "svgPath": "",
+      "imgPath": "/assets/img/road_dead_end.png",
       "glbPath": "/assets/models/road_dead_end.glb",
       "vehicleTypes": ["car"],
       "possibleRotations": [
@@ -55,14 +56,14 @@
     },
     {
       "name": "sidewalk-cross",
-      "svgPath": "",
+      "imgPath": "/assets/img/sidewalk_cross.png",
       "glbPath": "/assets/models/sidewalk_cross.glb",
       "vehicleTypes": ["bicycle"],
       "possibleRotations": []
     },
     {
       "name": "sidewalk-curve",
-      "svgPath": "",
+      "imgPath": "/assets/img/sidewalk_curve.png",
       "glbPath": "/assets/models/sidewalk_curve.glb",
       "vehicleTypes": ["bicycle"],
       "possibleRotations": [
@@ -74,7 +75,7 @@
     },
     {
       "name": "sidewalk-straight",
-      "svgPath": "",
+      "imgPath": "/assets/img/sidewalk_straight.png",
       "glbPath": "/assets/models/sidewalk_straight.glb",
       "vehicleTypes": ["bicycle"],
       "possibleRotations": [
@@ -84,7 +85,7 @@
     },
     {
       "name": "sidewalk-t",
-      "svgPath": "",
+      "imgPath": "/assets/img/sidewalk_t.png",
       "glbPath": "/assets/models/sidewalk_t.glb",
       "vehicleTypes": ["bicycle"],
       "possibleRotations": [
@@ -96,7 +97,7 @@
     },
     {
       "name": "sidewalk-dead-end",
-      "svgPath": "",
+      "imgPath": "/assets/img/sidewalk_dead_end.png",
       "glbPath": "/assets/models/sidewalk_dead_end.glb",
       "vehicleTypes": ["bicycle"],
       "possibleRotations": [
@@ -118,6 +119,16 @@
     }
   ],
   "gridSize": 100,
+  "vehicleTabs":[
+    {
+      "name": "car",
+      "iconPath": "/car-pictogram.svg"
+    },
+    {
+      "name": "bicycle",
+      "iconPath": "/bicycle-pictogram.svg"
+    }
+  ],
   "bocksize":16,
   "debugConsole": false,
   "allVehicleTypes": [

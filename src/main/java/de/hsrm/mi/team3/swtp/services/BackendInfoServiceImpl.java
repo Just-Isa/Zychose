@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class BackendInfoServiceImpl implements BackendInfoService {
 
   @Autowired SimpMessagingTemplate messaging;
-  final String GENERIC_TOPIC_START = "/topic/";
+  static final String GENERIC_TOPIC_START = "/topic/";
 
   /**
    * hands roomdata from front- to backend

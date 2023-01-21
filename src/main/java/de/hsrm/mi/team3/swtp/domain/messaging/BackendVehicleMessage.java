@@ -19,18 +19,16 @@ public record BackendVehicleMessage(
 
   public static BackendVehicleMessage from(
       BackendOperation operator, String userSessionId, Vehicle vehicle) {
-    BackendVehicleMessage dto =
-        new BackendVehicleMessage(
-            operator,
-            userSessionId,
-            vehicle.getVehicleType(),
-            vehicle.getPosVector()[0],
-            vehicle.getPosVector()[1],
-            vehicle.getPosVector()[2],
-            vehicle.getRotationX(),
-            vehicle.getRotationY(),
-            vehicle.getRotationZ(),
-            vehicle.getCurrentSpeed());
-    return dto;
+    return new BackendVehicleMessage(
+        operator,
+        userSessionId,
+        vehicle.getVehicleType(),
+        vehicle.getPosVector()[0],
+        vehicle.getPosVector()[1],
+        vehicle.getPosVector()[2],
+        vehicle.getRotationX(),
+        vehicle.getRotationY(),
+        vehicle.getRotationZ(),
+        vehicle.getCurrentSpeed());
   }
 }

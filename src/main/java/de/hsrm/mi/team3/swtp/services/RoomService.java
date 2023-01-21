@@ -16,5 +16,13 @@ public interface RoomService {
 
   public void saveScriptToRoom(MultipartFile file, Room room);
 
+  public void updateRoom(
+      Room room,
+      String jythonScript,
+      String roomMap,
+      String roomName,
+      int roomNumber,
+      List<User> userList);
+
   public User getUserByID(int roomNumber, String sessionID);
 }
