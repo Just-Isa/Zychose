@@ -28,7 +28,7 @@
           @dragover.prevent="dragOver(row, col)"
           @dragleave="dragLeave(row, col)"
           @dragenter.prevent
-          v-on:drop="onDrop()"
+          v-on:drop="onDrop(row, col)"
           v-on:click="cellClicked(row, col)"
           v-on:mouseover="onHover(row, col)"
           v-on:mouseleave="onEndHover(row, col)"
@@ -182,7 +182,7 @@ function cellClicked(posX: number, posY: number): void {
  * @param {number} posX position on x axis (click)
  * @param {number} posY position on y axis (click)
  */
-function onDrop(/*posX: number, posY: number*/) {
+function onDrop(posX: number, posY: number) {
   //TODO posX und posY müssen statt geloggt zu werden, ans backend gesendet werden an dieser Stelle
   logger.log("Vehicle-Position: ", posX, posY);
   changeTo3DView();
