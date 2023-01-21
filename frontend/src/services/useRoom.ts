@@ -1,8 +1,13 @@
 import { Client } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
-import { Room, type IRoom } from "./IRoom";
 import { useRoomBox } from "./useRoomList";
 import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
+import { Room, type IRoom } from "../model/IRoom";
+import { logger } from "@/helpers/Logger";
+
+const webSocketUrl = `ws://${window.location.host}/stompbroker`;
+const receiveRoomStompClient = new Client({ brokerURL: webSocketUrl });
+const updateRoomStompClient = new Client({ brokerURL: webSocketUrl });
 
 export interface IRoomState {
   room: IRoom;
@@ -42,57 +47,54 @@ const { getRoomList } = useRoomBox();
  *
  */
 function receiveRoom() {
-  const webSocketUrl = `ws://${window.location.host}/stompbroker`;
   const DEST = "/topic/room/" + roomState.room.roomNumber;
-  const stompClient = new Client({ brokerURL: webSocketUrl });
-  stompClient.onWebSocketError = () => {
-    console.log("WS-error"); /* WS-Error */
+  if (!receiveRoomStompClient.connected) {
+    receiveRoomStompClient.activate();
+  }
+  receiveRoomStompClient.onWebSocketError = (event) => {
+    logger.error("WS-error", JSON.stringify(event)); /* WS-Error */
+    location.href = "/500";
   };
-  stompClient.onStompError = () => {
-    console.log("STOMP-error"); /* STOMP-Error */
+  receiveRoomStompClient.onStompError = (frame) => {
+    logger.error("STOMP-error", JSON.stringify(frame)); /* STOMP-Error */
+    location.href = "/500";
   };
-  stompClient.onConnect = () => {
-    stompClient.subscribe(DEST, (message) => {
+  receiveRoomStompClient.onConnect = () => {
+    receiveRoomStompClient.subscribe(DEST, (message) => {
       roomState.room = JSON.parse(message.body);
+      logger.log(roomState.room);
     });
-  };
-  stompClient.activate();
-  stompClient.onDisconnect = () => {
-    /* Verbindung abgebaut*/
   };
 }
 
 /** Publishes Room to the rooms specific topic
  *
  * @param operator Operation type
- * @param user User that is to be published
+ * @param roomNumber Roomnumber
  */
 function updateRoom(roomNumber: number) {
-  const webSocketUrl = `ws://${window.location.host}/stompbroker`;
   const DEST = "/topic/room/" + roomNumber;
-  const roomClient = new Client({ brokerURL: webSocketUrl });
-  roomClient.onWebSocketError = () => {
-    console.log("WS-error"); /* WS-Error */
+  if (!updateRoomStompClient.connected) {
+    updateRoomStompClient.activate();
+  }
+
+  updateRoomStompClient.onWebSocketError = (event) => {
+    logger.error("WS-error", JSON.stringify(event)); /* WS-Error */
+    location.href = "/500";
   };
-  roomClient.onStompError = () => {
-    console.log("STOMP-error"); /* STOMP-Error */
+  updateRoomStompClient.onStompError = (frame) => {
+    logger.error("STOMP-error", JSON.stringify(frame)); /* STOMP-Error */
+    location.href = "/500";
   };
-  roomClient.onConnect = () => {
-    try {
-      roomClient.publish({
-        destination: DEST,
-        headers: {},
-        body: JSON.stringify(roomState.room),
-      });
-    } catch (err) {
-      // in case of an error
-      console.log("Error while Publishing User! ", err);
-    }
-  };
-  roomClient.activate();
-  roomClient.onDisconnect = () => {
-    /* Verbindung abgebaut*/
-  };
+  try {
+    updateRoomStompClient.publish({
+      destination: DEST,
+      headers: {},
+      body: JSON.stringify(roomState.room),
+    });
+  } catch (err) {
+    console.log("Error while publishing room! ", err);
+  }
 }
 
 /** Changes Room a User is in to another

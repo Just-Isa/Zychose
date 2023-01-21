@@ -30,7 +30,7 @@ public class Room {
   public Room(int roomNumber) {
     this.roomName = "default-name";
     this.roomNumber = roomNumber;
-    this.userList = new ArrayList<User>();
+    this.userList = new ArrayList<>();
     this.jythonScript = "";
     this.roomMap = "";
   }
@@ -38,7 +38,7 @@ public class Room {
   public Room(String roomName, int roomNumber) {
     this.roomName = roomName;
     this.roomNumber = roomNumber;
-    this.userList = new ArrayList<User>();
+    this.userList = new ArrayList<>();
     this.jythonScript = "";
     this.roomMap = "";
   }

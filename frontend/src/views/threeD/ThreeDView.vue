@@ -24,18 +24,19 @@
 <script lang="ts">
 import { Camera, PointLight, Renderer, Scene } from "troisjs";
 import { useGLB } from "@/services/glbBlockLoader";
-import { SceneManager } from "@/services/SceneManager";
-import data from "../data/dummy.json";
-import config from "../../../swtp.config.json";
+import { SceneManager } from "@/views/threeD/SceneManager";
+import config from "../../../../swtp.config.json";
 import { useVehicle } from "@/services/use3DVehicle";
-import { useKeyInput } from "@/services/keyInputHandler";
-import { useVehicleCommands } from "@/services/useVehicleCommands";
+import { useVehicleCommands } from "../../services/useVehicleCommands";
+import { useKeyInput } from "./keyInputHandler";
+import { useStreets } from "@/services/useStreets";
 
 const { glbState, loadModel } = useGLB();
 const { publishVehicleCommands } = useVehicleCommands();
 const { keysPressed, inputs } = useKeyInput();
 const { receiveVehicle } = useVehicle();
-const sendInterval = 200;
+const { streetsState } = useStreets();
+const sendInterval = 100;
 
 config.miscModels.forEach((element) => {
   glbState.blockMap.set(element.name, loadModel(element.glbPath));
@@ -68,7 +69,7 @@ export default {
     const sceneManager = new SceneManager(
       scene,
       blockMap,
-      data as any,
+      streetsState.streets as any,
       renderer
     );
     sceneManager.initScene();

@@ -1,11 +1,11 @@
 package de.hsrm.mi.team3.swtp.domain;
 
 public class Vehicle {
-  private final double runOutSpeed = -0.2;
-  private final double maxSpeed = 1;
-  private final double handling = 0.2;
-  private final double acceleration = 0.2;
-  private final double brakeSpeed = 0.4;
+  private static final double RUN_OUT_SPEED = -0.1;
+  private static final double MAX_SPEED = 0.6;
+  private static final double HANDLING = 0.15;
+  private static final double ACCELERATION = 0.2;
+  private static final double BRAKE_SPEED = 0.3;
 
   private double currentSpeed = 0;
   private double[] rotationVector = {0, 0, 0};
@@ -26,23 +26,23 @@ public class Vehicle {
   }
 
   public double getRunOutSpeed() {
-    return runOutSpeed;
+    return RUN_OUT_SPEED;
   }
 
   public double getMaxSpeed() {
-    return maxSpeed;
+    return MAX_SPEED;
   }
 
   public double getHandling() {
-    return handling;
+    return HANDLING;
   }
 
   public double getAcceleration() {
-    return acceleration;
+    return ACCELERATION;
   }
 
   public double getBrakeSpeed() {
-    return brakeSpeed;
+    return BRAKE_SPEED;
   }
 
   public double[] getRotationVector() {

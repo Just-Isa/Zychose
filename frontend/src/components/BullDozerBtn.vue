@@ -53,11 +53,11 @@
 </template>
 
 <script setup lang="ts">
-import { StreetBlock } from "@/services/IStreetBlock";
+import { StreetBlock } from "@/model/IStreetBlock";
 import { useStreetBlock } from "@/services/useStreetBlock";
 import { watch } from "vue";
 
-const { changeCurrentStreetType, bulldozerActive, toggleBulldozer } =
+const { bulldozerActive, toggleBulldozer, changeCurrentStreetType } =
   useStreetBlock();
 
 const props = defineProps<{
@@ -74,8 +74,8 @@ function changeBulldozerState() {
 
   if (entireDoc) {
     if (!bulldozerActive.isActive) {
-      changeCurrentStreetType(new StreetBlock("", 0, [], [""]));
       toggleBulldozer(true);
+      changeCurrentStreetType(new StreetBlock("bulldozer", 0, "", [], [""]));
     } else {
       toggleBulldozer(false);
     }

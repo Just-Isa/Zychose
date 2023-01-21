@@ -71,7 +71,7 @@ public class RoomRestController {
     Room room = roomBoxService.getSpecificRoom(Integer.parseInt(roomNumber));
     Optional<User> userOpt = roomBoxService.getUserBySessionID(sId);
     if (userOpt.isPresent()) {
-      Room oldRoom = roomBoxService.getRoomsFromRoomBox().get(userOpt.get().getCurrentRoomNumber());
+      Room oldRoom = roomBoxService.getSpecificRoom(userOpt.get().getCurrentRoomNumber());
 
       roomService.removeUserFromRoom(oldRoom, userOpt.get());
       roomService.addNewUserToRoom(room, userOpt.get());
