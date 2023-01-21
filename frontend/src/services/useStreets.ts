@@ -1,6 +1,7 @@
 import { gridToJson } from "./JSONparser";
 import { reactive, readonly } from "vue";
 import { useRoom } from "./useRoom";
+import { logger } from "@/helpers/Logger";
 
 const { updateRoomMap } = useRoom();
 
@@ -43,7 +44,7 @@ export function useStreets() {
     })
       .then((response) => {
         if (!response.ok) {
-          console.log(response);
+          logger.log(response);
         }
         return response.json();
       })
