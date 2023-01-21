@@ -59,7 +59,6 @@ function receiveRoom() {
   receiveRoomStompClient.onConnect = () => {
     receiveRoomStompClient.subscribe(DEST, (message) => {
       roomState.room = JSON.parse(message.body);
-      console.log(roomState.room);
     });
   };
   receiveRoomStompClient.activate();
@@ -89,7 +88,7 @@ function updateRoom(roomNumber: number) {
         body: JSON.stringify(roomState.room),
       });
     } catch (err) {
-      console.log("Error while publishing room! ", err);
+      logger.log("Error while publishing room! ", err);
     }
   };
   updateRoomStompClient.activate();
