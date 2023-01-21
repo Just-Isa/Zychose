@@ -1,5 +1,6 @@
 package de.hsrm.mi.team3.swtp.domain;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Random;
 
@@ -12,21 +13,13 @@ public class VehicleBot {
   private Room room;
   private VehicleType vehicleType;
   private boolean fixRoute;
+  private char[] scriptRoute;
 
-  public VehicleBot(int[] positon, int rotation, VehicleBehaviour behaviour, Room room) {
-    this.currentPos = positon;
-    this.currentRotation = rotation;
-    this.behaviour = behaviour;
-    this.room = room;
-  }
-
-  public VehicleBot(int[] positon, int rotation, Room room) {
-    this.currentPos = positon;
-    this.currentRotation = rotation;
+  public VehicleBot(Room room) {
     this.room = room;
     // choose random Model from VehicleType Enum
-    int pick = new Random().nextInt(VehicleType.values().length);
-    this.vehicleType = VehicleType.values()[pick];
+    int randomNumber = new Random().nextInt(VehicleType.values().length);
+    this.vehicleType = VehicleType.values()[randomNumber];
   }
 
   public void moveToNextTile() {
@@ -37,8 +30,8 @@ public class VehicleBot {
     } else if (destination.isBlocked()) {
       // TODO warten bis Kachel frei
     } else {
-      this.currentPos[0] = destination.getTilePosition()[0];
-      this.currentPos[1] = destination.getTilePosition()[1];
+      this.currentPos[0] = destination.getTilePosition()[1] + 1;
+      this.currentPos[1] = destination.getTilePosition()[0] + 1;
     }
   }
 
@@ -98,11 +91,17 @@ public class VehicleBot {
     this.neighbours =
         this.room
             .getRoomMap()
-            .getNeighbours(this.currentPos[0], this.currentPos[1], this.currentRotation);
+            .getNeighbours(this.currentPos[0] - 1, this.currentPos[1] - 1, this.currentRotation);
   }
 
-  public void setFixRoute(boolean fix) {
-    this.fixRoute = fix;
+  public void setFixRoute(char[] route) {
+    this.fixRoute = true;
+    this.scriptRoute = Arrays.copyOf(route, route.length);
+  }
+
+  public void removeFixRoute() {
+    this.fixRoute = false;
+    this.scriptRoute = new char[] {};
   }
 
   public boolean hasFixRoute() {
