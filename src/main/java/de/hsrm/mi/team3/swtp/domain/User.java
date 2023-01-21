@@ -25,7 +25,6 @@ public class User {
     this.currentRoomNumber = 0;
     this.userName = "";
     vehicle = null;
-
   }
 
   public String getSessionID() {
