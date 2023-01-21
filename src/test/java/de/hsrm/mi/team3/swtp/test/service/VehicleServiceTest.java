@@ -25,7 +25,7 @@ public class VehicleServiceTest {
 
   @BeforeEach
   public void vehicleInit() {
-    vehicle = new Vehicle("car");
+    vehicle = new Vehicle();
   }
 
   @Test

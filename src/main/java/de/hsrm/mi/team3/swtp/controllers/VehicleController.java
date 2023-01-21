@@ -45,7 +45,7 @@ public class VehicleController {
     if (vehicle == null) {
       roomService
           .getUserByID(roomNumber, commandVehicleMessage.userSessionId())
-          .setVehicle(new Vehicle("car"));
+          .setVehicle(new Vehicle());
       vehicle =
           roomService.getUserByID(roomNumber, commandVehicleMessage.userSessionId()).getVehicle();
     }

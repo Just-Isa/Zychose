@@ -1,6 +1,8 @@
 package de.hsrm.mi.team3.swtp.domain;
 
 import java.util.Arrays;
+import lombok.Getter;
+import lombok.Setter;
 
 public class Vehicle {
 
@@ -9,14 +11,13 @@ public class Vehicle {
   private static final double HANDLING = 0.15;
   private static final double ACCELERATION = 0.2;
   private static final double BRAKE_SPEED = 0.3;
+  @Getter private String vehicleType;
+  @Getter @Setter private double currentSpeed;
+  @Getter @Setter private double[] rotationVector;
+  @Getter @Setter private double[] posVector;
 
-  private String vehicleType;
-  private double currentSpeed;
-  private double[] rotationVector;
-  private double[] posVector;
-
-  public Vehicle(String vehicleType) {
-    this.vehicleType = vehicleType;
+  public Vehicle() {
+    this.vehicleType = "car";
     this.currentSpeed = 0;
     this.rotationVector = new double[] {0, 0, 0};
     this.posVector = new double[] {0, 0, 0};
@@ -26,14 +27,6 @@ public class Vehicle {
     this.vehicleType = vehicleType;
     this.posVector = posVector;
     this.currentSpeed = 0;
-  }
-
-  public double getCurrentSpeed() {
-    return currentSpeed;
-  }
-
-  public void setCurrentSpeed(double currentSpeed) {
-    this.currentSpeed = currentSpeed;
   }
 
   public double getRunOutSpeed() {
@@ -54,10 +47,6 @@ public class Vehicle {
 
   public double getBrakeSpeed() {
     return BRAKE_SPEED;
-  }
-
-  public double[] getRotationVector() {
-    return rotationVector;
   }
 
   public double getRotationX() {
@@ -84,14 +73,6 @@ public class Vehicle {
     rotationVector[2] = rotationZ % (2 * Math.PI);
   }
 
-  public void setRotationVector(double[] rotationVector) {
-    this.rotationVector = rotationVector;
-  }
-
-  public double[] getPosVector() {
-    return posVector;
-  }
-
   public double getPosX() {
     return this.posVector[0];
   }
@@ -114,14 +95,6 @@ public class Vehicle {
 
   public void setPosZ(double posZ) {
     this.posVector[2] = posZ;
-  }
-
-  public void setPosVector(double[] posVector) {
-    this.posVector = posVector;
-  }
-
-  public String getVehicleType() {
-    return vehicleType;
   }
 
   @Override
