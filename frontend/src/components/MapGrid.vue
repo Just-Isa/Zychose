@@ -186,7 +186,7 @@ function cellClicked(posX: number, posY: number): void {
 function onDrop(posX: number, posY: number) {
   //TODO posX und posY müssen statt geloggt zu werden, ans backend gesendet werden an dieser Stelle
   logger.log("Vehicle-Position: ", posX, posY);
-  const vehicleType = currentVehicle.type
+  const vehicleType = currentVehicle.type;
   changeTo3DView(posX, posY, vehicleType);
 }
 
