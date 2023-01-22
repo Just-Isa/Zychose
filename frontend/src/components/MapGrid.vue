@@ -45,7 +45,7 @@ import { computed, onMounted } from "vue";
 import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
 import { logger } from "@/helpers/Logger";
-import { vehicleState } from "@/services/use3DVehicle";
+import { use3DVehicle } from "@/services/use3DVehicle";
 //import { Mouse } from "@/services/IMouse";
 
 /**
@@ -213,12 +213,12 @@ function changeTo3DView(posX: number, posY: number) {
   const gridSize = 100;
   // sets the position of the Vehicle
   //Backend createcar (positionen) per stomp
-  vehicleState.vehicle.postitionX = (posX - 1 - gridSize / 2) * blockSize;
-  vehicleState.vehicle.postitionZ = (posY - 1 - gridSize / 2) * blockSize;
+ // vehicleState.vehicle.postitionX = (posX - 1 - gridSize / 2) * blockSize;
+  //vehicleState.vehicle.postitionZ = (posY - 1 - gridSize / 2) * blockSize;
   // sets the rotation of the Vehicle
-  vehicleState.vehicle.rotationX = 0;
-  vehicleState.vehicle.rotationZ = 0;
-  vehicleState.vehicle.rotationY = 0;
+  //vehicleState.vehicle.rotationX = 0;
+  //vehicleState.vehicle.rotationZ = 0;
+  //vehicleState.vehicle.rotationY = 0;
   setTimeout(function () {
     router.push((location.pathname.split("/")[1] as unknown as number) + "/3d");
   }, 800);
