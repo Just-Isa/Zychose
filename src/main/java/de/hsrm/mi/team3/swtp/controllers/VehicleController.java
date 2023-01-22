@@ -3,6 +3,7 @@ package de.hsrm.mi.team3.swtp.controllers;
 import de.hsrm.mi.team3.swtp.domain.Vehicle;
 import de.hsrm.mi.team3.swtp.domain.VehicleCommands;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackenVehicleCommandMessage;
+import de.hsrm.mi.team3.swtp.domain.messaging.BackendNewVehicleMessage;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
 import de.hsrm.mi.team3.swtp.services.BackendInfoService;
 import de.hsrm.mi.team3.swtp.services.RoomBoxService;
@@ -70,5 +71,13 @@ public class VehicleController {
         commandVehicleMessage.userSessionId(),
         BackendOperation.UPDATE,
         vehicle);
+  }
+
+  /** */
+  @MessageMapping("topic/createVehicle")
+  public void createVehicle(
+      @Payload BackendNewVehicleMessage newVehicleMessage, @DestinationVariable int roomNumber) {
+    Vehicle vehicle =
+        roomService.getUserByID(roomNumber, newVehicleMessage.userSessionId()).getVehicle();
   }
 }
