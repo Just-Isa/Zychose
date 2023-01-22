@@ -11,30 +11,23 @@ public class Vehicle {
   private static final double HANDLING = 0.15;
   private static final double ACCELERATION = 0.2;
   private static final double BRAKE_SPEED = 0.3;
-  @Getter
-  private String vehicleType;
-  @Getter
-  @Setter
-  private double currentSpeed;
-  @Getter
-  @Setter
-  private double[] rotationVector;
-  @Getter
-  @Setter
-  private double[] posVector;
+  @Getter private String vehicleType;
+  @Getter @Setter private double currentSpeed;
+  @Getter @Setter private double[] rotationVector;
+  @Getter @Setter private double[] posVector;
 
   public Vehicle() {
     this.vehicleType = "car";
     this.currentSpeed = 0;
-    this.rotationVector = new double[] { 0, 0, 0 };
-    this.posVector = new double[] { 0, 0, 0 };
+    this.rotationVector = new double[] {0, 0, 0};
+    this.posVector = new double[] {0, 0, 0};
   }
 
   public Vehicle(String vehicleType, double[] posVector) {
     this.vehicleType = vehicleType;
     this.posVector = posVector;
     this.currentSpeed = 0;
-    this.rotationVector = new double[] { 0, 0, 0 };
+    this.rotationVector = new double[] {0, 0, 0};
   }
 
   public double getRunOutSpeed() {
