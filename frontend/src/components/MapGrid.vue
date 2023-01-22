@@ -211,9 +211,12 @@ function changeTo3DView(posX: number, posY: number) {
   //--> die Performance der 3D-View ist also nicht so toll!
   const blockSize = 16;
   const gridSize = 100;
+  console.log("Positionen: " + posX + posY);
+  posX = (posX - 1 - gridSize / 2) * blockSize;
+  posY = (posY - 1 - gridSize / 2) * blockSize;
   // sets the position of the Vehicle
   //Backend createcar (positionen) per stomp
- // vehicleState.vehicle.postitionX = (posX - 1 - gridSize / 2) * blockSize;
+  // vehicleState.vehicle.postitionX = (posX - 1 - gridSize / 2) * blockSize;
   //vehicleState.vehicle.postitionZ = (posY - 1 - gridSize / 2) * blockSize;
   // sets the rotation of the Vehicle
   //vehicleState.vehicle.rotationX = 0;
