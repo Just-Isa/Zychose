@@ -77,11 +77,11 @@ public class Room {
     this.roomMap = map;
   }
 
-  public Roadmap getRoomMap() {
+  public Roadmap getRoadMap() {
     return this.roadMap;
   }
 
-  public String getRoomMapString() {
+  public String getRoomMap() {
     return this.roomMap;
   }
 

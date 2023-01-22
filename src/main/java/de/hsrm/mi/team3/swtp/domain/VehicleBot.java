@@ -31,7 +31,7 @@ public class VehicleBot {
       // TODO warten bis Kachel frei
     } else {
       this.room
-          .getRoomMap()
+          .getRoadMap()
           .getStreetBlock(this.getCurrentX() - 1, this.getCurrentY() - 1)
           .isBlocked(false);
       this.currentPos[0] = destination.getTilePosition()[1] + 1;
@@ -96,7 +96,7 @@ public class VehicleBot {
   public void refreshNeighbours() {
     this.neighbours =
         this.room
-            .getRoomMap()
+            .getRoadMap()
             .getNeighbours(this.currentPos[0] - 1, this.currentPos[1] - 1, this.currentRotation);
   }
 

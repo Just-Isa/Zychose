@@ -52,7 +52,7 @@ public class RoomController {
             backendRoom.getRoomNumber(),
             backendRoom.getUserList(),
             backendRoom.getJythonScript(),
-            backendRoom.getRoomMapString()));
+            backendRoom.getRoomMap()));
   }
 
   /**

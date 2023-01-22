@@ -16,14 +16,16 @@ public class Roadmap {
   private StreetBlock[][] streetBlockMap = new StreetBlock[SIZE][SIZE];
 
   public Roadmap(String mapstring) {
-    JSONArray jsonArray = new JSONArray(mapstring);
-    for (int i = 0; i < jsonArray.length(); i++) {
-      JSONObject obj = jsonArray.getJSONObject(i);
-      int x = obj.getInt("posX");
-      int y = obj.getInt("posY");
-      this.streetBlockMap[y - 1][x - 1] =
-          new StreetBlock(
-              obj.get("streetType").toString(), obj.getInt("rotation"), x - 1, y - 1, false);
+    if (!mapstring.isEmpty()) {
+      JSONArray jsonArray = new JSONArray(mapstring);
+      for (int i = 0; i < jsonArray.length(); i++) {
+        JSONObject obj = jsonArray.getJSONObject(i);
+        int x = obj.getInt("posX");
+        int y = obj.getInt("posY");
+        this.streetBlockMap[y - 1][x - 1] =
+            new StreetBlock(
+                obj.get("streetType").toString(), obj.getInt("rotation"), x - 1, y - 1, false);
+      }
     }
   }
 
