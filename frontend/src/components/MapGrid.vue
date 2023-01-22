@@ -206,15 +206,15 @@ function changeTo3DView(posX: number, posY: number) {
     );
   }
   //TODO die 800ms sind gesetzt, weil es sonst keine richtige fade-to-white transition gibt !
-  //TODO manchmal wechselt der router die seite nicht! 
-  //--> außerdem wird ein *[Violation]'requestAnimationFrame' handler took XYZms* Hinweis geworfen 
+  //TODO manchmal wechselt der router die seite nicht!
+  //--> außerdem wird ein *[Violation]'requestAnimationFrame' handler took XYZms* Hinweis geworfen
   //--> die Performance der 3D-View ist also nicht so toll!
   const blockSize = 16;
   const gridSize = 100;
   // sets the position of the Vehicle
-  //Backend createcar (positionen) per stomp 
-  vehicleState.vehicle.postitionX = ((posX - 1 - gridSize/2) * blockSize);
-  vehicleState.vehicle.postitionZ = ((posY - 1 - gridSize/2) * blockSize);
+  //Backend createcar (positionen) per stomp
+  vehicleState.vehicle.postitionX = (posX - 1 - gridSize / 2) * blockSize;
+  vehicleState.vehicle.postitionZ = (posY - 1 - gridSize / 2) * blockSize;
   // sets the rotation of the Vehicle
   vehicleState.vehicle.rotationX = 0;
   vehicleState.vehicle.rotationZ = 0;
