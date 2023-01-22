@@ -22,7 +22,7 @@ public class VehicleTest {
     @Test
     @DisplayName("Vehicle: Test initialization")
     void vehicleInitialization() {
-        Vehicle vehicle = new Vehicle(POS_VECTOR);
+        Vehicle vehicle = new Vehicle("car", POS_VECTOR);
         assertThat(vehicle.getPosVector()).isEqualTo(POS_VECTOR);
         assertThat(vehicle.getPosX()).isEqualTo(POS_VECTOR[0]);
         assertThat(vehicle.getPosY()).isEqualTo(POS_VECTOR[1]);
@@ -37,7 +37,7 @@ public class VehicleTest {
     @Test
     @DisplayName("Vehicle: setRotation should calculate rotation correctly")
     void vehicleSetRotation() {
-        Vehicle vehicle = new Vehicle(POS_VECTOR);
+        Vehicle vehicle = new Vehicle("car", POS_VECTOR);
 
         vehicle.setRotationX(SET_ROTATIONX);
         assertThat(vehicle.getRotationX()).isEqualTo(GET_ROTATIONX_POST_SET);
@@ -52,7 +52,7 @@ public class VehicleTest {
     @Test
     @DisplayName("Vehicle: setPosVector should set posVector correctly")
     void vehicleSetPos() {
-        Vehicle vehicle = new Vehicle(POS_VECTOR);
+        Vehicle vehicle = new Vehicle("car", POS_VECTOR);
 
         vehicle.setPosVector(POS_VECTOR);
         assertThat(vehicle.getPosVector()).isEqualTo(POS_VECTOR);
