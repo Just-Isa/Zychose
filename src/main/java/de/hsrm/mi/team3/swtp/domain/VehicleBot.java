@@ -22,14 +22,12 @@ public class VehicleBot {
     this.vehicleType = VehicleType.values()[randomNumber];
   }
 
-  public void moveToNextTile() {
+  public void moveToNextBlock() {
     refreshNeighbours();
     StreetBlock destination = this.neighbours.get(VehicleNeighbour.VEHICLETOP);
     if (destination == null) {
       // TODO kein Anschlussteil vorhanden -> U-Wende?
-    } else if (destination.isBlocked()) {
-      // TODO warten bis Kachel frei
-    } else {
+    } else if (!destination.isBlocked()) {
       this.room
           .getRoadMap()
           .getStreetBlock(this.getCurrentX() - 1, this.getCurrentY() - 1)
@@ -38,6 +36,7 @@ public class VehicleBot {
       this.currentPos[1] = destination.getTilePosition()[0] + 1;
       destination.isBlocked(true);
     }
+    // warten bis Kachel frei
   }
 
   /**
@@ -47,7 +46,7 @@ public class VehicleBot {
     if (!this.hasFixRoute()) {
       // TODO Fahrzeug entscheidet zufaellig ob es abbiegt
       this.setCurrentRotation(rotation);
-      moveToNextTile();
+      moveToNextBlock();
     } else {
       // TODO follow fixRoute
     }
