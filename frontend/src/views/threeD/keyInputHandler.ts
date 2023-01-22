@@ -1,11 +1,6 @@
 import { reactive } from "vue";
 
-export enum Direction {
-  FORWARD = "FORWARD",
-  BACKWARD = "BACKWARD",
-  LEFT = "LEFT",
-  RIGHT = "RIGHT",
-}
+import type { Direction } from "@/model/DirektionCommands";
 
 const keys: Set<string> = new Set();
 const keyMap = {

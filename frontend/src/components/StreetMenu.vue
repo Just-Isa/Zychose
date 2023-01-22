@@ -3,30 +3,19 @@
     class="fixed bottom-6 left-1/2 -translate-x-1/2 pointer-events-none z-50"
   >
     <div class="tabs flex gap-3">
-      <div
-        v-for="vehicle in streetTypesState.vehicleTypes"
-        v-bind:key="vehicle[1]"
-      >
+      <div v-for="vehicle in vehicleTabs" v-bind:key="vehicle.name">
         <StreetMenuTab
-          :vehicleType="vehicle[0]"
-          :imgSrc="vehicle[1]"
-          :isActive="streetTypesState.currentActiveTab === vehicle[0]"
-          @click="changeCurrentTab(vehicle[0])"
+          :vehicleType="vehicle.name"
+          :imgSrc="`${vehicle.name}-pictogram.svg`"
+          :isActive="menuTabState.currentActiveTab === vehicle.name"
+          @click="changeCurrentTab(vehicle.name)"
         />
       </div>
     </div>
 
     <div class="flex justify-items-center items-center">
-      <div
-        id="streetMenuFolder"
-        class="hover:cursor-default"
-        v-for="key in Object.keys(vehicleTypeDict)"
-        v-bind:key="key"
-      >
-        <StreetMenuFolder
-          v-if="streetTypesState.currentActiveTab === key"
-          :types="vehicleTypeDict[key]"
-        />
+      <div id="streetMenuFolder" class="hover:cursor-default">
+        <StreetMenuFolder :types="filteredStreetBlocks" />
       </div>
 
       <BullDozerBtn
@@ -42,17 +31,31 @@ import StreetMenuFolder from "./StreetMenuFolder.vue";
 import BullDozerBtn from "./BullDozerBtn.vue";
 import StreetMenuTab from "./StreetMenuTab.vue";
 import { useStreetBlock } from "@/services/useStreetBlock";
-import type { StreetBlock } from "@/services/IStreetBlock";
+import swtpConfigJSON from "../../../swtp.config.json";
+import { computed } from "vue";
+import { StreetBlock } from "@/model/IStreetBlock";
 
-const { changeCurrentTab, streetTypesState } = useStreetBlock();
+const { changeCurrentTab, menuTabState } = useStreetBlock();
 
-const vehicleTypeDict: { [type: string]: StreetBlock[] } = {};
+const streetTypes = swtpConfigJSON.streetTypes;
 
-streetTypesState.vehicleTypes.forEach((type) => {
-  vehicleTypeDict[type[0]] = streetTypesState.streetTypes.filter((obj) => {
-    return obj.vehicleTypes.includes(type[0]);
-  }) as StreetBlock[];
+const vehicleTabs = swtpConfigJSON.vehicleTabs;
+
+const filteredStreetBlocks = computed(() => {
+  let streetBlocks: StreetBlock[] = [];
+  let filtered = streetTypes.filter((street) =>
+    street.vehicleTypes.includes(menuTabState.currentActiveTab)
+  );
+  streetBlocks = filtered.map(
+    (street) =>
+      new StreetBlock(
+        street.name,
+        0,
+        street.imgPath,
+        street.possibleRotations,
+        street.vehicleTypes
+      )
+  );
+  return streetBlocks;
 });
-
-vehicleTypeDict;
 </script>

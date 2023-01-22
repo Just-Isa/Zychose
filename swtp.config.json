@@ -1,23 +1,18 @@
 {
   "streetTypes": [
     {
-      "name": "cross-road",
-      "svgPath": "/assets/img/cross-road.svg",
+      "name": "road-cross",
+      "imgPath": "/assets/img/road_cross.png",
       "glbPath": "/assets/models/road_cross.glb",
-      "vehicleTypes": [
-        "car",
-        "bicycle"
-      ],
+      "vehicleTypes": ["car"],
       "possibleRotations": []
     },
+
     {
-      "name": "curve-road",
-      "svgPath": "/assets/img/curve-road.svg",
+      "name": "road-curve",
+      "imgPath": "/assets/img/road_curve.png",
       "glbPath": "/assets/models/road_curve.glb",
-      "vehicleTypes": [
-        "car",
-        "bicycle"
-      ],
+      "vehicleTypes": ["car"],
       "possibleRotations": [
         0,
         90,
@@ -26,26 +21,51 @@
       ]
     },
     {
-      "name": "straight-road",
-      "svgPath": "/assets/img/straight-road.svg",
+      "name": "road-straight",
+      "imgPath": "/assets/img/road_straight.png",
       "glbPath": "/assets/models/road_straight.glb",
-      "vehicleTypes": [
-        "car",
-        "bicycle"
-      ],
+      "vehicleTypes": ["car"],
       "possibleRotations": [
         0,
         90
       ]
     },
     {
-      "name": "t-road",
-      "svgPath": "/assets/img/t-road.svg",
+      "name": "road-t",
+      "imgPath": "/assets/img/road_t.png",
       "glbPath": "/assets/models/road_t.glb",
-      "vehicleTypes": [
-        "car",
-        "bicycle"
-      ],
+      "vehicleTypes": ["car"],
+      "possibleRotations": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "name": "road-dead-end",
+      "imgPath": "/assets/img/road_dead_end.png",
+      "glbPath": "/assets/models/road_dead_end.glb",
+      "vehicleTypes": ["car"],
+      "possibleRotations": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "name": "sidewalk-cross",
+      "imgPath": "/assets/img/sidewalk_cross.png",
+      "glbPath": "/assets/models/sidewalk_cross.glb",
+      "vehicleTypes": ["bicycle"],
+      "possibleRotations": []
+    },
+    {
+      "name": "sidewalk-curve",
+      "imgPath": "/assets/img/sidewalk_curve.png",
+      "glbPath": "/assets/models/sidewalk_curve.glb",
+      "vehicleTypes": ["bicycle"],
       "possibleRotations": [
         0,
         90,
@@ -55,9 +75,31 @@
     },
     {
       "name": "sidewalk-straight",
-      "svgPath": "",
+      "imgPath": "/assets/img/sidewalk_straight.png",
       "glbPath": "/assets/models/sidewalk_straight.glb",
-      "vehicleTypes": [],
+      "vehicleTypes": ["bicycle"],
+      "possibleRotations": [
+        0,
+        90
+      ]
+    },
+    {
+      "name": "sidewalk-t",
+      "imgPath": "/assets/img/sidewalk_t.png",
+      "glbPath": "/assets/models/sidewalk_t.glb",
+      "vehicleTypes": ["bicycle"],
+      "possibleRotations": [
+        0,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "name": "sidewalk-dead-end",
+      "imgPath": "/assets/img/sidewalk_dead_end.png",
+      "glbPath": "/assets/models/sidewalk_dead_end.glb",
+      "vehicleTypes": ["bicycle"],
       "possibleRotations": [
         0,
         90,
@@ -77,15 +119,46 @@
     }
   ],
   "gridSize": 100,
+  "vehicleTabs":[
+    {
+      "name": "car",
+      "iconPath": "/car-pictogram.svg"
+    },
+    {
+      "name": "bicycle",
+      "iconPath": "/bicycle-pictogram.svg"
+    }
+  ],
+  "blocksize":16,
+  "debugConsole": false,
   "allVehicleTypes": [
     {
       "name": "car",
       "iconPath": "/assets/img/car.png",
-      "glbPath": "/assets/models/car.gltf"
+      "glbPath": "/assets/models/car.gltf",
+      "params":{
+        "maxSpeed": 0.6,
+        "acceleration": 0.2,
+        "handling":0.15,
+        "brakeSpeed":0.3,
+        "runOutSpeed":-0.1
+      }
     },
     {
       "name": "bicycle",
-      "iconPath": "/assets/img/bicycle.png"
+      "iconPath": "/assets/img/bicycle.png",
+      "glbPath": "",
+      "params":{
+        "maxSpeed": 0.2,
+        "acceleration": 0.1,
+        "handling":0.1,
+        "brakeSpeed":0.01,
+        "runOutSpeed":-0.09
+      }
     }
-  ]
+  ],
+  "fontPath":"/fonts/poppins-semiBold.ttf",
+  "fontSize":0.75,
+  "VehilceLerpSpeed": 0.075,
+  "textHightOverVehicle":7
 }

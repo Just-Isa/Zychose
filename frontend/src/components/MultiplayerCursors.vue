@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { Mouse } from "@/services/IMouse";
+import { Mouse } from "@/model/IMouse";
 import { useRoom } from "@/services/useRoom";
 import { useUser } from "@/services/useUser";
 import { onMounted, reactive, ref } from "vue";
@@ -61,8 +61,8 @@ onMounted(() => {
 
 setInterval(function () {
   if (
-    Math.abs(lastXsent - x.value) > 10 ||
-    Math.abs(lastYsent - y.value) > 10
+    Math.abs(lastXsent - x.value) > 0.1 ||
+    Math.abs(lastYsent - y.value) > 0.1
   ) {
     lastXsent = x.value;
     lastYsent = y.value;
@@ -76,7 +76,6 @@ setInterval(function () {
       location.pathname.split("/")[1] as unknown as number
     );
   }
-  //mouseMap.set(mouseState.mouse.sessionID, [x.value, y.value]);
   if (
     mouseState.mouse.sessionID != "" &&
     mouseState.mouse.sessionID != null &&
@@ -87,5 +86,6 @@ setInterval(function () {
       mouseState.mouse.y,
     ];
   }
-}, 300);
+  // 100 milliseconds set as to not overload the stompbroker
+}, 100);
 </script>

@@ -1,17 +1,21 @@
 import * as THREE from "three";
 import type { Scene } from "three";
-import swtpconfig from "../../../swtp.config.json";
 import type { IStreetInformation } from "@/services/useStreets";
 import { useCamera } from "./CameraManager";
-import { useVehicle } from "./use3DVehicle";
+import { useVehicle } from "../../services/use3DVehicle";
 import type { VehicleCameraContext } from "./VehicleCamera";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
+import type { IVehicle } from "../../model/IVehicle";
+import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
+import { logger } from "@/helpers/Logger";
+import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
+import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
+import { TTFLoader } from "three/examples/jsm/loaders/TTFLoader.js";
+import config from "../../../../swtp.config.json";
 
-const blockSize = 16;
 const { camState, switchCamera } = useCamera();
 const { vehicleState } = useVehicle();
 type StreetBlock = IStreetInformation;
-
 /**
  * Manages Scene with all Objects
  */
@@ -20,7 +24,7 @@ export class SceneManager {
   blockMap: Map<string, Promise<THREE.Group>>;
   data: StreetBlock[];
   private renderer: THREE.Renderer;
-  private vehicles: THREE.Group[]; // list of all Object u should update every frame.
+  private vehicles: Map<string, THREE.Group> = new Map<string, THREE.Group>(); // list of all Object u should update every frame.
   private vehicleCamera: VehicleCameraContext =
     camState.vehicleCam as VehicleCameraContext;
 
@@ -34,7 +38,6 @@ export class SceneManager {
     this.blockMap = blockMap;
     this.data = JSON.parse(JSON.stringify(data));
     this.renderer = renderer;
-    this.vehicles = [];
   }
   /**
    * runs all functions to create the scene
@@ -42,7 +45,6 @@ export class SceneManager {
   initScene() {
     this.createLandscape();
     this.createGrid();
-    this.addControllableVehicle();
     this.handleRender();
     this.addSkybox();
     switchCamera(this.vehicleCamera);
@@ -76,7 +78,7 @@ export class SceneManager {
         })
         .catch((error) => {
           this.getErrorBlock(posX, posY, posZ);
-          console.error(error);
+          logger.error(error);
         });
     } else {
       this.getErrorBlock(posX, posY, posZ);
@@ -93,7 +95,11 @@ export class SceneManager {
    *
    */
   private getErrorBlock(posX: number, posY: number, posZ: number) {
-    const geometry = new THREE.BoxGeometry(blockSize, 1, blockSize);
+    const geometry = new THREE.BoxGeometry(
+      config.blocksize,
+      1,
+      config.blocksize
+    );
     const material = new THREE.MeshBasicMaterial({ color: "#FF0000" });
     const cube = new THREE.Mesh(geometry, material);
     cube.position.set(posX, posY, posZ);
@@ -107,9 +113,9 @@ export class SceneManager {
     this.data.forEach((streetBlock: StreetBlock) => {
       this.addBlockToScene(
         streetBlock.streetType,
-        (streetBlock.posX - 1 - swtpconfig.gridSize / 2) * blockSize,
+        (streetBlock.posX - 1 - config.gridSize / 2) * config.blocksize,
         0,
-        (streetBlock.posY - 1 - swtpconfig.gridSize / 2) * blockSize,
+        (streetBlock.posY - 1 - config.gridSize / 2) * config.blocksize,
         Number(streetBlock.rotation) * (Math.PI / 180)
       );
     });
@@ -124,30 +130,36 @@ export class SceneManager {
   /**
    * adds new car
    */
-  addControllableVehicle() {
-    const blockPromise = this.blockMap.get("car");
-    if (blockPromise !== undefined) {
+  addVehicle(vehicle: IVehicle, vehicleSessionId: string) {
+    const blockPromise = this.blockMap.get(vehicle.vehicleType);
+
+    if (blockPromise !== undefined && !this.vehicles.has(vehicleSessionId)) {
       blockPromise
         ?.then((block) => {
           const car = block.clone();
 
           car.position.set(
-            vehicleState.vehicle.postitionX,
-            vehicleState.vehicle.postitionY,
-            vehicleState.vehicle.postitionZ
+            vehicle.postitionX,
+            vehicle.postitionY,
+            vehicle.postitionZ
           );
           car.rotation.set(
-            vehicleState.vehicle.rotationX,
-            vehicleState.vehicle.rotationX,
-            vehicleState.vehicle.rotationX
+            vehicle.rotationX,
+            vehicle.rotationY,
+            vehicle.rotationZ
           );
           this.scene.add(car);
-          this.vehicleCamera.request(vehicleState.vehicle.speed, car);
-          this.vehicles.push(car);
+          this.addTextToVehicle(vehicleSessionId, car);
+
+          if (vehicleSessionId === getSessionIDFromCookie()) {
+            this.vehicleCamera.request(vehicle.speed, car);
+          }
+
+          this.vehicles.set(vehicleSessionId, car);
         })
         .catch((error) => {
           this.getErrorBlock(0, 0, 0);
-          console.error(error);
+          logger.error(error);
         });
     } else {
       this.getErrorBlock(0, 0, 0);
@@ -174,10 +186,15 @@ export class SceneManager {
    */
   handleRender() {
     const animate = () => {
+      this.updateVehicleMap();
+      for (const [key, val] of this.vehicles) {
+        this.updateVehicle(
+          val,
+          vehicleState.vehicles.get(key) as IVehicle,
+          key
+        );
+      }
       //every vehicle gets rendered
-      this.vehicles.forEach((vehicle) => {
-        this.updateVehicle(vehicle);
-      });
       this.renderer.render(this.scene, camState.cam as THREE.PerspectiveCamera);
       requestAnimationFrame(animate);
     };
@@ -190,26 +207,71 @@ export class SceneManager {
    *
    * @param threeVehicle
    */
-  updateVehicle(threeVehicle: THREE.Group) {
-    const lerpDuration = 0.075;
+  private updateVehicle(
+    threeVehicle: THREE.Group,
+    vehicle: IVehicle,
+    sessionID: string
+  ) {
     const quaternion = new THREE.Quaternion();
-
     const destination = new THREE.Vector3(
-      vehicleState.vehicle.postitionX,
-      vehicleState.vehicle.postitionY,
-      vehicleState.vehicle.postitionZ
+      vehicle.postitionX,
+      vehicle.postitionY,
+      vehicle.postitionZ
     );
 
     const newRotation = new THREE.Euler(
-      vehicleState.vehicle.rotationX,
-      vehicleState.vehicle.rotationY,
-      vehicleState.vehicle.rotationZ,
+      vehicle.rotationX,
+      vehicle.rotationY,
+      vehicle.rotationZ,
       "XYZ"
     );
 
     const newQuaterion = quaternion.setFromEuler(newRotation);
-    threeVehicle.quaternion.slerp(newQuaterion, lerpDuration);
-    threeVehicle.position.lerp(destination, lerpDuration);
-    this.vehicleCamera.request(vehicleState.vehicle.speed, threeVehicle);
+    threeVehicle.quaternion.slerp(newQuaterion, config.VehilceLerpSpeed);
+    threeVehicle.position.lerp(destination, config.VehilceLerpSpeed);
+
+    if (sessionID === getSessionIDFromCookie()) {
+      this.vehicleCamera.request(vehicle.speed, threeVehicle);
+    } else {
+      threeVehicle.getObjectByName("text")?.lookAt(camState.cam.position);
+    }
+  }
+
+  /**
+   * checks if vehicles are added or removed and updates the map
+   */
+  private updateVehicleMap() {
+    for (const [key, val] of vehicleState.vehicles) {
+      logger.log("Vehicle von " + key + " wurde hinzugefügt");
+      if (!this.vehicles.has(key)) {
+        this.addVehicle(val, key);
+      }
+    }
+    for (const [key, val] of this.vehicles) {
+      if (!vehicleState.vehicles.has(key)) {
+        logger.log("Vehicle von " + key + " wurde gelöscht");
+        this.scene.remove(val);
+        this.vehicles.delete(key);
+      }
+    }
+  }
+  private addTextToVehicle(text: string, vehicle: THREE.Group) {
+    const fontLoader = new FontLoader();
+    const ttfloader = new TTFLoader();
+    ttfloader.load(config.fontPath, function (json) {
+      const font = fontLoader.parse(json);
+      const textGeometry = new TextGeometry(text, {
+        font: font,
+        height: 0.1,
+        size: config.fontSize,
+      });
+      textGeometry.center();
+      const textmesh = new THREE.Mesh(textGeometry);
+      textmesh.position.set(0, config.textHightOverVehicle, 0);
+
+      textmesh.name = "text";
+      textmesh.quaternion.copy(camState.cam.quaternion);
+      vehicle.add(textmesh);
+    });
   }
 }
