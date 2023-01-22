@@ -45,6 +45,7 @@ import { computed, onMounted } from "vue";
 import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
 import { logger } from "@/helpers/Logger";
+import { use3DVehicle } from "@/services/use3DVehicle";
 //import { Mouse } from "@/services/IMouse";
 
 /**
@@ -152,6 +153,7 @@ const {
 } = useStreets();
 const { currentVehicle } = useVehicle();
 const streetTypes = swtpConfigJSON.streetTypes;
+const { getNewVehicleData } = use3DVehicle();
 
 //TODO
 //Hier wird der Input(strassentyp und rotation), sobald es moeglich ist, aus dem anderen state geholt und zusammen mit den Positionen fuer die Achsen im state fuer die strassen gespeichert
@@ -215,6 +217,7 @@ function changeTo3DView(posX: number, posY: number, vehicleType: string) {
   console.log("VehicleType: " + vehicleType);
   posX = (posX - 1 - gridSize / 2) * blockSize;
   posY = (posY - 1 - gridSize / 2) * blockSize;
+  getNewVehicleData(posX, posY, vehicleType);
   // sets the position of the Vehicle
   //Backend createcar (positionen) per stomp
   // vehicleState.vehicle.postitionX = (posX - 1 - gridSize / 2) * blockSize;
