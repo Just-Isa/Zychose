@@ -21,7 +21,11 @@ const vehicleState = reactive<IVehicleState>({
 });
 
 export function use3DVehicle() {
-  return { vehicleState: readonly(vehicleState), receiveVehicle, getNewVehicleData };
+  return {
+    vehicleState: readonly(vehicleState),
+    receiveVehicle,
+    getNewVehicleData,
+  };
 }
 
 //createNewVehicle
@@ -71,7 +75,8 @@ function handleMessage(jsonObject: IVehicleMessage) {
     );
   }
 }
-function getNewVehicleData(posX : number, posY : number, vehicleType: string){
-  console.log("Info: X is " + posX + " and Z is " + posY + " for " + vehicleType);
-
+function getNewVehicleData(posX: number, posY: number, vehicleType: string) {
+  console.log(
+    "Info: X is " + posX + " and Z is " + posY + " for " + vehicleType
+  );
 }
