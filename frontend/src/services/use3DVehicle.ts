@@ -107,7 +107,7 @@ function createNewVehicle() {
   };
   stompClient.onConnect = () => {
     stompClient.subscribe(DEST, (message) => {
-    handleMessage(JSON.parse(message.body));
+      handleMessage(JSON.parse(message.body));
     });
   };
 }
