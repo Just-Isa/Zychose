@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.hsrm.mi.team3.swtp.domain.User;
 import de.hsrm.mi.team3.swtp.services.RoomBoxService;
 import de.hsrm.mi.team3.swtp.services.RoomService;
@@ -27,122 +26,120 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class RoomRestControllerTest {
 
-  static final int FIRST_ROOM_NUMBER = 1;
-  static final int SECOND_ROOM_NUMBER = 2;
-  static final String MAP_JSON_STRING =
-      "[{\"streetType\": \"road-cross\",\"rotation\": 90,\"posX\": 1,\"posY\": 1}]";
-  static final String USER_SESSION_ID = "sid";
-  static final String NONEXISTENT_SESSION_ID = "nonexistentsid";
-  static final String USER_NAME = "username";
+    static final int FIRST_ROOM_NUMBER = 1;
+    static final int SECOND_ROOM_NUMBER = 2;
+    static final String MAP_JSON_STRING = "[{\"streetType\": \"road-cross\",\"rotation\": 90,\"posX\": 1,\"posY\": 1}]";
+    static final String USER_SESSION_ID = "sid";
+    static final String NONEXISTENT_SESSION_ID = "nonexistentsid";
+    static final String USER_NAME = "username";
 
-  @Autowired private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-  @Autowired RoomBoxService roomBoxService;
+    @Autowired
+    RoomBoxService roomBoxService;
 
-  @Autowired RoomService roomService;
+    @Autowired
+    RoomService roomService;
 
-  @Autowired ObjectMapper objectMapper;
+    @BeforeEach
+    void initRoomRestTest() {
+        roomBoxService.clearRoombox();
+        roomBoxService.addRoom();
+        roomBoxService.addRoom();
+    }
 
-  @BeforeEach
-  void initRoomRestTest() {
-    roomBoxService.clearRoombox();
-    roomBoxService.addRoom();
-    roomBoxService.addRoom();
-  }
+    @Test
+    @DisplayName("RoomRestController: /roomlist returns actual roomlist")
+    void restRouteRoomlistShouldReturnRoomlistDTO() throws Exception {
+        mockMvc
+                .perform(get("/api/roomlist").contentType("application/json"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("[0].roomNumber", is(1)))
+                .andExpect(jsonPath("[1].roomNumber", is(2)));
+    }
 
-  @Test
-  @DisplayName("RoomRestController: /roomlist returns actual roomlist")
-  void restRouteRoomlistShouldReturnRoomlistDTO() throws Exception {
-    mockMvc
-        .perform(get("/api/roomlist").contentType("application/json"))
-        .andExpect(status().is2xxSuccessful())
-        .andExpect(jsonPath("$", hasSize(2)))
-        .andExpect(jsonPath("[0].roomNumber", is(1)))
-        .andExpect(jsonPath("[1].roomNumber", is(2)));
-  }
+    @Test
+    @DisplayName("RoomRestController: /room/map/{number} returns rooms map, or [] in case of empty map")
+    void restRouteRoomNumberReturnsRoomMap() throws Exception {
+        mockMvc
+                .perform(get("/api/room/map/1").contentType("application/json"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$", hasSize(0)))
+                .andExpect(jsonPath("$", Matchers.empty()));
 
-  @Test
-  @DisplayName(
-      "RoomRestController: /room/map/{number} returns rooms map, or [] in case of empty map")
-  void restRouteRoomNumberReturnsRoomMap() throws Exception {
-    mockMvc
-        .perform(get("/api/room/map/1").contentType("application/json"))
-        .andExpect(status().is2xxSuccessful())
-        .andExpect(jsonPath("$", hasSize(0)))
-        .andExpect(jsonPath("$", Matchers.empty()));
+        roomService.updateRoom(
+                roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER),
+                "",
+                MAP_JSON_STRING,
+                "default-name",
+                FIRST_ROOM_NUMBER,
+                null);
 
-    roomService.updateRoom(
-        roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER),
-        "",
-        MAP_JSON_STRING,
-        "default-name",
-        FIRST_ROOM_NUMBER,
-        null);
+        mockMvc
+                .perform(get("/api/room/map/1").contentType("application/json"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("[0].streetType", is("road-cross")))
+                .andExpect(jsonPath("[0].rotation", is(90)))
+                .andExpect(jsonPath("[0].posX", is(1)))
+                .andExpect(jsonPath("[0].posY", is(1)));
+    }
 
-    mockMvc
-        .perform(get("/api/room/map/1").contentType("application/json"))
-        .andExpect(status().is2xxSuccessful())
-        .andExpect(jsonPath("$", hasSize(1)))
-        .andExpect(jsonPath("[0].streetType", is("road-cross")))
-        .andExpect(jsonPath("[0].rotation", is(90)))
-        .andExpect(jsonPath("[0].posX", is(1)))
-        .andExpect(jsonPath("[0].posY", is(1)));
-  }
+    @Test
+    @DisplayName("RoomRestController: /room/map/{number} returns rooms map, or [] in case of empty map")
+    void restRouteChangeRoomOfUser() throws Exception {
+        User user = new User(USER_SESSION_ID, 0, USER_NAME);
 
-  @Test
-  @DisplayName(
-      "RoomRestController: /room/map/{number} returns rooms map, or [] in case of empty map")
-  void restRouteChangeRoomOfUser() throws Exception {
-    User user = new User(USER_SESSION_ID, 0, USER_NAME);
+        roomService.addNewUserToRoom(roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER), user);
+        assertThat(roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER).getUserList())
+                .containsExactlyElementsOf(List.of(user));
 
-    roomService.addNewUserToRoom(roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER), user);
-    assertThat(roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER).getUserList())
-        .containsExactlyElementsOf(List.of(user));
+        assertThat(roomBoxService.getSpecificRoom(SECOND_ROOM_NUMBER).getUserList())
+                .containsExactlyElementsOf(List.of());
 
-    assertThat(roomBoxService.getSpecificRoom(SECOND_ROOM_NUMBER).getUserList())
-        .containsExactlyElementsOf(List.of());
+        mockMvc
+                .perform(
+                        post("/api/room/2")
+                                .contentType("application/json")
+                                .content("{´\"sessionID\":" + user.getSessionID() + "}"))
+                .andExpect(status().isOk())
+                .andReturn();
 
-    mockMvc
-        .perform(
-            post("/api/room/2")
-                .contentType("application/json")
-                .content("{´\"sessionID\":" + user.getSessionID() + "}"))
-        .andExpect(status().isOk())
-        .andReturn();
+        assertThat(roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER).getUserList())
+                .containsExactlyElementsOf(List.of());
 
-    assertThat(roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER).getUserList())
-        .containsExactlyElementsOf(List.of());
+        assertThat(roomBoxService.getSpecificRoom(SECOND_ROOM_NUMBER).getUserList())
+                .containsExactlyElementsOf(List.of(user));
 
-    assertThat(roomBoxService.getSpecificRoom(SECOND_ROOM_NUMBER).getUserList())
-        .containsExactlyElementsOf(List.of(user));
+        mockMvc
+                .perform(
+                        post("/api/room/2")
+                                .contentType("application/json")
+                                .content("{\"sessionID\":" + NONEXISTENT_SESSION_ID + "}"))
+                .andExpect(status().isOk());
 
-    mockMvc
-        .perform(
-            post("/api/room/2")
-                .contentType("application/json")
-                .content("{\"sessionID\":" + NONEXISTENT_SESSION_ID + "}"))
-        .andExpect(status().isOk());
+        assertThat(roomBoxService.getSpecificRoom(SECOND_ROOM_NUMBER).getUserList())
+                .size()
+                .isEqualTo(2);
+    }
 
-    assertThat(roomBoxService.getSpecificRoom(SECOND_ROOM_NUMBER).getUserList())
-        .size()
-        .isEqualTo(2);
-  }
+    @Test
+    @DisplayName("RoomRestController: Logout User from a specific room")
+    void restRouteLogoutUserFromRoom() throws Exception {
+        User user = new User(USER_SESSION_ID, 0, USER_NAME);
+        roomService.addNewUserToRoom(roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER), user);
+        assertThat(roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER).getUserList())
+                .containsExactlyElementsOf(List.of(user));
 
-  @Test
-  @DisplayName("RoomRestController: Logout User from a specific room")
-  void restRouteLogoutUserFromRoom() throws Exception {
-    User user = new User(USER_SESSION_ID, 0, USER_NAME);
-    roomService.addNewUserToRoom(roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER), user);
-    assertThat(roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER).getUserList())
-        .containsExactlyElementsOf(List.of(user));
+        mockMvc
+                .perform(
+                        post("/api/user/logout")
+                                .contentType("text/plain")
+                                .content("{\"sessionID:\"" + user.getSessionID() + "}"))
+                .andExpect(status().isOk());
 
-    mockMvc
-        .perform(
-            post("/api/user/logout")
-                .contentType("text/plain")
-                .content("{\"sessionID:\"" + user.getSessionID() + "}"))
-        .andExpect(status().isOk());
-
-    assertThat(roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER).getUserList()).size().isZero();
-  }
+        assertThat(roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER).getUserList()).size().isZero();
+    }
 }
