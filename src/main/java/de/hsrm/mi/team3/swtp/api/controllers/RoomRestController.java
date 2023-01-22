@@ -25,8 +25,10 @@ public class RoomRestController {
 
   Logger logger = LoggerFactory.getLogger(RoomRestController.class);
 
-  @Autowired private RoomBoxServiceImplementation roomBoxService;
-  @Autowired private RoomServiceImplementation roomService;
+  @Autowired
+  private RoomBoxServiceImplementation roomBoxService;
+  @Autowired
+  private RoomServiceImplementation roomService;
 
   /**
    * Retrieve the Room List saved in the RoomBox Singleton.
@@ -51,7 +53,7 @@ public class RoomRestController {
   @GetMapping(value = "/room/map/{number}", produces = MediaType.APPLICATION_JSON_VALUE)
   public String getRoomMap(@PathVariable("number") String roomNumber) {
     Room room = roomBoxService.getSpecificRoom(Integer.parseInt(roomNumber));
-    if (room.getRoomMap().isEmpty() || room.getRoomMap().isBlank()) {
+    if (room.getRoomMap().isEmpty()) {
       return "[]";
     }
     return room.getRoomMap();
@@ -60,8 +62,9 @@ public class RoomRestController {
   /**
    * Changes the Room a User is in to another.
    *
-   * @param roomNumber Room number of room that the User is supposed to be swapped into
-   * @param sessionId SessionID of User that will be moved
+   * @param roomNumber Room number of room that the User is supposed to be swapped
+   *                   into
+   * @param sessionId  SessionID of User that will be moved
    */
   @PostMapping(value = "/room/{number}")
   public void changeRoomOfUser(
@@ -75,7 +78,6 @@ public class RoomRestController {
 
       roomService.removeUserFromRoom(oldRoom, userOpt.get());
       roomService.addNewUserToRoom(room, userOpt.get());
-      logger.info("ROOM = {}", room.getUserList());
     } else {
       roomService.addNewUserToRoom(room, new User(sId, 0, sId));
     }
@@ -90,7 +92,6 @@ public class RoomRestController {
   public void logoutUserFromRoom(@RequestBody String sessionId) {
     String sId = sessionId.split(":")[1].replace("\"", "").replace("}", "");
     Optional<User> userOpt = roomBoxService.getUserBySessionID(sId);
-    logger.info("USER = {}", sId);
     if (userOpt.isPresent()) {
       Room oldRoom = roomBoxService.getRoomsFromRoomBox().get(userOpt.get().getCurrentRoomNumber());
       roomService.removeUserFromRoom(oldRoom, userOpt.get());

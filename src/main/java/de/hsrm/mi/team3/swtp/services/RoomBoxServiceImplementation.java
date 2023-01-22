@@ -36,7 +36,6 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
   public Room addRoom() {
     RoomBox roomBox = getRoomBoxSingelton();
     int newRoomNumber = this.nextRoomNumber();
-    logger.info("New Room Number : {} ", newRoomNumber);
     roomBox.addRoom(newRoomNumber, new Room(newRoomNumber));
     return this.getRoomsFromRoomBox().get(newRoomNumber);
   }
@@ -95,20 +94,16 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
 
   @Override
   public void resetEverything() {
-    logger.info("ROOMBOXSIZE= {}", this.getRoomsFromRoomBox().size());
     int countRooms = this.getRoomsFromRoomBox().size();
     for (int i = 0; i < countRooms; i++) {
       for (int j = 0; j < this.getSpecificRoom(i + 1).getUserList().size(); j++) {
-        logger.info("USER={}", this.getSpecificRoom(i + 1).getUserList().size());
         User user = this.getSpecificRoom(i + 1).getUserList().get(j);
         this.getSpecificRoom(i + 1).removeUserFromList(user);
         user.setCurrentRoomNumber(0);
       }
       Room roomToRemove = this.getSpecificRoom(i + 1);
-      logger.info("ROOM TO REMOVE = {}", roomToRemove.getRoomNumber());
       this.getRoomBoxSingelton().removeRoom(roomToRemove);
     }
-    logger.info("ROOMBOXSIZE AFTER = {}", this.getRoomsFromRoomBox().size());
   }
 
   @Override
