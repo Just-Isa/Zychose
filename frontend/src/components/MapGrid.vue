@@ -45,7 +45,6 @@ import { computed, onMounted } from "vue";
 import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
 import { logger } from "@/helpers/Logger";
-import { use3DVehicle } from "@/services/use3DVehicle";
 //import { Mouse } from "@/services/IMouse";
 
 /**
