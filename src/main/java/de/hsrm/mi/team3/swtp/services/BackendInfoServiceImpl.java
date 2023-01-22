@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class BackendInfoServiceImpl implements BackendInfoService {
 
   @Autowired SimpMessagingTemplate messaging;
-  final String GENERIC_TOPIC_START = "/topic/";
+  static final String GENERIC_TOPIC_START = "/topic/";
 
   /**
    * hands roomdata from front- to backend
@@ -62,7 +62,9 @@ public class BackendInfoServiceImpl implements BackendInfoService {
    * @param vehicle
    */
   @Override
-  public void sendVehicle(String topicname, BackendOperation operation, Vehicle vehicle) {
-    messaging.convertAndSend(GENERIC_TOPIC_START + topicname, BackendVehicleMessage.from(vehicle));
+  public void sendVehicle(
+      String topicname, String sessionID, BackendOperation operation, Vehicle vehicle) {
+    messaging.convertAndSend(
+        GENERIC_TOPIC_START + topicname, BackendVehicleMessage.from(operation, sessionID, vehicle));
   }
 }

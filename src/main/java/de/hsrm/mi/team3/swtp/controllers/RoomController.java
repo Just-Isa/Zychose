@@ -35,13 +35,15 @@ public class RoomController {
       @Payload BackendRoomMessage frontendRoom, @DestinationVariable int roomNumber) {
     // saves the jython script to the room
     Room backendRoom = this.roomBoxService.getSpecificRoom(roomNumber);
-    this.roomService.updateRoom(
-        backendRoom,
-        frontendRoom.jythonScript(),
-        frontendRoom.roomMap(),
-        frontendRoom.roomName(),
-        frontendRoom.roomNumber(),
-        frontendRoom.userList());
+    if (!frontendRoom.roomName().isEmpty()) {
+      this.roomService.updateRoom(
+          backendRoom,
+          frontendRoom.jythonScript(),
+          frontendRoom.roomMap(),
+          frontendRoom.roomName(),
+          frontendRoom.roomNumber(),
+          frontendRoom.userList());
+    }
     backservice.sendRoom(
         "room/" + roomNumber,
         BackendOperation.UPDATE,

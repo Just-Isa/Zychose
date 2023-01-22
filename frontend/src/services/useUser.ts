@@ -10,7 +10,6 @@ import { logger } from "@/helpers/Logger";
 
 const webSocketUrl = `ws://${window.location.host}/stompbroker`;
 const publishUserStompClient = new Client({ brokerURL: webSocketUrl });
-const publishMouseStompClient = new Client({ brokerURL: webSocketUrl });
 const receiveMouseStompClient = new Client({ brokerURL: webSocketUrl });
 
 export interface IMouseState {
@@ -81,10 +80,8 @@ function publishUser(operator: string, user: IUser) {
  * @param roomNumber roomNumber of the mouse topic
  */
 function publishMouse(mouse: IMouse, roomNumber: number) {
+  const publishMouseStompClient = new Client({ brokerURL: webSocketUrl });
   const DEST = "/topic/mouse/" + roomNumber;
-  if (!publishMouseStompClient.connected) {
-    publishMouseStompClient.activate();
-  }
   publishMouseStompClient.onWebSocketError = (event) => {
     logger.error("WS-error", JSON.stringify(event)); /* WS-Error */
     location.href = "/500";
@@ -93,15 +90,18 @@ function publishMouse(mouse: IMouse, roomNumber: number) {
     logger.error("STOMP-error", JSON.stringify(frame)); /* STOMP-Error */
     location.href = "/500";
   };
-  try {
-    publishMouseStompClient.publish({
-      destination: DEST,
-      headers: {},
-      body: JSON.stringify(mouse),
-    });
-  } catch (err) {
-    console.error("Error while publishing mouse", err);
-  }
+  publishMouseStompClient.onConnect = () => {
+    try {
+      publishMouseStompClient.publish({
+        destination: DEST,
+        headers: {},
+        body: JSON.stringify(mouse),
+      });
+    } catch (err) {
+      console.error("Error while publishing mouse", err);
+    }
+  };
+  publishMouseStompClient.activate();
 }
 
 /** Subscribes to rooms mouseTopic
