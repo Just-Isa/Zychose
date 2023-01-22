@@ -154,6 +154,7 @@ const {
 const { currentVehicle } = useVehicle();
 const streetTypes = swtpConfigJSON.streetTypes;
 const { getNewVehicleData } = use3DVehicle();
+const config = swtpConfigJSON;
 
 //TODO
 //Hier wird der Input(strassentyp und rotation), sobald es moeglich ist, aus dem anderen state geholt und zusammen mit den Positionen fuer die Achsen im state fuer die strassen gespeichert
@@ -211,21 +212,11 @@ function changeTo3DView(posX: number, posY: number, vehicleType: string) {
   //TODO manchmal wechselt der router die seite nicht!
   //--> außerdem wird ein *[Violation]'requestAnimationFrame' handler took XYZms* Hinweis geworfen
   //--> die Performance der 3D-View ist also nicht so toll!
-  const blockSize = 16;
-  const gridSize = 100;
   console.log("Positionen: " + posX + posY);
   console.log("VehicleType: " + vehicleType);
-  posX = (posX - 1 - gridSize / 2) * blockSize;
-  posY = (posY - 1 - gridSize / 2) * blockSize;
+  posX = (posX - 1 - config.gridSize / 2) * config.blocksize;
+  posY = (posY - 1 - config.gridSize / 2) * config.blocksize;
   getNewVehicleData(posX, posY, vehicleType);
-  // sets the position of the Vehicle
-  //Backend createcar (positionen) per stomp
-  // vehicleState.vehicle.postitionX = (posX - 1 - gridSize / 2) * blockSize;
-  //vehicleState.vehicle.postitionZ = (posY - 1 - gridSize / 2) * blockSize;
-  // sets the rotation of the Vehicle
-  //vehicleState.vehicle.rotationX = 0;
-  //vehicleState.vehicle.rotationZ = 0;
-  //vehicleState.vehicle.rotationY = 0;
   setTimeout(function () {
     router.push((location.pathname.split("/")[1] as unknown as number) + "/3d");
   }, 800);
