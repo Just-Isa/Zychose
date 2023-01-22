@@ -23,6 +23,8 @@ const vehicleState = reactive<IVehicleState>({
 export function use3DVehicle() {
   return { vehicleState: readonly(vehicleState), receiveVehicle };
 }
+
+//createNewVehicle
 /**
  * Subscribes to the Vehicle-Topic and updates the vehicleState.
  */

@@ -186,13 +186,14 @@ function cellClicked(posX: number, posY: number): void {
 function onDrop(posX: number, posY: number) {
   //TODO posX und posY müssen statt geloggt zu werden, ans backend gesendet werden an dieser Stelle
   logger.log("Vehicle-Position: ", posX, posY);
-  changeTo3DView(posX, posY);
+  const vehicleType = currentVehicle.type
+  changeTo3DView(posX, posY, vehicleType);
 }
 
 /**
  * Changes the View to the 3D-View
  */
-function changeTo3DView(posX: number, posY: number) {
+function changeTo3DView(posX: number, posY: number, vehicleType: string) {
   let wrapper = document.getElementById("wrapper");
   if (wrapper != null) {
     wrapper.classList.remove("opacity-70");
@@ -212,6 +213,7 @@ function changeTo3DView(posX: number, posY: number) {
   const blockSize = 16;
   const gridSize = 100;
   console.log("Positionen: " + posX + posY);
+  console.log("VehicleType: " + vehicleType);
   posX = (posX - 1 - gridSize / 2) * blockSize;
   posY = (posY - 1 - gridSize / 2) * blockSize;
   // sets the position of the Vehicle
