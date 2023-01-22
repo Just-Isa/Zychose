@@ -45,6 +45,7 @@ import { computed, onMounted } from "vue";
 import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
 import { logger } from "@/helpers/Logger";
+import { vehicleState } from "@/services/use3DVehicle";
 //import { Mouse } from "@/services/IMouse";
 
 /**
@@ -185,13 +186,13 @@ function cellClicked(posX: number, posY: number): void {
 function onDrop(posX: number, posY: number) {
   //TODO posX und posY müssen statt geloggt zu werden, ans backend gesendet werden an dieser Stelle
   logger.log("Vehicle-Position: ", posX, posY);
-  changeTo3DView();
+  changeTo3DView(posX, posY);
 }
 
 /**
  * Changes the View to the 3D-View
  */
-function changeTo3DView() {
+function changeTo3DView(posX: number, posY: number) {
   let wrapper = document.getElementById("wrapper");
   if (wrapper != null) {
     wrapper.classList.remove("opacity-70");
@@ -205,7 +206,19 @@ function changeTo3DView() {
     );
   }
   //TODO die 800ms sind gesetzt, weil es sonst keine richtige fade-to-white transition gibt !
-  //TODO manchmal wechselt der router die seite nicht! --> außerdem wird ein *[Violation]'requestAnimationFrame' handler took XYZms* Hinweis geworfen --> die Performance der 3D-View ist also nicht so toll!
+  //TODO manchmal wechselt der router die seite nicht! 
+  //--> außerdem wird ein *[Violation]'requestAnimationFrame' handler took XYZms* Hinweis geworfen 
+  //--> die Performance der 3D-View ist also nicht so toll!
+  const blockSize = 16;
+  const gridSize = 100;
+  // sets the position of the Vehicle
+  //Backend createcar (positionen) per stomp 
+  vehicleState.vehicle.postitionX = ((posX - 1 - gridSize/2) * blockSize);
+  vehicleState.vehicle.postitionZ = ((posY - 1 - gridSize/2) * blockSize);
+  // sets the rotation of the Vehicle
+  vehicleState.vehicle.rotationX = 0;
+  vehicleState.vehicle.rotationZ = 0;
+  vehicleState.vehicle.rotationY = 0;
   setTimeout(function () {
     router.push((location.pathname.split("/")[1] as unknown as number) + "/3d");
   }, 800);
