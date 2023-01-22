@@ -4,6 +4,7 @@ import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,12 @@ public class RoomServiceImplementation implements RoomService {
 
   Logger logger = LoggerFactory.getLogger(RoomServiceImplementation.class);
 
-  @Autowired RoomBoxServiceImplementation roomBoxService;
+  @Autowired
+  RoomBoxServiceImplementation roomBoxService;
 
   /**
-   * This method adds a new user to a room, and changed the users currentRoomNumber respectively.
+   * This method adds a new user to a room, and changed the users
+   * currentRoomNumber respectively.
    *
    * @param room
    * @param user
@@ -55,19 +58,38 @@ public class RoomServiceImplementation implements RoomService {
     try {
       room.setJythonScript(new String(file.getBytes()));
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.error("[RoomServiceImplementation][SaveScriptToRoom]: {}", e.getMessage());
     }
+  }
+
+  /**
+   * This method provides a certain user by ID and a roomnumber.
+   *
+   * @param roomNumber
+   * @param sessionID
+   * @return User
+   */
+  @Override
+  public User getUserByID(int roomNumber, String sessionID) {
+    Room room = roomBoxService.getSpecificRoom(roomNumber);
+    Optional<User> user =
+        room.getUserList().stream().filter(u -> u.getSessionID().equals(sessionID)).findFirst();
+    if (user.isEmpty()) {
+      logger.error("User not found");
+      return null;
+    }
+    return user.get();
   }
 
   /**
    * Updates Room with new Variables
    *
-   * @param room Room that is to be updated
+   * @param room         Room that is to be updated
    * @param jythonScript new jythonScript for room
-   * @param roomMap new roomMap for room
-   * @param roomName new roomName for room
-   * @param roomNumber new roomNumber for room
-   * @param userList new userList for room
+   * @param roomMap      new roomMap for room
+   * @param roomName     new roomName for room
+   * @param roomNumber   new roomNumber for room
+   * @param userList     new userList for room
    */
   public void updateRoom(
       Room room,

@@ -24,4 +24,6 @@ public interface RoomBoxService {
   public Optional<User> getUserBySessionID(String sessionID);
 
   public void resetEverything();
+
+  public void removeSpecificRoom(int roomNumber);
 }

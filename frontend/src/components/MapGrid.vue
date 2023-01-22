@@ -9,7 +9,9 @@
   >
     <table
       id="gridTable"
-      class="bg-[#008000] w-full border-spacing-0 border-separate table-fixed"
+      class="bg-[#008000] w-full border-spacing-0 border-separate table-fixed max-h-full overflow-hidden"
+      @wheel="zoomOnWheel($event)"
+      @wheel.prevent
       @mousedown="startDragThroughGrid($event)"
       @mouseup="stopDragThroughGrid()"
       @mousemove="dragToNewPosition($event)"
@@ -67,6 +69,11 @@ onMounted(() => {
   document.addEventListener("contextmenu", (event) => {
     event.preventDefault();
   });
+  initializeStreetState();
+  // Template loads table first, slower connections need extra time -> 700 ms tested to be sufficient
+  setTimeout(function () {
+    stateToGrid();
+  }, 700);
 
   const grid = document.getElementById("gridTable") as HTMLTableElement;
 
@@ -122,7 +129,6 @@ function dragToNewPosition(event: MouseEvent) {
 }
 
 /*
-  //TODO werte für 100 und 20 vllt auch in die config --> können dort aber auch so angepasst werden, dass bullshit drin ist
   * Hardcoded Wert 24, weil 1rem entspricht 16px, also 1920/16 = 120 -> 120/5rem (cell-width) = 24 cells
   //TODO ?min-gridSize dynamisch berechenbar machen/ cell-size in config einstellbar ----- storyless task oder issue?
  */
@@ -147,14 +153,6 @@ const {
 const { currentVehicle } = useVehicle();
 const streetTypes = swtpConfigJSON.streetTypes;
 
-onMounted(() => {
-  initializeStreetState();
-  // Template loads table first, slower connections need extra time -> 700 ms tested to be sufficient
-  setTimeout(function () {
-    stateToGrid();
-  }, 700);
-});
-
 //TODO
 //Hier wird der Input(strassentyp und rotation), sobald es moeglich ist, aus dem anderen state geholt und zusammen mit den Positionen fuer die Achsen im state fuer die strassen gespeichert
 /**
@@ -170,7 +168,7 @@ function cellClicked(posX: number, posY: number): void {
   const cell = table.rows[posX - 1].cells[posY - 1];
   /* testInput has to be hard coded as long as we're not able to get the informations from the states of the streetTileMenu */
   let testInput: IStreetInformation = {
-    streetType: "straight-road",
+    streetType: "road-straight",
     rotation: 90,
     posX: posX,
     posY: posY,
@@ -196,6 +194,7 @@ function onDrop(/*posX: number, posY: number*/) {
 function changeTo3DView() {
   let wrapper = document.getElementById("wrapper");
   if (wrapper != null) {
+    wrapper.classList.remove("opacity-70");
     wrapper.classList.add(
       "absolute",
       "duration-1000",
@@ -210,6 +209,22 @@ function changeTo3DView() {
   setTimeout(function () {
     router.push((location.pathname.split("/")[1] as unknown as number) + "/3d");
   }, 800);
+}
+
+/**
+ * Zoom mit Mausrad, scale = aktuelle Skalierung
+ */
+let scale = 1;
+function zoomOnWheel(event: WheelEvent) {
+  event.preventDefault();
+  scale += event.deltaY * -0.01;
+  scale = Math.min(Math.max(1, scale), 4);
+  const element = document.getElementById("wrapper");
+
+  if (element) {
+    element.classList.add("origin-left-top");
+    element.style.transform = `scale(${scale})`; // muss direkt über style geändert werden, lösung mit tailwind nicht möglich
+  }
 }
 
 /**
@@ -271,7 +286,6 @@ function onEndHover(x: number, y: number): void {
   }
 }
 
-/* eslint-disable @typescript-eslint/no-unused-vars*/
 /**
  * Function to display the streets that are saved in the state.
  */
@@ -282,7 +296,6 @@ function stateToGrid(): void {
     setCellBackgroundStyle(cell, street);
   }
 }
-/* eslint-enable */
 
 /**
  * Function that sets the style of the given Cell. The given street is needed for information about the streetType and rotation.
@@ -295,29 +308,9 @@ function setCellBackgroundStyle(
 ): void {
   for (const streetType of streetTypes) {
     if (streetType.name === street.streetType) {
-      cell.style.backgroundImage = `url(${streetType.svgPath})`;
+      cell.style.backgroundImage = `url(${streetType.imgPath})`;
       cell.style.transform = `rotate(${street.rotation}deg)`;
     }
   }
 }
-
-/*
-    two EventListeners on the wheel-scrool to prevent the default browser functionalities and
-    instead scale the component independently with CSS, so no other ui parts are effected.
-*/
-let scale = 1;
-document.addEventListener(
-  "wheel",
-  (event) => {
-    event.preventDefault();
-    scale += event.deltaY * -0.01;
-    scale = Math.min(Math.max(1, scale), 4);
-    const element = document.getElementById("wrapper");
-    if (element != null) {
-      element.classList.add("origin-left-top");
-      element.style.transform = `scale(${scale})`; // muss direkt über style geändert werden, lösung mit tailwind nicht möglich
-    }
-  },
-  { passive: false }
-);
 </script>
