@@ -24,7 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class RoomRestControllerTest {
+class RoomRestControllerTest {
 
     static final int FIRST_ROOM_NUMBER = 1;
     static final int SECOND_ROOM_NUMBER = 2;
