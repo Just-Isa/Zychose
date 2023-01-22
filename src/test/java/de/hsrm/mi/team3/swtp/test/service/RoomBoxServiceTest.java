@@ -20,10 +20,8 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 @AutoConfigureMockMvc
 class RoomBoxServiceTest {
 
-  @Autowired
-  RoomBoxService roomBoxService;
-  @Autowired
-  RoomService roomService;
+  @Autowired RoomBoxService roomBoxService;
+  @Autowired RoomService roomService;
 
   private final String SESSION_ID = "session-id-test-1";
   private final int USER_ROOMNUMBER = 1;

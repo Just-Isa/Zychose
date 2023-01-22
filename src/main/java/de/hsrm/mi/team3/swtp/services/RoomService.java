@@ -23,4 +23,6 @@ public interface RoomService {
       String roomName,
       int roomNumber,
       List<User> userList);
+
+  public User getUserByID(int roomNumber, String sessionID);
 }

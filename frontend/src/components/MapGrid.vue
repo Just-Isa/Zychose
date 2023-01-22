@@ -9,7 +9,9 @@
   >
     <table
       id="gridTable"
-      class="bg-[#008000] w-full border-spacing-0 border-separate table-fixed"
+      class="bg-[#008000] w-full border-spacing-0 border-separate table-fixed max-h-full overflow-hidden"
+      @wheel="zoomOnWheel($event)"
+      @wheel.prevent
       @mousedown="startDragThroughGrid($event)"
       @mouseup="stopDragThroughGrid()"
       @mousemove="dragToNewPosition($event)"
@@ -210,6 +212,22 @@ function changeTo3DView() {
 }
 
 /**
+ * Zoom mit Mausrad, scale = aktuelle Skalierung
+ */
+let scale = 1;
+function zoomOnWheel(event: WheelEvent) {
+  event.preventDefault();
+  scale += event.deltaY * -0.01;
+  scale = Math.min(Math.max(1, scale), 4);
+  const element = document.getElementById("wrapper");
+
+  if (element) {
+    element.classList.add("origin-left-top");
+    element.style.transform = `scale(${scale})`; // muss direkt über style geändert werden, lösung mit tailwind nicht möglich
+  }
+}
+
+/**
  * dragOver function of the drag&drop process
  * @param {number} posX position on the x axis while dragging over the grid
  * @param {number} posY position on the y axis while dragging over the grid
@@ -295,24 +313,4 @@ function setCellBackgroundStyle(
     }
   }
 }
-
-/*
-    two EventListeners on the wheel-scrool to prevent the default browser functionalities and
-    instead scale the component independently with CSS, so no other ui parts are effected.
-*/
-let scale = 1;
-document.addEventListener(
-  "wheel",
-  (event) => {
-    event.preventDefault();
-    scale += event.deltaY * -0.01;
-    scale = Math.min(Math.max(1, scale), 4);
-    const element = document.getElementById("wrapper");
-    if (element != null) {
-      element.classList.add("origin-left-top");
-      element.style.transform = `scale(${scale})`; // muss direkt über style geändert werden, lösung mit tailwind nicht möglich
-    }
-  },
-  { passive: false }
-);
 </script>
