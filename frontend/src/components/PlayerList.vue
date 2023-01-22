@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white fixed mt-5 ml-20 z-50">
+  <div class="text-white fixed w-60 mt-5 ml-20 z-50">
     <div
       class="bg-back-folder-gray rounded-full cursor-pointer px-8 py-2 mb-3 shadow-lg text-center"
       @click="changeVisibilty()"
@@ -11,7 +11,9 @@
       class="bg-back-folder-gray rounded shadow-lg p-3 hidden"
     >
       <tr v-for="user in roomState.room.userList" v-bind:key="user.sessionID">
-        <td class="w-24 truncate block">Name</td>
+        <td class="w-24 truncate block">
+          {{ user.userName }}
+        </td>
         <td class="w-32 text-right">
           <span v-if="hours != 0">{{ hours }}h </span>
           <span v-if="min != 0">{{ min }}min </span>
