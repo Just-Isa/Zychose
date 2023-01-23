@@ -75,7 +75,9 @@ function changeBulldozerState() {
   if (entireDoc) {
     if (!bulldozerActive.isActive) {
       toggleBulldozer(true);
-      changeCurrentStreetType(new StreetBlock("bulldozer", 0, "", [], [""]));
+      changeCurrentStreetType(
+        new StreetBlock("bulldozer", 0, "", [], [""], true)
+      );
     } else {
       toggleBulldozer(false);
     }
