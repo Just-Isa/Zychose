@@ -144,18 +144,12 @@ const checkedGridSize = computed(() => {
   }
 });
 
-const {
-  updateStreetState,
-  isStreetPlaced,
-  streetsState,
-  initializeStreetState,
-} = useStreets();
+const { updateStreetState, placedStreet, streetsState, initializeStreetState } =
+  useStreets();
 const { currentVehicle } = useVehicle();
 const { activeBlock } = useStreetBlock();
 const streetTypes = swtpConfigJSON.streetTypes;
 
-//TODO
-//Hier wird der Input(strassentyp und rotation), sobald es moeglich ist, aus dem anderen state geholt und zusammen mit den Positionen fuer die Achsen im state fuer die strassen gespeichert
 /**
  * cellClicked handles the click event for cells.
  * Data like Typestreet and rotation of the selected Street are passed in through a state.
@@ -257,31 +251,34 @@ function dragLeave(posX: number, posY: number) {
 }
 
 /**
- * getting the hovered cell and changing the backgroundImage to 50% opaque "new" road.
- * the image is hardcoded right now, but it will change as soon as we get the streets from the state
+ * getting the hovered cell and changing the backgroundImage to fit the active block of the street menu
  * @param {number} x position on x axis (click)
  * @param {number} y position on y axis (click)
  */
 function onHover(x: number, y: number): void {
   const table = document.getElementById("gridTable") as HTMLTableElement;
   const cell = table.rows[x - 1].cells[y - 1];
-  //TODO sobald man die Informationen ueber streetType und rotation aus dem State lesen kann, muss der code unterhalb angepasst werden
-  cell.style.backgroundImage = "url(/assets/img/road_cross.png)";
+  setCellBackgroundStyle(cell, {
+    streetType: activeBlock.streetBlock.name,
+    rotation: activeBlock.streetBlock.currentRotation,
+    posX: x,
+    posY: y,
+  });
 }
 
 /**
  * when the mouse exits the previously hovered cell, we check, if a street was placed.
- * if yes: call cellClicked, which changes the backgroundImage to the right streetType
+ * if yes: change backgroundImage back to the right one of the placed street
  * if no: reset the backgroundImage to nothing
- * either way the opacity gets resetted to default (=1)
  * @param {number} x position on x axis (click)
  * @param {number} y position on y axis (click)
  */
 function onEndHover(x: number, y: number): void {
   const table = document.getElementById("gridTable") as HTMLTableElement;
   const cell = table.rows[x - 1].cells[y - 1];
-  if (isStreetPlaced(x, y)) {
-    cellClicked(x, y);
+  const street = placedStreet(x, y);
+  if (street !== undefined) {
+    setCellBackgroundStyle(cell, street);
   } else {
     cell.style.backgroundImage = "";
   }

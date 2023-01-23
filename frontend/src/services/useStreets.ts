@@ -59,12 +59,12 @@ export function useStreets() {
 
   /**
    * Function of the State to handle the onGridClickObject.
-   * If delete is selected the street in the array needs to be removed.
+   * If the bulldozer is selected the street in the array needs to be removed.
    * Otherwise the street needs to be saved.
    * @param {IStreetInformation} onGridClickObject - IStreetInformation Object that needs to be saved or deleted
    */
   function updateStreetState(onGridClickObject: IStreetInformation): void {
-    if (onGridClickObject.streetType === "delete") {
+    if (onGridClickObject.streetType === "bulldozer") {
       state.streets = state.streets.filter(
         (street) =>
           street.posX !== onGridClickObject.posX ||
@@ -88,7 +88,6 @@ export function useStreets() {
       }
     }
     gridToJson(state.streets);
-    updateRoomMap(JSON.stringify(state.streets));
   }
 
   /**
@@ -103,23 +102,20 @@ export function useStreets() {
    *
    * @param {number} row - row of the cell to be checked
    * @param {number} col - column of the cell to be checked
-   * @returns boolean, if there is a street placed on the checked cell
+   * @returns the placed street, if there is a street placed on the checked cell, else undefined
    */
-  function isStreetPlaced(row: number, col: number) {
-    if (
-      state.streets.length &&
-      state.streets.find((street) => street.posX === row && street.posY === col)
-    ) {
-      return true;
-    } else {
-      return false;
+  function placedStreet(row: number, col: number) {
+    if (state.streets.length) {
+      return state.streets.find(
+        (street) => street.posX === row && street.posY === col
+      );
     }
   }
 
   return {
     streetsState: readonly(state),
     updateStreetState,
-    isStreetPlaced,
+    placedStreet,
     recieveNewStreetState,
     initializeStreetState,
   };
