@@ -1,6 +1,7 @@
 package de.hsrm.mi.team3.swtp.domain;
 
-import java.util.Arrays;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Map;
 import java.util.Random;
 
@@ -14,7 +15,7 @@ public class VehicleBot {
   private Room room;
   private VehicleType vehicleType;
   private boolean fixRoute;
-  private char[] scriptRoute;
+  private Deque<Character> scriptRoute = new ArrayDeque<>();
   private Random randomGenerator = new Random();
 
   public VehicleBot(Room room) {
@@ -51,6 +52,26 @@ public class VehicleBot {
   private void turnRandom(int[] exits) {
     int randomNumber = randomGenerator.nextInt(exits.length - 1);
     turn(this.getCurrentStreetBlock().getExits()[randomNumber]);
+  }
+
+  private void followScript() {
+    switch (this.scriptRoute.peek()) {
+      case 's':
+        moveToNextBlock();
+        break;
+
+      case 'l':
+        turn(this.currentRotation < 90 ? 270 : this.currentRotation - 90);
+        break;
+
+      case 'r':
+        turn(this.currentRotation > 270 ? 0 : this.currentRotation + 90);
+        break;
+
+      default:
+        this.fixRoute = false;
+    }
+    this.scriptRoute.pop();
   }
 
   public int getCurrentX() {
@@ -102,12 +123,14 @@ public class VehicleBot {
 
   public void setFixRoute(char[] route) {
     this.fixRoute = true;
-    this.scriptRoute = Arrays.copyOf(route, route.length);
+    for (int i = 0; i < route.length; i++) {
+      this.scriptRoute.push(route[i]);
+    }
   }
 
   public void removeFixRoute() {
     this.fixRoute = false;
-    this.scriptRoute = new char[] {};
+    this.scriptRoute.clear();
   }
 
   public boolean hasFixRoute() {
