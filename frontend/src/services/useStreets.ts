@@ -54,7 +54,7 @@ export function useStreets() {
         receiveNewStreetState(jsondata as Array<IStreetInformation>);
       })
       .catch((e) => {
-        logger.error(e);
+        console.error(e);
       });
   }
 
