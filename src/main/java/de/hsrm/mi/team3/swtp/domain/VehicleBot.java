@@ -29,14 +29,15 @@ public class VehicleBot {
   public void moveToNextBlock() {
     refreshNeighbours();
     StreetBlock destination = this.neighbours.get(VehicleNeighbour.VEHICLETOP);
-    if (destination == null || this.currentStreetBlock.getTileType().equals("road-dead-end")) {
+    if (destination == null || this.currentStreetBlock.getBlockType().equals("road-dead-end")) {
       turn(this.currentRotation > 180 ? this.currentRotation - 180 : this.currentRotation + 180);
     } else if (!destination.isBlocked()) {
       this.currentStreetBlock.isBlocked(false);
-      this.currentPos[0] = destination.getTilePosition()[1] + 1;
-      this.currentPos[1] = destination.getTilePosition()[0] + 1;
+      this.currentPos[0] = destination.getBlockPosition()[1] + 1;
+      this.currentPos[1] = destination.getBlockPosition()[0] + 1;
       destination.isBlocked(true);
       this.currentStreetBlock = destination;
+      // TODO aktualisiere Pos in Vehicle Liste in Room
     }
   }
 
@@ -50,6 +51,7 @@ public class VehicleBot {
 
   private void turnRandom(int[] exits) {
     int randomNumber = randomGenerator.nextInt(exits.length - 1);
+    // TODO verhindern dass auto 180 Grad dreht
     turn(this.getCurrentStreetBlock().getExits()[randomNumber]);
   }
 
@@ -74,7 +76,7 @@ public class VehicleBot {
   }
 
   public void drive() {
-    String blockName = this.currentStreetBlock.getTileType();
+    String blockName = this.currentStreetBlock.getBlockType();
     if (blockName.equals("road-t") || blockName.equals("road-cross")) {
       if (hasFixRoute()) {
         followScript();
@@ -132,9 +134,8 @@ public class VehicleBot {
 
   public void refreshNeighbours() {
     this.neighbours =
-        this.room
-            .getRoadMap()
-            .getNeighbours(this.currentPos[0] - 1, this.currentPos[1] - 1, this.currentRotation);
+        this.room.getNeighbours(
+            this.currentPos[0] - 1, this.currentPos[1] - 1, this.currentRotation);
   }
 
   public void setFixRoute(char[] route) {
@@ -155,7 +156,7 @@ public class VehicleBot {
 
   public void setCurrentStreetBlock() {
     this.currentStreetBlock =
-        this.room.getRoadMap().getStreetBlock(this.currentPos[0] - 1, this.currentPos[1] - 1);
+        this.room.getStreetBlock(this.currentPos[0] - 1, this.currentPos[1] - 1);
   }
 
   public StreetBlock getCurrentStreetBlock() {

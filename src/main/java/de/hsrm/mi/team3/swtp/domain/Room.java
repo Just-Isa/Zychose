@@ -2,6 +2,7 @@ package de.hsrm.mi.team3.swtp.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /*
  * Room class that is used within the RoomBox.
@@ -85,7 +86,15 @@ public class Room {
     return this.roomMap;
   }
 
+  public StreetBlock getStreetBlock(int x, int y) {
+    return this.roadMap.getStreetBlock(x, y);
+  }
+
   public void setUserList(List<User> userList) {
     this.userList = userList;
+  }
+
+  public Map<VehicleNeighbour, StreetBlock> getNeighbours(int x, int y, int rotation) {
+    return this.roadMap.getNeighbours(x, y, rotation);
   }
 }

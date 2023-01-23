@@ -12,8 +12,8 @@ public class StreetBlock {
   private boolean blocked;
   private int[] exits;
 
-  public StreetBlock(String tileType, int rotation, int posX, int posY, boolean blocked) {
-    this.type = tileType;
+  public StreetBlock(String blockType, int rotation, int posX, int posY, boolean blocked) {
+    this.type = blockType;
     this.rotation = rotation;
     this.position[0] = posX;
     this.position[1] = posY;
@@ -21,15 +21,15 @@ public class StreetBlock {
     setExits();
   }
 
-  public String getTileType() {
+  public String getBlockType() {
     return this.type;
   }
 
-  public int getTileRotation() {
+  public int getBlockRotation() {
     return this.rotation;
   }
 
-  public int[] getTilePosition() {
+  public int[] getBlockPosition() {
     return this.position;
   }
 
