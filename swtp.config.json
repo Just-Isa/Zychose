@@ -135,7 +135,7 @@
     {
       "name": "car",
       "iconPath": "/assets/img/car.png",
-      "glbPath": "/assets/models/car.gltf",
+      "glbPath": "/assets/models/cars/jeep.glb",
       "params":{
         "maxSpeed": 0.6,
         "acceleration": 0.2,
