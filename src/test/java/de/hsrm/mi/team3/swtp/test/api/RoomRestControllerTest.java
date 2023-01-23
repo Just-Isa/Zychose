@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import de.hsrm.mi.team3.swtp.domain.User;
 import de.hsrm.mi.team3.swtp.services.RoomBoxService;
 import de.hsrm.mi.team3.swtp.services.RoomService;
+import java.util.Date;
 import java.util.List;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +34,7 @@ class RoomRestControllerTest {
   static final String USER_SESSION_ID = "sid";
   static final String NONEXISTENT_SESSION_ID = "nonexistentsid";
   static final String USER_NAME = "username";
+  static final Date LOGIN_TIME = new Date();
 
   @Autowired private MockMvc mockMvc;
 
@@ -90,7 +92,7 @@ class RoomRestControllerTest {
   @DisplayName(
       "RoomRestController: /room/map/{number} returns rooms map, or [] in case of empty map")
   void restRouteChangeRoomOfUser() throws Exception {
-    User user = new User(USER_SESSION_ID, 0, USER_NAME);
+    User user = new User(USER_SESSION_ID, 0, USER_NAME, LOGIN_TIME);
 
     roomService.addNewUserToRoom(roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER), user);
     assertThat(roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER).getUserList())
@@ -128,7 +130,7 @@ class RoomRestControllerTest {
   @Test
   @DisplayName("RoomRestController: Logout User from a specific room")
   void restRouteLogoutUserFromRoom() throws Exception {
-    User user = new User(USER_SESSION_ID, 0, USER_NAME);
+    User user = new User(USER_SESSION_ID, 0, USER_NAME, LOGIN_TIME);
     roomService.addNewUserToRoom(roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER), user);
     assertThat(roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER).getUserList())
         .containsExactlyElementsOf(List.of(user));

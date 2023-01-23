@@ -6,6 +6,7 @@ import de.hsrm.mi.team3.swtp.domain.User;
 import de.hsrm.mi.team3.swtp.services.RoomBoxServiceImplementation;
 import de.hsrm.mi.team3.swtp.services.RoomServiceImplementation;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -26,6 +27,7 @@ public class RoomRestController {
   Logger logger = LoggerFactory.getLogger(RoomRestController.class);
 
   @Autowired private RoomBoxServiceImplementation roomBoxService;
+
   @Autowired private RoomServiceImplementation roomService;
 
   /**
@@ -76,7 +78,7 @@ public class RoomRestController {
       roomService.removeUserFromRoom(oldRoom, userOpt.get());
       roomService.addNewUserToRoom(room, userOpt.get());
     } else {
-      roomService.addNewUserToRoom(room, new User(sId, 0, sId));
+      roomService.addNewUserToRoom(room, new User(sId, 0, sId, new Date()));
     }
   }
 

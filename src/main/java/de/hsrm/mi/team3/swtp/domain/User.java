@@ -1,5 +1,7 @@
 package de.hsrm.mi.team3.swtp.domain;
 
+import java.util.Date;
+
 /*
  * The users who can be signed in.
  */
@@ -11,12 +13,15 @@ public class User {
 
   private String userName;
 
+  private Date loginTime;
+
   private Vehicle vehicle;
 
-  public User(String sessionID, int currentRoomNumber, String userName) {
+  public User(String sessionID, int currentRoomNumber, String userName, Date loginTime) {
     this.sessionID = sessionID;
     this.currentRoomNumber = currentRoomNumber;
     this.userName = userName;
+    this.loginTime = loginTime;
     vehicle = null;
   }
 
@@ -24,6 +29,7 @@ public class User {
     this.sessionID = "";
     this.currentRoomNumber = 0;
     this.userName = "";
+    this.loginTime = new Date();
     vehicle = null;
   }
 
@@ -51,6 +57,14 @@ public class User {
     this.userName = userName;
   }
 
+  public Date getLoginTime() {
+    return loginTime;
+  }
+
+  public void setLoginTime(Date loginTime) {
+    this.loginTime = loginTime;
+  }
+
   public Vehicle getVehicle() {
     return vehicle;
   }
@@ -61,12 +75,14 @@ public class User {
 
   @Override
   public String toString() {
-    return "User [sessionID="
+    return ("User [sessionID="
         + sessionID
         + ", currentRoomNumber="
         + currentRoomNumber
         + ", userName="
         + userName
-        + "]";
+        + ", loginTime ="
+        + loginTime
+        + "]");
   }
 }

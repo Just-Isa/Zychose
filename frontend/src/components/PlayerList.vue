@@ -15,8 +15,8 @@
           {{ user.userName }}
         </td>
         <td class="w-32 text-right">
-          <span v-if="hours != 0">{{ hours }}h </span>
-          <span v-if="min != 0">{{ min }}min </span>
+          <span v-if="hours != 0"> {{ calculateHours(date) }} h </span>
+          <span v-if="min != 0">{{ calculateMinutes(date) }}min </span>
         </td>
       </tr>
     </div>
@@ -28,10 +28,11 @@ import { useRoom } from "@/services/useRoom";
 const { roomState } = useRoom();
 
 //TODO: WIP mit Testdaten, Zeitpunkt des LogIns sollte später aus useUser gelsen und mit der aktuellen Zeit verglichen werden
-const date = new Date(2023, 0, 1, 0, 0, 0, 0);
-const currentTimestamp = new Date(2023, 0, 3, 0, 423, 0, 0);
-const hours = Math.round(diff_minutes(date, currentTimestamp) / 60);
-const min = diff_minutes(date, currentTimestamp) % 60;
+const date = new Date(2023, 0, 20, 0, 0, 0, 0);
+const hours = calculateHours(date);
+const min = calculateMinutes(date);
+
+console.log("USER", roomState);
 
 /**
  * Change visibility of player list (visible or hidden)
@@ -47,15 +48,23 @@ function changeVisibilty() {
   }
 }
 
+function calculateHours(loginTime: Date) {
+  return Math.round(diff_minutes(loginTime) / 60);
+}
+
+function calculateMinutes(loginTime: Date) {
+  return diff_minutes(loginTime) % 60;
+}
+
 /**
- * Calculate the difference between two dates in minutes
+ * Calculate the difference between loginDate and currentDate in minutes
  *
- * @param {Date} dt2 second date (after first date)
- * @param {Date} dt1 first date (before second date)
+ * @param {Date} loginDate login time
  * @returns {number} difference in minutes
  */
-function diff_minutes(dt2: Date, dt1: Date) {
-  let diff = (dt2.getTime() - dt1.getTime()) / 1000;
+function diff_minutes(loginDate: Date) {
+  const currentDate = new Date();
+  let diff = (currentDate.getTime() - loginDate.getTime()) / 1000;
   diff /= 60;
   return Math.abs(Math.round(diff));
 }
