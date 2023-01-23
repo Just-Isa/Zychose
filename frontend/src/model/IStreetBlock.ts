@@ -25,6 +25,7 @@ export class StreetBlock implements IStreetBlock {
    * @param possibleRotations array with possible rotations of this StreetBlock
    * @param possibleVehicleTypes array that specifies which vehicle types this StreetBlock is used for
    * @param imgPath path to 2D-image to show in StreetMenu
+   * @param isBulldozer boolean, if StreetBlock is bulldozer
    */
   constructor(
     name: string,
