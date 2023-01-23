@@ -51,10 +51,10 @@ public class RoomRestController {
   @GetMapping(value = "/room/map/{number}", produces = MediaType.APPLICATION_JSON_VALUE)
   public String getRoomMap(@PathVariable("number") String roomNumber) {
     Room room = roomBoxService.getSpecificRoom(Integer.parseInt(roomNumber));
-    if (room.getRoomMapString().isEmpty() || room.getRoomMapString().isBlank()) {
+    if (room.getRoomMap().isEmpty()) {
       return "[]";
     }
-    return room.getRoomMapString();
+    return room.getRoomMap();
   }
 
   /**
@@ -75,7 +75,6 @@ public class RoomRestController {
 
       roomService.removeUserFromRoom(oldRoom, userOpt.get());
       roomService.addNewUserToRoom(room, userOpt.get());
-      logger.info("ROOM = {}", room.getUserList());
     } else {
       roomService.addNewUserToRoom(room, new User(sId, 0, sId));
     }
@@ -90,7 +89,6 @@ public class RoomRestController {
   public void logoutUserFromRoom(@RequestBody String sessionId) {
     String sId = sessionId.split(":")[1].replace("\"", "").replace("}", "");
     Optional<User> userOpt = roomBoxService.getUserBySessionID(sId);
-    logger.info("USER = {}", sId);
     if (userOpt.isPresent()) {
       Room oldRoom = roomBoxService.getRoomsFromRoomBox().get(userOpt.get().getCurrentRoomNumber());
       roomService.removeUserFromRoom(oldRoom, userOpt.get());

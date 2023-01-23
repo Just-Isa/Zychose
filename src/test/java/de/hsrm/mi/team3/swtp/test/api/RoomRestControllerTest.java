@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.hsrm.mi.team3.swtp.domain.User;
 import de.hsrm.mi.team3.swtp.services.RoomBoxService;
 import de.hsrm.mi.team3.swtp.services.RoomService;
@@ -25,7 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class RoomRestControllerTest {
+class RoomRestControllerTest {
 
   static final int FIRST_ROOM_NUMBER = 1;
   static final int SECOND_ROOM_NUMBER = 2;
@@ -40,8 +39,6 @@ public class RoomRestControllerTest {
   @Autowired RoomBoxService roomBoxService;
 
   @Autowired RoomService roomService;
-
-  @Autowired ObjectMapper objectMapper;
 
   @BeforeEach
   void initRoomRestTest() {

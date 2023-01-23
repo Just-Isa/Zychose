@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class VehicleServiceTest {
+class VehicleServiceTest {
   @Autowired VehicleService vehicleService;
 
   private Vehicle vehicle;

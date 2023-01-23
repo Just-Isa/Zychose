@@ -1,4 +1,5 @@
 import { logger } from "@/helpers/Logger";
+import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
 import type { Direction } from "@/model/DirektionCommands";
 import { Client } from "@stomp/stompjs";
 
@@ -8,11 +9,26 @@ const stompClient = new Client({ brokerURL: webSocketUrl });
 export function useVehicleCommands() {
   return { publishVehicleCommands };
 }
+
+export interface IVehicleCommandMessage {
+  commands: Direction[];
+  userSessionId: string;
+}
+export class VehicleCommandMessage implements IVehicleCommandMessage {
+  commands: Direction[];
+  userSessionId: string;
+  constructor(commands: Direction[], userSessionId: string) {
+    this.commands = commands;
+    this.userSessionId = userSessionId;
+  }
+}
+
 /**
  * sends the commands to the backend
  * @param commands
  */
 function publishVehicleCommands(commands: Direction[]) {
+  const message = new VehicleCommandMessage(commands, getSessionIDFromCookie());
   const DEST =
     "/topic/3d/commands/" +
     (location.pathname.split("/")[1] as unknown as number);
@@ -31,7 +47,7 @@ function publishVehicleCommands(commands: Direction[]) {
     stompClient.publish({
       destination: DEST,
       headers: {},
-      body: JSON.stringify(commands),
+      body: JSON.stringify(message),
     });
   } catch (err) {
     console.error("Error while publishing VehicleCommands", err);
