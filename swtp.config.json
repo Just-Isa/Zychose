@@ -78,15 +78,19 @@
       "imgPath": "/assets/img/sidewalk_straight.png",
       "glbPath": "/assets/models/sidewalk_straight.glb",
       "vehicleTypes": ["bicycle"],
-      "possibleRotations": [
-        0,
-        90
-      ]
+      "possibleRotations": []
     },
     {
       "name": "sidewalk-t",
       "imgPath": "/assets/img/sidewalk_t.png",
       "glbPath": "/assets/models/sidewalk_t.glb",
+      "vehicleTypes": ["bicycle"],
+      "possibleRotations": []
+    },
+    {
+      "name": "sidewalk-dead-end",
+      "imgPath": "/assets/img/sidewalk_dead_end.png",
+      "glbPath": "/assets/models/sidewalk_dead_end.glb",
       "vehicleTypes": ["bicycle"],
       "possibleRotations": [
         0,
@@ -96,10 +100,31 @@
       ]
     },
     {
-      "name": "sidewalk-dead-end",
-      "imgPath": "/assets/img/sidewalk_dead_end.png",
-      "glbPath": "/assets/models/sidewalk_dead_end.glb",
-      "vehicleTypes": ["bicycle"],
+      "name": "brown-house",
+      "imgPath": "/assets/img/icons/buildings/brown_house.png",
+      "glbPath": "/assets/models/buildings/brown_house.glb",
+      "vehicleTypes": ["building"],
+      "possibleRotations": []
+    },
+    {
+      "name": "cream_sky_scraper",
+      "imgPath": "/assets/img/icons/buildings/cream_sky_scraper.png",
+      "glbPath": "/assets/models/buildings/cream_sky_scraper.glb",
+      "vehicleTypes": ["building"],
+      "possibleRotations": []
+    },
+    {
+      "name": "red_sky_scraper",
+      "imgPath": "/assets/img/icons/buildings/red_sky_scraper.png",
+      "glbPath": "/assets/models/buildings/red_sky_scraper.glb",
+      "vehicleTypes": ["building"],
+      "possibleRotations": []
+    },
+    {
+      "name": "trees",
+      "imgPath": "/assets/img/icons/deco/trees.png",
+      "glbPath": "/assets/models/deco/trees.glb",
+      "vehicleTypes": ["deco"],
       "possibleRotations": [
         0,
         90,
@@ -119,7 +144,7 @@
     }
   ],
   "gridSize": 100,
-  "vehicleTabs":[
+  "blockTabs":[
     {
       "name": "car",
       "iconPath": "/car-pictogram.svg"
@@ -127,6 +152,14 @@
     {
       "name": "bicycle",
       "iconPath": "/bicycle-pictogram.svg"
+    },
+    {
+      "name": "building",
+      "iconPath": "/building-pictogram.svg"
+    },
+    {
+      "name": "deco",
+      "iconPath": "/deco-pictogram.svg"
     }
   ],
   "blocksize":16,

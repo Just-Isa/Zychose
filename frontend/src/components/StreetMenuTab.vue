@@ -7,7 +7,7 @@
   >
     <img
       :src="`/assets/img/${props.imgSrc}`"
-      :alt="props.vehicleType + ' icon'"
+      :alt="props.blockType + ' icon'"
       draggable="false"
     />
   </button>
@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
 const props = defineProps<{
-  vehicleType: string;
+  blockType: string;
   imgSrc: string;
   isActive: boolean;
 }>();

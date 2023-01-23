@@ -38,11 +38,14 @@
 
 <script setup lang="ts">
 import StreetBlockIcon from "./StreetBlockIcon.vue";
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useStreetBlock } from "@/services/useStreetBlock";
 import type { StreetBlock } from "@/model/IStreetBlock";
+import swtpConfigJSON from "../../../swtp.config.json";
 
 const { resetCurrentChangedTab, menuTabState } = useStreetBlock();
+
+const streetTypes = swtpConfigJSON.streetTypes;
 
 const props = defineProps<{
   types: StreetBlock[];
@@ -57,13 +60,14 @@ const streetBlockSize = 92;
  * Anzahl der Reihen hat (jeweils 4 in einer Reihe). Multiplizert mit der Streetblocksize damit die Höhe gesamt stimmt,
  * davon nochmal eine Streetblocksize abgezogen (höchste Höhe ist oben, ergo muss eine Reihe abgezogen werden).
  */
-const maxScrollHeight =
+let maxScrollHeight =
   Math.ceil(props.types.length / 4) * streetBlockSize - streetBlockSize;
 
 /**
  * Wenn ich den Tab wechsle, möchte ich dass die aktuelle Reihe ohne smoothes Scrollen wieder direkt oben beginnt.
  * watch hört, ob der aktuelle Tab geändert wurde, reagiert in dem aktuellen Folder und resettet den State.
  */
+
 watch(menuTabState, () => {
   if (menuTabState.currentTabChanged) {
     let currentMenu = document.getElementById("scrollbox") as HTMLElement;
@@ -74,6 +78,17 @@ watch(menuTabState, () => {
         behavior: "auto",
       });
     }
+    /**
+     * Aktuelle Höhe muss ständig aktualisiert werden, Größe (Höhe) des Folders wird hier
+     * dynamisch berechnet mithilfe der Anzahl der zugewiesenen Blöcke pro Typ.
+     */
+    let streetFolder = streetTypes.filter((street) =>
+      street.vehicleTypes.includes(menuTabState.currentActiveTab)
+    );
+
+    maxScrollHeight =
+      Math.ceil(streetFolder.length / 4) * streetBlockSize - streetBlockSize;
+
     scrollHeight.value = 0;
     resetCurrentChangedTab();
   }

@@ -3,12 +3,12 @@
     class="fixed bottom-6 left-1/2 -translate-x-1/2 pointer-events-none z-50"
   >
     <div class="tabs flex gap-3">
-      <div v-for="vehicle in vehicleTabs" v-bind:key="vehicle.name">
+      <div v-for="block in blockTabs" v-bind:key="block.name">
         <StreetMenuTab
-          :vehicleType="vehicle.name"
-          :imgSrc="`${vehicle.name}-pictogram.svg`"
-          :isActive="menuTabState.currentActiveTab === vehicle.name"
-          @click="changeCurrentTab(vehicle.name)"
+          :blockType="block.name"
+          :imgSrc="`${block.name}-pictogram.svg`"
+          :isActive="menuTabState.currentActiveTab === block.name"
+          @click="changeCurrentTab(block.name)"
         />
       </div>
     </div>
@@ -39,7 +39,7 @@ const { changeCurrentTab, menuTabState } = useStreetBlock();
 
 const streetTypes = swtpConfigJSON.streetTypes;
 
-const vehicleTabs = swtpConfigJSON.vehicleTabs;
+const blockTabs = swtpConfigJSON.blockTabs;
 
 const filteredStreetBlocks = computed(() => {
   let streetBlocks: StreetBlock[] = [];
