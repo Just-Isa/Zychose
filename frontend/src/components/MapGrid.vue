@@ -45,7 +45,7 @@ import { computed, onMounted } from "vue";
 import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
 import { logger } from "@/helpers/Logger";
-//import { Mouse } from "@/services/IMouse";
+import { useStreetBlock } from "@/services/useStreetBlock";
 
 /**
  * @param {number} gridSize defines the size of the grid component
@@ -151,6 +151,7 @@ const {
   initializeStreetState,
 } = useStreets();
 const { currentVehicle } = useVehicle();
+const { activeBlock } = useStreetBlock();
 const streetTypes = swtpConfigJSON.streetTypes;
 
 //TODO
@@ -167,14 +168,14 @@ function cellClicked(posX: number, posY: number): void {
   const table = document.getElementById("gridTable") as HTMLTableElement;
   const cell = table.rows[posX - 1].cells[posY - 1];
   /* testInput has to be hard coded as long as we're not able to get the informations from the states of the streetTileMenu */
-  let testInput: IStreetInformation = {
-    streetType: "road-straight",
-    rotation: 90,
+  let activeStreet: IStreetInformation = {
+    streetType: activeBlock.streetBlock.name,
+    rotation: activeBlock.streetBlock.currentRotation,
     posX: posX,
     posY: posY,
   };
-  setCellBackgroundStyle(cell, testInput);
-  updateStreetState(testInput);
+  setCellBackgroundStyle(cell, activeStreet);
+  updateStreetState(activeStreet);
 }
 
 /**
