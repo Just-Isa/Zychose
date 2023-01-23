@@ -110,7 +110,9 @@ public class VehicleBot {
         + ", currentRotation="
         + currentRotation
         + ", room="
-        + room.getRoomNumber()
+        + room
+        + ", route="
+        + route
         + "]";
   }
 }

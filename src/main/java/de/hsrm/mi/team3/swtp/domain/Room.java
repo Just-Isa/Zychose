@@ -26,6 +26,7 @@ public class Room {
   private String jythonScript;
   private Roadmap roadMap;
   private String roomMap;
+  private List<VehicleBot> vehicleBots;
 
   public Room(int roomNumber) {
     this.roomName = "default-name";
@@ -33,6 +34,7 @@ public class Room {
     this.userList = new ArrayList<>();
     this.jythonScript = "";
     this.roomMap = "";
+    this.vehicleBots = new ArrayList<>();
   }
 
   public Room(String roomName, int roomNumber) {
@@ -41,18 +43,21 @@ public class Room {
     this.userList = new ArrayList<>();
     this.jythonScript = "";
     this.roomMap = "";
+    this.vehicleBots = new ArrayList<>();
   }
 
   /** executes the uploaded python script */
   public void executeJython() {
     try (PythonInterpreter pyInterp = new PythonInterpreter()) {
       StringWriter output = new StringWriter();
-      pyInterp.setOut(output);
       if (!jythonScript.isBlank()) {
+        pyInterp.setOut(output);
         // macht den Raum im python-Skript abrufbar unter dem Variablennamen
         // "currentRoom"
-        pyInterp.set("currentRoom", this);
+        pyInterp.set("room", this);
         pyInterp.exec(jythonScript);
+      } else {
+        logger.error("leeres Skript");
       }
       logger.info("jython Output: " + output.toString());
     } catch (PyException e) {
@@ -70,6 +75,10 @@ public class Room {
 
   public List<User> getUserList() {
     return userList;
+  }
+
+  public void setUserList(List<User> userList) {
+    this.userList = userList;
   }
 
   public void addUserToList(User user) {
@@ -112,7 +121,11 @@ public class Room {
     return this.roomMap;
   }
 
-  public void setUserList(List<User> userList) {
-    this.userList = userList;
+  public List<VehicleBot> getVehicleBots() {
+    return vehicleBots;
+  }
+
+  public void setVehicleBots(List<VehicleBot> vehicleBots) {
+    this.vehicleBots = vehicleBots;
   }
 }
