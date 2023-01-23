@@ -54,7 +54,7 @@ export function useStreets() {
         receiveNewStreetState(jsondata as Array<IStreetInformation>);
       })
       .catch((e) => {
-        console.error(e);
+        logger.error(e);
       });
   }
 
@@ -88,7 +88,7 @@ export function useStreets() {
         state.streets.push(onGridClickObject);
       }
     }
-    console.log(state.streets);
+    logger.log(state.streets);
     gridToJson(state.streets);
   }
 
