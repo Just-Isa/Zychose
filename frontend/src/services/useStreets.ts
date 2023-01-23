@@ -17,6 +17,7 @@ export interface IStreetInformation {
   rotation: number;
   posX: number;
   posY: number;
+  isBulldozer: boolean;
 }
 /**
  * State that saves the information about the streets in an Array of IStreetInformation Objects
@@ -64,7 +65,7 @@ export function useStreets() {
    * @param {IStreetInformation} onGridClickObject - IStreetInformation Object that needs to be saved or deleted
    */
   function updateStreetState(onGridClickObject: IStreetInformation): void {
-    if (onGridClickObject.streetType === "bulldozer") {
+    if (onGridClickObject.isBulldozer) {
       state.streets = state.streets.filter(
         (street) =>
           street.posX !== onGridClickObject.posX ||
@@ -87,6 +88,7 @@ export function useStreets() {
         state.streets.push(onGridClickObject);
       }
     }
+    console.log(state.streets);
     gridToJson(state.streets);
   }
 

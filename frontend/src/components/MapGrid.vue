@@ -167,6 +167,7 @@ function cellClicked(posX: number, posY: number): void {
     rotation: activeBlock.streetBlock.currentRotation,
     posX: posX,
     posY: posY,
+    isBulldozer: activeBlock.streetBlock.isBulldozer,
   };
   setCellBackgroundStyle(cell, activeStreet);
   updateStreetState(activeStreet);
@@ -263,6 +264,7 @@ function onHover(x: number, y: number): void {
     rotation: activeBlock.streetBlock.currentRotation,
     posX: x,
     posY: y,
+    isBulldozer: activeBlock.streetBlock.isBulldozer,
   });
 }
 
