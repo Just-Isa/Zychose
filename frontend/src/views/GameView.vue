@@ -1,6 +1,6 @@
 <template>
   <main>
-    <Exit3DOverlay :isActive="showOverlay" />
+    <FadeToWhiteOverlay :isActive="showOverlay" />
     <Exit3DButton @click="changeTo2DView()" />
     <ThreeDGame />
   </main>
@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import ThreeDGame from "@/views/threeD/ThreeDGame.vue";
-import Exit3DOverlay from "@/components/Exit3DOverlay.vue";
+import FadeToWhiteOverlay from "@/components/FadeToWhiteOverlay.vue";
 import Exit3DButton from "@/components/Exit3DButton.vue";
 import { useRoom } from "@/services/useRoom";
 import { ref } from "vue";
