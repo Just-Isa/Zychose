@@ -41,10 +41,8 @@ public class VehicleBot {
     if (destination == null || this.currentStreetBlock.getBlockType().equals("road-dead-end")) {
       turn(this.currentRotation > 180 ? this.currentRotation - 180 : this.currentRotation + 180);
     } else if (!destination.isBlocked()) {
-      this.currentStreetBlock.isBlocked(false);
       this.currentPos[0] = destination.getBlockPosition()[1] + 1;
       this.currentPos[1] = destination.getBlockPosition()[0] + 1;
-      destination.isBlocked(true);
       this.currentStreetBlock = destination;
       // TODO aktualisiere Pos in Vehicle Liste in Room
     }
@@ -99,6 +97,7 @@ public class VehicleBot {
         turn(this.currentStreetBlock.getExits()[0]);
       }
     }
+    this.room.updateVehicleBots(this, this.currentPos[0], this.currentPos[1]);
   }
 
   public List<Character> getRoute() {
@@ -113,8 +112,9 @@ public class VehicleBot {
     return currentPos;
   }
 
-  public void setCurrentPos(int[] currentPos) {
-    this.currentPos = currentPos;
+  public void setCurrentPos(int x, int y) {
+    this.currentPos[0] = x;
+    this.currentPos[1] = y;
   }
 
   public int getCurrentRotation() {

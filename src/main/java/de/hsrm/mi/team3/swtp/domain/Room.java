@@ -130,6 +130,18 @@ public class Room {
     this.vehicleBots = vehicleBots;
   }
 
+  public void updateVehicleBots(VehicleBot bot, int x, int y) {
+    for (VehicleBot botvehicle : this.vehicleBots) {
+      if (botvehicle.equals(bot)) {
+        this.roadMap
+            .getStreetBlock(botvehicle.getCurrentPos()[0], botvehicle.getCurrentPos()[1])
+            .isBlocked(false);
+        botvehicle.setCurrentPos(x, y);
+        this.roadMap.getStreetBlock(x, y).isBlocked(true);
+      }
+    }
+  }
+
   public StreetBlock getStreetBlock(int x, int y) {
     return this.roadMap.getStreetBlock(x, y);
   }
