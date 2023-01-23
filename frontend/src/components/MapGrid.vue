@@ -184,7 +184,7 @@ function cellClicked(posX: number, posY: number): void {
  */
 function onDrop(posX: number, posY: number) {
   //TODO posX und posY müssen statt geloggt zu werden, ans backend gesendet werden an dieser Stelle
-  //logger.log("Vehicle-Position: ", posX, posY);
+  logger.log("Vehicle-Position: ", posX, posY);
   changeTo3DView();
 }
 
