@@ -9,6 +9,7 @@ public class VehicleBot {
   private VehicleBehaviour behaviour = VehicleBehaviour.DEFENSIVE;
   private int[] currentPos = {0, 0};
   private int currentRotation = 0;
+  private StreetBlock currentStreetBlock;
   private Map<VehicleNeighbour, StreetBlock> neighbours;
   private Room room;
   private VehicleType vehicleType;
@@ -20,6 +21,7 @@ public class VehicleBot {
     // choose random Model from VehicleType Enum
     int randomNumber = new Random().nextInt(VehicleType.values().length);
     this.vehicleType = VehicleType.values()[randomNumber];
+    setCurrentStreetBlock();
   }
 
   public void moveToNextBlock() {
@@ -28,13 +30,11 @@ public class VehicleBot {
     if (destination == null) {
       // TODO kein Anschlussteil vorhanden -> U-Wende?
     } else if (!destination.isBlocked()) {
-      this.room
-          .getRoadMap()
-          .getStreetBlock(this.getCurrentX() - 1, this.getCurrentY() - 1)
-          .isBlocked(false);
+      this.currentStreetBlock.isBlocked(false);
       this.currentPos[0] = destination.getTilePosition()[1] + 1;
       this.currentPos[1] = destination.getTilePosition()[0] + 1;
       destination.isBlocked(true);
+      this.currentStreetBlock = destination;
     }
     // warten bis Kachel frei
   }
@@ -111,5 +111,14 @@ public class VehicleBot {
 
   public boolean hasFixRoute() {
     return this.fixRoute;
+  }
+
+  public void setCurrentStreetBlock() {
+    this.currentStreetBlock =
+        this.room.getRoadMap().getStreetBlock(this.currentPos[0] - 1, this.currentPos[1] - 1);
+  }
+
+  public StreetBlock getCurrentStreetBlock() {
+    return this.currentStreetBlock;
   }
 }

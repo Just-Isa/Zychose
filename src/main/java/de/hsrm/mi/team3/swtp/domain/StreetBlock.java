@@ -77,4 +77,8 @@ public class StreetBlock {
       }
     }
   }
+
+  public boolean isCrossroad() {
+    return (this.type.equals("road-t") || this.type.equals("road-cross"));
+  }
 }
