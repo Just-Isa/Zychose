@@ -78,7 +78,7 @@ public class RoomRestController {
       roomService.removeUserFromRoom(oldRoom, userOpt.get());
       roomService.addNewUserToRoom(room, userOpt.get());
     } else {
-      roomService.addNewUserToRoom(room, new User(sId, 0, sId, new Date()));
+      roomService.addNewUserToRoom(room, new User(sId, 0, sId, new Date(), 0));
     }
   }
 

@@ -27,7 +27,7 @@ const mouseState = reactive<IMouseState>({
 });
 
 const userState = reactive<IUserState>({
-  user: new User("", 0, "", new Date()),
+  user: new User("", 0, "", new Date(), 0),
 });
 
 //zugreifbar gemacht
@@ -139,6 +139,7 @@ function createUser() {
     userState.user.sessionID = getSessionIDFromCookie();
     userState.user.userName = getSessionIDFromCookie();
     userState.user.loginTime = new Date();
+    userState.user.minutesPlayed = 0;
     publishUser("CREATE", userState.user);
   }
 }

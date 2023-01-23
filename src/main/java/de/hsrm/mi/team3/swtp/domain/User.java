@@ -15,13 +15,17 @@ public class User {
 
   private Date loginTime;
 
+  private int minutesPlayed;
+
   private Vehicle vehicle;
 
-  public User(String sessionID, int currentRoomNumber, String userName, Date loginTime) {
+  public User(
+      String sessionID, int currentRoomNumber, String userName, Date loginTime, int minutesPlayed) {
     this.sessionID = sessionID;
     this.currentRoomNumber = currentRoomNumber;
     this.userName = userName;
     this.loginTime = loginTime;
+    this.minutesPlayed = minutesPlayed;
     vehicle = null;
   }
 
@@ -63,6 +67,14 @@ public class User {
 
   public void setLoginTime(Date loginTime) {
     this.loginTime = loginTime;
+  }
+
+  public int getMinutesPlayed() {
+    Date currentTime = new Date();
+    long diff = currentTime.getTime() - loginTime.getTime();
+    long diffMinutes = diff / (60 * 1000) % 60;
+    this.minutesPlayed = Math.abs(Math.round(diffMinutes));
+    return minutesPlayed;
   }
 
   public Vehicle getVehicle() {
