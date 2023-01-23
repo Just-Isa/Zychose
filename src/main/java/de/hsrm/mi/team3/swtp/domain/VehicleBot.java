@@ -29,8 +29,8 @@ public class VehicleBot {
   public void moveToNextBlock() {
     refreshNeighbours();
     StreetBlock destination = this.neighbours.get(VehicleNeighbour.VEHICLETOP);
-    if (destination == null) {
-      // TODO kein Anschlussteil vorhanden -> U-Wende?
+    if (destination == null || this.currentStreetBlock.getTileType().equals("road-dead-end")) {
+      turn(this.currentRotation > 180 ? this.currentRotation - 180 : this.currentRotation + 180);
     } else if (!destination.isBlocked()) {
       this.currentStreetBlock.isBlocked(false);
       this.currentPos[0] = destination.getTilePosition()[1] + 1;
@@ -38,7 +38,6 @@ public class VehicleBot {
       destination.isBlocked(true);
       this.currentStreetBlock = destination;
     }
-    // warten bis Kachel frei
   }
 
   /**
@@ -72,6 +71,23 @@ public class VehicleBot {
         this.fixRoute = false;
     }
     this.scriptRoute.pop();
+  }
+
+  public void drive() {
+    String blockName = this.currentStreetBlock.getTileType();
+    if (blockName.equals("road-t") || blockName.equals("road-cross")) {
+      if (hasFixRoute()) {
+        followScript();
+      } else {
+        turnRandom(this.currentStreetBlock.getExits());
+      }
+    } else if (blockName.equals("road-curve")) {
+      if (this.currentStreetBlock.getExits()[0] == this.currentRotation) {
+        turn(this.currentStreetBlock.getExits()[1]);
+      } else {
+        turn(this.currentStreetBlock.getExits()[0]);
+      }
+    }
   }
 
   public int getCurrentX() {
