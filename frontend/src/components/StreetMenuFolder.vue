@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import StreetBlockIcon from "./StreetBlockIcon.vue";
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { useStreetBlock } from "@/services/useStreetBlock";
 import type { StreetBlock } from "@/model/IStreetBlock";
 import swtpConfigJSON from "../../../swtp.config.json";
