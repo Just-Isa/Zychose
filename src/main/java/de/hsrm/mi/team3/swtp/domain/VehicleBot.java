@@ -15,11 +15,12 @@ public class VehicleBot {
   private VehicleType vehicleType;
   private boolean fixRoute;
   private char[] scriptRoute;
+  private Random randomGenerator = new Random();
 
   public VehicleBot(Room room) {
     this.room = room;
     // choose random Model from VehicleType Enum
-    int randomNumber = new Random().nextInt(VehicleType.values().length);
+    int randomNumber = randomGenerator.nextInt(VehicleType.values().length);
     this.vehicleType = VehicleType.values()[randomNumber];
     setCurrentStreetBlock();
   }
@@ -43,13 +44,13 @@ public class VehicleBot {
    * @param rotation ist die Rotationsstufe, auf die sich das Fahrzeug drehen soll
    */
   public void turn(int rotation) {
-    if (!this.hasFixRoute()) {
-      // TODO Fahrzeug entscheidet zufaellig ob es abbiegt
-      this.setCurrentRotation(rotation);
-      moveToNextBlock();
-    } else {
-      // TODO follow fixRoute
-    }
+    this.setCurrentRotation(rotation);
+    moveToNextBlock();
+  }
+
+  private void turnRandom(int[] exits) {
+    int randomNumber = randomGenerator.nextInt(exits.length - 1);
+    turn(this.getCurrentStreetBlock().getExits()[randomNumber]);
   }
 
   public int getCurrentX() {
