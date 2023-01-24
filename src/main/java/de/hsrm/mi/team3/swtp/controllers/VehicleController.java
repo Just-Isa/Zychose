@@ -3,8 +3,8 @@ package de.hsrm.mi.team3.swtp.controllers;
 import de.hsrm.mi.team3.swtp.domain.Vehicle;
 import de.hsrm.mi.team3.swtp.domain.VehicleCommands;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackenVehicleCommandMessage;
-import de.hsrm.mi.team3.swtp.domain.messaging.BackendNewVehicleMessage;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
+import de.hsrm.mi.team3.swtp.domain.messaging.BackendVehiclePositionMessage;
 import de.hsrm.mi.team3.swtp.services.BackendInfoService;
 import de.hsrm.mi.team3.swtp.services.RoomBoxService;
 import de.hsrm.mi.team3.swtp.services.RoomService;
@@ -76,14 +76,22 @@ public class VehicleController {
   /** */
   @MessageMapping("topic/createVehicle")
   public void createVehicle(
-      @Payload BackendNewVehicleMessage newVehicleMessage, @DestinationVariable int roomNumber) {
+      @Payload BackendVehiclePositionMessage newVehicleMessage,
+      @DestinationVariable int roomNumber) {
     Vehicle vehicle =
         roomService.getUserByID(roomNumber, newVehicleMessage.userSessionId()).getVehicle();
     if (vehicle == null) {
+      double[] vector = new double[] {newVehicleMessage.posX(), 0, newVehicleMessage.posZ()};
       roomService
           .getUserByID(roomNumber, newVehicleMessage.userSessionId())
-          .setVehicle(new Vehicle());
+          .setVehicle(new Vehicle(newVehicleMessage.vehicleType(), vector));
       vehicle = roomService.getUserByID(roomNumber, newVehicleMessage.userSessionId()).getVehicle();
+      System.out.println("We got the Information and we'll create the new Vehicle at: " + vector);
     }
+    bInfoService.sendVehicle(
+        "vehicle/" + roomNumber,
+        newVehicleMessage.userSessionId(),
+        BackendOperation.CREATE,
+        vehicle);
   }
 }

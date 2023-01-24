@@ -24,8 +24,6 @@ export function use3DVehicle() {
   return {
     vehicleState: readonly(vehicleState),
     receiveVehicle,
-    getNewVehicleData,
-    createNewVehicle,
   };
 }
 
@@ -74,40 +72,4 @@ function handleMessage(jsonObject: IVehicleMessage) {
       )
     );
   }
-}
-/**
- * All Data needed to create a new vehicle is collected here.
- * @param posX
- * @param posY
- * @param vehicleType
- */
-function getNewVehicleData(posX: number, posY: number, vehicleType: string) {
-  console.log(
-    "Info: X is " + posX + " and Z is " + posY + " for " + vehicleType
-  );
-  //const sessionID = user.getSessionIDFromCookie();
-}
-/**
- * Connection to Backend
- */
-function createNewVehicle() {
-  const DEST =
-    "topic/createVehicle/" +
-    (location.pathname.split("/")[1] as unknown as number);
-  if (!stompClient.connected) {
-    stompClient.activate();
-  }
-  stompClient.onWebSocketError = (event) => {
-    logger.error("WS-error", JSON.stringify(event)); /* WS-Error */
-    location.href = "/500";
-  };
-  stompClient.onStompError = (frame) => {
-    logger.error("STOMP-error", JSON.stringify(frame)); /* STOMP-Error */
-    location.href = "/500";
-  };
-  stompClient.onConnect = () => {
-    stompClient.subscribe(DEST, (message) => {
-      handleMessage(JSON.parse(message.body));
-    });
-  };
 }

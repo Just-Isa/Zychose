@@ -45,7 +45,7 @@ import { computed, onMounted } from "vue";
 import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
 import { logger } from "@/helpers/Logger";
-import { use3DVehicle } from "@/services/use3DVehicle";
+import { use3DVehiclePosition } from "@/services/use3DVehiclePosition";
 //import { Mouse } from "@/services/IMouse";
 
 /**
@@ -153,7 +153,7 @@ const {
 } = useStreets();
 const { currentVehicle } = useVehicle();
 const streetTypes = swtpConfigJSON.streetTypes;
-const { getNewVehicleData } = use3DVehicle();
+const { createVehiclePositionAndSend } = use3DVehiclePosition();
 const config = swtpConfigJSON;
 
 //TODO
@@ -212,11 +212,9 @@ function changeTo3DView(posX: number, posY: number, vehicleType: string) {
   //TODO manchmal wechselt der router die seite nicht!
   //--> außerdem wird ein *[Violation]'requestAnimationFrame' handler took XYZms* Hinweis geworfen
   //--> die Performance der 3D-View ist also nicht so toll!
-  console.log("Positionen: " + posX + posY);
-  console.log("VehicleType: " + vehicleType);
   posX = (posX - 1 - config.gridSize / 2) * config.blocksize;
   posY = (posY - 1 - config.gridSize / 2) * config.blocksize;
-  getNewVehicleData(posX, posY, vehicleType);
+  createVehiclePositionAndSend(posX, posY, vehicleType);
   setTimeout(function () {
     router.push((location.pathname.split("/")[1] as unknown as number) + "/3d");
   }, 800);
