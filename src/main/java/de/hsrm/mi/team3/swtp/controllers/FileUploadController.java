@@ -52,11 +52,7 @@ public class FileUploadController {
             room.getRoomMap()));
 
     // TODO testing puposes
-    /*
-     * try (PythonInterpreter pyInt = new PythonInterpreter()) {
-     * pyInt.exec(room.getJythonScript());
-     * }
-     */
+    roomService.executeJython(room);
   }
 
   @GetMapping("/api/upload/{roomNumber}")

@@ -7,8 +7,12 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class VehicleBot {
+
+  Logger logger = LoggerFactory.getLogger(VehicleBot.class);
 
   private VehicleBehaviour behaviour = VehicleBehaviour.DEFENSIVE;
   private int[] currentPos;
@@ -32,7 +36,7 @@ public class VehicleBot {
     // choose random Model from VehicleType Enum
     int randomNumber = randomGenerator.nextInt(VehicleType.values().length);
     this.vehicleType = VehicleType.values()[randomNumber];
-    setCurrentStreetBlock();
+    // setCurrentStreetBlock();
   }
 
   public void moveToNextBlock() {
@@ -64,24 +68,27 @@ public class VehicleBot {
     turn(this.getCurrentStreetBlock().getExits()[randomNumber]);
   }
 
-  private void followScript() {
-    switch (this.scriptRoute.peek()) {
-      case 's':
-        moveToNextBlock();
-        break;
-
-      case 'l':
-        turn(this.currentRotation < 90 ? 270 : this.currentRotation - 90);
-        break;
-
-      case 'r':
-        turn(this.currentRotation > 270 ? 0 : this.currentRotation + 90);
-        break;
-
-      default:
-        this.fixRoute = false;
-    }
-    this.scriptRoute.pop();
+  public void followScript() {
+    logger.info("auto bewegt vielleicht");
+    /*
+     * switch (this.scriptRoute.peek()) {
+     * case 's':
+     * moveToNextBlock();
+     * break;
+     *
+     * case 'l':
+     * turn(this.currentRotation < 90 ? 270 : this.currentRotation - 90);
+     * break;
+     *
+     * case 'r':
+     * turn(this.currentRotation > 270 ? 0 : this.currentRotation + 90);
+     * break;
+     *
+     * default:
+     * this.fixRoute = false;
+     * }
+     * this.scriptRoute.pop();
+     */
   }
 
   public void drive() {

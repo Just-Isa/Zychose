@@ -104,8 +104,6 @@ public class Room {
 
   public void setJythonScript(String jythonScript) {
     this.jythonScript = jythonScript;
-    // TODO executeJython muss hier noch raus
-    this.executeJython();
   }
 
   public void setRoomMap(String map) {

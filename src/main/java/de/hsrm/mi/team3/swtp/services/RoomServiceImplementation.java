@@ -3,7 +3,6 @@ package de.hsrm.mi.team3.swtp.services;
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.List;
 import java.util.Optional;
 import org.python.core.PyException;
@@ -82,19 +81,14 @@ public class RoomServiceImplementation implements RoomService {
     return user.get();
   }
 
-  /*
+  /**
    * Updates Room with new Variables
    *
    * @param room Room that is to be updated
-   *
    * @param jythonScript new jythonScript for room
-   *
    * @param roomMap new roomMap for room
-   *
    * @param roomName new roomName for room
-   *
    * @param roomNumber new roomNumber for room
-   *
    * @param userList new userList for room
    */
   public void updateRoom(
@@ -111,12 +105,16 @@ public class RoomServiceImplementation implements RoomService {
     room.setUserList(userList);
   }
 
+  /**
+   * executes python script connected to the room PythonInterpreter Output is set to console
+   *
+   * @param room
+   */
   @Override
   public void executeJython(Room room) {
     try (PythonInterpreter pyInterp = new PythonInterpreter()) {
-      StringWriter output = new StringWriter();
       if (!room.getJythonScript().isBlank()) {
-        pyInterp.setOut(output);
+        pyInterp.setOut(System.out);
         // macht den Raum im python-Skript abrufbar unter dem Variablennamen
         // "room"
         pyInterp.set("room", room);
@@ -124,7 +122,7 @@ public class RoomServiceImplementation implements RoomService {
       } else {
         logger.error("leeres Skript");
       }
-      logger.info("jython Output: " + output.toString());
+      // logger.info("jython Output: " + output.toString());
     } catch (PyException e) {
       logger.error("ERROR jythonScript", e);
     }
