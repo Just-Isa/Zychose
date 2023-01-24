@@ -3,6 +3,7 @@ package de.hsrm.mi.team3.swtp.domain;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.python.core.PyException;
 import org.python.util.PythonInterpreter;
 import org.slf4j.Logger;
@@ -113,11 +114,11 @@ public class Room {
     this.roomMap = map;
   }
 
-  public Roadmap getRoomMap() {
+  public Roadmap getRoadMap() {
     return this.roadMap;
   }
 
-  public String getRoomMapString() {
+  public String getRoomMap() {
     return this.roomMap;
   }
 
@@ -127,5 +128,13 @@ public class Room {
 
   public void setVehicleBots(List<VehicleBot> vehicleBots) {
     this.vehicleBots = vehicleBots;
+  }
+
+  public StreetBlock getStreetBlock(int x, int y) {
+    return this.roadMap.getStreetBlock(x, y);
+  }
+
+  public Map<VehicleNeighbour, StreetBlock> getNeighbours(int x, int y, int rotation) {
+    return this.roadMap.getNeighbours(x, y, rotation);
   }
 }

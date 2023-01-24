@@ -36,14 +36,10 @@ public class FileUploadController {
   @PostMapping("/api/upload/{roomNumber}")
   public void uploadJythonFile(
       @RequestParam("file") MultipartFile file, @PathVariable("roomNumber") int roomNumber) {
-    logger.info("FILE RECEIVED: " + file.getOriginalFilename() + " | " + file.getSize());
 
     Room room = this.roomBoxService.getSpecificRoom(roomNumber);
 
     this.roomService.saveScriptToRoom(file, room);
-
-    logger.info("ROOM: {}", room.getJythonScript());
-    logger.info("UPLOAD ROOMNUMBER: " + roomNumber);
 
     backservice.sendRoom(
         "room/" + roomNumber,
@@ -53,7 +49,7 @@ public class FileUploadController {
             room.getRoomNumber(),
             room.getUserList(),
             new String(room.getJythonScript().getBytes()),
-            room.getRoomMapString()));
+            room.getRoomMap()));
 
     // TODO testing puposes
     /*
