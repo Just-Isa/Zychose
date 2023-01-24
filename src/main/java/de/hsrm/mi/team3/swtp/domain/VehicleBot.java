@@ -27,7 +27,7 @@ public class VehicleBot {
   public VehicleBot(Room room) {
     this.room = room;
     this.route = new ArrayList<>();
-    this.currentPos = new int[] { 0, 0 };
+    this.currentPos = new int[] {0, 0};
     this.currentRotation = 0;
     // choose random Model from VehicleType Enum
     int randomNumber = randomGenerator.nextInt(VehicleType.values().length);
@@ -142,9 +142,10 @@ public class VehicleBot {
   }
 
   public void refreshNeighbours() {
-    this.neighbours = this.room
-        .getRoadMap()
-        .getNeighbours(this.currentPos[0], this.currentPos[1], this.currentRotation);
+    this.neighbours =
+        this.room
+            .getRoadMap()
+            .getNeighbours(this.currentPos[0], this.currentPos[1], this.currentRotation);
   }
 
   @Override
@@ -163,7 +164,8 @@ public class VehicleBot {
   }
 
   public void setCurrentStreetBlock() {
-    this.currentStreetBlock = this.room.getStreetBlock(this.currentPos[0] - 1, this.currentPos[1] - 1);
+    this.currentStreetBlock =
+        this.room.getStreetBlock(this.currentPos[0] - 1, this.currentPos[1] - 1);
   }
 
   public StreetBlock getCurrentStreetBlock() {
@@ -173,5 +175,4 @@ public class VehicleBot {
   public boolean hasFixRoute() {
     return this.fixRoute;
   }
-
 }
