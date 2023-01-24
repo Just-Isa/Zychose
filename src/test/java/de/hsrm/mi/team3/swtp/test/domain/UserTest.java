@@ -20,12 +20,12 @@ class UserTest {
   private final String SESSIONID = "session-id-test-1";
   private final int USERROOMNUMBER = 1;
   private final String USERNAME = "User-One";
-  private final Date USERLOGINTIME = new Date();
+  private final long USERLOGINTIME = new Date().getTime();
 
   private final String SESSIONIDTWO = "session-id-test-2";
   private final int USERROOMNUMBERTWO = 1;
   private final String USERNAMETWO = "User-Twoe";
-  private final Date USERLOGINTIMETWO = new Date();
+  private final long USERLOGINTIMETWO = new Date().getTime();
 
   User userOne = null;
   User userTwo = null;
@@ -62,12 +62,12 @@ class UserTest {
         .contains(SESSIONID)
         .contains(USERNAME)
         .contains(Integer.toString(USERROOMNUMBER))
-        .contains(USERLOGINTIME.toString());
+        .contains(Long.toString(USERLOGINTIME));
 
     assertThat(toStrTwo)
         .contains(SESSIONIDTWO)
         .contains(USERNAMETWO)
         .contains(Integer.toString(USERROOMNUMBERTWO))
-        .contains(USERLOGINTIMETWO.toString());
+        .contains(Long.toString(USERLOGINTIMETWO));
   }
 }

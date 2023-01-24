@@ -2,28 +2,24 @@ export interface IUser {
   sessionID: string;
   currentRoomNumber: number;
   userName: string;
-  loginTime: Date;
-  minutesPlayed: number;
+  loginTime: number;
 }
 
 export class User implements IUser {
   sessionID: string;
   currentRoomNumber: number;
   userName: string;
-  loginTime: Date;
-  minutesPlayed: number;
+  loginTime: number;
 
   constructor(
     sessionID: string,
     currentRoomNumber: number,
     userName: string,
-    loginTime: Date,
-    minutesPlayed: number
+    loginTime: number
   ) {
     this.userName = userName;
     this.sessionID = sessionID;
     this.currentRoomNumber = currentRoomNumber;
     this.loginTime = loginTime;
-    this.minutesPlayed = minutesPlayed;
   }
 }

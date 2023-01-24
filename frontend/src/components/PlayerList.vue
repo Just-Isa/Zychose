@@ -15,12 +15,7 @@
           {{ user.userName }}
         </td>
         <td class="w-32 text-right">
-          <span v-if="calculateHours(user.minutesPlayed) != 0">
-            {{ calculateHours(user.minutesPlayed) }}h
-          </span>
-          <span v-if="calculateMinutes(user.minutesPlayed) != 0"
-            >{{ calculateMinutes(user.minutesPlayed) }}min
-          </span>
+          {{ getPlayedTimeString(user.loginTime) }}
         </td>
       </tr>
     </div>
@@ -30,8 +25,6 @@
 <script setup lang="ts">
 import { useRoom } from "@/services/useRoom";
 const { roomState } = useRoom();
-
-console.log("USER", roomState);
 
 /**
  * Change visibility of player list (visible or hidden)
@@ -48,22 +41,15 @@ function changeVisibilty() {
 }
 
 /**
- * Calculate the played hours
+ * Calculate the played time
  *
- * @param {number} minutesPlayed total minutes played
- * @returns {number} full hours played
+ * @param {number} loginTime time when player logged in
+ * @returns {string} played time
  */
-function calculateHours(minutesPlayed: number) {
-  return Math.abs(Math.round(minutesPlayed / 60));
-}
-
-/**
- * Calculate the played minutes
- *
- * @param {number} minutesPlayed total minutes played
- * @returns {number} minutes played (without hours)
- */
-function calculateMinutes(minutesPlayed: number) {
-  return Math.abs(Math.round(minutesPlayed % 60));
+function getPlayedTimeString(loginTime: number): string {
+  const playedTime = new Date(Math.abs(new Date().getTime() - loginTime));
+  console.log("PLAYEDTIME", playedTime);
+  // Hours -1 because timezone of central europe is +1
+  return `${playedTime.getHours() - 1}h ${playedTime.getMinutes()}min`;
 }
 </script>

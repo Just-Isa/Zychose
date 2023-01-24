@@ -34,7 +34,7 @@ class RoomRestControllerTest {
   static final String USER_SESSION_ID = "sid";
   static final String NONEXISTENT_SESSION_ID = "nonexistentsid";
   static final String USER_NAME = "username";
-  static final Date LOGIN_TIME = new Date();
+  static final long LOGIN_TIME = new Date().getTime();
 
   @Autowired private MockMvc mockMvc;
 
@@ -92,7 +92,7 @@ class RoomRestControllerTest {
   @DisplayName(
       "RoomRestController: /room/map/{number} returns rooms map, or [] in case of empty map")
   void restRouteChangeRoomOfUser() throws Exception {
-    User user = new User(USER_SESSION_ID, 0, USER_NAME, LOGIN_TIME, 0);
+    User user = new User(USER_SESSION_ID, 0, USER_NAME, LOGIN_TIME);
 
     roomService.addNewUserToRoom(roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER), user);
     assertThat(roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER).getUserList())
@@ -130,7 +130,7 @@ class RoomRestControllerTest {
   @Test
   @DisplayName("RoomRestController: Logout User from a specific room")
   void restRouteLogoutUserFromRoom() throws Exception {
-    User user = new User(USER_SESSION_ID, 0, USER_NAME, LOGIN_TIME, 0);
+    User user = new User(USER_SESSION_ID, 0, USER_NAME, LOGIN_TIME);
     roomService.addNewUserToRoom(roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER), user);
     assertThat(roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER).getUserList())
         .containsExactlyElementsOf(List.of(user));
