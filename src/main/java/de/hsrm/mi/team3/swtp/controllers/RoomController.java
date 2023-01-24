@@ -81,8 +81,6 @@ public class RoomController {
         logger.info("RoomBox: {}", roomBoxService.getRoomsFromRoomBox());
       }
     }
-    // TODO testing purposes
-    // roomService.executeJython(roomBoxService.getSpecificRoom(1));
 
     if (user.getUserName() == null) {
       user.setUserName("Raus aus meinem Kopf");

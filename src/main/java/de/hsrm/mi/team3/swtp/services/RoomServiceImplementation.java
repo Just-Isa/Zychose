@@ -106,7 +106,7 @@ public class RoomServiceImplementation implements RoomService {
   }
 
   /**
-   * executes python script connected to the room PythonInterpreter Output is set to console
+   * executes python script connected to the room. PythonInterpreter Output is set to console.
    *
    * @param room
    */

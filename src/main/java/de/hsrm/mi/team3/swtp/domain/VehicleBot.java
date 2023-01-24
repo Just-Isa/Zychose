@@ -1,15 +1,17 @@
 package de.hsrm.mi.team3.swtp.domain;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * VehicleBot class is used for vehicles that can't be controlled by the User. This class only has
+ * one constructor. VehicleBot is meant to be called by a jython-File.
+ */
 public class VehicleBot {
 
   Logger logger = LoggerFactory.getLogger(VehicleBot.class);
@@ -19,12 +21,9 @@ public class VehicleBot {
   private int currentRotation;
   private Map<VehicleNeighbour, StreetBlock> neighbours;
   private Room room = null;
-
   private StreetBlock currentStreetBlock;
   private VehicleType vehicleType;
   private boolean fixRoute;
-  // TODO passt python liste auch in deque??
-  private Deque<Character> scriptRoute = new ArrayDeque<>();
   private List<Character> route;
   private Random randomGenerator = new Random();
 
@@ -34,8 +33,7 @@ public class VehicleBot {
     this.currentPos = new int[] {0, 0};
     this.currentRotation = 0;
     // choose random Model from VehicleType Enum
-    int randomNumber = randomGenerator.nextInt(VehicleType.values().length);
-    this.vehicleType = VehicleType.values()[randomNumber];
+    this.vehicleType = VehicleType.values()[randomGenerator.nextInt(VehicleType.values().length)];
     // setCurrentStreetBlock();
   }
 
