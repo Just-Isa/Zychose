@@ -14,30 +14,10 @@ public class VehicleBot {
   private Room room = null;
   private List<Character> route;
 
-  /*
-   * TODO EINEN geeigneten Konstruktor überlegen
-   *
-   * public VehicleBot(int[] positon, int rotation, VehicleBehaviour behaviour,
-   * Room room) {
-   * this.currentPos = positon;
-   * this.currentRotation = rotation;
-   * this.behaviour = behaviour;
-   * this.room = room;
-   * }
-   */
-
-  /*
-   * public VehicleBot(int[] positon, int rotation, Room room) {
-   * this.currentPos = positon;
-   * this.currentRotation = rotation;
-   * this.room = room;
-   * }
-   */
-
   public VehicleBot(Room room) {
     this.room = room;
     this.route = new ArrayList<>();
-    this.currentPos = new int[] {0, 0};
+    this.currentPos = new int[] { 0, 0 };
     this.currentRotation = 0;
   }
 
@@ -95,10 +75,9 @@ public class VehicleBot {
   }
 
   public void refreshNeighbours() {
-    this.neighbours =
-        this.room
-            .getRoomMap()
-            .getNeighbours(this.currentPos[0], this.currentPos[1], this.currentRotation);
+    this.neighbours = this.room
+        .getRoomMap()
+        .getNeighbours(this.currentPos[0], this.currentPos[1], this.currentRotation);
   }
 
   @Override
