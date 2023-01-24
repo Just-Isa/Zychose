@@ -33,9 +33,34 @@ onMounted(() => {
       Math.abs(new Date().getTime() - prop.userLoginTime)
     );
     // Hours -1 because timezone of central europe is +1
-    playedHoursString.value = `${playedTime.getHours() - 1}h`;
-    playedMinutesString.value = `${playedTime.getMinutes()}min`;
-    playedSecondsString.value = `${playedTime.getSeconds()}s`;
+    playedHoursString.value = createTimeString(
+      playedTime.getHours() - 1,
+      "h",
+      false
+    );
+    playedMinutesString.value = createTimeString(
+      playedTime.getMinutes(),
+      "min",
+      true
+    );
+    playedSecondsString.value = createTimeString(
+      playedTime.getSeconds(),
+      "s",
+      true
+    );
   }, 1000);
 });
+
+/**
+ * create string for played time
+ *
+ * @param {number} value value of time
+ * @param {string} label kind of time
+ * @param {boolean} leadingNull should there be a leading 0 at small numbers?
+ * @returns {string} played time string
+ */
+function createTimeString(value: number, label: string, leadingNull: boolean) {
+  const leadingNullString = leadingNull && value < 10 ? "0" : "";
+  return `${leadingNullString}${value}${label}`;
+}
 </script>
