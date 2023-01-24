@@ -1,17 +1,22 @@
 import { logger } from "@/helpers/Logger";
 import { Client } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
-import { Vehicle, type IVehicle } from "../model/IVehicle";
+import {
+  Vehicle,
+  type IVehicle,
+  type IVehicleMessage,
+} from "../model/IVehicle";
 const webSocketUrl = `ws://${window.location.host}/stompbroker`;
 const stompClient = new Client({ brokerURL: webSocketUrl });
+import { MessageOperator } from "../model/MessageOperators";
 
 export interface IVehicleState {
-  vehicle: IVehicle;
+  vehicles: Map<string, IVehicle>;
   errorMessage: string;
 }
 
 const vehicleState = reactive<IVehicleState>({
-  vehicle: new Vehicle(0, 0, 0, 0, 0, 0, 0),
+  vehicles: new Map<string, IVehicle>(),
   errorMessage: "",
 });
 
@@ -37,7 +42,30 @@ function receiveVehicle() {
   };
   stompClient.onConnect = () => {
     stompClient.subscribe(DEST, (message) => {
-      vehicleState.vehicle = JSON.parse(message.body);
+      handleMessage(JSON.parse(message.body));
     });
   };
+}
+function handleMessage(jsonObject: IVehicleMessage) {
+  if (jsonObject.operator === MessageOperator.DELETE) {
+    vehicleState.vehicles.delete(jsonObject.userSessionId);
+  }
+  if (
+    jsonObject.operator === MessageOperator.CREATE ||
+    jsonObject.operator === MessageOperator.UPDATE
+  ) {
+    vehicleState.vehicles.set(
+      jsonObject.userSessionId,
+      new Vehicle(
+        jsonObject.vehicleType,
+        jsonObject.postitionX,
+        jsonObject.postitionY,
+        jsonObject.postitionZ,
+        jsonObject.rotationX,
+        jsonObject.rotationY,
+        jsonObject.rotationZ,
+        jsonObject.speed
+      )
+    );
+  }
 }

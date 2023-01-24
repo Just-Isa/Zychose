@@ -18,8 +18,8 @@ export function gridToJson(streets: IStreetInformation[]) {
  * @param {string} roomMapAsString - stringified JSON-Object of our streets
  */
 export function jsonToState(roomMapAsString: string) {
-  const { recieveNewStreetState } = useStreets();
+  const { receiveNewStreetState } = useStreets();
   const newState = JSON.parse(roomMapAsString);
-  recieveNewStreetState(newState);
+  receiveNewStreetState(newState);
 }
 /* eslint-enable */

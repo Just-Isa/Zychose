@@ -76,7 +76,6 @@ setInterval(function () {
       location.pathname.split("/")[1] as unknown as number
     );
   }
-  //mouseMap.set(mouseState.mouse.sessionID, [x.value, y.value]);
   if (
     mouseState.mouse.sessionID != "" &&
     mouseState.mouse.sessionID != null &&
@@ -87,5 +86,6 @@ setInterval(function () {
       mouseState.mouse.y,
     ];
   }
-}, 15);
+  // 100 milliseconds set as to not overload the stompbroker
+}, 100);
 </script>

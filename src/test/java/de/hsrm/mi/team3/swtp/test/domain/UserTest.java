@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.annotation.Testable;
 
 @Testable
-class DomainTest {
+class UserTest {
   private final String ROOMNAME = "RoomName";
   private final int ROOMNUMBER = 1;
 
