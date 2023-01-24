@@ -1,5 +1,3 @@
-import type { MessageOperator } from "./MessageOperators";
-
 export interface IVehiclePositionMessage {
   userSessionId: string;
   vehicleType: string;
