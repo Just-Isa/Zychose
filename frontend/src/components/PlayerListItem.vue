@@ -12,7 +12,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 
-let playedTimeString = ref("");
 let playedHoursString = ref("");
 let playedMinutesString = ref("");
 let playedSecondsString = ref("");
