@@ -147,7 +147,7 @@
     {
       "name": "bicycle",
       "iconPath": "/assets/img/bicycle.png",
-      "glbPath": "",
+      "glbPath": "/assets/models/bike.glb",
       "params":{
         "maxSpeed": 0.2,
         "acceleration": 0.1,
