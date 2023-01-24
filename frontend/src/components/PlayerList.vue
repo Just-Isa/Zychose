@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white fixed w-60 mt-5 ml-20 z-50">
+  <div class="text-white fixed w-72 mt-5 ml-20 z-50">
     <div
       class="bg-back-folder-gray rounded-full cursor-pointer px-8 py-2 mb-3 shadow-lg text-center"
       @click="changeVisibilty()"
@@ -11,42 +11,28 @@
       class="bg-back-folder-gray rounded shadow-lg p-3"
       :class="showPlayerList ? '' : 'hidden'"
     >
-      <tr v-for="user in roomState.room.userList" v-bind:key="user.sessionID">
-        <td class="w-24 truncate block">
-          {{ user.userName }}
-        </td>
-        <td class="w-32 text-right">
-          {{ getPlayedTimeString(user.loginTime) }}
-        </td>
-      </tr>
+      <span v-for="user in roomState.room.userList" v-bind:key="user.sessionID">
+        <PlayerListItem
+          :userName="user.userName"
+          :userLoginTime="user.loginTime"
+        />
+      </span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useRoom } from "@/services/useRoom";
+import PlayerListItem from "@/components/PlayerListItem.vue";
 import { ref } from "vue";
 const { roomState } = useRoom();
 
-const showPlayerList = ref(false);
+let showPlayerList = ref(false);
 
 /**
  * Change visibility of player list (visible or hidden)
  */
 function changeVisibilty() {
   showPlayerList.value = !showPlayerList.value;
-}
-
-/**
- * Calculate the played time
- *
- * @param {number} loginTime time when player logged in
- * @returns {string} played time
- */
-function getPlayedTimeString(loginTime: number): string {
-  const playedTime = new Date(Math.abs(new Date().getTime() - loginTime));
-  console.log("PLAYEDTIME", playedTime);
-  // Hours -1 because timezone of central europe is +1
-  return `${playedTime.getHours() - 1}h ${playedTime.getMinutes()}min`;
 }
 </script>
