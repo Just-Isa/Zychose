@@ -8,7 +8,8 @@
     </div>
     <div
       id="playerlist"
-      class="bg-back-folder-gray rounded shadow-lg p-3 hidden"
+      class="bg-back-folder-gray rounded shadow-lg p-3"
+      :class="showPlayerList ? '' : 'hidden'"
     >
       <tr v-for="user in roomState.room.userList" v-bind:key="user.sessionID">
         <td class="w-24 truncate block">
@@ -24,20 +25,16 @@
 
 <script setup lang="ts">
 import { useRoom } from "@/services/useRoom";
+import { ref } from "vue";
 const { roomState } = useRoom();
+
+const showPlayerList = ref(false);
 
 /**
  * Change visibility of player list (visible or hidden)
  */
 function changeVisibilty() {
-  const playerlist = document.getElementById("playerlist");
-  if (playerlist != null) {
-    if (playerlist.classList.contains("hidden")) {
-      playerlist.classList.remove("hidden");
-    } else {
-      playerlist.classList.add("hidden");
-    }
-  }
+  showPlayerList.value = !showPlayerList.value;
 }
 
 /**
