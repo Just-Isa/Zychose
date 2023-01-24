@@ -35,7 +35,32 @@ public class VehicleBot {
     setCurrentStreetBlock();
   }
 
-  public void moveToNextBlock() {
+  /**
+   * Main-Movement Function of VehicleBot. Only this should be called in the Jython Script. Checks
+   * and reacts to current StreetBlock-Type
+   */
+  public void drive() {
+    String blockName = this.currentStreetBlock.getBlockType();
+    if (blockName.equals("road-t") || blockName.equals("road-cross")) {
+      if (hasFixRoute()) {
+        followScript();
+      } else {
+        turnRandom(this.currentStreetBlock.getExits());
+      }
+    } else if (blockName.equals("road-curve")) {
+      if (this.currentStreetBlock.getExits()[0] == this.currentRotation) {
+        turn(this.currentStreetBlock.getExits()[1]);
+      } else {
+        turn(this.currentStreetBlock.getExits()[0]);
+      }
+    } else {
+      moveToNextBlock();
+    }
+    this.room.updateVehicleBots(this, this.currentPos[0], this.currentPos[1]);
+  }
+
+  /** Moves VehicleBot to StreetBlock right in front of it Has to be called after rotation change */
+  private void moveToNextBlock() {
     refreshNeighbours();
     StreetBlock destination = this.neighbours.get(VehicleNeighbour.VEHICLETOP);
     if (destination == null || this.currentStreetBlock.getBlockType().equals("road-dead-end")) {
@@ -44,24 +69,30 @@ public class VehicleBot {
       this.currentPos[0] = destination.getBlockPosition()[1] + 1;
       this.currentPos[1] = destination.getBlockPosition()[0] + 1;
       this.currentStreetBlock = destination;
-      // TODO aktualisiere Pos in Vehicle Liste in Room
     }
   }
 
   /**
-   * @param rotation ist die Rotationsstufe, auf die sich das Fahrzeug drehen soll
+   * @param rotation direction to which VehicleBot should turn
    */
-  public void turn(int rotation) {
+  private void turn(int rotation) {
     this.setCurrentRotation(rotation);
     moveToNextBlock();
   }
 
+  /**
+   * @param exits Integer Array with directions of all valid exits of current StreetBlock
+   */
   private void turnRandom(int[] exits) {
     int randomNumber = randomGenerator.nextInt(exits.length - 1);
     // TODO verhindern dass auto 180 Grad dreht
     turn(this.getCurrentStreetBlock().getExits()[randomNumber]);
   }
 
+  /**
+   * Is called on T- or Crossraods if VehicleBot got a set route. Follows direction of top element
+   * on Deque(Stack)
+   */
   private void followScript() {
     switch (this.scriptRoute.peek()) {
       case 's':
@@ -80,24 +111,6 @@ public class VehicleBot {
         this.fixRoute = false;
     }
     this.scriptRoute.pop();
-  }
-
-  public void drive() {
-    String blockName = this.currentStreetBlock.getBlockType();
-    if (blockName.equals("road-t") || blockName.equals("road-cross")) {
-      if (hasFixRoute()) {
-        followScript();
-      } else {
-        turnRandom(this.currentStreetBlock.getExits());
-      }
-    } else if (blockName.equals("road-curve")) {
-      if (this.currentStreetBlock.getExits()[0] == this.currentRotation) {
-        turn(this.currentStreetBlock.getExits()[1]);
-      } else {
-        turn(this.currentStreetBlock.getExits()[0]);
-      }
-    }
-    this.room.updateVehicleBots(this, this.currentPos[0], this.currentPos[1]);
   }
 
   public List<Character> getRoute() {
