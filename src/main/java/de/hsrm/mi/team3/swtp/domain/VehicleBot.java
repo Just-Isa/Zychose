@@ -25,8 +25,8 @@ public class VehicleBot {
   private List<Character> route;
   private Random randomGenerator = new Random();
 
-  public VehicleBot(Room room, String id) {
-    this.id = "bot-" + id;
+  public VehicleBot(Room room) {
+    this.id = "bot-";
     this.room = room;
     this.route = new ArrayList<>();
     this.currentPos = new int[] {0, 0};
