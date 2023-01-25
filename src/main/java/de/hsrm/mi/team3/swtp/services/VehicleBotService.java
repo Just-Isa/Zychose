@@ -20,7 +20,7 @@ public interface VehicleBotService {
   public void setRoom(Room room);
 
   public void createSpecificBot(
-      int rotation, int[] position, VehicleType type, List<Character> route);
+      int rotation, int posX, int posY, VehicleType type, List<Character> route);
 
   public void createBot();
 

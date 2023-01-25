@@ -49,11 +49,11 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
    */
   @Override
   public void createSpecificBot(
-      int rotation, int[] position, VehicleType type, List<Character> route) {
+      int rotation, int posX, int posY, VehicleType type, List<Character> route) {
     VehicleBot bot = new VehicleBot(room);
 
     bot.setCurrentRotation(rotation);
-    bot.setCurrentPos(position);
+    bot.setCurrentPos(posX, posY);
     bot.setVehicleModel(type);
     bot.setRoute(route);
 
