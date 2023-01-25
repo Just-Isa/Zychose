@@ -128,6 +128,10 @@ public class Room {
     this.vehicleBots = vehicleBots;
   }
 
+  public void setVehicleBot(VehicleBot vehicleBot) {
+    this.vehicleBots.add(vehicleBot);
+  }
+
   public StreetBlock getStreetBlock(int x, int y) {
     return this.roadMap.getStreetBlock(x, y);
   }

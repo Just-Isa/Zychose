@@ -117,6 +117,7 @@ public class RoomServiceImplementation implements RoomService {
         pyInterp.setOut(System.out);
         // macht den Raum im python-Skript abrufbar unter dem Variablennamen
         // "room"
+        // pyInterp.set("context", ApplicationContext);
         pyInterp.set("room", room);
         pyInterp.exec(room.getJythonScript());
       } else {
