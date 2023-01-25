@@ -11,7 +11,7 @@ import java.util.Random;
 public class VehicleBot {
 
   private String id;
-  private VehicleBehaviour behaviour = VehicleBehaviour.DEFENSIVE;
+  private VehicleBehaviour behaviour;
   private int[] currentPos;
   private int currentRotation;
   private Map<VehicleNeighbour, StreetBlock> neighbours;
@@ -20,7 +20,6 @@ public class VehicleBot {
   private StreetBlock currentStreetBlock;
   private VehicleType vehicleType;
   private boolean fixRoute;
-  // TODO passt python liste auch in deque??
   private Deque<Character> scriptRoute = new ArrayDeque<>();
   private List<Character> route;
   private Random randomGenerator = new Random();
@@ -61,7 +60,9 @@ public class VehicleBot {
     this.room.updateVehicleBots(this, this.currentPos[0], this.currentPos[1]);
   }
 
-  /** Moves VehicleBot to StreetBlock right in front of it Has to be called after rotation change */
+  /**
+   * Moves VehicleBot to StreetBlock right in front of it. Has to be called after rotation change
+   */
   public void moveToNextBlock() {
     refreshNeighbours();
     StreetBlock destination = this.neighbours.get(VehicleNeighbour.VEHICLETOP);
@@ -72,11 +73,12 @@ public class VehicleBot {
       this.currentPos[1] = destination.getBlockPosition()[0] + 1;
       this.currentStreetBlock = destination;
     } else {
-      int rot = this.room.getVehicleBotRotation(this.getCurrentPos()[0], this.getCurrentPos()[1]);
-      if (rot == -1) {
+      int rotation =
+          this.room.getVehicleBotRotation(this.getCurrentPos()[0], this.getCurrentPos()[1]);
+      if (rotation == -1) {
         destination.isBlocked(false);
         moveToNextBlock();
-      } else if (rot != this.currentRotation) {
+      } else if (rotation != this.currentRotation) {
         moveToNextBlock();
       }
     }
@@ -95,16 +97,21 @@ public class VehicleBot {
    */
   private void turnRandom(int[] exits) {
     int randomNumber = randomGenerator.nextInt(exits.length - 1);
-    // TODO verhindern dass auto 180 Grad dreht
+    int ownExit =
+        this.currentRotation > 90 ? this.currentRotation - 180 : this.currentRotation + 180;
+    while (randomNumber == ownExit) {
+      randomNumber = randomGenerator.nextInt(exits.length - 1);
+    }
     turn(this.getCurrentStreetBlock().getExits()[randomNumber]);
   }
 
   /**
-   * Is called on T- or Crossraods if VehicleBot got a set route. Follows direction of top element
-   * on Deque(Stack)
+   * Is called on T- or Crossraods if VehicleBot got a set route. Follows direction of first list
+   * element
    */
   public void followScript() {
-    switch (this.scriptRoute.peek()) {
+    char direction = this.route.get(0);
+    switch (direction) {
       case 's':
         moveToNextBlock();
         break;
@@ -120,7 +127,7 @@ public class VehicleBot {
       default:
         this.fixRoute = false;
     }
-    this.scriptRoute.pop();
+    this.route.remove(0);
   }
 
   public List<Character> getRoute() {
@@ -169,13 +176,6 @@ public class VehicleBot {
     this.neighbours =
         this.room.getNeighbours(
             this.currentPos[0] - 1, this.currentPos[1] - 1, this.currentRotation);
-  }
-
-  public void setFixRoute(char[] route) {
-    this.fixRoute = true;
-    for (int i = 0; i < route.length; i++) {
-      this.scriptRoute.push(route[i]);
-    }
   }
 
   public void removeFixRoute() {
