@@ -41,11 +41,13 @@
 <script setup lang="ts">
 import { useStreets, type IStreetInformation } from "../services/useStreets";
 import swtpConfigJSON from "../../../swtp.config.json";
-import { computed, onMounted } from "vue";
+import { computed, onMounted, watch } from "vue";
 import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
 import { logger } from "@/helpers/Logger";
 import { useStreetBlock } from "@/services/useStreetBlock";
+import { useRoom } from "@/services/useRoom";
+import { jsonToState } from "@/services/JSONparser";
 
 /**
  * @param {number} gridSize defines the size of the grid component
@@ -149,6 +151,12 @@ const { updateStreetState, placedStreet, streetsState, initializeStreetState } =
 const { currentVehicle } = useVehicle();
 const { activeBlock } = useStreetBlock();
 const streetTypes = swtpConfigJSON.streetTypes;
+const { roomState } = useRoom();
+
+watch(roomState, () => {
+  jsonToState(roomState.room.roomMap);
+  stateToGrid();
+});
 
 /**
  * cellClicked handles the click event for cells.
