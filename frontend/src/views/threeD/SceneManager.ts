@@ -25,7 +25,10 @@ export class SceneManager {
   data: StreetBlock[];
   private renderer: THREE.Renderer;
   private vehicles: Map<string, THREE.Group> = new Map<string, THREE.Group>(); // list of all Object u should update every frame.
-  private botVehicles: Map<string,THREE.Group> = new Map<string, THREE.Group>();
+  private botVehicles: Map<string, THREE.Group> = new Map<
+    string,
+    THREE.Group
+  >();
   private vehicleCamera: VehicleCameraContext =
     camState.vehicleCam as VehicleCameraContext;
 
@@ -187,7 +190,10 @@ export class SceneManager {
    */
   handleRender() {
     const animate = () => {
-      this.updateVehicleMap(vehicleState.vehicles as Map<string, IVehicle>, this.vehicles);
+      this.updateVehicleMap(
+        vehicleState.vehicles as Map<string, IVehicle>,
+        this.vehicles
+      );
       for (const [key, val] of this.vehicles) {
         this.updateVehicle(
           val,
@@ -195,7 +201,10 @@ export class SceneManager {
           key
         );
       }
-      this.updateVehicleMap(vehicleState.botVehicle as Map<string, IVehicle>, this.botVehicles);
+      this.updateVehicleMap(
+        vehicleState.botVehicle as Map<string, IVehicle>,
+        this.botVehicles
+      );
       for (const [key, val] of this.botVehicles) {
         this.updateVehicle(
           val,
@@ -249,7 +258,10 @@ export class SceneManager {
   /**
    * checks if vehicles are added or removed and updates the map
    */
-  private updateVehicleMap(vehicleMap: Map<string, IVehicle>, threeDvehicles: Map<string,THREE.Group>) {
+  private updateVehicleMap(
+    vehicleMap: Map<string, IVehicle>,
+    threeDvehicles: Map<string, THREE.Group>
+  ) {
     for (const [key, val] of vehicleMap) {
       logger.log("Vehicle von " + key + " wurde hinzugefügt");
       if (!threeDvehicles.has(key)) {

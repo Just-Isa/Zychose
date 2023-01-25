@@ -26,7 +26,6 @@ export function useVehicle() {
   return { vehicleState: readonly(vehicleState), receiveVehicle };
 }
 
-
 /**
  * Subscribes to the Vehicle-Topic and updates the vehicleState.
  */
@@ -59,8 +58,10 @@ function checkIfVehicleIsBot(vehicle: IVehicleMessage) {
   }
 }
 
-function handleMessage(vehiclemap: Map<string, IVehicle> ,jsonObject: IVehicleMessage) {
-  
+function handleMessage(
+  vehiclemap: Map<string, IVehicle>,
+  jsonObject: IVehicleMessage
+) {
   if (jsonObject.operator === MessageOperator.DELETE) {
     vehiclemap.delete(jsonObject.userSessionId);
   }
