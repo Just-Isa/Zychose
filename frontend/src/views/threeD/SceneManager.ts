@@ -202,7 +202,8 @@ export class SceneManager {
         this.updateVehicle(
           val,
           vehicleState.vehicles.get(key) as IVehicle,
-          key
+          key,
+          config.VehilceLerpSpeed
         );
       }
       this.updateVehicleMap(
@@ -213,7 +214,8 @@ export class SceneManager {
         this.updateVehicle(
           val,
           vehicleState.botVehicle.get(key) as IVehicle,
-          key
+          key,
+          config.VehilceLerpSpeed
         );
       }
       //every vehicle gets rendered
@@ -232,7 +234,8 @@ export class SceneManager {
   private updateVehicle(
     threeVehicle: THREE.Group,
     vehicle: IVehicle,
-    sessionID: string
+    sessionID: string,
+    lerpSpeed: number
   ) {
     const quaternion = new THREE.Quaternion();
     const destination = new THREE.Vector3(
@@ -249,8 +252,8 @@ export class SceneManager {
     );
 
     const newQuaterion = quaternion.setFromEuler(newRotation);
-    threeVehicle.quaternion.slerp(newQuaterion, config.VehilceLerpSpeed);
-    threeVehicle.position.lerp(destination, config.VehilceLerpSpeed);
+    threeVehicle.quaternion.slerp(newQuaterion, lerpSpeed);
+    threeVehicle.position.lerp(destination, lerpSpeed);
 
     if (sessionID === getSessionIDFromCookie()) {
       this.vehicleCamera.request(vehicle.speed, threeVehicle);

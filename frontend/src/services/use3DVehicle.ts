@@ -6,9 +6,10 @@ import {
   type IVehicle,
   type IVehicleMessage,
 } from "../model/IVehicle";
+import { MessageOperator } from "../model/MessageOperators";
+import config from "../../../swtp.config.json";
 const webSocketUrl = `ws://${window.location.host}/stompbroker`;
 const stompClient = new Client({ brokerURL: webSocketUrl });
-import { MessageOperator } from "../model/MessageOperators";
 
 export interface IVehicleState {
   vehicles: Map<string, IVehicle>;
@@ -51,7 +52,7 @@ function receiveVehicle() {
 }
 
 function checkIfVehicleIsBot(vehicle: IVehicleMessage) {
-  if (vehicle.vehicleType === "bot") {
+  if (vehicle.userSessionId.includes(config.botIdentifier)) {
     handleMessage(vehicleState.botVehicle, vehicle);
   } else {
     handleMessage(vehicleState.vehicles, vehicle);
