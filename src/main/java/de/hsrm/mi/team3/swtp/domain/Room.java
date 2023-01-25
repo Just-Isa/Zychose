@@ -145,4 +145,13 @@ public class Room {
   public Map<VehicleNeighbour, StreetBlock> getNeighbours(int x, int y, int rotation) {
     return this.roadMap.getNeighbours(x, y, rotation);
   }
+
+  public int getVehicleBotRotation(int x, int y) {
+    for (VehicleBot bot : this.vehicleBots) {
+      if (bot.getCurrentPos()[0] == x && bot.getCurrentPos()[1] == y) {
+        return bot.getCurrentRotation();
+      }
+    }
+    return -1;
+  }
 }

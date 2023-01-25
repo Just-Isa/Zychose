@@ -60,7 +60,7 @@ public class VehicleBot {
   }
 
   /** Moves VehicleBot to StreetBlock right in front of it Has to be called after rotation change */
-  private void moveToNextBlock() {
+  public void moveToNextBlock() {
     refreshNeighbours();
     StreetBlock destination = this.neighbours.get(VehicleNeighbour.VEHICLETOP);
     if (destination == null || this.currentStreetBlock.getBlockType().equals("road-dead-end")) {
@@ -69,6 +69,14 @@ public class VehicleBot {
       this.currentPos[0] = destination.getBlockPosition()[1] + 1;
       this.currentPos[1] = destination.getBlockPosition()[0] + 1;
       this.currentStreetBlock = destination;
+    } else {
+      int rot = this.room.getVehicleBotRotation(this.getCurrentPos()[0], this.getCurrentPos()[1]);
+      if (rot == -1) {
+        destination.isBlocked(false);
+        moveToNextBlock();
+      } else if (rot != this.currentRotation) {
+        moveToNextBlock();
+      }
     }
   }
 
@@ -128,6 +136,7 @@ public class VehicleBot {
   public void setCurrentPos(int x, int y) {
     this.currentPos[0] = x;
     this.currentPos[1] = y;
+    setCurrentStreetBlock();
   }
 
   public int getCurrentRotation() {
@@ -198,5 +207,10 @@ public class VehicleBot {
         + ", route="
         + route
         + "]";
+  }
+
+  public Map<VehicleNeighbour, StreetBlock> getNeighbours() {
+    refreshNeighbours();
+    return this.neighbours;
   }
 }
