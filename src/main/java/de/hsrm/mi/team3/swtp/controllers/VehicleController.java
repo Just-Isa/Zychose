@@ -20,13 +20,17 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class VehicleController {
   Logger logger = LoggerFactory.getLogger(VehicleController.class);
-  @Autowired VehicleService vehicleService;
+  @Autowired
+  VehicleService vehicleService;
 
-  @Autowired BackendInfoService bInfoService;
+  @Autowired
+  BackendInfoService bInfoService;
 
-  @Autowired RoomBoxService roomBoxService;
+  @Autowired
+  RoomBoxService roomBoxService;
 
-  @Autowired RoomService roomService;
+  @Autowired
+  RoomService roomService;
 
   /**
    * Receives a command from client to execute vehicleservice Methods
@@ -40,15 +44,13 @@ public class VehicleController {
       @DestinationVariable int roomNumber) {
 
     List<VehicleCommands> commands = commandVehicleMessage.commands();
-    Vehicle vehicle =
-        roomService.getUserByID(roomNumber, commandVehicleMessage.userSessionId()).getVehicle();
+    Vehicle vehicle = roomService.getUserByID(roomNumber, commandVehicleMessage.userSessionId()).getVehicle();
+
+    // if there is no vehicle -> skip
     if (vehicle == null) {
-      roomService
-          .getUserByID(roomNumber, commandVehicleMessage.userSessionId())
-          .setVehicle(new Vehicle());
-      vehicle =
-          roomService.getUserByID(roomNumber, commandVehicleMessage.userSessionId()).getVehicle();
+      return;
     }
+
     if (!commands.contains(VehicleCommands.FORWARD)
         && !commands.contains(VehicleCommands.BACKWARD)) {
       vehicleService.carRunOutSpeed(vehicle);

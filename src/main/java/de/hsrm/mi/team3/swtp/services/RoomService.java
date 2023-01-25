@@ -25,4 +25,6 @@ public interface RoomService {
       List<User> userList);
 
   public User getUserByID(int roomNumber, String sessionID);
+
+  public void deleteVehicleFromUser(int roomNumber, String sessionID);
 }

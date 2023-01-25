@@ -47,8 +47,13 @@ function receiveVehicle() {
   };
 }
 function handleMessage(jsonObject: IVehicleMessage) {
+  if(jsonObject.operator !== MessageOperator.UPDATE) logger.log("HANDLE MESSAGE: ",jsonObject);
   if (jsonObject.operator === MessageOperator.DELETE) {
+    logger.log("SESSIONID: ", vehicleState.vehicles.get(jsonObject.userSessionId));
+    logger.log("map vor delete:", vehicleState.vehicles);
     vehicleState.vehicles.delete(jsonObject.userSessionId);
+    logger.log("VEHICLE DELETED");
+    logger.log(vehicleState.vehicles)
   }
   if (
     jsonObject.operator === MessageOperator.CREATE ||
