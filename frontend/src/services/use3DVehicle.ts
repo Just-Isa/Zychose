@@ -12,17 +12,21 @@ import { MessageOperator } from "../model/MessageOperators";
 
 export interface IVehicleState {
   vehicles: Map<string, IVehicle>;
+  botVehicle: Map<string, IVehicle>;
   errorMessage: string;
 }
 
 const vehicleState = reactive<IVehicleState>({
   vehicles: new Map<string, IVehicle>(),
+  botVehicle: new Map<string, IVehicle>(),
   errorMessage: "",
 });
 
 export function useVehicle() {
   return { vehicleState: readonly(vehicleState), receiveVehicle };
 }
+
+
 /**
  * Subscribes to the Vehicle-Topic and updates the vehicleState.
  */
@@ -42,19 +46,29 @@ function receiveVehicle() {
   };
   stompClient.onConnect = () => {
     stompClient.subscribe(DEST, (message) => {
-      handleMessage(JSON.parse(message.body));
+      checkIfVehicleIsBot(JSON.parse(message.body));
     });
   };
 }
-function handleMessage(jsonObject: IVehicleMessage) {
+
+function checkIfVehicleIsBot(vehicle: IVehicleMessage) {
+  if (vehicle.vehicleType === "bot") {
+    handleMessage(vehicleState.botVehicle, vehicle);
+  } else {
+    handleMessage(vehicleState.vehicles, vehicle);
+  }
+}
+
+function handleMessage(vehiclemap: Map<string, IVehicle> ,jsonObject: IVehicleMessage) {
+  
   if (jsonObject.operator === MessageOperator.DELETE) {
-    vehicleState.vehicles.delete(jsonObject.userSessionId);
+    vehiclemap.delete(jsonObject.userSessionId);
   }
   if (
     jsonObject.operator === MessageOperator.CREATE ||
     jsonObject.operator === MessageOperator.UPDATE
   ) {
-    vehicleState.vehicles.set(
+    vehiclemap.set(
       jsonObject.userSessionId,
       new Vehicle(
         jsonObject.vehicleType,

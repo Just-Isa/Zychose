@@ -25,6 +25,7 @@ export class SceneManager {
   data: StreetBlock[];
   private renderer: THREE.Renderer;
   private vehicles: Map<string, THREE.Group> = new Map<string, THREE.Group>(); // list of all Object u should update every frame.
+  private botVehicles: Map<string,THREE.Group> = new Map<string, THREE.Group>();
   private vehicleCamera: VehicleCameraContext =
     camState.vehicleCam as VehicleCameraContext;
 
@@ -186,11 +187,19 @@ export class SceneManager {
    */
   handleRender() {
     const animate = () => {
-      this.updateVehicleMap();
+      this.updateVehicleMap(vehicleState.vehicles as Map<string, IVehicle>, this.vehicles);
       for (const [key, val] of this.vehicles) {
         this.updateVehicle(
           val,
           vehicleState.vehicles.get(key) as IVehicle,
+          key
+        );
+      }
+      this.updateVehicleMap(vehicleState.botVehicle as Map<string, IVehicle>, this.botVehicles);
+      for (const [key, val] of this.botVehicles) {
+        this.updateVehicle(
+          val,
+          vehicleState.botVehicle.get(key) as IVehicle,
           key
         );
       }
@@ -240,18 +249,18 @@ export class SceneManager {
   /**
    * checks if vehicles are added or removed and updates the map
    */
-  private updateVehicleMap() {
-    for (const [key, val] of vehicleState.vehicles) {
+  private updateVehicleMap(vehicleMap: Map<string, IVehicle>, threeDvehicles: Map<string,THREE.Group>) {
+    for (const [key, val] of vehicleMap) {
       logger.log("Vehicle von " + key + " wurde hinzugefügt");
-      if (!this.vehicles.has(key)) {
+      if (!threeDvehicles.has(key)) {
         this.addVehicle(val, key);
       }
     }
-    for (const [key, val] of this.vehicles) {
-      if (!vehicleState.vehicles.has(key)) {
+    for (const [key, val] of threeDvehicles) {
+      if (!vehicleMap.has(key)) {
         logger.log("Vehicle von " + key + " wurde gelöscht");
         this.scene.remove(val);
-        this.vehicles.delete(key);
+        threeDvehicles.delete(key);
       }
     }
   }

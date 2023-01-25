@@ -10,6 +10,7 @@ import java.util.Random;
 
 public class VehicleBot {
 
+  private String id;
   private VehicleBehaviour behaviour = VehicleBehaviour.DEFENSIVE;
   private int[] currentPos;
   private int currentRotation;
@@ -24,10 +25,11 @@ public class VehicleBot {
   private List<Character> route;
   private Random randomGenerator = new Random();
 
-  public VehicleBot(Room room) {
+  public VehicleBot(Room room, String id) {
+    this.id = "bot-" + id;
     this.room = room;
     this.route = new ArrayList<>();
-    this.currentPos = new int[] {0, 0};
+    this.currentPos = new int[] { 0, 0 };
     this.currentRotation = 0;
     // choose random Model from VehicleType Enum
     int randomNumber = randomGenerator.nextInt(VehicleType.values().length);
@@ -142,9 +144,8 @@ public class VehicleBot {
   }
 
   public void refreshNeighbours() {
-    this.neighbours =
-        this.room.getNeighbours(
-            this.currentPos[0] - 1, this.currentPos[1] - 1, this.currentRotation);
+    this.neighbours = this.room.getNeighbours(
+        this.currentPos[0] - 1, this.currentPos[1] - 1, this.currentRotation);
   }
 
   public void setFixRoute(char[] route) {
@@ -164,12 +165,19 @@ public class VehicleBot {
   }
 
   public void setCurrentStreetBlock() {
-    this.currentStreetBlock =
-        this.room.getStreetBlock(this.currentPos[0] - 1, this.currentPos[1] - 1);
+    this.currentStreetBlock = this.room.getStreetBlock(this.currentPos[0] - 1, this.currentPos[1] - 1);
   }
 
   public StreetBlock getCurrentStreetBlock() {
     return this.currentStreetBlock;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   @Override
