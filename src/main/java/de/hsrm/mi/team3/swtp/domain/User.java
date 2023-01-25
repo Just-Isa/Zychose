@@ -2,6 +2,8 @@ package de.hsrm.mi.team3.swtp.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 /*
@@ -10,25 +12,18 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
+@RequiredArgsConstructor
 public class User {
 
-  private String sessionID;
+  @NonNull private String sessionID;
 
-  private int currentRoomNumber;
+  @NonNull private Integer currentRoomNumber;
 
-  private String userName;
+  @NonNull private String userName;
 
-  private long loginTime;
+  @NonNull private Long loginTime;
 
   private Vehicle vehicle;
-
-  public User(String sessionID, int currentRoomNumber, String userName, long loginTime) {
-    this.sessionID = sessionID;
-    this.currentRoomNumber = currentRoomNumber;
-    this.userName = userName;
-    this.loginTime = loginTime;
-    vehicle = null;
-  }
 
   @Override
   public String toString() {
