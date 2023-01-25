@@ -5,10 +5,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-/**
- * RoadMap wird aus dem roomMap String erstellt und mit Tiles gefuellt, damit nicht bei jeder
- * Bewegung eines Fahrzeugs der String neu analysiert werden muss
- */
+/** RoadMap rray of StreetBlocks generated from roomMap string for easy access */
 public class Roadmap {
 
   // TODO replace mit Wert aus Config

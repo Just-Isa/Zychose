@@ -9,13 +9,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * VehicleBot class is used for vehicles that can't be controlled by the User. This class only has
+ * VehicleBot class is used for vehicles that can't be controlled by the User.
+ * This class only has
  * one constructor. VehicleBot is meant to be called by a jython-File.
  */
 public class VehicleBot {
 
   Logger logger = LoggerFactory.getLogger(VehicleBot.class);
 
+  private String id;
   private VehicleBehaviour behaviour = VehicleBehaviour.DEFENSIVE;
   private int[] currentPos;
   private int currentRotation;
@@ -28,38 +30,77 @@ public class VehicleBot {
   private Random randomGenerator = new Random();
 
   public VehicleBot(Room room) {
+    this.id = "bot-";
     this.room = room;
     this.route = new ArrayList<>();
-    this.currentPos = new int[] {0, 0};
+    this.currentPos = new int[] { 0, 0 };
     this.currentRotation = 0;
     // choose random Model from VehicleType Enum
     this.vehicleType = VehicleType.values()[randomGenerator.nextInt(VehicleType.values().length)];
     // setCurrentStreetBlock();
   }
 
+  /**
+   * Main-Movement Function of VehicleBot. Only this should be called in the
+   * Jython Script. Checks
+   * and reacts to current StreetBlock-Type
+   */
+  public void drive() {
+    String blockName = this.currentStreetBlock.getBlockType();
+    if (blockName.equals("road-t") || blockName.equals("road-cross")) {
+      if (hasFixRoute()) {
+        followScript();
+      } else {
+        turnRandom(this.currentStreetBlock.getExits());
+      }
+    } else if (blockName.equals("road-curve")) {
+      if (this.currentStreetBlock.getExits()[0] == this.currentRotation) {
+        turn(this.currentStreetBlock.getExits()[1]);
+      } else {
+        turn(this.currentStreetBlock.getExits()[0]);
+      }
+    } else {
+      moveToNextBlock();
+    }
+    this.room.updateVehicleBots(this, this.currentPos[0], this.currentPos[1]);
+  }
+
+  /**
+   * Moves VehicleBot to StreetBlock right in front of it Has to be called after
+   * rotation change
+   */
   public void moveToNextBlock() {
     refreshNeighbours();
     StreetBlock destination = this.neighbours.get(VehicleNeighbour.VEHICLETOP);
     if (destination == null || this.currentStreetBlock.getBlockType().equals("road-dead-end")) {
       turn(this.currentRotation > 180 ? this.currentRotation - 180 : this.currentRotation + 180);
     } else if (!destination.isBlocked()) {
-      this.currentStreetBlock.isBlocked(false);
       this.currentPos[0] = destination.getBlockPosition()[1] + 1;
       this.currentPos[1] = destination.getBlockPosition()[0] + 1;
-      destination.isBlocked(true);
       this.currentStreetBlock = destination;
-      // TODO aktualisiere Pos in Vehicle Liste in Room
+    } else {
+      int rot = this.room.getVehicleBotRotation(this.getCurrentPos()[0], this.getCurrentPos()[1]);
+      if (rot == -1) {
+        destination.isBlocked(false);
+        moveToNextBlock();
+      } else if (rot != this.currentRotation) {
+        moveToNextBlock();
+      }
     }
   }
 
   /**
-   * @param rotation ist die Rotationsstufe, auf die sich das Fahrzeug drehen soll
+   * @param rotation direction to which VehicleBot should turn
    */
-  public void turn(int rotation) {
+  private void turn(int rotation) {
     this.setCurrentRotation(rotation);
     moveToNextBlock();
   }
 
+  /**
+   * @param exits Integer Array with directions of all valid exits of current
+   *              StreetBlock
+   */
   private void turnRandom(int[] exits) {
     int randomNumber = randomGenerator.nextInt(exits.length - 1);
     // TODO verhindern dass auto 180 Grad dreht
@@ -89,23 +130,6 @@ public class VehicleBot {
      */
   }
 
-  public void drive() {
-    String blockName = this.currentStreetBlock.getBlockType();
-    if (blockName.equals("road-t") || blockName.equals("road-cross")) {
-      if (hasFixRoute()) {
-        followScript();
-      } else {
-        turnRandom(this.currentStreetBlock.getExits());
-      }
-    } else if (blockName.equals("road-curve")) {
-      if (this.currentStreetBlock.getExits()[0] == this.currentRotation) {
-        turn(this.currentStreetBlock.getExits()[1]);
-      } else {
-        turn(this.currentStreetBlock.getExits()[0]);
-      }
-    }
-  }
-
   public List<Character> getRoute() {
     return route;
   }
@@ -118,8 +142,10 @@ public class VehicleBot {
     return currentPos;
   }
 
-  public void setCurrentPos(int[] currentPos) {
-    this.currentPos = currentPos;
+  public void setCurrentPos(int x, int y) {
+    this.currentPos[0] = x;
+    this.currentPos[1] = y;
+    setCurrentStreetBlock();
   }
 
   public int getCurrentRotation() {
@@ -147,10 +173,17 @@ public class VehicleBot {
   }
 
   public void refreshNeighbours() {
-    this.neighbours =
-        this.room
-            .getRoadMap()
-            .getNeighbours(this.currentPos[0], this.currentPos[1], this.currentRotation);
+    this.neighbours = this.room
+        .getRoadMap()
+        .getNeighbours(this.currentPos[0], this.currentPos[1], this.currentRotation);
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   @Override
@@ -169,8 +202,7 @@ public class VehicleBot {
   }
 
   public void setCurrentStreetBlock() {
-    this.currentStreetBlock =
-        this.room.getStreetBlock(this.currentPos[0] - 1, this.currentPos[1] - 1);
+    this.currentStreetBlock = this.room.getStreetBlock(this.currentPos[0] - 1, this.currentPos[1] - 1);
   }
 
   public StreetBlock getCurrentStreetBlock() {
@@ -179,5 +211,10 @@ public class VehicleBot {
 
   public boolean hasFixRoute() {
     return this.fixRoute;
+  }
+
+  public Map<VehicleNeighbour, StreetBlock> getNeighbours() {
+    refreshNeighbours();
+    return this.neighbours;
   }
 }

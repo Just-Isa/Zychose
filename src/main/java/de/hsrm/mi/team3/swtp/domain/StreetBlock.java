@@ -73,7 +73,7 @@ public class StreetBlock {
     if (this.rotation > 0 && this.exits.length > 0 && this.exits.length < 4) {
       for (int i = 0; i < exits.length; i++) {
         int newRotation = this.exits[i] + this.rotation;
-        this.exits[i] = newRotation > 270 ? (newRotation - 270) : newRotation;
+        this.exits[i] = newRotation > 270 ? (newRotation - 360) : newRotation;
       }
     }
   }

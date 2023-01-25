@@ -12,9 +12,7 @@ import org.slf4j.LoggerFactory;
 /*
  * Room class that is used within the RoomBox.
  * This class has two different constructors.
- *
- * Room enthaelt zusaetzlich zum roomMap String auch eine Instanz der RoadMap (Tile Array),
- * um globale Sicht der Fahrzeuge zu verhindern
+ * Room holds RoadMap instance to prevent VehicleBots from having direct access to the map.
  */
 
 public class Room {
@@ -107,7 +105,6 @@ public class Room {
   }
 
   public void setRoomMap(String map) {
-    // setzt vorerst beide Werte, spaeter anpassen
     this.roadMap = new Roadmap(map);
     this.roomMap = map;
   }
@@ -132,11 +129,31 @@ public class Room {
     this.vehicleBots.add(vehicleBot);
   }
 
+  public void updateVehicleBots(VehicleBot bot, int x, int y) {
+    for (VehicleBot botvehicle : this.vehicleBots) {
+      if (botvehicle.equals(bot)) {
+        getStreetBlock(botvehicle.getCurrentPos()[0], botvehicle.getCurrentPos()[1])
+            .isBlocked(false);
+        botvehicle.setCurrentPos(x, y);
+        getStreetBlock(x, y).isBlocked(true);
+      }
+    }
+  }
+
   public StreetBlock getStreetBlock(int x, int y) {
     return this.roadMap.getStreetBlock(x, y);
   }
 
   public Map<VehicleNeighbour, StreetBlock> getNeighbours(int x, int y, int rotation) {
     return this.roadMap.getNeighbours(x, y, rotation);
+  }
+
+  public int getVehicleBotRotation(int x, int y) {
+    for (VehicleBot bot : this.vehicleBots) {
+      if (bot.getCurrentPos()[0] == x && bot.getCurrentPos()[1] == y) {
+        return bot.getCurrentRotation();
+      }
+    }
+    return -1;
   }
 }
