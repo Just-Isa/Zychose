@@ -22,15 +22,12 @@ public class RoomServiceImplementation implements RoomService {
 
   Logger logger = LoggerFactory.getLogger(RoomServiceImplementation.class);
 
-  @Autowired
-  RoomBoxServiceImplementation roomBoxService;
+  @Autowired RoomBoxServiceImplementation roomBoxService;
 
-  @Autowired
-  VehicleBotService vehicleBotService;
+  @Autowired VehicleBotService vehicleBotService;
 
   /**
-   * This method adds a new user to a room, and changed the users
-   * currentRoomNumber respectively.
+   * This method adds a new user to a room, and changed the users currentRoomNumber respectively.
    *
    * @param room
    * @param user
@@ -81,7 +78,8 @@ public class RoomServiceImplementation implements RoomService {
   @Override
   public User getUserByID(int roomNumber, String sessionID) {
     Room room = roomBoxService.getSpecificRoom(roomNumber);
-    Optional<User> user = room.getUserList().stream().filter(u -> u.getSessionID().equals(sessionID)).findFirst();
+    Optional<User> user =
+        room.getUserList().stream().filter(u -> u.getSessionID().equals(sessionID)).findFirst();
     if (user.isEmpty()) {
       logger.error("User not found");
       return null;
@@ -92,12 +90,12 @@ public class RoomServiceImplementation implements RoomService {
   /**
    * Updates Room with new Variables
    *
-   * @param room         Room that is to be updated
+   * @param room Room that is to be updated
    * @param jythonScript new jythonScript for room
-   * @param roomMap      new roomMap for room
-   * @param roomName     new roomName for room
-   * @param roomNumber   new roomNumber for room
-   * @param userList     new userList for room
+   * @param roomMap new roomMap for room
+   * @param roomName new roomName for room
+   * @param roomNumber new roomNumber for room
+   * @param userList new userList for room
    */
   public void updateRoom(
       Room room,
@@ -114,8 +112,7 @@ public class RoomServiceImplementation implements RoomService {
   }
 
   /**
-   * executes python script connected to the room. PythonInterpreter Output is set
-   * to console.
+   * executes python script connected to the room. PythonInterpreter Output is set to console.
    *
    * @param room
    */
@@ -128,8 +125,11 @@ public class RoomServiceImplementation implements RoomService {
         ScriptContext context = pyInterp.getContext();
         context.setWriter(new PrintWriter(System.out));
         context.setErrorWriter(new PrintWriter(System.err));
-        pyInterp.put("room", room);// macht den Raum im python-Skript abrufbar unter dem Variablennamen "room"
-        pyInterp.put("botAPI", vehicleBotService);// macht den VehicleBotService nutzbar im python-Skript
+        pyInterp.put(
+            "room",
+            room); // macht den Raum im python-Skript abrufbar unter dem Variablennamen "room"
+        pyInterp.put(
+            "botAPI", vehicleBotService); // macht den VehicleBotService nutzbar im python-Skript
         pyInterp.eval(room.getJythonScript());
       } else {
         logger.error("leeres Skript");
