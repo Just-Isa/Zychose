@@ -3,13 +3,21 @@ package de.hsrm.mi.team3.swtp.services;
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Optional;
+
+import javax.script.ScriptContext;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 import org.python.core.PyException;
 import org.python.util.PythonInterpreter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,10 +26,15 @@ public class RoomServiceImplementation implements RoomService {
 
   Logger logger = LoggerFactory.getLogger(RoomServiceImplementation.class);
 
-  @Autowired RoomBoxServiceImplementation roomBoxService;
+  @Autowired
+  RoomBoxServiceImplementation roomBoxService;
+
+  @Autowired
+  VehicleBotService vehicleBotService;
 
   /**
-   * This method adds a new user to a room, and changed the users currentRoomNumber respectively.
+   * This method adds a new user to a room, and changed the users
+   * currentRoomNumber respectively.
    *
    * @param room
    * @param user
@@ -72,8 +85,7 @@ public class RoomServiceImplementation implements RoomService {
   @Override
   public User getUserByID(int roomNumber, String sessionID) {
     Room room = roomBoxService.getSpecificRoom(roomNumber);
-    Optional<User> user =
-        room.getUserList().stream().filter(u -> u.getSessionID().equals(sessionID)).findFirst();
+    Optional<User> user = room.getUserList().stream().filter(u -> u.getSessionID().equals(sessionID)).findFirst();
     if (user.isEmpty()) {
       logger.error("User not found");
       return null;
@@ -84,12 +96,12 @@ public class RoomServiceImplementation implements RoomService {
   /**
    * Updates Room with new Variables
    *
-   * @param room Room that is to be updated
+   * @param room         Room that is to be updated
    * @param jythonScript new jythonScript for room
-   * @param roomMap new roomMap for room
-   * @param roomName new roomName for room
-   * @param roomNumber new roomNumber for room
-   * @param userList new userList for room
+   * @param roomMap      new roomMap for room
+   * @param roomName     new roomName for room
+   * @param roomNumber   new roomNumber for room
+   * @param userList     new userList for room
    */
   public void updateRoom(
       Room room,
@@ -106,25 +118,33 @@ public class RoomServiceImplementation implements RoomService {
   }
 
   /**
-   * executes python script connected to the room. PythonInterpreter Output is set to console.
+   * executes python script connected to the room. PythonInterpreter Output is set
+   * to console.
    *
    * @param room
    */
   @Override
   public void executeJython(Room room) {
-    try (PythonInterpreter pyInterp = new PythonInterpreter()) {
+    /* try (PythonInterpreter pyInterp = new PythonInterpreter()) { */
+    ScriptEngine pyInterp = new ScriptEngineManager().getEngineByName("python");
+    try {
       if (!room.getJythonScript().isBlank()) {
-        pyInterp.setOut(System.out);
+        // pyInterp.setOut(System.out);
+        ScriptContext context = pyInterp.getContext();
+        context.setWriter(new PrintWriter(System.out));
+        context.setErrorWriter(new PrintWriter(System.err));
+        // pyInterp.put("context", applicationContext);
         // macht den Raum im python-Skript abrufbar unter dem Variablennamen
         // "room"
-        // pyInterp.set("context", ApplicationContext);
-        pyInterp.set("room", room);
-        pyInterp.exec(room.getJythonScript());
+        pyInterp.put("room", room);
+        // macht den VehicleBotService nutzbar im python-Skript
+        pyInterp.put("botAPI", vehicleBotService);
+        pyInterp.eval(room.getJythonScript());
       } else {
         logger.error("leeres Skript");
       }
       // logger.info("jython Output: " + output.toString());
-    } catch (PyException e) {
+    } catch (PyException | ScriptException e) {
       logger.error("ERROR jythonScript", e);
     }
   }
