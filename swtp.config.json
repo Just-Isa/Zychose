@@ -2,8 +2,8 @@
   "streetTypes": [
     {
       "name": "road-cross",
-      "imgPath": "/assets/img/road_cross.png",
-      "glbPath": "/assets/models/road_cross.glb",
+      "imgPath": "/assets/img/road/cross.avif",
+      "glbPath": "/assets/models/road/cross.glb",
       "vehicleTypes": [
         "car"
       ],
@@ -11,8 +11,8 @@
     },
     {
       "name": "road-curve",
-      "imgPath": "/assets/img/road_curve.png",
-      "glbPath": "/assets/models/road_curve.glb",
+      "imgPath": "/assets/img/road/curve.avif",
+      "glbPath": "/assets/models/road/curve.glb",
       "vehicleTypes": [
         "car"
       ],
@@ -25,8 +25,8 @@
     },
     {
       "name": "road-straight",
-      "imgPath": "/assets/img/road_straight.png",
-      "glbPath": "/assets/models/road_straight.glb",
+      "imgPath": "/assets/img/road/straight.avif",
+      "glbPath": "/assets/models/road/straight.glb",
       "vehicleTypes": [
         "car"
       ],
@@ -37,8 +37,8 @@
     },
     {
       "name": "road-t",
-      "imgPath": "/assets/img/road_t.png",
-      "glbPath": "/assets/models/road_t.glb",
+      "imgPath": "/assets/img/road/t.avif",
+      "glbPath": "/assets/models/road/t.glb",
       "vehicleTypes": [
         "car"
       ],
@@ -51,8 +51,8 @@
     },
     {
       "name": "road-dead-end",
-      "imgPath": "/assets/img/road_dead_end.png",
-      "glbPath": "/assets/models/road_dead_end.glb",
+      "imgPath": "/assets/img/road/dead_end.avif",
+      "glbPath": "/assets/models/road/dead_end.glb",
       "vehicleTypes": [
         "car"
       ],
@@ -65,8 +65,8 @@
     },
     {
       "name": "sidewalk-cross",
-      "imgPath": "/assets/img/sidewalk_cross.png",
-      "glbPath": "/assets/models/sidewalk_cross.glb",
+      "imgPath": "/assets/img/sidewalk/cross.avif",
+      "glbPath": "/assets/models/sidewalk/cross.glb",
       "vehicleTypes": [
         "bicycle"
       ],
@@ -74,8 +74,8 @@
     },
     {
       "name": "sidewalk-curve",
-      "imgPath": "/assets/img/sidewalk_curve.png",
-      "glbPath": "/assets/models/sidewalk_curve.glb",
+      "imgPath": "/assets/img/sidewalk/curve.avif",
+      "glbPath": "/assets/models/sidewalk/curve.glb",
       "vehicleTypes": [
         "bicycle"
       ],
@@ -88,8 +88,8 @@
     },
     {
       "name": "sidewalk-straight",
-      "imgPath": "/assets/img/sidewalk_straight.png",
-      "glbPath": "/assets/models/sidewalk_straight.glb",
+      "imgPath": "/assets/img/sidewalk/straight.avif",
+      "glbPath": "/assets/models/sidewalk/straight.glb",
       "vehicleTypes": [
         "bicycle"
       ],
@@ -100,8 +100,8 @@
     },
     {
       "name": "sidewalk-t",
-      "imgPath": "/assets/img/sidewalk_t.png",
-      "glbPath": "/assets/models/sidewalk_t.glb",
+      "imgPath": "/assets/img/sidewalk/t.avif",
+      "glbPath": "/assets/models/sidewalk/t.glb",
       "vehicleTypes": [
         "bicycle"
       ],
@@ -114,8 +114,8 @@
     },
     {
       "name": "sidewalk-dead-end",
-      "imgPath": "/assets/img/sidewalk_dead_end.png",
-      "glbPath": "/assets/models/sidewalk_dead_end.glb",
+      "imgPath": "/assets/img/sidewalk/dead_end.avif",
+      "glbPath": "/assets/models/sidewalk/dead_end.glb",
       "vehicleTypes": [
         "bicycle"
       ],
@@ -130,11 +130,11 @@
   "miscModels": [
     {
       "name": "grass-plane",
-      "glbPath": "/assets/models/grass_plane.glb"
+      "glbPath": "/assets/models/other/grass_plane.glb"
     },
     {
       "name": "landscape",
-      "glbPath": "/assets/models/landscape.glb"
+      "glbPath": "/assets/models/other/landscape.glb"
     }
   ],
   "gridSize": 100,
@@ -153,8 +153,8 @@
   "allVehicleTypes": [
     {
       "name": "car",
-      "iconPath": "/assets/img/car.png",
-      "glbPath": "/assets/models/car.gltf",
+      "iconPath": "/assets/img/vehicles/car.png",
+      "glbPath": "/assets/models/vehicles/car.gltf",
       "params": {
         "maxSpeed": 0.6,
         "acceleration": 0.2,
@@ -165,8 +165,8 @@
     },
     {
       "name": "bicycle",
-      "iconPath": "/assets/img/bicycle.png",
-      "glbPath": "",
+      "iconPath": "/assets/img/vehicles/bicycle.png",
+      "glbPath": "/assets/models/vehicles/bike.glb",
       "params": {
         "maxSpeed": 0.2,
         "acceleration": 0.1,

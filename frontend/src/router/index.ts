@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import TitleView from "@/views/TitleView.vue";
-import EditorView from "../views/EditorView.vue";
-import RoomSelectView from "../views/RoomSelectView.vue";
-import ThreeDView from "../views/threeD/ThreeDView.vue";
+import EditorView from "@/views/EditorView.vue";
+import GameView from "@/views/GameView.vue";
+import RoomSelectView from "@/views/RoomSelectView.vue";
 import Error500View from "@/views/errors/Error500View.vue";
 import ResetInfoView from "@/views/ResetInfoView.vue";
 import Error404View from "@/views/errors/Error404View.vue";
@@ -44,27 +44,27 @@ const router = createRouter({
     {
       path: "/1/3D",
       name: "Raum1-3D",
-      component: ThreeDView,
+      component: GameView,
     },
     {
       path: "/2/3D",
       name: "Raum2-3D",
-      component: ThreeDView,
+      component: GameView,
     },
     {
       path: "/3/3D",
       name: "Raum3-3D",
-      component: ThreeDView,
+      component: GameView,
     },
     {
       path: "/4/3D",
       name: "Raum4-3D",
-      component: ThreeDView,
+      component: GameView,
     },
     {
       path: "/5/3D",
       name: "Raum5-3D",
-      component: ThreeDView,
+      component: GameView,
     },
     {
       path: "/500",
