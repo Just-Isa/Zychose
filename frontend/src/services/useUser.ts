@@ -148,4 +148,3 @@ function createUser() {
     publishUser("CREATE", userState.user);
   }
 }
-
