@@ -299,12 +299,12 @@ function onEndHover(x: number, y: number): void {
  */
 function stateToGrid(): void {
   const table = document.getElementById("gridTable") as HTMLTableElement;
-  for(let row of table.rows) {
-    for(let col of row.cells) {
+  for (let row of table.rows) {
+    for (let col of row.cells) {
       col.style.backgroundImage = "";
     }
   }
-  logger.log("STATE: ",streetsState.streets)
+  logger.log("STATE: ", streetsState.streets);
   for (const street of streetsState.streets) {
     const cell = table.rows[street.posX - 1].cells[street.posY - 1];
     setCellBackgroundStyle(cell, street);
