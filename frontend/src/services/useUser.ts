@@ -44,7 +44,6 @@ export function useUser() {
   return {
     publishUser,
     publishMouse,
-    publishNewVehicle,
     receiveMouse,
     createUser,
     mouseState: readonly(mouseState),
@@ -150,28 +149,3 @@ function createUser() {
   }
 }
 
-function publishNewVehicle(operator: string, user: IUser) {
-  const DEST = "/topic/createVehicle";
-  if (!publishUserStompClient.connected) {
-    publishUserStompClient.activate();
-  }
-  publishUserStompClient.onWebSocketError = (event) => {
-    logger.error("WS-error", JSON.stringify(event)); /* WS-Error */
-    location.href = "/500";
-  };
-  publishUserStompClient.onStompError = (frame) => {
-    logger.error("STOMP-error", JSON.stringify(frame)); /* STOMP-Error */
-    location.href = "/500";
-  };
-  publishUserStompClient.onConnect = () => {
-    try {
-      publishUserStompClient.publish({
-        destination: DEST,
-        headers: {},
-        body: JSON.stringify(user),
-      });
-    } catch (err) {
-      logger.error("Error while publishing user! ", err);
-    }
-  };
-}
