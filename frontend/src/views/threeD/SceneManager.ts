@@ -134,7 +134,7 @@ export class SceneManager {
   /**
    * adds new car
    */
-  addVehicle(vehicle: IVehicle, vehicleSessionId: string) {
+  addVehicle(vehicle: IVehicle, vehicleSessionId: string, vehicleMap: Map<string, THREE.Group>) {
     const blockPromise = this.blockMap.get(vehicle.vehicleType);
 
     if (blockPromise !== undefined && !this.vehicles.has(vehicleSessionId)) {
@@ -159,7 +159,7 @@ export class SceneManager {
             this.vehicleCamera.request(vehicle.speed, car);
           }
 
-          this.vehicles.set(vehicleSessionId, car);
+          vehicleMap.set(vehicleSessionId, car);
         })
         .catch((error) => {
           this.getErrorBlock(0, 0, 0);
@@ -265,7 +265,7 @@ export class SceneManager {
     for (const [key, val] of vehicleMap) {
       logger.log("Vehicle von " + key + " wurde hinzugefügt");
       if (!threeDvehicles.has(key)) {
-        this.addVehicle(val, key);
+        this.addVehicle(val, key,threeDvehicles);
       }
     }
     for (const [key, val] of threeDvehicles) {
