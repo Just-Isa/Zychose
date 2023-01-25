@@ -25,9 +25,6 @@ function createVehiclePositionAndSend(
   posY: number,
   vehicleType: string
 ) {
-  console.log(
-    "Info: X is " + posX + " and Z is " + posY + " for " + vehicleType
-  );
   const sessionID = getSessionIDFromCookie();
 
   const vehiclePositionMessage = new VehiclePositionMessage(
