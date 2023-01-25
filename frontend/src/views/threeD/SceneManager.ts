@@ -134,7 +134,11 @@ export class SceneManager {
   /**
    * adds new car
    */
-  addVehicle(vehicle: IVehicle, vehicleSessionId: string, vehicleMap: Map<string, THREE.Group>) {
+  addVehicle(
+    vehicle: IVehicle,
+    vehicleSessionId: string,
+    vehicleMap: Map<string, THREE.Group>
+  ) {
     const blockPromise = this.blockMap.get(vehicle.vehicleType);
 
     if (blockPromise !== undefined && !this.vehicles.has(vehicleSessionId)) {
@@ -265,7 +269,7 @@ export class SceneManager {
     for (const [key, val] of vehicleMap) {
       logger.log("Vehicle von " + key + " wurde hinzugefügt");
       if (!threeDvehicles.has(key)) {
-        this.addVehicle(val, key,threeDvehicles);
+        this.addVehicle(val, key, threeDvehicles);
       }
     }
     for (const [key, val] of threeDvehicles) {
