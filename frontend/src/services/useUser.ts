@@ -11,6 +11,15 @@ import { logger } from "@/helpers/Logger";
 const webSocketUrl = `ws://${window.location.host}/stompbroker`;
 const publishUserStompClient = new Client({ brokerURL: webSocketUrl });
 const receiveMouseStompClient = new Client({ brokerURL: webSocketUrl });
+const publishMouseStompClient = new Client({ brokerURL: webSocketUrl });
+
+const publishMouseStompClientConnection = setInterval(function () {
+  if (!publishMouseStompClient.connected) {
+    publishMouseStompClient.activate();
+  } else {
+    clearTimeout(publishMouseStompClientConnection);
+  }
+}, 20);
 
 export interface IMouseState {
   mouse: IMouse;
@@ -27,7 +36,7 @@ const mouseState = reactive<IMouseState>({
 });
 
 const userState = reactive<IUserState>({
-  user: new User("", 0, ""),
+  user: new User("", 0, "", new Date().getTime()),
 });
 
 //zugreifbar gemacht
@@ -80,7 +89,6 @@ function publishUser(operator: string, user: IUser) {
  * @param roomNumber roomNumber of the mouse topic
  */
 function publishMouse(mouse: IMouse, roomNumber: number) {
-  const publishMouseStompClient = new Client({ brokerURL: webSocketUrl });
   const DEST = "/topic/mouse/" + roomNumber;
   publishMouseStompClient.onWebSocketError = (event) => {
     logger.error("WS-error", JSON.stringify(event)); /* WS-Error */
@@ -90,17 +98,15 @@ function publishMouse(mouse: IMouse, roomNumber: number) {
     logger.error("STOMP-error", JSON.stringify(frame)); /* STOMP-Error */
     location.href = "/500";
   };
-  publishMouseStompClient.onConnect = () => {
-    try {
-      publishMouseStompClient.publish({
-        destination: DEST,
-        headers: {},
-        body: JSON.stringify(mouse),
-      });
-    } catch (err) {
-      console.error("Error while publishing mouse", err);
-    }
-  };
+  try {
+    publishMouseStompClient.publish({
+      destination: DEST,
+      headers: {},
+      body: JSON.stringify(mouse),
+    });
+  } catch (err) {
+    logger.error("Error while publishing mouse", err);
+  }
   publishMouseStompClient.activate();
 }
 
@@ -138,6 +144,7 @@ function createUser() {
     userState.user.currentRoomNumber = 0;
     userState.user.sessionID = getSessionIDFromCookie();
     userState.user.userName = getSessionIDFromCookie();
+    userState.user.loginTime = new Date().getTime();
     publishUser("CREATE", userState.user);
   }
 }
