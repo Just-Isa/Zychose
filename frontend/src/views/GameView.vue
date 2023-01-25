@@ -2,6 +2,7 @@
   <main>
     <FadeToWhiteOverlay :isActive="showOverlay" />
     <Exit3DButton @click="changeTo2DView()" />
+    <PlayerList />
     <ThreeDGame />
   </main>
 </template>
@@ -10,6 +11,7 @@
 import ThreeDGame from "@/views/threeD/ThreeDGame.vue";
 import FadeToWhiteOverlay from "@/components/FadeToWhiteOverlay.vue";
 import Exit3DButton from "@/components/Exit3DButton.vue";
+import PlayerList from "@/components/PlayerList.vue";
 import { useRoom } from "@/services/useRoom";
 import { ref } from "vue";
 const { roomState } = useRoom();

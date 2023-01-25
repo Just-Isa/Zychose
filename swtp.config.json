@@ -130,11 +130,11 @@
   "miscModels": [
     {
       "name": "grass-plane",
-      "glbPath": "/assets/models/grass_plane.glb"
+      "glbPath": "/assets/models/other/grass_plane.glb"
     },
     {
       "name": "landscape",
-      "glbPath": "/assets/models/landscape.glb"
+      "glbPath": "/assets/models/other/landscape.glb"
     }
   ],
   "gridSize": 100,
