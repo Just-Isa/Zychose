@@ -17,6 +17,17 @@ const roomState = reactive<IRoomState>({
   errorMessage: "",
 });
 
+// For Body Request in swapRooms() - this class is needed to send more than one string in fetch
+class UserNameAndId {
+  userName: string;
+  sessionID: string;
+
+  public constructor() {
+    this.userName = "Unknown";
+    this.sessionID = getSessionIDFromCookie();
+  }
+}
+
 /**
  * @returns Export of useRoom
  */
@@ -99,13 +110,15 @@ function updateRoom(roomNumber: number) {
  * @param roomNumber Room number into which the user is to be swapped
  */
 function swapRooms(roomNumber: number) {
+  const data = JSON.stringify(new UserNameAndId());
+  console.log(data);
   const DEST = "/api/room/" + roomNumber;
   fetch(DEST, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ sessionId: getSessionIDFromCookie() }),
+    body: data,
   })
     .then((response) => {
       if (!response.ok) {

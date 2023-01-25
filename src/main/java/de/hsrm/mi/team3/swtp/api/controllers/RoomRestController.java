@@ -1,6 +1,7 @@
 package de.hsrm.mi.team3.swtp.api.controllers;
 
 import de.hsrm.mi.team3.swtp.api.dtos.GetRoomResponseDTO;
+import de.hsrm.mi.team3.swtp.api.dtos.GetSwapUserDTO;
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
 import de.hsrm.mi.team3.swtp.services.RoomBoxServiceImplementation;
@@ -63,13 +64,13 @@ public class RoomRestController {
    * Changes the Room a User is in to another.
    *
    * @param roomNumber Room number of room that the User is supposed to be swapped into
-   * @param sessionId SessionID of User that will be moved
+   * @param bodyData SessionID and UserName of User that will be moved
    */
   @PostMapping(value = "/room/{number}")
   public void changeRoomOfUser(
-      @PathVariable("number") String roomNumber, @RequestBody String sessionId) {
-    String sId = sessionId.split(":")[1].replace("\"", "").replace("}", "");
-
+      @PathVariable("number") String roomNumber, @RequestBody GetSwapUserDTO bodyData) {
+    logger.info("changeRoomOfUser()-bodyData: " + bodyData);
+    String sId = bodyData.sessionID();
     Room room = roomBoxService.getSpecificRoom(Integer.parseInt(roomNumber));
     Optional<User> userOpt = roomBoxService.getUserBySessionID(sId);
     if (userOpt.isPresent()) {
@@ -78,7 +79,8 @@ public class RoomRestController {
       roomService.removeUserFromRoom(oldRoom, userOpt.get());
       roomService.addNewUserToRoom(room, userOpt.get());
     } else {
-      roomService.addNewUserToRoom(room, new User(sId, 0, sId, new Date().getTime()));
+      roomService.addNewUserToRoom(
+          room, new User(sId, 0, bodyData.userName(), new Date().getTime()));
     }
   }
 
