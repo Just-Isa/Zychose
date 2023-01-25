@@ -20,6 +20,7 @@
           src="/assets/img/arrow-pictogram.svg"
           alt="arrow-up"
           class="h-7 w-7 rotate-180 cursor-pointer"
+          :class="isMinimumHeight ? 'opacity-20 cursor-default' : 'opacity-100'"
         />
       </a>
       <a
@@ -29,7 +30,8 @@
         <img
           src="/assets/img/arrow-pictogram.svg"
           alt="arrow-down"
-          class="h-7 w-7"
+          class="scrollButton h-7 w-7"
+          :class="isMinimumHeight ? 'opacity-20 cursor-default' : 'opacity-100'"
         />
       </a>
     </div>
@@ -63,6 +65,13 @@ const streetBlockSize = 92;
 let maxScrollHeight =
   Math.ceil(props.types.length / 4) * streetBlockSize - streetBlockSize;
 
+let isMinimumHeight = ref(false);
+if (maxScrollHeight === 0) {
+  isMinimumHeight = ref(true);
+} else {
+  isMinimumHeight = ref(false);
+}
+
 /**
  * Wenn ich den Tab wechsle, möchte ich dass die aktuelle Reihe ohne smoothes Scrollen wieder direkt oben beginnt.
  * watch hört, ob der aktuelle Tab geändert wurde, reagiert in dem aktuellen Folder und resettet den State.
@@ -88,6 +97,12 @@ watch(menuTabState, () => {
 
     maxScrollHeight =
       Math.ceil(streetFolder.length / 4) * streetBlockSize - streetBlockSize;
+
+    if (maxScrollHeight === 0) {
+      isMinimumHeight.value = true;
+    } else {
+      isMinimumHeight.value = false;
+    }
 
     scrollHeight.value = 0;
     resetCurrentChangedTab();
