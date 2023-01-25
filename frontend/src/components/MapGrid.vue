@@ -208,6 +208,7 @@ function changeTo3DView(posX: number, posY: number, vehicleType: string) {
   //TODO manchmal wechselt der router die seite nicht!
   //--> außerdem wird ein *[Violation]'requestAnimationFrame' handler took XYZms* Hinweis geworfen
   //--> die Performance der 3D-View ist also nicht so toll!
+  //Calculating correct position in 3D World
   posX = (posX - 1 - config.gridSize / 2) * config.blocksize;
   posY = (posY - 1 - config.gridSize / 2) * config.blocksize;
   createVehiclePositionAndSend(posX, posY, vehicleType);

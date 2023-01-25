@@ -4,7 +4,7 @@ import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
 import {
   VehiclePositionMessage,
   type IVehiclePositionMessage,
-} from "../model/IVehiclePosition";
+} from "../model/IVehiclePositionMessage";
 const webSocketUrl = `ws://${window.location.host}/stompbroker`;
 const positionMessageClient = new Client({ brokerURL: webSocketUrl });
 
