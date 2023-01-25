@@ -87,5 +87,5 @@ setInterval(function () {
     ];
   }
   // 100 milliseconds set as to not overload the stompbroker
-}, 100);
+}, 20);
 </script>
