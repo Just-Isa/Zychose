@@ -21,13 +21,17 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class VehicleController {
   Logger logger = LoggerFactory.getLogger(VehicleController.class);
-  @Autowired VehicleService vehicleService;
+  @Autowired
+  VehicleService vehicleService;
 
-  @Autowired BackendInfoService bInfoService;
+  @Autowired
+  BackendInfoService bInfoService;
 
-  @Autowired RoomBoxService roomBoxService;
+  @Autowired
+  RoomBoxService roomBoxService;
 
-  @Autowired RoomService roomService;
+  @Autowired
+  RoomService roomService;
 
   /**
    * Receives a command from client to execute vehicleservice Methods
@@ -41,14 +45,12 @@ public class VehicleController {
       @DestinationVariable int roomNumber) {
 
     List<VehicleCommands> commands = commandVehicleMessage.commands();
-    Vehicle vehicle =
-        roomService.getUserByID(roomNumber, commandVehicleMessage.userSessionId()).getVehicle();
+    Vehicle vehicle = roomService.getUserByID(roomNumber, commandVehicleMessage.userSessionId()).getVehicle();
     if (vehicle == null) {
       roomService
           .getUserByID(roomNumber, commandVehicleMessage.userSessionId())
           .setVehicle(new Vehicle());
-      vehicle =
-          roomService.getUserByID(roomNumber, commandVehicleMessage.userSessionId()).getVehicle();
+      vehicle = roomService.getUserByID(roomNumber, commandVehicleMessage.userSessionId()).getVehicle();
     }
     if (!commands.contains(VehicleCommands.FORWARD)
         && !commands.contains(VehicleCommands.BACKWARD)) {
@@ -73,20 +75,20 @@ public class VehicleController {
         vehicle);
   }
 
-  /** */
-  @MessageMapping("topic/createVehicle")
+  /**
+   * Creates new vehicle at drop position
+   */
+  @MessageMapping("topic/3d/createvehicle/{roomNumber}")
   public void createVehicle(
       @Payload BackendVehiclePositionMessage newVehicleMessage,
-      @DestinationVariable int roomNumber) {
-    Vehicle vehicle =
-        roomService.getUserByID(roomNumber, newVehicleMessage.userSessionId()).getVehicle();
+      @DestinationVariable int roomNumber) { // Notwendig
+    Vehicle vehicle = roomService.getUserByID(roomNumber, newVehicleMessage.userSessionId()).getVehicle();
     if (vehicle == null) {
-      double[] vector = new double[] {newVehicleMessage.posX(), 0, newVehicleMessage.posZ()};
+      double[] vector = new double[] { newVehicleMessage.posX(), 0, newVehicleMessage.posZ() };
       roomService
           .getUserByID(roomNumber, newVehicleMessage.userSessionId())
           .setVehicle(new Vehicle(newVehicleMessage.vehicleType(), vector));
       vehicle = roomService.getUserByID(roomNumber, newVehicleMessage.userSessionId()).getVehicle();
-      System.out.println("We got the Information and we'll create the new Vehicle at: " + vector);
     }
     bInfoService.sendVehicle(
         "vehicle/" + roomNumber,

@@ -45,7 +45,7 @@ function createVehiclePositionAndSend(
 function sendVehiclePositionMessage(
   vehiclePositionMessage: IVehiclePositionMessage
 ) {
-  const DEST = "/topic/createVehicle";
+  const DEST = "/topic/3d/createvehicle/" + (location.pathname.split("/")[1] as unknown as number);
   if (!positionMessageClient.connected) {
     positionMessageClient.activate();
   }
