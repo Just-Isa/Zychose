@@ -13,7 +13,7 @@
       class="tile-current flex justify-center items-center rounded-lg"
     >
       <img
-        class="h-16 w-16 m-2"
+        class="h-16 w-16 m-2 !important"
         :src="prop.currentBlock.imgPath"
         :alt="prop.currentBlock.name"
         draggable="false"
