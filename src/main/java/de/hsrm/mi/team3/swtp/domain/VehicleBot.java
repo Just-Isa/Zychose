@@ -1,20 +1,14 @@
 package de.hsrm.mi.team3.swtp.domain;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-/**
- * VehicleBot class is used for vehicles that can't be controlled by the User. This class only has
- * one constructor. VehicleBot is meant to be called by a jython-File.
- */
 public class VehicleBot {
-
-  Logger logger = LoggerFactory.getLogger(VehicleBot.class);
 
   private String id;
   private VehicleBehaviour behaviour = VehicleBehaviour.DEFENSIVE;
@@ -22,9 +16,12 @@ public class VehicleBot {
   private int currentRotation;
   private Map<VehicleNeighbour, StreetBlock> neighbours;
   private Room room = null;
+
   private StreetBlock currentStreetBlock;
   private VehicleType vehicleType;
   private boolean fixRoute;
+  // TODO passt python liste auch in deque??
+  private Deque<Character> scriptRoute = new ArrayDeque<>();
   private List<Character> route;
   private Random randomGenerator = new Random();
 
@@ -32,15 +29,17 @@ public class VehicleBot {
     this.id = "bot-" + id;
     this.room = room;
     this.route = new ArrayList<>();
-    this.currentPos = new int[] {0, 0};
+    this.currentPos = new int[] { 0, 0 };
     this.currentRotation = 0;
     // choose random Model from VehicleType Enum
-    this.vehicleType = VehicleType.values()[randomGenerator.nextInt(VehicleType.values().length)];
-    // setCurrentStreetBlock();
+    int randomNumber = randomGenerator.nextInt(VehicleType.values().length);
+    this.vehicleType = VehicleType.values()[randomNumber];
+    setCurrentStreetBlock();
   }
 
   /**
-   * Main-Movement Function of VehicleBot. Only this should be called in the Jython Script. Checks
+   * Main-Movement Function of VehicleBot. Only this should be called in the
+   * Jython Script. Checks
    * and reacts to current StreetBlock-Type
    */
   public void drive() {
@@ -63,7 +62,10 @@ public class VehicleBot {
     this.room.updateVehicleBots(this, this.currentPos[0], this.currentPos[1]);
   }
 
-  /** Moves VehicleBot to StreetBlock right in front of it Has to be called after rotation change */
+  /**
+   * Moves VehicleBot to StreetBlock right in front of it Has to be called after
+   * rotation change
+   */
   public void moveToNextBlock() {
     refreshNeighbours();
     StreetBlock destination = this.neighbours.get(VehicleNeighbour.VEHICLETOP);
@@ -93,7 +95,8 @@ public class VehicleBot {
   }
 
   /**
-   * @param exits Integer Array with directions of all valid exits of current StreetBlock
+   * @param exits Integer Array with directions of all valid exits of current
+   *              StreetBlock
    */
   private void turnRandom(int[] exits) {
     int randomNumber = randomGenerator.nextInt(exits.length - 1);
@@ -101,27 +104,29 @@ public class VehicleBot {
     turn(this.getCurrentStreetBlock().getExits()[randomNumber]);
   }
 
+  /**
+   * Is called on T- or Crossraods if VehicleBot got a set route. Follows
+   * direction of top element
+   * on Deque(Stack)
+   */
   public void followScript() {
-    logger.info("auto bewegt vielleicht");
-    /*
-     * switch (this.scriptRoute.peek()) {
-     * case 's':
-     * moveToNextBlock();
-     * break;
-     *
-     * case 'l':
-     * turn(this.currentRotation < 90 ? 270 : this.currentRotation - 90);
-     * break;
-     *
-     * case 'r':
-     * turn(this.currentRotation > 270 ? 0 : this.currentRotation + 90);
-     * break;
-     *
-     * default:
-     * this.fixRoute = false;
-     * }
-     * this.scriptRoute.pop();
-     */
+    switch (this.scriptRoute.peek()) {
+      case 's':
+        moveToNextBlock();
+        break;
+
+      case 'l':
+        turn(this.currentRotation < 90 ? 270 : this.currentRotation - 90);
+        break;
+
+      case 'r':
+        turn(this.currentRotation > 270 ? 0 : this.currentRotation + 90);
+        break;
+
+      default:
+        this.fixRoute = false;
+    }
+    this.scriptRoute.pop();
   }
 
   public List<Character> getRoute() {
@@ -167,10 +172,32 @@ public class VehicleBot {
   }
 
   public void refreshNeighbours() {
-    this.neighbours =
-        this.room
-            .getRoadMap()
-            .getNeighbours(this.currentPos[0], this.currentPos[1], this.currentRotation);
+    this.neighbours = this.room.getNeighbours(
+        this.currentPos[0] - 1, this.currentPos[1] - 1, this.currentRotation);
+  }
+
+  public void setFixRoute(char[] route) {
+    this.fixRoute = true;
+    for (int i = 0; i < route.length; i++) {
+      this.scriptRoute.push(route[i]);
+    }
+  }
+
+  public void removeFixRoute() {
+    this.fixRoute = false;
+    this.scriptRoute.clear();
+  }
+
+  public boolean hasFixRoute() {
+    return this.fixRoute;
+  }
+
+  public void setCurrentStreetBlock() {
+    this.currentStreetBlock = this.room.getStreetBlock(this.currentPos[0] - 1, this.currentPos[1] - 1);
+  }
+
+  public StreetBlock getCurrentStreetBlock() {
+    return this.currentStreetBlock;
   }
 
   public String getId() {
@@ -194,19 +221,6 @@ public class VehicleBot {
         + ", route="
         + route
         + "]";
-  }
-
-  public void setCurrentStreetBlock() {
-    this.currentStreetBlock =
-        this.room.getStreetBlock(this.currentPos[0] - 1, this.currentPos[1] - 1);
-  }
-
-  public StreetBlock getCurrentStreetBlock() {
-    return this.currentStreetBlock;
-  }
-
-  public boolean hasFixRoute() {
-    return this.fixRoute;
   }
 
   public Map<VehicleNeighbour, StreetBlock> getNeighbours() {
