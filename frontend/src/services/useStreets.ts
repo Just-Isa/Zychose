@@ -88,7 +88,7 @@ export function useStreets() {
         state.streets.push(onGridClickObject);
       }
     }
-    logger.log("STREETS STATE: ",state.streets);
+    logger.log("STREETS STATE: ", state.streets);
     gridToJson(state.streets);
   }
 

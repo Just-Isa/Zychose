@@ -42,7 +42,6 @@ window.addEventListener("keyup", (event) => {
  * Changes the View to the 2D-View
  */
 function changeTo2DView() {
-
   const DEST = "/topic/vehicle/delete/" + roomState.room.roomNumber;
   const sessionID = getSessionIDFromCookie();
 
