@@ -1,13 +1,5 @@
 package de.hsrm.mi.team3.swtp.controllers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.stereotype.Controller;
-
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
 import de.hsrm.mi.team3.swtp.domain.Vehicle;
@@ -17,22 +9,26 @@ import de.hsrm.mi.team3.swtp.domain.messaging.BackendRoomMessage;
 import de.hsrm.mi.team3.swtp.services.BackendInfoService;
 import de.hsrm.mi.team3.swtp.services.RoomBoxServiceImplementation;
 import de.hsrm.mi.team3.swtp.services.RoomServiceImplementation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.stereotype.Controller;
 
 @Controller
 public class RoomController {
 
-  @Autowired
-  RoomBoxServiceImplementation roomBoxService;
-  @Autowired
-  RoomServiceImplementation roomService;
-  @Autowired
-  BackendInfoService backservice;
+  @Autowired RoomBoxServiceImplementation roomBoxService;
+  @Autowired RoomServiceImplementation roomService;
+  @Autowired BackendInfoService backservice;
   Logger logger = LoggerFactory.getLogger(RoomController.class);
 
   /**
    * Used to differentiate and update specific rooms.
    *
-   * @param operation  Operation that is used
+   * @param operation Operation that is used
    * @param roomNumber Room on which the changes occured
    */
   @MessageMapping("/topic/room/{roomNumber}")
@@ -63,7 +59,7 @@ public class RoomController {
   /**
    * This mapping send the mouse to all other subscribers.
    *
-   * @param mouse      Mouse that is being updated
+   * @param mouse Mouse that is being updated
    * @param roomNumber Roomnumber of room that is to be updated
    */
   @MessageMapping("/topic/mouse/{roomNumber}")
@@ -96,6 +92,7 @@ public class RoomController {
   public void deleteVehicle(@DestinationVariable int roomNumber, @Payload String sessionID) {
     logger.info("VEHICLE STOMPING: " + sessionID);
     this.roomService.deleteVehicleFromUser(roomNumber, sessionID);
-    this.backservice.sendVehicle("vehicle/" + roomNumber, sessionID, BackendOperation.DELETE, new Vehicle());
+    this.backservice.sendVehicle(
+        "vehicle/" + roomNumber, sessionID, BackendOperation.DELETE, new Vehicle());
   }
 }
