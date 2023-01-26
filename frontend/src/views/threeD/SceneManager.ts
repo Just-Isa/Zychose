@@ -149,10 +149,11 @@ export class SceneManager {
             vehicle.rotationZ
           );
           this.scene.add(car);
-          this.addTextToVehicle(vehicleSessionId, vehicle.vehicleType, car);
 
           if (vehicleSessionId === getSessionIDFromCookie()) {
             this.vehicleCamera.request(vehicle.speed, vehicle.vehicleType, car);
+          } else {
+            this.addTextToVehicle(vehicleSessionId, vehicle.vehicleType, car);
           }
 
           this.vehicles.set(vehicleSessionId, car);
