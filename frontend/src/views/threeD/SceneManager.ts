@@ -267,7 +267,6 @@ export class SceneManager {
     const textHightOverVehicle = config.allVehicleTypes.find(
       (v) => v.name === vehicleType
     )?.textHightOverVehicle;
-    console.log("TSCDJAHBJDHBAJHDB", textHightOverVehicle);
     const fontLoader = new FontLoader();
     const ttfloader = new TTFLoader();
     ttfloader.load(config.fontPath, function (json) {
