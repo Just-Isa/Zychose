@@ -125,6 +125,39 @@
         180,
         270
       ]
+    },
+    {
+      "name": "brown-house",
+      "imgPath": "/assets/img/icons/buildings/brown_house.png",
+      "glbPath": "/assets/models/buildings/brown_house.glb",
+      "vehicleTypes": ["building"],
+      "possibleRotations": []
+    },
+    {
+      "name": "cream_sky_scraper",
+      "imgPath": "/assets/img/icons/buildings/cream_sky_scraper.png",
+      "glbPath": "/assets/models/buildings/cream_sky_scraper.glb",
+      "vehicleTypes": ["building"],
+      "possibleRotations": []
+    },
+    {
+      "name": "red_sky_scraper",
+      "imgPath": "/assets/img/icons/buildings/red_sky_scraper.png",
+      "glbPath": "/assets/models/buildings/red_sky_scraper.glb",
+      "vehicleTypes": ["building"],
+      "possibleRotations": []
+    },
+    {
+      "name": "trees",
+      "imgPath": "/assets/img/icons/deco/trees.png",
+      "glbPath": "/assets/models/deco/trees.glb",
+      "vehicleTypes": ["deco"],
+      "possibleRotations": [
+        0,
+        90,
+        180,
+        270
+      ]
     }
   ],
   "miscModels": [
@@ -138,7 +171,7 @@
     }
   ],
   "gridSize": 100,
-  "vehicleTabs": [
+  "menuTabs":[
     {
       "name": "car",
       "iconPath": "/car-pictogram.svg"
@@ -146,6 +179,14 @@
     {
       "name": "bicycle",
       "iconPath": "/bicycle-pictogram.svg"
+    },
+    {
+      "name": "building",
+      "iconPath": "/building-pictogram.svg"
+    },
+    {
+      "name": "deco",
+      "iconPath": "/deco-pictogram.svg"
     }
   ],
   "blocksize": 16,
