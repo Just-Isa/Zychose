@@ -7,7 +7,13 @@
       "vehicleTypes": [
         "car"
       ],
-      "possibleRotations": []
+      "possibleRotations": [],
+      "exits": [
+        0,
+        90,
+        180,
+        270
+      ]
     },
     {
       "name": "road-curve",
@@ -21,6 +27,10 @@
         90,
         180,
         270
+      ],
+      "exits": [
+        0,
+        270
       ]
     },
     {
@@ -33,6 +43,10 @@
       "possibleRotations": [
         0,
         90
+      ],
+      "exits": [
+        90,
+        270
       ]
     },
     {
@@ -45,6 +59,11 @@
       "possibleRotations": [
         0,
         90,
+        180,
+        270
+      ],
+      "exits": [
+        0,
         180,
         270
       ]
@@ -61,6 +80,9 @@
         90,
         180,
         270
+      ],
+      "exits": [
+        270
       ]
     },
     {
@@ -70,7 +92,13 @@
       "vehicleTypes": [
         "bicycle"
       ],
-      "possibleRotations": []
+      "possibleRotations": [],
+      "exits": [
+        0,
+        90,
+        180,
+        270
+      ]
     },
     {
       "name": "sidewalk-curve",
@@ -84,6 +112,10 @@
         90,
         180,
         270
+      ],
+      "exits": [
+        0,
+        270
       ]
     },
     {
@@ -96,6 +128,10 @@
       "possibleRotations": [
         0,
         90
+      ],
+      "exits": [
+        90,
+        270
       ]
     },
     {
@@ -108,6 +144,11 @@
       "possibleRotations": [
         0,
         90,
+        180,
+        270
+      ],
+      "exits": [
+        0,
         180,
         270
       ]
@@ -123,6 +164,9 @@
         0,
         90,
         180,
+        270
+      ],
+      "exits": [
         270
       ]
     }
@@ -175,6 +219,11 @@
         "runOutSpeed": -0.09
       }
     }
+  ],
+  "vehicleBehaviours": [
+    "defensive",
+    "offensive",
+    "drunk"
   ],
   "fontPath": "/fonts/poppins-semiBold.ttf",
   "fontSize": 0.75,
