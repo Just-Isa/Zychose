@@ -44,27 +44,6 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   }
 
   /**
-   * method iterates through StreetBlockMap of room and return the first free Streetblock
-   * coordinates
-   *
-   * @return
-   */
-  private int[] getFreeStreetBlock() {
-    if (this.room.getRoadMap().getStreetBlockMap().length > 0) {
-      for (int i = 0; i < this.room.getRoadMap().getStreetBlockMap().length; i++) {
-        for (int j = 0; j < this.room.getRoadMap().getStreetBlockMap().length; j++)
-          if (this.room.getRoadMap().getStreetBlock(i, j) != null
-              && !this.room.getRoadMap().getStreetBlock(i, j).isBlocked()) {
-            return new int[] {
-              i + 1, j + 1
-            }; // +1 damit die richtigen Koordinaten ins frontend kommen
-          }
-      }
-    }
-    return null;
-  }
-
-  /**
    * method to create a new VehicleBot with specific details. method is only called from pyton
    * script
    *
@@ -74,14 +53,39 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
    * @param route
    */
   @Override
-  public void createSpecificBot(
-      int rotation, int posX, int posY, VehicleType type, List<Character> route) {
+  public void createBotWithRoute(List<Character> route) {
     VehicleBot bot = new VehicleBot(room);
 
-    bot.setCurrentRotation(rotation);
-    bot.setCurrentPos(posX, posY);
-    bot.setVehicleModel(type);
+    int[] pos = this.getFreeStreetBlock();
+    if (pos != null) {
+      bot.setCurrentPos(pos[0], pos[1]);
+    }
     bot.setRoute(route);
+
+    this.room.setVehicleBot(bot);
+  }
+
+  public void createBotWithType(VehicleType vehicleType) {
+    VehicleBot bot = new VehicleBot(room);
+
+    int[] pos = this.getFreeStreetBlock();
+    if (pos != null) {
+      bot.setCurrentPos(pos[0], pos[1]);
+    }
+    bot.setVehicleModel(vehicleType);
+
+    this.room.setVehicleBot(bot);
+  }
+
+  public void createBotWithRouteAndType(List<Character> route, VehicleType vehicleType) {
+    VehicleBot bot = new VehicleBot(room);
+
+    int[] pos = this.getFreeStreetBlock();
+    if (pos != null) {
+      bot.setCurrentPos(pos[0], pos[1]);
+    }
+    bot.setRoute(route);
+    bot.setVehicleModel(vehicleType);
 
     this.room.setVehicleBot(bot);
   }
@@ -94,10 +98,12 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   public void driveBot() {
     // TODO checken, ob wirklich in jeder Iteration geprüft wird. Prüfen, ob das
     // doch im JythonScript gehalten werden sollte
-
-    while (true) {
+    boolean running = !room.getUserList().isEmpty();
+    int runde = 0;
+    while (running) {
+      logger.info("driveBot Runde " + runde);
       for (VehicleBot bot : room.getVehicleBots()) {
-        this.drive(bot);
+        // this.drive(bot);
         sendBot(bot);
         try {
           Thread.sleep(5000);
@@ -105,16 +111,11 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
           e.printStackTrace();
         }
       }
+      running = !room.getUserList().isEmpty();
+      runde++;
     }
-
-    /*
-     * for (VehicleBot bot : room.getVehicleBots()) {
-     * bot.followScript();
-     * sendBot(bot);
-     * }
-     */
-    /* logger.info("driveBot beendet"); */
-
+    room.setJythonRunning(false);
+    logger.info("driveBot beendet");
   }
 
   /** Checks and reacts to current StreetBlock-Type */
@@ -146,6 +147,26 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   public void sendBot(VehicleBot bot) {
     backendInfoService.sendVehicle(
         "vehicle/" + this.room.getRoomNumber(), bot.getId(), BackendOperation.UPDATE, bot);
-    // TODO botID senden
+  }
+
+  /**
+   * method iterates through StreetBlockMap of room and return the first free Streetblock
+   * coordinates
+   *
+   * @return
+   */
+  private int[] getFreeStreetBlock() {
+    if (this.room.getRoadMap().getStreetBlockMap().length > 0) {
+      for (int i = 0; i < this.room.getRoadMap().getStreetBlockMap().length; i++) {
+        for (int j = 0; j < this.room.getRoadMap().getStreetBlockMap().length; j++)
+          if (this.room.getRoadMap().getStreetBlock(i, j) != null
+              && !this.room.getRoadMap().getStreetBlock(i, j).isBlocked()) {
+            return new int[] {
+              i + 1, j + 1
+            }; // +1 damit die richtigen Koordinaten ins frontend kommen
+          }
+      }
+    }
+    return new int[] {};
   }
 }

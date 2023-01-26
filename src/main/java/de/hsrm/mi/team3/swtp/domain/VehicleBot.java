@@ -175,7 +175,6 @@ public class VehicleBot {
   public void setCurrentStreetBlock() {
     this.currentStreetBlock =
         this.room.getStreetBlock(this.currentPos[0] - 1, this.currentPos[1] - 1);
-    logger.info("botPos: " + this.currentPos);
   }
 
   public StreetBlock getCurrentStreetBlock() {

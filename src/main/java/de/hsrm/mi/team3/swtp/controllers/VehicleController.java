@@ -77,6 +77,10 @@ public class VehicleController {
   public void createVehicle(
       @Payload BackendVehiclePositionMessage newVehicleMessage,
       @DestinationVariable int roomNumber) {
+
+    if (!roomBoxService.getSpecificRoom(roomNumber).isJythonRunning()) {
+      roomService.executeJython(roomBoxService.getSpecificRoom(roomNumber));
+    }
     Vehicle vehicle =
         roomService.getUserByID(roomNumber, newVehicleMessage.userSessionId()).getVehicle();
     if (vehicle == null) {

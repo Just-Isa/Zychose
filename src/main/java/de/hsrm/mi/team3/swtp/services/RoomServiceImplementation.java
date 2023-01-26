@@ -119,6 +119,8 @@ public class RoomServiceImplementation implements RoomService {
   @Override
   public void executeJython(Room room) {
     /* try (PythonInterpreter pyInterp = new PythonInterpreter()) { */
+    logger.info("executeJython Start");
+    room.setJythonRunning(true);
     ScriptEngine pyInterp = new ScriptEngineManager().getEngineByName("python");
     try {
       if (!room.getJythonScript().isBlank()) {
@@ -136,6 +138,7 @@ public class RoomServiceImplementation implements RoomService {
       }
     } catch (PyException | ScriptException e) {
       logger.error("ERROR jythonScript", e);
+      room.setJythonRunning(false);
     }
   }
 
