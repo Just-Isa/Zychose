@@ -21,17 +21,15 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class FileUploadRestControllerTest {
 
-  @Autowired
-  private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-  @Autowired
-  private RoomBoxService roomBoxService;
+  @Autowired private RoomBoxService roomBoxService;
 
   private static final String MOCK_JYTHON_CONTENT = "print(\"test\")";
   private static final String REST_ROUTE = "/api/upload/1";
 
-  private static final MockMultipartFile MOCK_JYTHON_FILE = new MockMultipartFile("file", "mockFile.py", "text/plain",
-      MOCK_JYTHON_CONTENT.getBytes());
+  private static final MockMultipartFile MOCK_JYTHON_FILE =
+      new MockMultipartFile("file", "mockFile.py", "text/plain", MOCK_JYTHON_CONTENT.getBytes());
 
   private static final int FIRST_ROOM_NUMBER = 1;
 
@@ -53,7 +51,8 @@ class FileUploadRestControllerTest {
   }
 
   @Test
-  @DisplayName("FileUploadRestController: /api/upload/{roomNumber} get should get specific roomScript")
+  @DisplayName(
+      "FileUploadRestController: /api/upload/{roomNumber} get should get specific roomScript")
   void fileUploadGetTest() throws Exception {
     assertThat(roomBoxService.getSpecificRoom(FIRST_ROOM_NUMBER).getJythonScript()).isEmpty();
 
