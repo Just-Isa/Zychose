@@ -9,7 +9,7 @@ export interface ICameraState {
   vehicleCam: VehicleCameraContext;
 }
 
-const defaultCam = new PerspectiveCamera(70, aspect, 1, 2000);
+const defaultCam = new PerspectiveCamera(70, aspect, 0.1, 2000);
 
 const camState = reactive<ICameraState>({
   cam: defaultCam,
