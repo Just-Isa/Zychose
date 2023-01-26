@@ -9,8 +9,8 @@ import org.junit.platform.commons.annotation.Testable;
 
 @Testable
 class VehicleTest {
-  private static final double[] POS_VECTOR = { 1, 2, 3 };
-  private static final double[] ROTATION_VECTOR = { 0, 0, 0 };
+  private static final double[] POS_VECTOR = {1, 2, 3};
+  private static final double[] ROTATION_VECTOR = {0, 0, 0};
   private static final double SET_ROTATIONX = 10;
   private static final double GET_ROTATIONX_POST_SET = SET_ROTATIONX % (2 * Math.PI);
   private static final double SET_ROTATIONY = 10;
