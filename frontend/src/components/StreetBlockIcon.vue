@@ -10,7 +10,9 @@
     <div
       :id="prop.currentBlock.name"
       @click="changeActiveStreetBlock(prop.currentBlock)"
-      class="tile-current flex justify-center items-center rounded-lg"
+      @keyup.r="changeActiveRotation(prop.currentBlock)"
+      tabindex="0"
+      class="tile-current flex justify-center items-center rounded-lg focus:outline-none"
     >
       <img
         class="h-16 w-16 m-2"
@@ -38,11 +40,23 @@ const {
   bulldozerActive,
 } = useStreetBlock();
 
+function testtest() {
+  console.log("TESTTEST");
+  changeRotation(180);
+}
+
 /**
  * changes the active StreetBlock in streetBlockState and rotates StreetBlock if StreetBlock is clicked multiple times
  * @param type selected StreetBlock
  */
 function changeActiveStreetBlock(type: StreetBlock) {
+  changeCurrentStreetType(type);
+  toggleBulldozer(false);
+  const entireDoc = document.documentElement;
+  entireDoc.style.cursor = "default";
+}
+
+function changeActiveRotation(type: StreetBlock) {
   if (type.name === activeBlock.streetBlock.name && !bulldozerActive.isActive) {
     const block = document.getElementById(prop.currentBlock.name);
     if (block) {
@@ -59,10 +73,5 @@ function changeActiveStreetBlock(type: StreetBlock) {
     }
     return;
   }
-
-  changeCurrentStreetType(type);
-  toggleBulldozer(false);
-  const entireDoc = document.documentElement;
-  entireDoc.style.cursor = "default";
 }
 </script>
