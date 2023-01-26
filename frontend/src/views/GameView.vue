@@ -38,9 +38,9 @@ window.addEventListener("keyup", (event) => {
   }
 });
 
-window.onbeforeunload = function() {
+window.onbeforeunload = function () {
   changeTo2DView();
-}
+};
 
 /**
  * Changes the View to the 2D-View
