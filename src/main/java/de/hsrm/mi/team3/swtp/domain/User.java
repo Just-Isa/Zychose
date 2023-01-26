@@ -15,16 +15,19 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class User {
 
-  @NonNull private String sessionID;
+  @NonNull
+  private String sessionID;
 
-  @NonNull private Integer currentRoomNumber;
+  @NonNull
+  private Integer currentRoomNumber;
 
-  @NonNull private String userName;
+  @NonNull
+  private String userName;
 
-  @NonNull private Long loginTime;
+  @NonNull
+  private Long loginTime;
 
-  // TODO new Vehicle() loeschen
-  private Vehicle vehicle = new Vehicle();
+  private Vehicle vehicle;
 
   @Override
   public String toString() {
