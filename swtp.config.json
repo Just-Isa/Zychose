@@ -78,14 +78,22 @@
       "imgPath": "/assets/img/sidewalk_straight.png",
       "glbPath": "/assets/models/sidewalk_straight.glb",
       "vehicleTypes": ["bicycle"],
-      "possibleRotations": []
+      "possibleRotations": [
+        0,
+        90
+      ]
     },
     {
       "name": "sidewalk-t",
       "imgPath": "/assets/img/sidewalk_t.png",
       "glbPath": "/assets/models/sidewalk_t.glb",
       "vehicleTypes": ["bicycle"],
-      "possibleRotations": []
+      "possibleRotations": [
+        0,
+        90,
+        180,
+        270
+      ]
     },
     {
       "name": "sidewalk-dead-end",
