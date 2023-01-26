@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.annotation.Testable;
 
 @Testable
-public class VehicleTest {
+class VehicleTest {
   private static final double[] POS_VECTOR = {1, 2, 3};
   private static final double[] ROTATION_VECTOR = {0, 0, 0};
   private static final double SET_ROTATIONX = 10;

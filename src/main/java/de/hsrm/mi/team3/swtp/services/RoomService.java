@@ -27,4 +27,6 @@ public interface RoomService {
   public void executeJython(Room room);
 
   public User getUserByID(int roomNumber, String sessionID);
+
+  public void deleteVehicleFromUser(int roomNumber, String sessionID);
 }

@@ -2,7 +2,7 @@ import * as THREE from "three";
 import type { Scene } from "three";
 import type { IStreetInformation } from "@/services/useStreets";
 import { useCamera } from "./CameraManager";
-import { useVehicle } from "../../services/use3DVehicle";
+import { use3DVehicle } from "../../services/use3DVehicle";
 import type { VehicleCameraContext } from "./VehicleCamera";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import type { IVehicle } from "../../model/IVehicle";
@@ -14,7 +14,7 @@ import { TTFLoader } from "three/examples/jsm/loaders/TTFLoader.js";
 import config from "../../../../swtp.config.json";
 
 const { camState, switchCamera } = useCamera();
-const { vehicleState } = useVehicle();
+const { vehicleState } = use3DVehicle();
 type StreetBlock = IStreetInformation;
 /**
  * Manages Scene with all Objects

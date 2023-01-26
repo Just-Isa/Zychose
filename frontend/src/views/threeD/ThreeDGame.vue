@@ -26,7 +26,7 @@ import { Camera, PointLight, Renderer, Scene } from "troisjs";
 import { useGLB } from "@/services/glbBlockLoader";
 import { SceneManager } from "@/views/threeD/SceneManager";
 import config from "../../../../swtp.config.json";
-import { useVehicle } from "@/services/use3DVehicle";
+import { use3DVehicle } from "@/services/use3DVehicle";
 import { useVehicleCommands } from "../../services/useVehicleCommands";
 import { useKeyInput } from "./keyInputHandler";
 import { useStreets } from "@/services/useStreets";
@@ -34,7 +34,7 @@ import { useStreets } from "@/services/useStreets";
 const { glbState, loadModel } = useGLB();
 const { publishVehicleCommands } = useVehicleCommands();
 const { keysPressed, inputs } = useKeyInput();
-const { receiveVehicle } = useVehicle();
+const { receiveVehicle } = use3DVehicle();
 const { streetsState } = useStreets();
 const sendInterval = 100;
 
