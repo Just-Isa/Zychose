@@ -16,6 +16,7 @@ import config from "../../../../swtp.config.json";
 const { camState, switchCamera } = useCamera();
 const { vehicleState } = useVehicle();
 type StreetBlock = IStreetInformation;
+const testObjectName = "text";
 /**
  * Manages Scene with all Objects
  */
@@ -238,7 +239,9 @@ export class SceneManager {
         threeVehicle
       );
     } else {
-      threeVehicle.getObjectByName("text")?.lookAt(camState.cam.position);
+      threeVehicle
+        .getObjectByName(testObjectName)
+        ?.lookAt(camState.cam.position);
     }
   }
 
@@ -267,7 +270,7 @@ export class SceneManager {
   ) {
     const textHightOverVehicle = config.allVehicleTypes.find(
       (v) => v.name === vehicleType
-    )?.textHightOverVehicle;
+    )?.textHightOverVehicle as number;
     const fontLoader = new FontLoader();
     const ttfloader = new TTFLoader();
     ttfloader.load(config.fontPath, function (json) {
@@ -280,9 +283,9 @@ export class SceneManager {
       textGeometry.center();
       const textmesh = new THREE.Mesh(textGeometry);
 
-      textmesh.position.set(0, textHightOverVehicle as number, 0);
+      textmesh.position.set(0, textHightOverVehicle, 0);
 
-      textmesh.name = "text";
+      textmesh.name = testObjectName;
       textmesh.quaternion.copy(camState.cam.quaternion);
       vehicle.add(textmesh);
     });

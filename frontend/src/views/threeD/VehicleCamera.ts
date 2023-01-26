@@ -74,35 +74,22 @@ class FirstPersonState extends CameraState {
     vehicleType: string,
     vehicle: THREE.Group
   ): void {
-    const offset = config.allVehicleTypes.find(
-      (v) => v.name === vehicleType
-    )?.firstPersonCameraOffset;
+    const offset = config.allVehicleTypes.find((v) => v.name === vehicleType)
+      ?.firstPersonCameraOffset as number[];
 
-    const lookat = config.allVehicleTypes.find(
-      (v) => v.name === vehicleType
-    )?.firstPersonCameraLookat;
+    const lookAt = config.allVehicleTypes.find((v) => v.name === vehicleType)
+      ?.firstPersonCameraLookat as number[];
 
     const idealOffset = super.calcVectorsOfVehiclePos(
-      new THREE.Vector3(offset?.x, offset?.y, offset?.z), //vector for camera offset in realtion to vehicle
+      new THREE.Vector3(offset[0], offset[1], offset[2]), //vector for camera offset in realtion to vehicle
       vehicleSpeed,
       vehicle
     );
     const idealLookat = super.calcVectorsOfVehiclePos(
-      new THREE.Vector3(lookat?.x, lookat?.y, lookat?.z), //vector for camera lookat in realtion to vehicle
+      new THREE.Vector3(lookAt[0], lookAt[1], lookAt[2]), //vector for camera lookat in realtion to vehicle
       vehicleSpeed,
       vehicle
     );
-
-    // const idealOffset = super.calcVectorsOfVehiclePos(
-    //   new THREE.Vector3(0, 2, 0), //vector for camera offset in realtion to vehicle
-    //   vehicleSpeed,
-    //   vehicle
-    // );
-    // const idealLookat = super.calcVectorsOfVehiclePos(
-    //   new THREE.Vector3(0, 3, 15), //vector for camera lookat in realtion to vehicle
-    //   vehicleSpeed,
-    //   vehicle
-    // );
 
     this._currentCameraPos.copy(idealOffset);
     this._currentCameraLookAt.copy(idealLookat);
@@ -124,20 +111,18 @@ class ThirdPersonState extends CameraState {
   ): void {
     const lerpDuration = 0.5;
 
-    const offset = config.allVehicleTypes.find(
-      (v) => v.name === vehicleType
-    )?.thirdPersonCameraOffset;
+    const offset = config.allVehicleTypes.find((v) => v.name === vehicleType)
+      ?.thirdPersonCameraOffset as number[];
     const idealOffset = super.calcVectorsOfVehiclePos(
-      new THREE.Vector3(offset?.x, offset?.y, offset?.z), //vector for camera offset in realtion to vehicle
+      new THREE.Vector3(offset[0], offset[1], offset[2]), //vector for camera offset in realtion to vehicle
       vehicleSpeed,
       vehicle
     );
-    const lookAt = config.allVehicleTypes.find(
-      (v) => v.name === vehicleType
-    )?.thridPersonCameraLookat;
+    const lookAt = config.allVehicleTypes.find((v) => v.name === vehicleType)
+      ?.thridPersonCameraLookat as number[];
 
     const idealLookat = super.calcVectorsOfVehiclePos(
-      new THREE.Vector3(lookAt?.x, lookAt?.y, lookAt?.z), //vector for camera lookat in realtion to vehicle
+      new THREE.Vector3(lookAt[0], lookAt[1], lookAt[2]), //vector for camera lookat in realtion to vehicle
       vehicleSpeed,
       vehicle
     );

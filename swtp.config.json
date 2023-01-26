@@ -135,7 +135,7 @@
     {
       "name": "car",
       "iconPath": "/assets/img/car.png",
-      "glbPath": "/assets/models/cars/toon.glb",
+      "glbPath": "/assets/models/vehicles/toon.glb",
       "textHightOverVehicle":5,
       "params":{
         "maxSpeed": 0.6,
@@ -144,31 +144,15 @@
         "brakeSpeed":0.3,
         "runOutSpeed":-0.1
       },
-      "firstPersonCameraOffset": {
-        "x": 0,
-        "y": 2,
-        "z": 0
-      },
-      "firstPersonCameraLookat": {
-        "x": 0,
-        "y": 3,
-        "z": 15
-      },
-      "thirdPersonCameraOffset": {
-        "x": 0,
-        "y": 5,
-        "z": -10
-      },
-      "thridPersonCameraLookat": {
-        "x": 0,
-        "y": 5,
-        "z": 20
-      }
+      "firstPersonCameraOffset": [0,2,0],
+      "firstPersonCameraLookat": [0,3,15],
+      "thirdPersonCameraOffset": [0,5,-10],
+      "thridPersonCameraLookat": [0,5,20]
     },
     {
       "name": "bicycle",
       "iconPath": "/assets/img/bicycle.png",
-      "glbPath": "/assets/models/cars/bike.glb",
+      "glbPath": "/assets/models/vehicles/bike.glb",
       "textHightOverVehicle":3,
       "params":{
         "maxSpeed": 0.2,
@@ -177,26 +161,10 @@
         "brakeSpeed":0.01,
         "runOutSpeed":-0.09
       },
-      "firstPersonCameraOffset": {
-        "x": 0,
-        "y": 2,
-        "z": -1
-      },
-      "firstPersonCameraLookat": {
-        "x": 0,
-        "y": 3,
-        "z": 15
-      },
-      "thirdPersonCameraOffset": {
-        "x": 0,
-        "y": 5,
-        "z": -10
-      },
-      "thridPersonCameraLookat": {
-        "x": 0,
-        "y": 5,
-        "z": 20
-      }
+      "firstPersonCameraOffset": [0,2,-1],
+      "firstPersonCameraLookat": [0,3,15],
+      "thirdPersonCameraOffset": [0,5,-10],
+      "thridPersonCameraLookat": [0,5,20]
     }
     
   ],
