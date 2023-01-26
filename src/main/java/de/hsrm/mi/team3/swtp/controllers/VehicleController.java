@@ -4,6 +4,7 @@ import de.hsrm.mi.team3.swtp.domain.Vehicle;
 import de.hsrm.mi.team3.swtp.domain.VehicleCommands;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackenVehicleCommandMessage;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
+import de.hsrm.mi.team3.swtp.domain.messaging.BackendVehiclePositionMessage;
 import de.hsrm.mi.team3.swtp.services.BackendInfoService;
 import de.hsrm.mi.team3.swtp.services.RoomBoxService;
 import de.hsrm.mi.team3.swtp.services.RoomService;
@@ -42,13 +43,12 @@ public class VehicleController {
     List<VehicleCommands> commands = commandVehicleMessage.commands();
     Vehicle vehicle =
         roomService.getUserByID(roomNumber, commandVehicleMessage.userSessionId()).getVehicle();
+
+    // if there is no vehicle -> skip
     if (vehicle == null) {
-      roomService
-          .getUserByID(roomNumber, commandVehicleMessage.userSessionId())
-          .setVehicle(new Vehicle());
-      vehicle =
-          roomService.getUserByID(roomNumber, commandVehicleMessage.userSessionId()).getVehicle();
+      return;
     }
+
     if (!commands.contains(VehicleCommands.FORWARD)
         && !commands.contains(VehicleCommands.BACKWARD)) {
       vehicleService.carRunOutSpeed(vehicle);
@@ -69,6 +69,27 @@ public class VehicleController {
         "vehicle/" + roomNumber,
         commandVehicleMessage.userSessionId(),
         BackendOperation.UPDATE,
+        vehicle);
+  }
+
+  /** Creates new vehicle at drop position */
+  @MessageMapping("topic/3d/createvehicle/{roomNumber}")
+  public void createVehicle(
+      @Payload BackendVehiclePositionMessage newVehicleMessage,
+      @DestinationVariable int roomNumber) {
+    Vehicle vehicle =
+        roomService.getUserByID(roomNumber, newVehicleMessage.userSessionId()).getVehicle();
+    if (vehicle == null) {
+      double[] vector = new double[] {newVehicleMessage.posX(), 0, newVehicleMessage.posZ()};
+      roomService
+          .getUserByID(roomNumber, newVehicleMessage.userSessionId())
+          .setVehicle(new Vehicle(newVehicleMessage.vehicleType(), vector));
+      vehicle = roomService.getUserByID(roomNumber, newVehicleMessage.userSessionId()).getVehicle();
+    }
+    bInfoService.sendVehicle(
+        "vehicle/" + roomNumber,
+        newVehicleMessage.userSessionId(),
+        BackendOperation.CREATE,
         vehicle);
   }
 }
