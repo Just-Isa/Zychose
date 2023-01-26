@@ -13,10 +13,11 @@
       class="tile-current flex justify-center items-center rounded-lg"
     >
       <img
-        class="h-16 w-16 m-2 !important"
+        class="h-16 w-16 m-2"
         :src="prop.currentBlock.imgPath"
         :alt="prop.currentBlock.name"
         draggable="false"
+        fetchpriority="high"
       />
     </div>
   </div>
