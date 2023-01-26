@@ -45,6 +45,7 @@ import { computed, onMounted } from "vue";
 import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
 import { logger } from "@/helpers/Logger";
+import { use3DVehiclePosition } from "@/services/use3DVehiclePosition";
 import { useStreetBlock } from "@/services/useStreetBlock";
 
 /**
@@ -149,6 +150,8 @@ const { updateStreetState, placedStreet, streetsState, initializeStreetState } =
 const { currentVehicle } = useVehicle();
 const { activeBlock } = useStreetBlock();
 const streetTypes = swtpConfigJSON.streetTypes;
+const { publishVehiclePosition } = use3DVehiclePosition();
+const config = swtpConfigJSON;
 
 /**
  * cellClicked handles the click event for cells.
@@ -181,13 +184,14 @@ function cellClicked(posX: number, posY: number): void {
 function onDrop(posX: number, posY: number) {
   //TODO posX und posY müssen statt geloggt zu werden, ans backend gesendet werden an dieser Stelle
   logger.log("Vehicle-Position: ", posX, posY);
-  changeTo3DView();
+  const vehicleType = currentVehicle.type;
+  changeTo3DView(posX, posY, vehicleType);
 }
 
 /**
  * Changes the View to the 3D-View
  */
-function changeTo3DView() {
+function changeTo3DView(posX: number, posY: number, vehicleType: string) {
   let wrapper = document.getElementById("wrapper");
   if (wrapper != null) {
     wrapper.classList.remove("opacity-70");
@@ -201,7 +205,13 @@ function changeTo3DView() {
     );
   }
   //TODO die 800ms sind gesetzt, weil es sonst keine richtige fade-to-white transition gibt !
-  //TODO manchmal wechselt der router die seite nicht! --> außerdem wird ein *[Violation]'requestAnimationFrame' handler took XYZms* Hinweis geworfen --> die Performance der 3D-View ist also nicht so toll!
+  //TODO manchmal wechselt der router die seite nicht!
+  //--> außerdem wird ein *[Violation]'requestAnimationFrame' handler took XYZms* Hinweis geworfen
+  //--> die Performance der 3D-View ist also nicht so toll!
+  //Calculating correct position in 3D World
+  posX = (posX - 1 - config.gridSize / 2) * config.blocksize;
+  posY = (posY - 1 - config.gridSize / 2) * config.blocksize;
+  publishVehiclePosition(posX, posY, vehicleType);
   setTimeout(function () {
     router.push((location.pathname.split("/")[1] as unknown as number) + "/3d");
   }, 800);

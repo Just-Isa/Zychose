@@ -20,9 +20,13 @@ const vehicleState = reactive<IVehicleState>({
   errorMessage: "",
 });
 
-export function useVehicle() {
-  return { vehicleState: readonly(vehicleState), receiveVehicle };
+export function use3DVehicle() {
+  return {
+    vehicleState: readonly(vehicleState),
+    receiveVehicle,
+  };
 }
+
 /**
  * Subscribes to the Vehicle-Topic and updates the vehicleState.
  */
