@@ -17,6 +17,7 @@
         :src="prop.currentBlock.imgPath"
         :alt="prop.currentBlock.name"
         draggable="false"
+        fetchpriority="high"
       />
     </div>
   </div>
