@@ -5,9 +5,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-/**
- * RoadMap rray of StreetBlocks generated from roomMap string for easy access
- */
+/** RoadMap rray of StreetBlocks generated from roomMap string for easy access */
 public class Roadmap {
 
   // TODO replace mit Wert aus Config
@@ -21,15 +19,16 @@ public class Roadmap {
         JSONObject obj = jsonArray.getJSONObject(i);
         int x = obj.getInt("posX");
         int y = obj.getInt("posY");
-        this.streetBlockMap[y - 1][x - 1] = new StreetBlock(
-            obj.get("streetType").toString(), obj.getInt("rotation"), x - 1, y - 1, false);
+        this.streetBlockMap[y - 1][x - 1] =
+            new StreetBlock(
+                obj.get("streetType").toString(), obj.getInt("rotation"), x - 1, y - 1, false);
       }
     }
   }
 
   /**
-   * @param x        Koordinate von der die Nachbarn geholt werden sollen
-   * @param y        Koordinate von der die Nachbarn geholt werden sollen
+   * @param x Koordinate von der die Nachbarn geholt werden sollen
+   * @param y Koordinate von der die Nachbarn geholt werden sollen
    * @param rotation Richtung in welche nach Nachbarn gesucht werden soll
    * @return EnumMap mit den Nachbar Tiles
    */

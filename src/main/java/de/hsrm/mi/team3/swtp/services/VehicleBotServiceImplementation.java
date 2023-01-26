@@ -1,7 +1,6 @@
 package de.hsrm.mi.team3.swtp.services;
 
 import de.hsrm.mi.team3.swtp.domain.Room;
-import de.hsrm.mi.team3.swtp.domain.StreetBlock;
 import de.hsrm.mi.team3.swtp.domain.VehicleBot;
 import de.hsrm.mi.team3.swtp.domain.VehicleType;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
@@ -10,21 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * This class should only be used by python scripts to create and interact with
- * the VehicleBot
+ * This class should only be used by python scripts to create and interact with the VehicleBot
  * class.
  */
 @Service
 public class VehicleBotServiceImplementation implements VehicleBotService {
 
-  @Autowired
-  BackendInfoServiceImpl backendInfoService;
+  @Autowired BackendInfoServiceImpl backendInfoService;
 
   private Room room;
 
   /**
-   * method to get current room from jython to VehicleBotService-instance. method
-   * is only called
+   * method to get current room from jython to VehicleBotService-instance. method is only called
    * from python-script.
    *
    * @param room
@@ -34,9 +30,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     this.room = room;
   }
 
-  /**
-   * method to create a new VehicleBot. method is only called from python script.
-   */
+  /** method to create a new VehicleBot. method is only called from python script. */
   @Override
   public void createBot() {
     VehicleBot bot = new VehicleBot(room);
@@ -50,9 +44,9 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   }
 
   /**
-   * method iterates through StreetBlockMap of room and return the first free
-   * Streetblock coordinates
-   * 
+   * method iterates through StreetBlockMap of room and return the first free Streetblock
+   * coordinates
+   *
    * @return
    */
   private int[] getFreeStreetBlock() {
@@ -61,7 +55,9 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
         for (int j = 0; j < this.room.getRoadMap().getStreetBlockMap().length; j++)
           if (this.room.getRoadMap().getStreetBlock(i, j) != null
               && !this.room.getRoadMap().getStreetBlock(i, j).isBlocked()) {
-            return new int[] { i + 1, j + 1 }; // +1 damit die richtigen Koordinaten ins frontend kommen
+            return new int[] {
+              i + 1, j + 1
+            }; // +1 damit die richtigen Koordinaten ins frontend kommen
           }
       }
     }
@@ -69,8 +65,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   }
 
   /**
-   * method to create a new VehicleBot with specific details. method is only
-   * called from pyton
+   * method to create a new VehicleBot with specific details. method is only called from pyton
    * script
    *
    * @param rotation
@@ -92,9 +87,8 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   }
 
   /**
-   * Main method to let VehicleBots drive. send the updated bot to the frontend
-   * with
-   * each change in position. method is only called from python script
+   * Main method to let VehicleBots drive. send the updated bot to the frontend with each change in
+   * position. method is only called from python script
    */
   @Override
   public void driveBot() {
@@ -123,9 +117,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
 
   }
 
-  /**
-   * Checks and reacts to current StreetBlock-Type
-   */
+  /** Checks and reacts to current StreetBlock-Type */
   private void drive(VehicleBot bot) {
     if (bot.getCurrentStreetBlock() != null) {
       String blockName = bot.getCurrentStreetBlock().getBlockType();
