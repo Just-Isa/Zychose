@@ -30,7 +30,6 @@ export function use3DVehicle() {
   };
 }
 
-
 /**
  * Subscribes to the Vehicle-Topic and updates the vehicleState.
  */
@@ -54,9 +53,6 @@ function receiveVehicle() {
     });
   };
 }
-function handleMessage(jsonObject: IVehicleMessage) {
-  if (jsonObject.operator !== MessageOperator.UPDATE)
-    logger.log("HANDLE MESSAGE: ", jsonObject);
 
 function checkIfVehicleIsBot(vehicle: IVehicleMessage) {
   if (vehicle.userSessionId.includes(config.botIdentifier)) {
