@@ -102,4 +102,15 @@ public class RoomServiceImplementation implements RoomService {
     room.setRoomNumber(roomNumber);
     room.setUserList(userList);
   }
+
+  @Override
+  public void deleteVehicleFromUser(int roomNumber, String sessionID) {
+    Room room = this.roomBoxService.getSpecificRoom(roomNumber);
+    for (User u : room.getUserList()) {
+      if (u.getSessionID().equalsIgnoreCase(sessionID)) {
+        u.setVehicle(null);
+        break;
+      }
+    }
+  }
 }

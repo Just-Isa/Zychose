@@ -12,6 +12,7 @@ const stateStreetBlock = reactive({
     imgPath: "",
     possibleRotations: new Array<number>(),
     possibleVehicleTypes: new Array<string>(),
+    isBulldozer: false,
   },
 });
 
