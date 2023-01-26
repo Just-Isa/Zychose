@@ -42,20 +42,22 @@ public class VehicleBot {
    */
   public void drive() {
     String blockName = this.currentStreetBlock.getBlockType();
-    if (blockName.equals("road-t") || blockName.equals("road-cross")) {
-      if (hasFixRoute()) {
-        followScript();
+    if (!isStreetblockInvalid(blockName)) {
+      if (blockName.contains("-t") || blockName.contains("-cross")) {
+        if (hasFixRoute()) {
+          followScript();
+        } else {
+          turnRandom(this.currentStreetBlock.getExits());
+        }
+      } else if (blockName.contains("-curve")) {
+        if (this.currentStreetBlock.getExits()[0] == this.currentRotation) {
+          turn(this.currentStreetBlock.getExits()[1]);
+        } else {
+          turn(this.currentStreetBlock.getExits()[0]);
+        }
       } else {
-        turnRandom(this.currentStreetBlock.getExits());
+        moveToNextBlock();
       }
-    } else if (blockName.equals("road-curve")) {
-      if (this.currentStreetBlock.getExits()[0] == this.currentRotation) {
-        turn(this.currentStreetBlock.getExits()[1]);
-      } else {
-        turn(this.currentStreetBlock.getExits()[0]);
-      }
-    } else {
-      moveToNextBlock();
     }
     this.room.updateVehicleBots(this, this.currentPos[0], this.currentPos[1]);
   }
@@ -66,13 +68,13 @@ public class VehicleBot {
   public void moveToNextBlock() {
     refreshNeighbours();
     StreetBlock destination = this.neighbours.get(VehicleNeighbour.VEHICLETOP);
-    if (destination == null || this.currentStreetBlock.getBlockType().equals("road-dead-end")) {
+    if (destination == null || this.currentStreetBlock.getBlockType().contains("dead-end")) {
       turn(this.currentRotation > 180 ? this.currentRotation - 180 : this.currentRotation + 180);
-    } else if (!destination.isBlocked()) {
+    } else if (!destination.isBlocked() && !isStreetblockInvalid(destination.getBlockType())) {
       this.currentPos[0] = destination.getBlockPosition()[1] + 1;
       this.currentPos[1] = destination.getBlockPosition()[0] + 1;
       this.currentStreetBlock = destination;
-    } else {
+    } else if (!isStreetblockInvalid(destination.getBlockType())) {
       int rotation =
           this.room.getVehicleBotRotation(this.getCurrentPos()[0], this.getCurrentPos()[1]);
       if (rotation == -1) {
@@ -81,7 +83,7 @@ public class VehicleBot {
       } else if (rotation != this.currentRotation) {
         moveToNextBlock();
       }
-    }
+    } // else delete Bot?
   }
 
   /**
@@ -128,6 +130,10 @@ public class VehicleBot {
         this.fixRoute = false;
     }
     this.route.remove(0);
+  }
+
+  public boolean isStreetblockInvalid(String blockName) {
+    return (this.vehicleType.equals(VehicleType.BICYCLE) && blockName.startsWith("road", 0));
   }
 
   public List<Character> getRoute() {
