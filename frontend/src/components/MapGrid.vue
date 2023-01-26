@@ -150,7 +150,7 @@ const { updateStreetState, placedStreet, streetsState, initializeStreetState } =
 const { currentVehicle } = useVehicle();
 const { activeBlock } = useStreetBlock();
 const streetTypes = swtpConfigJSON.streetTypes;
-const { createVehiclePositionAndSend } = use3DVehiclePosition();
+const { publishVehiclePosition } = use3DVehiclePosition();
 const config = swtpConfigJSON;
 
 /**
@@ -211,7 +211,7 @@ function changeTo3DView(posX: number, posY: number, vehicleType: string) {
   //Calculating correct position in 3D World
   posX = (posX - 1 - config.gridSize / 2) * config.blocksize;
   posY = (posY - 1 - config.gridSize / 2) * config.blocksize;
-  createVehiclePositionAndSend(posX, posY, vehicleType);
+  publishVehiclePosition(posX, posY, vehicleType);
   setTimeout(function () {
     router.push((location.pathname.split("/")[1] as unknown as number) + "/3d");
   }, 800);

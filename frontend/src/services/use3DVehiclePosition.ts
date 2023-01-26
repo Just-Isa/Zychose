@@ -10,7 +10,7 @@ const positionMessageClient = new Client({ brokerURL: webSocketUrl });
 
 export function use3DVehiclePosition() {
   return {
-    createVehiclePositionAndSend,
+    publishVehiclePosition,
   };
 }
 
@@ -20,7 +20,7 @@ export function use3DVehiclePosition() {
  * @param posY
  * @param vehicleType
  */
-function createVehiclePositionAndSend(
+function publishVehiclePosition(
   posX: number,
   posY: number,
   vehicleType: string
