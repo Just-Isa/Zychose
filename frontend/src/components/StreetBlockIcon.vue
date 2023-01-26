@@ -40,11 +40,6 @@ const {
   bulldozerActive,
 } = useStreetBlock();
 
-function testtest() {
-  console.log("TESTTEST");
-  changeRotation(180);
-}
-
 /**
  * changes the active StreetBlock in streetBlockState and rotates StreetBlock if StreetBlock is clicked multiple times
  * @param type selected StreetBlock
