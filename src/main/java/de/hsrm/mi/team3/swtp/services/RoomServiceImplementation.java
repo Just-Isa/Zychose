@@ -119,26 +119,26 @@ public class RoomServiceImplementation implements RoomService {
   @Override
   public void executeJython(Room room) {
     /* try (PythonInterpreter pyInterp = new PythonInterpreter()) { */
+    logger.info("executeJython Start");
+    room.setJythonRunning(true);
     ScriptEngine pyInterp = new ScriptEngineManager().getEngineByName("python");
     try {
       if (!room.getJythonScript().isBlank()) {
-        // pyInterp.setOut(System.out);
         ScriptContext context = pyInterp.getContext();
         context.setWriter(new PrintWriter(System.out));
         context.setErrorWriter(new PrintWriter(System.err));
-        // pyInterp.put("context", applicationContext);
-        // macht den Raum im python-Skript abrufbar unter dem Variablennamen
-        // "room"
-        pyInterp.put("room", room);
-        // macht den VehicleBotService nutzbar im python-Skript
-        pyInterp.put("botAPI", vehicleBotService);
+        pyInterp.put(
+            "room",
+            room); // macht den Raum im python-Skript abrufbar unter dem Variablennamen "room"
+        pyInterp.put(
+            "botAPI", vehicleBotService); // macht den VehicleBotService nutzbar im python-Skript
         pyInterp.eval(room.getJythonScript());
       } else {
         logger.error("leeres Skript");
       }
-      // logger.info("jython Output: " + output.toString());
     } catch (PyException | ScriptException e) {
       logger.error("ERROR jythonScript", e);
+      room.setJythonRunning(false);
     }
   }
 

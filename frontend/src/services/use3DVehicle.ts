@@ -67,6 +67,11 @@ function handleMessage(
   jsonObject: IVehicleMessage
 ) {
   if (jsonObject.operator === MessageOperator.DELETE) {
+    vehiclemap.delete(jsonObject.userSessionId);
+  }
+  if (jsonObject.operator !== MessageOperator.UPDATE)
+    logger.log("HANDLE MESSAGE: ", jsonObject);
+  if (jsonObject.operator === MessageOperator.DELETE) {
     logger.log(
       "SESSIONID: ",
       vehicleState.vehicles.get(jsonObject.userSessionId)
