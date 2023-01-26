@@ -12,7 +12,7 @@
     <Camera
       :position="{ y: 1500, z: 400 }"
       :look-at="{ x: 0, y: 0, z: 0 }"
-      :near="1"
+      :near="0"
       :far="5500"
     />
     <Scene ref="scene" background="#fff">

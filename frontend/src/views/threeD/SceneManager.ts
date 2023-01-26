@@ -149,10 +149,10 @@ export class SceneManager {
             vehicle.rotationZ
           );
           this.scene.add(car);
-          this.addTextToVehicle(vehicleSessionId, car);
+          this.addTextToVehicle(vehicleSessionId, vehicle.vehicleType, car);
 
           if (vehicleSessionId === getSessionIDFromCookie()) {
-            this.vehicleCamera.request(vehicle.speed, car);
+            this.vehicleCamera.request(vehicle.speed, vehicle.vehicleType, car);
           }
 
           this.vehicles.set(vehicleSessionId, car);
@@ -231,7 +231,11 @@ export class SceneManager {
     threeVehicle.position.lerp(destination, config.VehilceLerpSpeed);
 
     if (sessionID === getSessionIDFromCookie()) {
-      this.vehicleCamera.request(vehicle.speed, threeVehicle);
+      this.vehicleCamera.request(
+        vehicle.speed,
+        vehicle.vehicleType,
+        threeVehicle
+      );
     } else {
       threeVehicle.getObjectByName("text")?.lookAt(camState.cam.position);
     }
@@ -255,7 +259,15 @@ export class SceneManager {
       }
     }
   }
-  private addTextToVehicle(text: string, vehicle: THREE.Group) {
+  private addTextToVehicle(
+    text: string,
+    vehicleType: string,
+    vehicle: THREE.Group
+  ) {
+    const textHightOverVehicle = config.allVehicleTypes.find(
+      (v) => v.name === vehicleType
+    )?.textHightOverVehicle;
+    console.log("TSCDJAHBJDHBAJHDB", textHightOverVehicle);
     const fontLoader = new FontLoader();
     const ttfloader = new TTFLoader();
     ttfloader.load(config.fontPath, function (json) {
@@ -267,7 +279,8 @@ export class SceneManager {
       });
       textGeometry.center();
       const textmesh = new THREE.Mesh(textGeometry);
-      textmesh.position.set(0, config.textHightOverVehicle, 0);
+
+      textmesh.position.set(0, textHightOverVehicle as number, 0);
 
       textmesh.name = "text";
       textmesh.quaternion.copy(camState.cam.quaternion);

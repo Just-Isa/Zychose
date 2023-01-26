@@ -135,30 +135,72 @@
     {
       "name": "car",
       "iconPath": "/assets/img/car.png",
-      "glbPath": "/assets/models/cars/jeep.glb",
+      "glbPath": "/assets/models/cars/toon.glb",
+      "textHightOverVehicle":5,
       "params":{
         "maxSpeed": 0.6,
         "acceleration": 0.2,
         "handling":0.15,
         "brakeSpeed":0.3,
         "runOutSpeed":-0.1
+      },
+      "firstPersonCameraOffset": {
+        "x": 0,
+        "y": 2,
+        "z": 0
+      },
+      "firstPersonCameraLookat": {
+        "x": 0,
+        "y": 3,
+        "z": 15
+      },
+      "thirdPersonCameraOffset": {
+        "x": 0,
+        "y": 5,
+        "z": -10
+      },
+      "thridPersonCameraLookat": {
+        "x": 0,
+        "y": 5,
+        "z": 20
       }
     },
     {
       "name": "bicycle",
       "iconPath": "/assets/img/bicycle.png",
-      "glbPath": "/assets/models/bike.glb",
+      "glbPath": "/assets/models/cars/bike.glb",
+      "textHightOverVehicle":3,
       "params":{
         "maxSpeed": 0.2,
         "acceleration": 0.1,
         "handling":0.1,
         "brakeSpeed":0.01,
         "runOutSpeed":-0.09
+      },
+      "firstPersonCameraOffset": {
+        "x": 0,
+        "y": 2,
+        "z": -1
+      },
+      "firstPersonCameraLookat": {
+        "x": 0,
+        "y": 3,
+        "z": 15
+      },
+      "thirdPersonCameraOffset": {
+        "x": 0,
+        "y": 5,
+        "z": -10
+      },
+      "thridPersonCameraLookat": {
+        "x": 0,
+        "y": 5,
+        "z": 20
       }
     }
+    
   ],
   "fontPath":"/fonts/poppins-semiBold.ttf",
-  "fontSize":0.75,
-  "VehilceLerpSpeed": 0.075,
-  "textHightOverVehicle":7
+  "fontSize":0.3,
+  "VehilceLerpSpeed": 0.075
 }
