@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class FileUploadRestControllerTest {
+class FileUploadRestControllerTest {
 
   @Autowired private MockMvc mockMvc;
 

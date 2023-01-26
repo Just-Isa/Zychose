@@ -2,6 +2,7 @@ package de.hsrm.mi.team3.swtp.controllers;
 
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
+import de.hsrm.mi.team3.swtp.domain.Vehicle;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendMouseMessage;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendRoomMessage;
@@ -85,5 +86,13 @@ public class RoomController {
     if (user.getUserName() == null) {
       user.setUserName("Raus aus meinem Kopf");
     }
+  }
+
+  @MessageMapping("/topic/vehicle/delete/{roomNumber}")
+  public void deleteVehicle(@DestinationVariable int roomNumber, @Payload String sessionID) {
+    logger.info("VEHICLE STOMPING: " + sessionID);
+    this.roomService.deleteVehicleFromUser(roomNumber, sessionID);
+    this.backservice.sendVehicle(
+        "vehicle/" + roomNumber, sessionID, BackendOperation.DELETE, new Vehicle());
   }
 }
