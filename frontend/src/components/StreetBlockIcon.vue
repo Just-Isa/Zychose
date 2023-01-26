@@ -45,6 +45,23 @@ const {
  * @param type selected StreetBlock
  */
 function changeActiveStreetBlock(type: StreetBlock) {
+  //TODO Rotation beim Hover muss ergänzt werden
+  if (type.name === activeBlock.streetBlock.name && !bulldozerActive.isActive) {
+    const block = document.getElementById(prop.currentBlock.name);
+    if (block) {
+      let nextRotIndex =
+        (activeBlock.streetBlock.possibleRotations.indexOf(
+          activeBlock.streetBlock.currentRotation
+        ) +
+          1) %
+        activeBlock.streetBlock.possibleRotations.length;
+
+      let nextRot = activeBlock.streetBlock.possibleRotations[nextRotIndex];
+      block.style.rotate = `${nextRot}deg`;
+      changeRotation(nextRot);
+    }
+    return;
+  }
   changeCurrentStreetType(type);
   toggleBulldozer(false);
   const entireDoc = document.documentElement;
