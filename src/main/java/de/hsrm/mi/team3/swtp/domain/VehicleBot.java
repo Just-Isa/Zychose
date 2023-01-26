@@ -7,8 +7,12 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class VehicleBot {
+
+  Logger logger = LoggerFactory.getLogger(VehicleBot.class);
 
   private String id;
   private VehicleBehaviour behaviour;
@@ -24,7 +28,8 @@ public class VehicleBot {
   private List<Character> route;
   private Random randomGenerator = new Random();
 
-  public VehicleBot(Room room, String id) {
+  public VehicleBot(Room room) {
+    String id = Integer.toString(room.getVehicleBots().size() + 1);
     this.id = "bot-" + id;
     this.room = room;
     this.route = new ArrayList<>();
@@ -33,33 +38,7 @@ public class VehicleBot {
     // choose random Model from VehicleType Enum
     int randomNumber = randomGenerator.nextInt(VehicleType.values().length);
     this.vehicleType = VehicleType.values()[randomNumber];
-    setCurrentStreetBlock();
-  }
-
-  /**
-   * Main-Movement Function of VehicleBot. Only this should be called in the Jython Script. Checks
-   * and reacts to current StreetBlock-Type
-   */
-  public void drive() {
-    String blockName = this.currentStreetBlock.getBlockType();
-    if (!isStreetblockInvalid(blockName)) {
-      if (blockName.contains("-t") || blockName.contains("-cross")) {
-        if (hasFixRoute()) {
-          followScript();
-        } else {
-          turnRandom(this.currentStreetBlock.getExits());
-        }
-      } else if (blockName.contains("-curve")) {
-        if (this.currentStreetBlock.getExits()[0] == this.currentRotation) {
-          turn(this.currentStreetBlock.getExits()[1]);
-        } else {
-          turn(this.currentStreetBlock.getExits()[0]);
-        }
-      } else {
-        moveToNextBlock();
-      }
-    }
-    this.room.updateVehicleBots(this, this.currentPos[0], this.currentPos[1]);
+    // setCurrentStreetBlock();
   }
 
   /**
@@ -89,7 +68,7 @@ public class VehicleBot {
   /**
    * @param rotation direction to which VehicleBot should turn
    */
-  private void turn(int rotation) {
+  public void turn(int rotation) {
     this.setCurrentRotation(rotation);
     moveToNextBlock();
   }
@@ -97,7 +76,7 @@ public class VehicleBot {
   /**
    * @param exits Integer Array with directions of all valid exits of current StreetBlock
    */
-  private void turnRandom(int[] exits) {
+  public void turnRandom(int[] exits) {
     int randomNumber = randomGenerator.nextInt(exits.length - 1);
     int ownExit =
         this.currentRotation > 90 ? this.currentRotation - 180 : this.currentRotation + 180;

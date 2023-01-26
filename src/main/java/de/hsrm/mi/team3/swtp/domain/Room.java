@@ -26,6 +26,7 @@ public class Room {
   private Roadmap roadMap;
   private String roomMap;
   private List<VehicleBot> vehicleBots;
+  private boolean jythonRunning;
 
   public Room(int roomNumber) {
     this.roomName = "default-name";
@@ -34,6 +35,7 @@ public class Room {
     this.jythonScript = "";
     this.roomMap = "";
     this.vehicleBots = new ArrayList<>();
+    this.jythonRunning = false;
   }
 
   public Room(String roomName, int roomNumber) {
@@ -43,6 +45,7 @@ public class Room {
     this.jythonScript = "";
     this.roomMap = "";
     this.vehicleBots = new ArrayList<>();
+    this.jythonRunning = false;
   }
 
   /** executes the uploaded python script */
@@ -155,5 +158,13 @@ public class Room {
       }
     }
     return -1;
+  }
+
+  public boolean isJythonRunning() {
+    return jythonRunning;
+  }
+
+  public void setJythonRunning(boolean jythonRunning) {
+    this.jythonRunning = jythonRunning;
   }
 }

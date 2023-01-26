@@ -52,7 +52,7 @@ public class FileUploadController {
             room.getRoomMap()));
 
     // TODO testing puposes
-    roomService.executeJython(room);
+    // roomService.executeJython(room);
   }
 
   @GetMapping("/api/upload/{roomNumber}")

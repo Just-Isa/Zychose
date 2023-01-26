@@ -83,4 +83,8 @@ public class Roadmap {
     }
     return null;
   }
+
+  public StreetBlock[][] getStreetBlockMap() {
+    return this.streetBlockMap;
+  }
 }
