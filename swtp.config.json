@@ -144,7 +144,7 @@
     }
   ],
   "gridSize": 100,
-  "blockTabs":[
+  "menuTabs":[
     {
       "name": "car",
       "iconPath": "/car-pictogram.svg"

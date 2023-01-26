@@ -30,7 +30,7 @@
         <img
           src="/assets/img/arrow-pictogram.svg"
           alt="arrow-down"
-          class="scrollButton h-7 w-7"
+          class="h-7 w-7"
           :class="isMinimumHeight ? 'opacity-20 cursor-default' : 'opacity-100'"
         />
       </a>

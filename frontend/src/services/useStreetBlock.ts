@@ -20,11 +20,11 @@ const bulldozerActive = reactive({
   isActive: false,
 });
 
-const blockTabs = swtpConfigJSON.blockTabs;
+const menuTabs = swtpConfigJSON.menuTabs;
 
 const menuTabState = reactive({
   // Active tab is set to first entry in SWTPConfig at first initialisation
-  currentActiveTab: blockTabs[0].name,
+  currentActiveTab: menuTabs[0].name,
   currentTabChanged: false,
 });
 
