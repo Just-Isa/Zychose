@@ -1,4 +1,4 @@
-import { reactive, readonly } from "vue";
+import { reactive, readonly, ref } from "vue";
 import swtpConfigJSON from "../../../swtp.config.json";
 import type { StreetBlock } from "@/model/IStreetBlock";
 
@@ -28,6 +28,8 @@ const menuTabState = reactive({
   currentTabChanged: false,
 });
 
+const isRotationTriggeredState = ref(false);
+
 export function useStreetBlock() {
   function changeCurrentStreetType(s: StreetBlock) {
     stateStreetBlock.streetBlock = s;
@@ -35,6 +37,7 @@ export function useStreetBlock() {
 
   function toggleBulldozer(b: boolean) {
     bulldozerActive.isActive = b;
+    stateStreetBlock.streetBlock.isBulldozer = b;
   }
 
   function changeCurrentTab(s: string) {
@@ -44,6 +47,10 @@ export function useStreetBlock() {
 
   function resetCurrentChangedTab() {
     menuTabState.currentTabChanged = false;
+  }
+
+  function changeRotationTriggered(b: boolean) {
+    isRotationTriggeredState.value = b;
   }
 
   /**
@@ -66,5 +73,7 @@ export function useStreetBlock() {
     bulldozerActive,
     menuTabState,
     resetCurrentChangedTab,
+    isRotationTriggeredState,
+    changeRotationTriggered,
   };
 }

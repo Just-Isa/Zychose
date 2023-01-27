@@ -38,6 +38,7 @@ const {
   toggleBulldozer,
   changeRotation,
   bulldozerActive,
+  changeRotationTriggered,
 } = useStreetBlock();
 
 /**
@@ -71,6 +72,7 @@ function changeActiveStreetBlock(type: StreetBlock) {
 function changeActiveRotation(type: StreetBlock) {
   if (type.name === activeBlock.streetBlock.name && !bulldozerActive.isActive) {
     const block = document.getElementById(prop.currentBlock.name);
+    changeRotationTriggered(true);
     if (block) {
       let nextRotIndex =
         (activeBlock.streetBlock.possibleRotations.indexOf(
