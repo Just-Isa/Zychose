@@ -100,20 +100,18 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
    */
   @Override
   public void driveBot() {
-    // TODO checken, ob wirklich in jeder Iteration geprüft wird. Prüfen, ob das
-    // doch im JythonScript gehalten werden sollte
     boolean running = !room.getUserList().isEmpty();
     int runde = 0;
     while (running) {
       logger.info("driveBot Runde " + runde);
       for (VehicleBot bot : room.getVehicleBots()) {
-        // this.drive(bot);
+        this.drive(bot);
         sendBot(bot);
-        try {
-          Thread.sleep(5000);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
+      }
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
       }
       running = !room.getUserList().isEmpty();
       runde++;
@@ -166,7 +164,13 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
       for (int i = 0; i < this.room.getRoadMap().getStreetBlockMap().length; i++) {
         for (int j = 0; j < this.room.getRoadMap().getStreetBlockMap().length; j++)
           if (this.room.getRoadMap().getStreetBlock(i, j) != null
-              && !this.room.getRoadMap().getStreetBlock(i, j).isBlocked()) {
+              && !this.room.getRoadMap().getStreetBlock(i, j).isBlocked()
+              && (this.room.getRoadMap().getStreetBlock(i, j).getBlockType().contains("road")
+                  || this.room
+                      .getRoadMap()
+                      .getStreetBlock(i, j)
+                      .getBlockType()
+                      .contains("sidewalk"))) {
             this.room.getRoadMap().getStreetBlock(i, j).isBlocked(true);
             return new int[] {
               i + 1, j + 1

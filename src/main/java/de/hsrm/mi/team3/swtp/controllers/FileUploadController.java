@@ -50,9 +50,6 @@ public class FileUploadController {
             room.getUserList(),
             new String(room.getJythonScript().getBytes()),
             room.getRoomMap()));
-
-    // TODO testing puposes
-    // roomService.executeJython(room);
   }
 
   @GetMapping("/api/upload/{roomNumber}")
