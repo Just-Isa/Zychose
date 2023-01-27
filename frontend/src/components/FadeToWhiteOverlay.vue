@@ -2,7 +2,9 @@
   <div
     id="overlay"
     :class="
-      prop.isActive ? 'absolute duration-1000 bg-white h-screen w-screen' : ''
+      prop.isActive
+        ? 'absolute duration-1000 bg-white h-screen w-screen z-20'
+        : ''
     "
   ></div>
 </template>
