@@ -67,12 +67,12 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
 
   public void createBotWithType(VehicleType vehicleType) {
     VehicleBot bot = new VehicleBot(room);
-
     int[] pos = this.getFreeStreetBlock();
     if (pos != null) {
       bot.setCurrentPos(pos[0], pos[1]);
     }
     bot.setVehicleModel(vehicleType);
+
     this.room.setVehicleBot(bot);
   }
 
