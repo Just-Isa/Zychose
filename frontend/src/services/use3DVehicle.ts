@@ -20,9 +20,13 @@ const vehicleState = reactive<IVehicleState>({
   errorMessage: "",
 });
 
-export function useVehicle() {
-  return { vehicleState: readonly(vehicleState), receiveVehicle };
+export function use3DVehicle() {
+  return {
+    vehicleState: readonly(vehicleState),
+    receiveVehicle,
+  };
 }
+
 /**
  * Subscribes to the Vehicle-Topic and updates the vehicleState.
  */
@@ -47,8 +51,17 @@ function receiveVehicle() {
   };
 }
 function handleMessage(jsonObject: IVehicleMessage) {
+  if (jsonObject.operator !== MessageOperator.UPDATE)
+    logger.log("HANDLE MESSAGE: ", jsonObject);
   if (jsonObject.operator === MessageOperator.DELETE) {
+    logger.log(
+      "SESSIONID: ",
+      vehicleState.vehicles.get(jsonObject.userSessionId)
+    );
+    logger.log("map vor delete:", vehicleState.vehicles);
     vehicleState.vehicles.delete(jsonObject.userSessionId);
+    logger.log("VEHICLE DELETED");
+    logger.log(vehicleState.vehicles);
   }
   if (
     jsonObject.operator === MessageOperator.CREATE ||

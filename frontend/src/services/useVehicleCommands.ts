@@ -6,6 +6,14 @@ import { Client } from "@stomp/stompjs";
 const webSocketUrl = `ws://${window.location.host}/stompbroker`;
 const stompClient = new Client({ brokerURL: webSocketUrl });
 
+const stompClientConnect = setInterval(function () {
+  if (!stompClient.connected) {
+    stompClient.activate();
+  } else {
+    clearTimeout(stompClientConnect);
+  }
+}, 20);
+
 export function useVehicleCommands() {
   return { publishVehicleCommands };
 }
