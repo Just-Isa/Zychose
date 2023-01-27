@@ -78,8 +78,6 @@ function changeTo2DView() {
     logger.error("Error while publishing vehicle! ", err);
   }
 
-  console.log("GEWARTET");
-
   showOverlay.value = true;
   setTimeout(function () {
     location.href = "/" + roomState.room.roomNumber;

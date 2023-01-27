@@ -15,6 +15,7 @@ module.exports = {
         "street-menu-bg-gray": "#5B6569",
         "active-block-turquoise": "#95E8FF",
         "street-menu-tile-bg-turquoise": "#E4F9FF",
+        "error-message-pink": "#DB5461",
       },
     },
   },

@@ -7,13 +7,15 @@
 import { onMounted } from "vue";
 import { deleteSessionId } from "@/helpers/SessionIDHelper";
 import { logger } from "@/helpers/Logger";
+import { deleteName } from "@/helpers/UsernameHelper";
 
 onMounted(() => {
   deleteSessionId();
+  deleteName();
   resetEverything();
   // Timeout necessary due to Firefox' request lifetime
   setTimeout(function () {
-    location.href = "/rooms";
+    location.href = "/";
   }, 100);
 });
 

@@ -1,11 +1,11 @@
-export function getSessionIDFromCookie() {
+export function getNameFromCookie() {
   const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${"sid"}=`);
+  const parts = value.split(`; ${"name"}=`);
   if (parts.length === 2) return parts.pop()!.split(";").shift();
 }
 
-export function checkIfSessionIDCookieExists(): boolean {
-  return getCookie("sid");
+export function checkIfNameCookieExists(): boolean {
+  return getCookie("name");
 }
 
 /**
@@ -14,10 +14,10 @@ export function checkIfSessionIDCookieExists(): boolean {
  * @param path Path of cookie - Not required
  * @param domain Domain of cookie - Not required
  */
-export function deleteSessionId(path?: string, domain?: string) {
-  if (getCookie("sid")) {
+export function deleteName(path?: string, domain?: string) {
+  if (getCookie("name")) {
     document.cookie =
-      "sid" +
+      "name" +
       "=" +
       (path ? ";path=" + path : "") +
       (domain ? ";domain=" + domain : "") +

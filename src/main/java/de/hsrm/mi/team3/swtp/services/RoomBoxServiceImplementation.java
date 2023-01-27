@@ -25,6 +25,9 @@ public class RoomBoxServiceImplementation implements RoomBoxService {
    */
   public int nextRoomNumber() {
     RoomBox roomBox = getRoomBoxSingelton();
+    if (roomBox.getRooms().size() + 1 == 0) {
+      return 1;
+    }
     return roomBox.getRooms().size() + 1;
   }
 
