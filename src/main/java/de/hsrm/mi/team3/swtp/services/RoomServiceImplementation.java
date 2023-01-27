@@ -4,7 +4,6 @@ import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.script.ScriptContext;
@@ -23,15 +22,12 @@ public class RoomServiceImplementation implements RoomService {
 
   Logger logger = LoggerFactory.getLogger(RoomServiceImplementation.class);
 
-  @Autowired
-  RoomBoxServiceImplementation roomBoxService;
+  @Autowired RoomBoxServiceImplementation roomBoxService;
 
-  @Autowired
-  VehicleBotService vehicleBotService;
+  @Autowired VehicleBotService vehicleBotService;
 
   /**
-   * This method adds a new user to a room, and changed the users
-   * currentRoomNumber respectively.
+   * This method adds a new user to a room, and changed the users currentRoomNumber respectively.
    *
    * @param room
    * @param user
@@ -82,7 +78,8 @@ public class RoomServiceImplementation implements RoomService {
   @Override
   public User getUserByID(int roomNumber, String sessionID) {
     Room room = roomBoxService.getSpecificRoom(roomNumber);
-    Optional<User> user = room.getUserList().stream().filter(u -> u.getSessionID().equals(sessionID)).findFirst();
+    Optional<User> user =
+        room.getUserList().stream().filter(u -> u.getSessionID().equals(sessionID)).findFirst();
     if (user.isEmpty()) {
       logger.error("User not found");
       return null;
@@ -93,12 +90,12 @@ public class RoomServiceImplementation implements RoomService {
   /**
    * Updates Room with new Variables
    *
-   * @param room         Room that is to be updated
+   * @param room Room that is to be updated
    * @param jythonScript new jythonScript for room
-   * @param roomMap      new roomMap for room
-   * @param roomName     new roomName for room
-   * @param roomNumber   new roomNumber for room
-   * @param userList     new userList for room
+   * @param roomMap new roomMap for room
+   * @param roomName new roomName for room
+   * @param roomNumber new roomNumber for room
+   * @param userList new userList for room
    */
   public void updateRoom(
       Room room,
@@ -115,8 +112,7 @@ public class RoomServiceImplementation implements RoomService {
   }
 
   /**
-   * executes python script connected to the room. PythonInterpreter Output is set
-   * to console.
+   * executes python script connected to the room. PythonInterpreter Output is set to console.
    *
    * @param room
    */
