@@ -9,21 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * This class should only be used by python scripts to create and interact with
- * the VehicleBot
+ * This class should only be used by python scripts to create and interact with the VehicleBot
  * class.
  */
 @Service
 public class VehicleBotServiceImplementation implements VehicleBotService {
 
-  @Autowired
-  BackendInfoServiceImpl backendInfoService;
+  @Autowired BackendInfoServiceImpl backendInfoService;
 
   private Room room;
 
   /**
-   * method to get current room from jython to VehicleBotService-instance. method
-   * is only called
+   * method to get current room from jython to VehicleBotService-instance. method is only called
    * from python-script.
    *
    * @param room
@@ -33,9 +30,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     this.room = room;
   }
 
-  /**
-   * method to create a new VehicleBot. method is only called from python script.
-   */
+  /** method to create a new VehicleBot. method is only called from python script. */
   @Override
   public void createBot() {
     VehicleBot bot = new VehicleBot(room);
@@ -50,8 +45,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   }
 
   /**
-   * method to create a new VehicleBot with specific details. method is only
-   * called from pyton
+   * method to create a new VehicleBot with specific details. method is only called from pyton
    * script
    *
    * @param rotation
@@ -73,7 +67,6 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     this.room.setVehicleBot(bot);
   }
 
-  // TODO String übergeben und anhand von String VehicleType raussuchen
   public void createBotWithType(VehicleType vehicleType) {
     VehicleBot bot = new VehicleBot(room);
 
@@ -102,8 +95,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   }
 
   /**
-   * Main method to let VehicleBots drive. send the updated bot to the frontend
-   * with each change in
+   * Main method to let VehicleBots drive. send the updated bot to the frontend with each change in
    * position. method is only called from python script
    */
   @Override
@@ -115,13 +107,13 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     while (running) {
       logger.info("driveBot Runde " + runde);
       for (VehicleBot bot : room.getVehicleBots()) {
-        this.drive(bot);
+        // this.drive(bot);
         sendBot(bot);
-      }
-      try {
-        Thread.sleep(5000);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
+        try {
+          Thread.sleep(5000);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
       }
       running = !room.getUserList().isEmpty();
       runde++;
@@ -164,8 +156,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   }
 
   /**
-   * method iterates through StreetBlockMap of room and return the first free
-   * Streetblock
+   * method iterates through StreetBlockMap of room and return the first free Streetblock
    * coordinates
    *
    * @return
@@ -178,7 +169,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
               && !this.room.getRoadMap().getStreetBlock(i, j).isBlocked()) {
             this.room.getRoadMap().getStreetBlock(i, j).isBlocked(true);
             return new int[] {
-                i + 1, j + 1
+              i + 1, j + 1
             }; // +1 damit die richtigen Koordinaten ins frontend kommen
           }
       }

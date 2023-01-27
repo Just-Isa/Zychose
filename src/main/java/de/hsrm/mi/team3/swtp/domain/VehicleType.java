@@ -1,12 +1,12 @@
 package de.hsrm.mi.team3.swtp.domain;
 
 public enum VehicleType {
-  SPORTS_CAR("SPORTS_CAR"),
-  TRUCK("TRUCK"),
-  SUV("SUV"),
-  SEDAN("SEDAN"),
-  VAN("VAN"),
-  BICYCLE("BICYCLE");
+  SPORTS_CAR("sport"),
+  TRUCK("pickup"),
+  SUV("suv"),
+  SEDAN("sedan"),
+  VAN("van"),
+  BICYCLE("bike");
 
   private String type;
 

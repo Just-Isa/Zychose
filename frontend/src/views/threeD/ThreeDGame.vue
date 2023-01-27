@@ -54,6 +54,12 @@ config.allVehicleTypes.forEach((element) => {
   }
 });
 
+config.botVehicles.forEach((element) => {
+  if (element.glbPath) {
+    glbState.blockMap.set(element.name, loadModel(element.glbPath));
+  }
+});
+
 export default {
   components: {
     Camera,

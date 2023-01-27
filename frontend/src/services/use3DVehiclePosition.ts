@@ -33,7 +33,6 @@ function publishVehiclePosition(
     posX,
     posY
   );
-  console.log(vehiclePositionMessage);
   sendVehiclePositionMessage(vehiclePositionMessage);
 }
 /**
