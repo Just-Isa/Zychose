@@ -141,12 +141,16 @@ export class SceneManager {
     vehicleMap: Map<string, THREE.Group>
   ) {
     const blockPromise = this.blockMap.get(vehicle.vehicleType);
-
-    if (blockPromise !== undefined && !this.vehicles.has(vehicleSessionId)) {
+    console.log("Type", this.blockMap.get(vehicle.vehicleType));
+    console.log("Block", blockPromise);
+    if (blockPromise !== undefined && !vehicleMap.has(vehicleSessionId)) {
       blockPromise
         ?.then((block) => {
           const car = block.clone();
 
+          if (vehicleSessionId.includes("bot")) {
+            console.log("add Bot");
+          }
           car.position.set(
             vehicle.postitionX,
             vehicle.postitionY,
@@ -222,6 +226,9 @@ export class SceneManager {
       }
       //every vehicle gets rendered
       this.renderer.render(this.scene, camState.cam as THREE.PerspectiveCamera);
+      console.log("3D:", this.botVehicles);
+      console.log(vehicleState.botVehicle.get("bot-1")?.postitionX);
+      console.log(vehicleState.botVehicle.get("bot-1")?.postitionZ);
       requestAnimationFrame(animate);
     };
     animate();
