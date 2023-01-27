@@ -13,7 +13,7 @@ import FadeToWhiteOverlay from "@/components/FadeToWhiteOverlay.vue";
 import Exit3DButton from "@/components/Exit3DButton.vue";
 import PlayerList from "@/components/PlayerList.vue";
 import { useRoom } from "@/services/useRoom";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
 import { Client } from "@stomp/stompjs";
 import { logger } from "@/helpers/Logger";
@@ -31,6 +31,12 @@ const publishVehicleStompClientConnection = setInterval(function () {
 }, 20);
 
 let showOverlay = ref(false);
+
+onMounted(() => {
+  showOverlay.value = true;
+  // Zahl variiert nach Hardware
+  setTimeout(() => (showOverlay.value = false), 3000);
+});
 
 window.addEventListener("keyup", (event) => {
   if (event.key === "Escape") {
