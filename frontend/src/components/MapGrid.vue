@@ -219,6 +219,8 @@ function onDrop(posX: number, posY: number) {
  * Changes the View to the 3D-View
  */
 function changeTo3DView(posX: number, posY: number, vehicleType: string) {
+  const entireDoc = document.documentElement;
+  entireDoc.style.cursor = "default";
   let wrapper = document.getElementById("wrapper");
   if (wrapper != null) {
     wrapper.classList.remove("opacity-70");
