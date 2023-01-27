@@ -55,7 +55,8 @@ public class VehicleBot {
       changeBlock(destination);
     } else if (!isStreetblockInvalid(destination.getBlockType())) {
       int rotation =
-          this.room.getVehicleBotRotation(this.getCurrentPos()[0], this.getCurrentPos()[1]);
+          this.room.getVehicleBotRotation(
+              destination.getBlockPosition()[0], destination.getBlockPosition()[1]);
       if (rotation == -1) {
         destination.isBlocked(false);
         changeBlock(destination);
