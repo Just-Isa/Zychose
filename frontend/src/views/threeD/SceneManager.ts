@@ -141,8 +141,8 @@ export class SceneManager {
     vehicleMap: Map<string, THREE.Group>
   ) {
     const blockPromise = this.blockMap.get(vehicle.vehicleType);
-    console.log("Type", this.blockMap.get(vehicle.vehicleType));
-    console.log("Block", blockPromise);
+    logger.log("Type", this.blockMap.get(vehicle.vehicleType));
+    logger.log("Block", blockPromise);
     if (blockPromise !== undefined && !vehicleMap.has(vehicleSessionId)) {
       blockPromise
         ?.then((block) => {

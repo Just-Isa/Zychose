@@ -73,7 +73,6 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
       bot.setCurrentPos(pos[0], pos[1]);
     }
     bot.setVehicleModel(vehicleType);
-
     this.room.setVehicleBot(bot);
   }
 
