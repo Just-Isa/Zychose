@@ -122,7 +122,7 @@ function joinRoom(roomNumber: number) {
         return response.text();
       }
     })
-    .then((response) => {
+    .then(() => {
       roomState.room.roomNumber = roomNumber;
       updateRoom(roomNumber);
       updateUser();
