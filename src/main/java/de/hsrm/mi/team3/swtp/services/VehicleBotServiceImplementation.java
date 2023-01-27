@@ -88,7 +88,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     }
     bot.setRoute(route);
     bot.setVehicleModel(vehicleType);
-    bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
+    bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0] + 90);
 
     this.room.setVehicleBot(bot);
   }

@@ -94,24 +94,25 @@ function handleMessage(
           jsonObject.postitionY,
           (jsonObject.postitionZ - 1 - config.gridSize / 2) * config.blocksize,
           jsonObject.rotationX,
+          jsonObject.rotationY % (2 * Math.PI),
+          jsonObject.rotationZ,
+          jsonObject.speed
+        )
+      );
+    } else {
+      vehiclemap.set(
+        jsonObject.userSessionId,
+        new Vehicle(
+          jsonObject.vehicleType,
+          jsonObject.postitionX,
+          jsonObject.postitionY,
+          jsonObject.postitionZ,
+          jsonObject.rotationX,
           jsonObject.rotationY,
           jsonObject.rotationZ,
           jsonObject.speed
         )
       );
     }
-    vehiclemap.set(
-      jsonObject.userSessionId,
-      new Vehicle(
-        jsonObject.vehicleType,
-        jsonObject.postitionX,
-        jsonObject.postitionY,
-        jsonObject.postitionZ,
-        jsonObject.rotationX,
-        jsonObject.rotationY,
-        jsonObject.rotationZ,
-        jsonObject.speed
-      )
-    );
   }
 }
