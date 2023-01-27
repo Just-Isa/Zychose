@@ -36,9 +36,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     VehicleBot bot = new VehicleBot(room);
 
     int[] pos = this.getFreeStreetBlock();
-    if (pos != null) {
-      bot.setCurrentPos(pos[0], pos[1]);
-    }
+    bot.setCurrentPos(pos[0], pos[1]);
     bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
 
     this.room.setVehicleBot(bot);
@@ -58,9 +56,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     VehicleBot bot = new VehicleBot(room);
 
     int[] pos = this.getFreeStreetBlock();
-    if (pos != null) {
-      bot.setCurrentPos(pos[0], pos[1]);
-    }
+    bot.setCurrentPos(pos[0], pos[1]);
     bot.setRoute(route);
     bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
 
@@ -71,9 +67,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     VehicleBot bot = new VehicleBot(room);
 
     int[] pos = this.getFreeStreetBlock();
-    if (pos != null) {
-      bot.setCurrentPos(pos[0], pos[1]);
-    }
+    bot.setCurrentPos(pos[0], pos[1]);
     bot.setVehicleModel(vehicleType);
     bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
 
@@ -84,9 +78,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     VehicleBot bot = new VehicleBot(room);
 
     int[] pos = this.getFreeStreetBlock();
-    if (pos != null) {
-      bot.setCurrentPos(pos[0], pos[1]);
-    }
+    bot.setCurrentPos(pos[0], pos[1]);
     bot.setRoute(route);
     bot.setVehicleModel(vehicleType);
     bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);

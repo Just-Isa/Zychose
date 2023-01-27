@@ -29,8 +29,8 @@ public class VehicleBot {
   private Random randomGenerator = new Random();
 
   public VehicleBot(Room room) {
-    String id = Integer.toString(room.getVehicleBots().size() + 1);
-    this.id = "bot-" + id;
+    String idNumber = Integer.toString(room.getVehicleBots().size() + 1);
+    this.id = "bot-" + idNumber;
     this.room = room;
     this.route = new ArrayList<>();
     this.currentPos = new int[] {0, 0};
