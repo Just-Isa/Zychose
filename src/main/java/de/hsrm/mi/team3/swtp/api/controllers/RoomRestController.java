@@ -30,14 +30,11 @@ public class RoomRestController {
 
   Logger logger = LoggerFactory.getLogger(RoomRestController.class);
 
-  @Autowired
-  private RoomBoxServiceImplementation roomBoxService;
+  @Autowired private RoomBoxServiceImplementation roomBoxService;
 
-  @Autowired
-  private RoomServiceImplementation roomService;
+  @Autowired private RoomServiceImplementation roomService;
 
-  @Autowired
-  BackendInfoServiceImpl backservice;
+  @Autowired BackendInfoServiceImpl backservice;
 
   /**
    * Retrieve the Room List saved in the RoomBox Singleton.
@@ -71,9 +68,8 @@ public class RoomRestController {
   /**
    * Changes the Room a User is in to another.
    *
-   * @param roomNumber Room number of room that the User is supposed to be swapped
-   *                   into
-   * @param bodyData   SessionID and UserName of User that will be moved
+   * @param roomNumber Room number of room that the User is supposed to be swapped into
+   * @param bodyData SessionID and UserName of User that will be moved
    */
   @PostMapping(value = "/room/{number}")
   public void changeRoomOfUser(
@@ -82,13 +78,14 @@ public class RoomRestController {
     Room room = roomBoxService.getSpecificRoom(Integer.parseInt(roomNumber));
     if (roomService.getUserByID(room.getRoomNumber(), sId).isEmpty()) {
       roomService.addNewUserToRoom(
-          room, new User(sId, Integer.parseInt(roomNumber), bodyData.userName(), new Date().getTime()));
+          room,
+          new User(sId, Integer.parseInt(roomNumber), bodyData.userName(), new Date().getTime()));
     }
   }
 
   /**
    * Gets wanted user
-   * 
+   *
    * @param sID Session ID of user
    * @return
    */
