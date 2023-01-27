@@ -1,15 +1,16 @@
 <template>
   <form @submit.prevent="submitForm">
-    <label for="name">Wie dürfen wir Dich nennen?</label><br />
+    <label for="nameInput">Wie dürfen wir Dich nennen?</label><br />
     <input
       class="text-black p-2 mt-2 w-60 rounded"
-      v-model="name"
+      v-model="nameInput"
       placeholder="Name"
       type="text"
       name="name"
       id="name"
     />
     <br />
+    <p class="mt-2 text-error-message-pink">{{ message }}</p>
     <button
       type="submit"
       class="bg-button-green font-semibold rounded py-4 px-8 text-4xl mt-10 mb-10"
@@ -20,12 +21,16 @@
 </template>
 
 <script setup lang="ts">
-let name = "";
+import { ref } from "vue";
+
+let nameInput = "";
+let message = ref("");
 function submitForm(submitEvent: any) {
-  name = submitEvent.target.elements.name.value;
-  console.log(name);
-  if (name != "") {
+  document.cookie = "name=" + submitEvent.target.elements.name.value;
+  if (nameInput != "") {
     location.href = "/rooms";
+  } else {
+    message.value = "Bitte keinen leeren Namen wählen";
   }
 }
 </script>

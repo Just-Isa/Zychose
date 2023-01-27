@@ -4,6 +4,9 @@ import { useRoomBox } from "./useRoomList";
 import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
 import { Room, type IRoom } from "../model/IRoom";
 import { logger } from "@/helpers/Logger";
+import { useUser } from "./useUser";
+
+const { userState } = useUser();
 
 const webSocketUrl = `ws://${window.location.host}/stompbroker`;
 
@@ -17,17 +20,6 @@ const roomState = reactive<IRoomState>({
   errorMessage: "",
 });
 
-// For Body Request in swapRooms() - this class is needed to send more than one string in fetch
-class UserNameAndId {
-  userName: string;
-  sessionID: string;
-
-  public constructor() {
-    this.userName = "Unknown";
-    this.sessionID = getSessionIDFromCookie();
-  }
-}
-
 /**
  * @returns Export of useRoom
  */
@@ -35,7 +27,7 @@ export function useRoom() {
   return {
     roomState: readonly(roomState),
     receiveRoom,
-    swapRooms,
+    joinRoom,
     updateRoom,
     removeUserFromRoom,
     updateRoomMap,
@@ -51,6 +43,7 @@ function updateRoomMap(rMap: string): void {
 /* eslint-enable */
 
 const { getRoomList } = useRoomBox();
+const { updateUser, getCurrentUser } = useUser();
 /**
  * Subscribes to the specific Rooms topic
  *
@@ -109,8 +102,9 @@ function updateRoom(roomNumber: number) {
  *
  * @param roomNumber Room number into which the user is to be swapped
  */
-function swapRooms(roomNumber: number) {
-  const data = JSON.stringify(new UserNameAndId());
+function joinRoom(roomNumber: number) {
+  getCurrentUser();
+  const data = JSON.stringify(userState.user);
   console.log(data);
   const DEST = "/api/room/" + roomNumber;
   fetch(DEST, {
@@ -130,6 +124,7 @@ function swapRooms(roomNumber: number) {
     .then(() => {
       roomState.room.roomNumber = roomNumber;
       updateRoom(roomNumber);
+      updateUser();
       getRoomList();
     })
     .catch(() => {
@@ -153,14 +148,12 @@ function removeUserFromRoom() {
       if (!response.ok) {
         location.href = "/500";
       } else {
+        updateRoom(roomState.room.roomNumber);
         return response.text();
       }
-    })
-    .then(() => {
-      roomState.room.roomNumber = 0;
-      getRoomList();
     })
     .catch(() => {
       location.href = "/500";
     });
+  roomState.room.roomNumber = 0;
 }

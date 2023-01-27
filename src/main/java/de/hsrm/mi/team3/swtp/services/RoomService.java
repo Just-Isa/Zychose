@@ -3,6 +3,8 @@ package de.hsrm.mi.team3.swtp.services;
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,5 +26,5 @@ public interface RoomService {
       int roomNumber,
       List<User> userList);
 
-  public User getUserByID(int roomNumber, String sessionID);
+  public Optional<User> getUserByID(int roomNumber, String sessionID);
 }

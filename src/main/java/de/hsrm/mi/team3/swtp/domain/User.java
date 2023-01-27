@@ -15,13 +15,17 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class User {
 
-  @NonNull private String sessionID;
+  @NonNull
+  private String sessionID;
 
-  @NonNull private Integer currentRoomNumber;
+  @NonNull
+  private Integer currentRoomNumber;
 
-  @NonNull private String userName;
+  @NonNull
+  private String userName;
 
-  @NonNull private Long loginTime;
+  @NonNull
+  private Long loginTime;
 
   private Vehicle vehicle;
 

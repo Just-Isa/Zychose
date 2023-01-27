@@ -1,7 +1,7 @@
 package de.hsrm.mi.team3.swtp.controllers;
 
+import de.hsrm.mi.team3.swtp.api.dtos.GetUserResponseDTO;
 import de.hsrm.mi.team3.swtp.domain.Room;
-import de.hsrm.mi.team3.swtp.domain.User;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendMouseMessage;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendRoomMessage;
@@ -19,15 +19,18 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class RoomController {
 
-  @Autowired RoomBoxServiceImplementation roomBoxService;
-  @Autowired RoomServiceImplementation roomService;
-  @Autowired BackendInfoService backservice;
+  @Autowired
+  RoomBoxServiceImplementation roomBoxService;
+  @Autowired
+  RoomServiceImplementation roomService;
+  @Autowired
+  BackendInfoService backservice;
   Logger logger = LoggerFactory.getLogger(RoomController.class);
 
   /**
    * Used to differentiate and update specific rooms.
    *
-   * @param operation Operation that is used
+   * @param operation  Operation that is used
    * @param roomNumber Room on which the changes occured
    */
   @MessageMapping("/topic/room/{roomNumber}")
@@ -58,7 +61,7 @@ public class RoomController {
   /**
    * This mapping send the mouse to all other subscribers.
    *
-   * @param mouse Mouse that is being updated
+   * @param mouse      Mouse that is being updated
    * @param roomNumber Roomnumber of room that is to be updated
    */
   @MessageMapping("/topic/mouse/{roomNumber}")
@@ -74,16 +77,12 @@ public class RoomController {
    * @param newUser
    */
   @MessageMapping("/topic/user")
-  public void getUser(@Payload User user) {
+  public void getUser(@Payload GetUserResponseDTO user) {
     if (roomBoxService.getRoomsFromRoomBox().size() <= 4) {
       while (roomBoxService.getRoomsFromRoomBox().size() <= 4) {
         roomBoxService.addRoom();
         logger.info("RoomBox: {}", roomBoxService.getRoomsFromRoomBox());
       }
-    }
-
-    if (user.getUserName() == null) {
-      user.setUserName("Raus aus meinem Kopf");
     }
   }
 }

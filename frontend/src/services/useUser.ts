@@ -7,6 +7,7 @@ import {
   checkIfSessionIDCookieExists,
 } from "@/helpers/SessionIDHelper";
 import { logger } from "@/helpers/Logger";
+import { getNameFromCookie } from "@/helpers/UsernameHelper";
 
 const webSocketUrl = `ws://${window.location.host}/stompbroker`;
 const publishUserStompClient = new Client({ brokerURL: webSocketUrl });
@@ -31,7 +32,7 @@ export interface IUserState {
 }
 
 const mouseState = reactive<IMouseState>({
-  mouse: new Mouse("", 0, 0, 0),
+  mouse: new Mouse("", "", 0, 0, 0),
   errorMessage: "",
 });
 
@@ -46,6 +47,8 @@ export function useUser() {
     publishMouse,
     receiveMouse,
     createUser,
+    updateUser,
+    getCurrentUser,
     mouseState: readonly(mouseState),
     userState: readonly(userState),
   };
@@ -136,15 +139,50 @@ function receiveMouse(roomNumber: number) {
   };
 }
 
-/** Creates a User by setting the sessionID cookie*
+/**
+ * Creates a User by setting the sessionID cookie, or gets the current user if already set
  */
 function createUser() {
   if (!checkIfSessionIDCookieExists()) {
     document.cookie = "sid=" + crypto.randomUUID();
     userState.user.currentRoomNumber = 0;
-    userState.user.sessionID = getSessionIDFromCookie();
-    userState.user.userName = getSessionIDFromCookie();
+    userState.user.sessionID = getSessionIDFromCookie() as string;
+    userState.user.userName = getNameFromCookie() as string;
     userState.user.loginTime = new Date().getTime();
     publishUser("CREATE", userState.user);
+  } else {
+    getCurrentUser();
   }
+}
+
+/**
+ * Updates the userState
+ */
+function updateUser() {
+  const DEST = "/api/room/user/" + getSessionIDFromCookie();
+  fetch(DEST, {
+    method: "GET",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        logger.log(response);
+      }
+      return response.json();
+    })
+    .then((jsondata) => {
+      userState.user = jsondata;
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+}
+
+/**
+ * Initializes the userState per cookie
+ */
+function getCurrentUser() {
+  userState.user.currentRoomNumber = 0;
+  userState.user.sessionID = getSessionIDFromCookie() as string;
+  userState.user.userName = getNameFromCookie() as string;
+  userState.user.loginTime = new Date().getTime();
 }

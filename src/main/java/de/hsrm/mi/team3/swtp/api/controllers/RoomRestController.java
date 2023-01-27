@@ -1,9 +1,12 @@
 package de.hsrm.mi.team3.swtp.api.controllers;
 
 import de.hsrm.mi.team3.swtp.api.dtos.GetRoomResponseDTO;
-import de.hsrm.mi.team3.swtp.api.dtos.GetSwapUserDTO;
+import de.hsrm.mi.team3.swtp.api.dtos.GetUserResponseDTO;
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
+import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
+import de.hsrm.mi.team3.swtp.domain.messaging.BackendRoomMessage;
+import de.hsrm.mi.team3.swtp.services.BackendInfoServiceImpl;
 import de.hsrm.mi.team3.swtp.services.RoomBoxServiceImplementation;
 import de.hsrm.mi.team3.swtp.services.RoomServiceImplementation;
 import java.util.ArrayList;
@@ -27,9 +30,14 @@ public class RoomRestController {
 
   Logger logger = LoggerFactory.getLogger(RoomRestController.class);
 
-  @Autowired private RoomBoxServiceImplementation roomBoxService;
+  @Autowired
+  private RoomBoxServiceImplementation roomBoxService;
 
-  @Autowired private RoomServiceImplementation roomService;
+  @Autowired
+  private RoomServiceImplementation roomService;
+
+  @Autowired
+  BackendInfoServiceImpl backservice;
 
   /**
    * Retrieve the Room List saved in the RoomBox Singleton.
@@ -63,25 +71,34 @@ public class RoomRestController {
   /**
    * Changes the Room a User is in to another.
    *
-   * @param roomNumber Room number of room that the User is supposed to be swapped into
-   * @param bodyData SessionID and UserName of User that will be moved
+   * @param roomNumber Room number of room that the User is supposed to be swapped
+   *                   into
+   * @param bodyData   SessionID and UserName of User that will be moved
    */
   @PostMapping(value = "/room/{number}")
   public void changeRoomOfUser(
-      @PathVariable("number") String roomNumber, @RequestBody GetSwapUserDTO bodyData) {
-    logger.info("changeRoomOfUser()-bodyData: " + bodyData);
+      @PathVariable("number") String roomNumber, @RequestBody GetUserResponseDTO bodyData) {
     String sId = bodyData.sessionID();
     Room room = roomBoxService.getSpecificRoom(Integer.parseInt(roomNumber));
-    Optional<User> userOpt = roomBoxService.getUserBySessionID(sId);
-    if (userOpt.isPresent()) {
-      Room oldRoom = roomBoxService.getSpecificRoom(userOpt.get().getCurrentRoomNumber());
-
-      roomService.removeUserFromRoom(oldRoom, userOpt.get());
-      roomService.addNewUserToRoom(room, userOpt.get());
-    } else {
+    if (roomService.getUserByID(room.getRoomNumber(), sId).isEmpty()) {
       roomService.addNewUserToRoom(
-          room, new User(sId, 0, bodyData.userName(), new Date().getTime()));
+          room, new User(sId, Integer.parseInt(roomNumber), bodyData.userName(), new Date().getTime()));
     }
+  }
+
+  /**
+   * Gets wanted user
+   * 
+   * @param sID Session ID of user
+   * @return
+   */
+  @GetMapping(value = "/room/user/{sessionID}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public GetUserResponseDTO getUser(@PathVariable("sessionID") String sID) {
+    Optional<User> user = roomBoxService.getUserBySessionID(sID);
+    if (user.isPresent()) {
+      return GetUserResponseDTO.from(user.get());
+    }
+    return null;
   }
 
   /**
@@ -96,6 +113,15 @@ public class RoomRestController {
     if (userOpt.isPresent()) {
       Room oldRoom = roomBoxService.getRoomsFromRoomBox().get(userOpt.get().getCurrentRoomNumber());
       roomService.removeUserFromRoom(oldRoom, userOpt.get());
+      backservice.sendRoom(
+          "room/" + oldRoom.getRoomNumber(),
+          BackendOperation.UPDATE,
+          BackendRoomMessage.from(
+              oldRoom.getRoomName(),
+              oldRoom.getRoomNumber(),
+              oldRoom.getUserList(),
+              oldRoom.getJythonScript(),
+              oldRoom.getRoomMap()));
     }
   }
 

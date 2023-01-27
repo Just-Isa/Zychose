@@ -62,7 +62,7 @@ import GoBackButton from "../components/GoBackButton.vue";
 import ButtonJythonUpload from "@/components/ButtonJythonUpload.vue";
 
 const { roomListState, getRoomList } = useRoomBox();
-const { createUser } = useUser();
+const { createUser, userState } = useUser();
 
 const roomListItems = computed(() => {
   return roomListState.rooms.roomList;
