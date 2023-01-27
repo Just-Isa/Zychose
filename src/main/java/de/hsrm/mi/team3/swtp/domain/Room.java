@@ -133,7 +133,7 @@ public class Room {
   }
 
   public void updateVehicleBots(VehicleBot bot, int x, int y) {
-    // TODO was macht diese Methode
+    // TODO prüfen ob x und y die gleichen positionen sind wie das in der liste
     for (VehicleBot botvehicle : this.vehicleBots) {
       if (botvehicle.getId().equals(bot.getId())) {
         getStreetBlock(botvehicle.getCurrentPos()[0], botvehicle.getCurrentPos()[1])

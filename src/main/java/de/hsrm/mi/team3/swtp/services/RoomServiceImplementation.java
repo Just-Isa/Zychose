@@ -139,6 +139,8 @@ public class RoomServiceImplementation implements RoomService {
     } catch (PyException | ScriptException e) {
       logger.error("ERROR jythonScript", e);
       room.setJythonRunning(false);
+      room.getVehicleBots().clear();
+      logger.info("jython skript abgebrochen");
     }
   }
 

@@ -149,7 +149,7 @@ export class SceneManager {
           const car = block.clone();
 
           if (vehicleSessionId.includes("bot")) {
-            console.log("add Bot");
+            logger.log("add Bot");
           }
           car.position.set(
             vehicle.postitionX,
