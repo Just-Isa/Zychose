@@ -16,6 +16,7 @@ import config from "../../../../swtp.config.json";
 const { camState, switchCamera } = useCamera();
 const { vehicleState } = use3DVehicle();
 type StreetBlock = IStreetInformation;
+const testObjectName = "text";
 /**
  * Manages Scene with all Objects
  */
@@ -157,10 +158,11 @@ export class SceneManager {
             vehicle.rotationZ
           );
           this.scene.add(car);
-          this.addTextToVehicle(vehicleSessionId, car);
 
           if (vehicleSessionId === getSessionIDFromCookie()) {
-            this.vehicleCamera.request(vehicle.speed, car);
+            this.vehicleCamera.request(vehicle.speed, vehicle.vehicleType, car);
+          } else {
+            this.addTextToVehicle(vehicleSessionId, vehicle.vehicleType, car);
           }
 
           vehicleMap.set(vehicleSessionId, car);
@@ -256,9 +258,15 @@ export class SceneManager {
     threeVehicle.position.lerp(destination, lerpSpeed);
 
     if (sessionID === getSessionIDFromCookie()) {
-      this.vehicleCamera.request(vehicle.speed, threeVehicle);
+      this.vehicleCamera.request(
+        vehicle.speed,
+        vehicle.vehicleType,
+        threeVehicle
+      );
     } else {
-      threeVehicle.getObjectByName("text")?.lookAt(camState.cam.position);
+      threeVehicle
+        .getObjectByName(testObjectName)
+        ?.lookAt(camState.cam.position);
     }
   }
 
@@ -283,7 +291,14 @@ export class SceneManager {
       }
     }
   }
-  private addTextToVehicle(text: string, vehicle: THREE.Group) {
+  private addTextToVehicle(
+    text: string,
+    vehicleType: string,
+    vehicle: THREE.Group
+  ) {
+    const textHightOverVehicle = config.allVehicleTypes.find(
+      (v) => v.name === vehicleType
+    )?.textHightOverVehicle as number;
     const fontLoader = new FontLoader();
     const ttfloader = new TTFLoader();
     ttfloader.load(config.fontPath, function (json) {
@@ -295,9 +310,10 @@ export class SceneManager {
       });
       textGeometry.center();
       const textmesh = new THREE.Mesh(textGeometry);
-      textmesh.position.set(0, config.textHightOverVehicle, 0);
 
-      textmesh.name = "text";
+      textmesh.position.set(0, textHightOverVehicle, 0);
+
+      textmesh.name = testObjectName;
       textmesh.quaternion.copy(camState.cam.quaternion);
       vehicle.add(textmesh);
     });
