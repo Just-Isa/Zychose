@@ -65,6 +65,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     this.room.setVehicleBot(bot);
   }
 
+  // TODO String übergeben und anhand von String VehicleType raussuchen
   public void createBotWithType(VehicleType vehicleType) {
     VehicleBot bot = new VehicleBot(room);
 
@@ -103,13 +104,13 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     while (running) {
       logger.info("driveBot Runde " + runde);
       for (VehicleBot bot : room.getVehicleBots()) {
-        // this.drive(bot);
+        this.drive(bot);
         sendBot(bot);
-        try {
-          Thread.sleep(5000);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
+      }
+      try {
+        Thread.sleep(5000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
       }
       running = !room.getUserList().isEmpty();
       runde++;

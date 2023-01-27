@@ -133,8 +133,9 @@ public class Room {
   }
 
   public void updateVehicleBots(VehicleBot bot, int x, int y) {
+    // TODO was macht diese Methode
     for (VehicleBot botvehicle : this.vehicleBots) {
-      if (botvehicle.equals(bot)) {
+      if (botvehicle.getId().equals(bot.getId())) {
         getStreetBlock(botvehicle.getCurrentPos()[0], botvehicle.getCurrentPos()[1])
             .isBlocked(false);
         botvehicle.setCurrentPos(x, y);
