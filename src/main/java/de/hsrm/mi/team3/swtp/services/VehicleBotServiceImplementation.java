@@ -9,21 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * This class should only be used by python scripts to create and interact with
- * the VehicleBot
+ * This class should only be used by python scripts to create and interact with the VehicleBot
  * class.
  */
 @Service
 public class VehicleBotServiceImplementation implements VehicleBotService {
 
-  @Autowired
-  BackendInfoServiceImpl backendInfoService;
+  @Autowired BackendInfoServiceImpl backendInfoService;
 
   private Room room;
 
   /**
-   * method to get current room from jython to VehicleBotService-instance. method
-   * is only called
+   * method to get current room from jython to VehicleBotService-instance. method is only called
    * from python-script.
    *
    * @param room
@@ -33,9 +30,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     this.room = room;
   }
 
-  /**
-   * method to create a new VehicleBot. method is only called from python script.
-   */
+  /** method to create a new VehicleBot. method is only called from python script. */
   @Override
   public void createBot() {
     VehicleBot bot = new VehicleBot(room);
@@ -44,14 +39,14 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     if (pos != null) {
       bot.setCurrentPos(pos[0], pos[1]);
     }
-    bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0] + bot.getCurrentStreetBlock().getBlockRotation());
+    bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
+    bot.setVehicleModel(VehicleType.VAN);
 
     this.room.setVehicleBot(bot);
   }
 
   /**
-   * method to create a new VehicleBot with specific details. method is only
-   * called from pyton
+   * method to create a new VehicleBot with specific details. method is only called from pyton
    * script
    *
    * @param rotation
@@ -100,8 +95,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   }
 
   /**
-   * Main method to let VehicleBots drive. send the updated bot to the frontend
-   * with each change in
+   * Main method to let VehicleBots drive. send the updated bot to the frontend with each change in
    * position. method is only called from python script
    */
   @Override
@@ -115,7 +109,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
         sendBot(bot);
       }
       try {
-        Thread.sleep(1000);
+        Thread.sleep(750);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
@@ -160,8 +154,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   }
 
   /**
-   * method iterates through StreetBlockMap of room and return the first free
-   * Streetblock
+   * method iterates through StreetBlockMap of room and return the first free Streetblock
    * coordinates
    *
    * @return
@@ -172,17 +165,22 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
         for (int j = 0; j < this.room.getRoadMap().getStreetBlockMap().length; j++)
           if (this.room.getRoadMap().getStreetBlock(i, j) != null
               && !this.room.getRoadMap().getStreetBlock(i, j).isBlocked()
-              && (this.room.getRoadMap().getStreetBlock(i, j).getBlockType().contains("road-straight")
-              /*
-               * || this.room
-               * .getRoadMap()
-               * .getStreetBlock(i, j)
-               * .getBlockType()
-               * .contains("sidewalk"
-               */)) {
+              && this.room
+                  .getRoadMap()
+                  .getStreetBlock(i, j)
+                  .getBlockType()
+                  .contains("road-straight")
+              && this.room.getRoadMap().getStreetBlock(i, j).getBlockRotation() == 0
+          /*
+           * || this.room
+           * .getRoadMap()
+           * .getStreetBlock(i, j)
+           * .getBlockType()
+           * .contains("sidewalk"
+           */ ) {
             this.room.getRoadMap().getStreetBlock(i, j).isBlocked(true);
             return new int[] {
-                i + 1, j + 1
+              i + 1, j + 1
             }; // +1 damit die richtigen Koordinaten ins frontend kommen
           }
       }

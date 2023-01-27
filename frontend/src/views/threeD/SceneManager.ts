@@ -209,7 +209,7 @@ export class SceneManager {
           val,
           vehicleState.vehicles.get(key) as IVehicle,
           key,
-          config.VehilceLerpSpeed
+          config.VehicleLerpSpeed
         );
       }
       this.updateVehicleMap(
@@ -221,7 +221,7 @@ export class SceneManager {
           val,
           vehicleState.botVehicle.get(key) as IVehicle,
           key,
-          config.VehilceLerpSpeed
+          config.botVehicleLerpSpeed
         );
       }
       //every vehicle gets rendered

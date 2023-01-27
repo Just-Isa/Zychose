@@ -411,6 +411,7 @@
   ],
   "fontPath": "/fonts/poppins-semiBold.ttf",
   "fontSize": 0.3,
-  "VehilceLerpSpeed": 0.075,
-  "botIdentifier": "bot"
+  "VehicleLerpSpeed": 0.075,
+  "botIdentifier": "bot",
+  "botVehicleLerpSpeed": 0.05
 }
