@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import { useStreets, type IStreetInformation } from "../services/useStreets";
 import swtpConfigJSON from "../../../swtp.config.json";
-import { computed, onMounted, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useVehicle } from "@/services/useVehicle";
 import router from "@/router";
 import { logger } from "@/helpers/Logger";
@@ -67,6 +67,9 @@ let initY: number;
 let offsetX = 0;
 let offsetY = 0;
 const entireDoc = document.documentElement;
+
+let hoverX = ref(0);
+let hoverY = ref(0);
 
 onMounted(() => {
   document.addEventListener("contextmenu", (event) => {
@@ -150,7 +153,8 @@ const checkedGridSize = computed(() => {
 const { updateStreetState, placedStreet, streetsState, initializeStreetState } =
   useStreets();
 const { currentVehicle } = useVehicle();
-const { activeBlock } = useStreetBlock();
+const { activeBlock, isRotationTriggeredState, changeRotationTriggered } =
+  useStreetBlock();
 const streetTypes = swtpConfigJSON.streetTypes;
 const { publishVehiclePosition } = use3DVehiclePosition();
 const config = swtpConfigJSON;
@@ -159,6 +163,21 @@ const { roomState } = useRoom();
 watch(roomState, () => {
   jsonToState(roomState.room.roomMap);
   stateToGrid();
+});
+
+watch(isRotationTriggeredState, () => {
+  if (isRotationTriggeredState) {
+    const table = document.getElementById("gridTable") as HTMLTableElement;
+    const cell = table.rows[hoverX.value - 1].cells[hoverY.value - 1];
+    setCellBackgroundStyle(cell, {
+      streetType: activeBlock.streetBlock.name,
+      rotation: activeBlock.streetBlock.currentRotation,
+      posX: hoverX.value,
+      posY: hoverY.value,
+      isBulldozer: activeBlock.streetBlock.isBulldozer,
+    });
+    changeRotationTriggered(false);
+  }
 });
 
 /**
@@ -209,7 +228,8 @@ function changeTo3DView(posX: number, posY: number, vehicleType: string) {
       "bg-white",
       "opacity-0",
       "h-screen",
-      "w-screen"
+      "w-screen",
+      "z-30"
     );
   }
   //TODO die 800ms sind gesetzt, weil es sonst keine richtige fade-to-white transition gibt !
@@ -275,6 +295,8 @@ function dragLeave(posX: number, posY: number) {
  * @param {number} y position on y axis (click)
  */
 function onHover(x: number, y: number): void {
+  hoverX.value = x;
+  hoverY.value = y;
   const table = document.getElementById("gridTable") as HTMLTableElement;
   const cell = table.rows[x - 1].cells[y - 1];
   setCellBackgroundStyle(cell, {

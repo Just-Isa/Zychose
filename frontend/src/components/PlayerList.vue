@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white fixed w-72 mt-5 left-1/2 -translate-x-1/2 z-50">
+  <div class="text-white fixed w-72 mt-5 left-1/2 -translate-x-1/2 z-10">
     <div
       class="bg-back-folder-gray rounded-full cursor-pointer px-8 py-2 mb-3 shadow-lg text-center"
       @click="changeVisibilty()"

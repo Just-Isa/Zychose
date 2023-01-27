@@ -10,7 +10,9 @@
     <div
       :id="prop.currentBlock.name"
       @click="changeActiveStreetBlock(prop.currentBlock)"
-      class="tile-current flex justify-center items-center rounded-lg"
+      @keyup.r="changeActiveRotation(prop.currentBlock)"
+      tabindex="0"
+      class="tile-current flex justify-center items-center rounded-lg focus:outline-none"
     >
       <img
         class="h-16 w-16 m-2"
@@ -37,6 +39,7 @@ const {
   toggleBulldozer,
   changeRotation,
   bulldozerActive,
+  changeRotationTriggered,
 } = useStreetBlock();
 
 /**
@@ -44,6 +47,7 @@ const {
  * @param type selected StreetBlock
  */
 function changeActiveStreetBlock(type: StreetBlock) {
+  //TODO Rotation beim Hover muss ergänzt werden
   if (type.name === activeBlock.streetBlock.name && !bulldozerActive.isActive) {
     const block = document.getElementById(prop.currentBlock.name);
     if (block) {
@@ -60,10 +64,29 @@ function changeActiveStreetBlock(type: StreetBlock) {
     }
     return;
   }
-
   changeCurrentStreetType(type);
   toggleBulldozer(false);
   const entireDoc = document.documentElement;
   entireDoc.style.cursor = "default";
+}
+
+function changeActiveRotation(type: StreetBlock) {
+  if (type.name === activeBlock.streetBlock.name && !bulldozerActive.isActive) {
+    const block = document.getElementById(prop.currentBlock.name);
+    changeRotationTriggered(true);
+    if (block) {
+      let nextRotIndex =
+        (activeBlock.streetBlock.possibleRotations.indexOf(
+          activeBlock.streetBlock.currentRotation
+        ) +
+          1) %
+        activeBlock.streetBlock.possibleRotations.length;
+
+      let nextRot = activeBlock.streetBlock.possibleRotations[nextRotIndex];
+      block.style.rotate = `${nextRot}deg`;
+      changeRotation(nextRot);
+    }
+    return;
+  }
 }
 </script>

@@ -69,6 +69,16 @@ public class VehicleBot {
     } // else delete Bot?
   }
 
+  public int[] getCurrent3DPosition() {
+    int gridSize = 100;
+    int blockSize = 16;
+    int x, y, z;
+    y = 0;
+    x = (this.currentPos[0] - 1 - gridSize / 2) * blockSize;
+    z = (this.currentPos[1] - 1 - gridSize / 2) * blockSize;
+    return new int[] {x, y, z};
+  }
+
   /**
    * @param rotation direction to which VehicleBot should turn
    */

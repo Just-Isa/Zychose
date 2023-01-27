@@ -6,7 +6,11 @@ public enum VehicleType {
   SUV("suv"),
   SEDAN("sedan"),
   VAN("van"),
-  BICYCLE("bike");
+  BICYCLE("bike"),
+  JEEP("jeep"),
+  LIMO("limo"),
+  MINI("mini"),
+  MUSCLE("muscle");
 
   private String type;
 

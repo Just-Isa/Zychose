@@ -1,6 +1,6 @@
 <template>
   <button
-    class="rounded-full ml-7 mt-5 fixed z-50 bg-neutral-700 hover:cursor-pointer"
+    class="rounded-full ml-7 mt-5 fixed z-10 bg-neutral-700 hover:cursor-pointer"
     @click="backToRoomList()"
   >
     <svg
