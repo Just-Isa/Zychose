@@ -90,11 +90,11 @@ function handleMessage(
         jsonObject.userSessionId,
         new Vehicle(
           jsonObject.vehicleType,
-          (jsonObject.postitionX - 1 - config.gridSize / 2) * config.blocksize,
-          jsonObject.postitionY,
           (jsonObject.postitionZ - 1 - config.gridSize / 2) * config.blocksize,
+          jsonObject.postitionY,
+          (jsonObject.postitionX - 1 - config.gridSize / 2) * config.blocksize,
           jsonObject.rotationX,
-          jsonObject.rotationY % (2 * Math.PI),
+          (((jsonObject.rotationY - 90) % 360) * Math.PI) / 180, // wehe das rührt einer an!!! dann gibts haue
           jsonObject.rotationZ,
           jsonObject.speed
         )

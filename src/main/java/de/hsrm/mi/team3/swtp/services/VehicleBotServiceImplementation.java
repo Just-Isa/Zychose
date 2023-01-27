@@ -38,6 +38,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     int[] pos = this.getFreeStreetBlock();
     bot.setCurrentPos(pos[0], pos[1]);
     bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
+    bot.setVehicleModel(VehicleType.VAN);
 
     this.room.setVehicleBot(bot);
   }
@@ -80,7 +81,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     bot.setCurrentPos(pos[0], pos[1]);
     bot.setRoute(route);
     bot.setVehicleModel(vehicleType);
-    bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0] + 90);
+    bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
 
     this.room.setVehicleBot(bot);
   }
@@ -100,7 +101,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
         sendBot(bot);
       }
       try {
-        Thread.sleep(1000);
+        Thread.sleep(750);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
@@ -160,12 +161,19 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
         for (int j = 0; j < this.room.getRoadMap().getStreetBlockMap().length; j++)
           if (this.room.getRoadMap().getStreetBlock(i, j) != null
               && !this.room.getRoadMap().getStreetBlock(i, j).isBlocked()
-              && (this.room.getRoadMap().getStreetBlock(i, j).getBlockType().contains("road")
-                  || this.room
-                      .getRoadMap()
-                      .getStreetBlock(i, j)
-                      .getBlockType()
-                      .contains("sidewalk"))) {
+              && this.room
+                  .getRoadMap()
+                  .getStreetBlock(i, j)
+                  .getBlockType()
+                  .contains("road-straight")
+              && this.room.getRoadMap().getStreetBlock(i, j).getBlockRotation() == 0
+          /*
+           * || this.room
+           * .getRoadMap()
+           * .getStreetBlock(i, j)
+           * .getBlockType()
+           * .contains("sidewalk"
+           */ ) {
             this.room.getRoadMap().getStreetBlock(i, j).isBlocked(true);
             return new int[] {
               i + 1, j + 1

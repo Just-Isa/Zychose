@@ -47,7 +47,8 @@ public class VehicleBot {
     refreshNeighbours();
     StreetBlock destination = this.neighbours.get(VehicleNeighbour.VEHICLETOP);
     if (destination == null
-        || this.currentStreetBlock.getBlockType().contains("dead-end")
+        || (this.currentStreetBlock.getBlockType().contains("dead-end")
+            && this.currentRotation != this.currentStreetBlock.getExits()[0])
         || isStreetblockInvalid(destination.getBlockType())) {
       turn(this.currentRotation >= 180 ? this.currentRotation - 180 : this.currentRotation + 180);
     } else if (!destination.isBlocked() && !isStreetblockInvalid(destination.getBlockType())) {
