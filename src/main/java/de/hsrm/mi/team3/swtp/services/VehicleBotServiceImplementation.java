@@ -124,7 +124,11 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
             bot.turnRandom(bot.getCurrentStreetBlock().getExits());
           }
         } else if (blockName.contains("-curve")) {
-          if (bot.getCurrentStreetBlock().getExits()[0] == bot.getCurrentRotation()) {
+          int ownEntrence =
+              bot.getCurrentRotation() > 90
+                  ? bot.getCurrentRotation() - 180
+                  : bot.getCurrentRotation() + 180;
+          if (bot.getCurrentStreetBlock().getExits()[0] == ownEntrence) {
             bot.turn(bot.getCurrentStreetBlock().getExits()[1]);
           } else {
             bot.turn(bot.getCurrentStreetBlock().getExits()[0]);
