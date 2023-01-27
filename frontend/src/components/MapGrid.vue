@@ -209,7 +209,8 @@ function changeTo3DView(posX: number, posY: number, vehicleType: string) {
       "bg-white",
       "opacity-0",
       "h-screen",
-      "w-screen"
+      "w-screen",
+      "z-30"
     );
   }
   //TODO die 800ms sind gesetzt, weil es sonst keine richtige fade-to-white transition gibt !
