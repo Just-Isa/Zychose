@@ -122,6 +122,7 @@ function joinRoom(roomNumber: number) {
         return response.text();
       }
     })
+    /* eslint-disable */ //linter weint wegen unused variable response
     .then((response) => {
       roomState.room.roomNumber = roomNumber;
       updateRoom(roomNumber);
