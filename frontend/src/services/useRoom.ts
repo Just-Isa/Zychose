@@ -50,7 +50,9 @@ const { updateUser, getCurrentUser } = useUser();
  */
 function receiveRoom() {
   const receiveRoomStompClient = new Client({ brokerURL: webSocketUrl });
-  const DEST = "/topic/room/" + roomState.room.roomNumber;
+  const DEST = `/topic/room/${
+    location.pathname.split("/")[1] as unknown as number
+  }`;
 
   receiveRoomStompClient.onWebSocketError = (event) => {
     logger.error("WS-error", JSON.stringify(event)); /* WS-Error */
@@ -105,7 +107,6 @@ function updateRoom(roomNumber: number) {
 function joinRoom(roomNumber: number) {
   getCurrentUser();
   const data = JSON.stringify(userState.user);
-  console.log(data);
   const DEST = "/api/room/" + roomNumber;
   fetch(DEST, {
     method: "POST",
@@ -121,7 +122,7 @@ function joinRoom(roomNumber: number) {
         return response.text();
       }
     })
-    .then(() => {
+    .then((response) => {
       roomState.room.roomNumber = roomNumber;
       updateRoom(roomNumber);
       updateUser();

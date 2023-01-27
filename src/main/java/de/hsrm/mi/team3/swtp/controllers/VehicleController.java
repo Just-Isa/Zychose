@@ -45,6 +45,7 @@ public class VehicleController {
       @DestinationVariable int roomNumber) {
 
     List<VehicleCommands> commands = commandVehicleMessage.commands();
+
     Vehicle vehicle = roomService.getUserByID(roomNumber, commandVehicleMessage.userSessionId()).get().getVehicle();
 
     // if there is no vehicle -> skip
