@@ -2,8 +2,10 @@ import { gridToJson } from "./JSONparser";
 import { reactive, readonly } from "vue";
 import { useRoom } from "./useRoom";
 import { logger } from "@/helpers/Logger";
+import swtpConfigJSON from "../../../swtp.config.json";
 
 const { updateRoomMap } = useRoom();
+const bulldozer = swtpConfigJSON.bulldozer;
 
 /**
  * Interface to save street information
@@ -71,7 +73,10 @@ export function useStreets() {
           street.posX !== onGridClickObject.posX ||
           street.posY !== onGridClickObject.posY
       );
-    } else {
+    } else if (
+      onGridClickObject.streetType !== "" &&
+      onGridClickObject.streetType !== bulldozer.name
+    ) {
       if (state.streets.length) {
         const foundStreet = state.streets.find(
           (street) =>
