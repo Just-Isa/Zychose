@@ -38,7 +38,6 @@ public class VehicleBot {
     // choose random Model from VehicleType Enum
     int randomNumber = randomGenerator.nextInt(VehicleType.values().length);
     this.vehicleType = VehicleType.values()[randomNumber];
-    // setCurrentStreetBlock();
   }
 
   /**
@@ -50,23 +49,27 @@ public class VehicleBot {
     if (destination == null
         || this.currentStreetBlock.getBlockType().contains("dead-end")
         || isStreetblockInvalid(destination.getBlockType())) {
-      turn(this.currentRotation > 180 ? this.currentRotation - 180 : this.currentRotation + 180);
+      turn(this.currentRotation >= 180 ? this.currentRotation - 180 : this.currentRotation + 180);
     } else if (!destination.isBlocked() && !isStreetblockInvalid(destination.getBlockType())) {
-      this.currentPos[0] = destination.getBlockPosition()[1] + 1;
-      this.currentPos[1] = destination.getBlockPosition()[0] + 1;
-      this.currentStreetBlock.isBlocked(false);
-      this.currentStreetBlock = destination;
-      this.currentStreetBlock.isBlocked(true);
+      changeBlock(destination);
     } else if (!isStreetblockInvalid(destination.getBlockType())) {
       int rotation =
           this.room.getVehicleBotRotation(this.getCurrentPos()[0], this.getCurrentPos()[1]);
       if (rotation == -1) {
         destination.isBlocked(false);
-        moveToNextBlock();
+        changeBlock(destination);
       } else if (rotation != this.currentRotation) {
-        moveToNextBlock();
+        changeBlock(destination);
       }
     } // else delete Bot?
+  }
+
+  private void changeBlock(StreetBlock destination) {
+    this.currentPos[0] = destination.getBlockPosition()[1] + 1;
+    this.currentPos[1] = destination.getBlockPosition()[0] + 1;
+    this.currentStreetBlock.isBlocked(false);
+    this.currentStreetBlock = destination;
+    this.currentStreetBlock.isBlocked(true);
   }
 
   public int[] getCurrent3DPosition() {
