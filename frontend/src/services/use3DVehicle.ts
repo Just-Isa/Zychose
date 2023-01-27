@@ -85,18 +85,34 @@ function handleMessage(
     jsonObject.operator === MessageOperator.CREATE ||
     jsonObject.operator === MessageOperator.UPDATE
   ) {
-    vehiclemap.set(
-      jsonObject.userSessionId,
-      new Vehicle(
-        jsonObject.vehicleType,
-        jsonObject.postitionX,
-        jsonObject.postitionY,
-        jsonObject.postitionZ,
-        jsonObject.rotationX,
-        jsonObject.rotationY,
-        jsonObject.rotationZ,
-        jsonObject.speed
-      )
-    );
+    if (jsonObject.userSessionId.includes(config.botIdentifier)) {
+      vehiclemap.set(
+        jsonObject.userSessionId,
+        new Vehicle(
+          jsonObject.vehicleType,
+          (jsonObject.postitionX - 1 - config.gridSize / 2) * config.blocksize,
+          jsonObject.postitionY,
+          (jsonObject.postitionZ - 1 - config.gridSize / 2) * config.blocksize,
+          jsonObject.rotationX,
+          jsonObject.rotationY % (2 * Math.PI),
+          jsonObject.rotationZ,
+          jsonObject.speed
+        )
+      );
+    } else {
+      vehiclemap.set(
+        jsonObject.userSessionId,
+        new Vehicle(
+          jsonObject.vehicleType,
+          jsonObject.postitionX,
+          jsonObject.postitionY,
+          jsonObject.postitionZ,
+          jsonObject.rotationX,
+          jsonObject.rotationY,
+          jsonObject.rotationZ,
+          jsonObject.speed
+        )
+      );
+    }
   }
 }
