@@ -47,12 +47,16 @@ public class VehicleBot {
   public void moveToNextBlock() {
     refreshNeighbours();
     StreetBlock destination = this.neighbours.get(VehicleNeighbour.VEHICLETOP);
-    if (destination == null || this.currentStreetBlock.getBlockType().contains("dead-end")) {
+    if (destination == null
+        || this.currentStreetBlock.getBlockType().contains("dead-end")
+        || isStreetblockInvalid(destination.getBlockType())) {
       turn(this.currentRotation > 180 ? this.currentRotation - 180 : this.currentRotation + 180);
     } else if (!destination.isBlocked() && !isStreetblockInvalid(destination.getBlockType())) {
       this.currentPos[0] = destination.getBlockPosition()[1] + 1;
       this.currentPos[1] = destination.getBlockPosition()[0] + 1;
+      this.currentStreetBlock.isBlocked(false);
       this.currentStreetBlock = destination;
+      this.currentStreetBlock.isBlocked(true);
     } else if (!isStreetblockInvalid(destination.getBlockType())) {
       int rotation =
           this.room.getVehicleBotRotation(this.getCurrentPos()[0], this.getCurrentPos()[1]);

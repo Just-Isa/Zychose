@@ -140,7 +140,8 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
           bot.moveToNextBlock();
         }
       }
-      this.room.updateVehicleBots(bot, bot.getCurrentPos()[0], bot.getCurrentPos()[1]);
+      // this.room.updateVehicleBots(bot, bot.getCurrentPos()[0],
+      // bot.getCurrentPos()[1]);
     }
   }
 
@@ -162,6 +163,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
         for (int j = 0; j < this.room.getRoadMap().getStreetBlockMap().length; j++)
           if (this.room.getRoadMap().getStreetBlock(i, j) != null
               && !this.room.getRoadMap().getStreetBlock(i, j).isBlocked()) {
+            this.room.getRoadMap().getStreetBlock(i, j).isBlocked(true);
             return new int[] {
               i + 1, j + 1
             }; // +1 damit die richtigen Koordinaten ins frontend kommen
