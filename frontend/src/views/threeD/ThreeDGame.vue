@@ -30,12 +30,16 @@ import { use3DVehicle } from "@/services/use3DVehicle";
 import { useVehicleCommands } from "../../services/useVehicleCommands";
 import { useKeyInput } from "./keyInputHandler";
 import { useStreets } from "@/services/useStreets";
+import { logger } from "@/helpers/Logger";
+import { useRoom } from "@/services/useRoom";
+import { jsonToState } from "@/services/JSONparser";
 
 const { glbState, loadModel } = useGLB();
 const { publishVehicleCommands } = useVehicleCommands();
 const { keysPressed, inputs } = useKeyInput();
 const { receiveVehicle } = use3DVehicle();
 const { streetsState } = useStreets();
+const { roomState, receiveRoom } = useRoom();
 const sendInterval = 100;
 
 config.miscModels.forEach((element) => {
@@ -61,23 +65,40 @@ export default {
     Renderer,
     Scene,
   },
+  methods: {
+    updateMap(sceneManager: SceneManager) {
+      if (
+        JSON.stringify(streetsState.streets) !=
+        JSON.stringify(sceneManager.data)
+      ) {
+        sceneManager.updateData(streetsState.streets as any);
+      }
+    },
+  },
   mounted() {
+    receiveRoom();
     receiveVehicle();
     const blockMap = glbState.blockMap;
     const scene = (this.$refs.scene as typeof Scene).scene;
     const renderer = (this.$refs.renderer as any).renderer;
-    const sceneManager = new SceneManager(
-      scene,
-      blockMap,
-      streetsState.streets as any,
-      renderer
-    );
+    const sceneManager = new SceneManager(scene, blockMap, renderer);
     sceneManager.initScene();
     inputs();
     //sends VehicleCommands to backend in a set interval
-    setInterval(function () {
+    setInterval(() => {
       publishVehicleCommands(Array.from(keysPressed.directions));
+      if (
+        JSON.stringify(roomState.room.roomMap) !=
+        JSON.stringify(streetsState.streets)
+      ) {
+        jsonToState(roomState.room.roomMap);
+        this.updateMap(sceneManager);
+      }
     }, sendInterval);
   },
 };
+
+setInterval(() => {
+  logger.log(JSON.stringify(streetsState.streets));
+}, sendInterval);
 </script>

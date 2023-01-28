@@ -12,11 +12,15 @@ import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 import { TTFLoader } from "three/examples/jsm/loaders/TTFLoader.js";
 import config from "../../../../swtp.config.json";
+import { useStreets } from "@/services/useStreets";
+import { watch } from "vue";
 
 const { camState, switchCamera } = useCamera();
 const { vehicleState } = use3DVehicle();
+const { streetsState } = useStreets();
 type StreetBlock = IStreetInformation;
 const testObjectName = "text";
+
 /**
  * Manages Scene with all Objects
  */
@@ -32,12 +36,11 @@ export class SceneManager {
   constructor(
     scene: Scene,
     blockMap: Map<string, Promise<THREE.Group>>,
-    data: StreetBlock[],
     renderer: THREE.Renderer
   ) {
     this.scene = scene;
     this.blockMap = blockMap;
-    this.data = JSON.parse(JSON.stringify(data));
+    this.data = JSON.parse(JSON.stringify(streetsState.streets as any));
     this.renderer = renderer;
   }
   /**
@@ -132,6 +135,7 @@ export class SceneManager {
    * adds new car
    */
   addVehicle(vehicle: IVehicle, vehicleSessionId: string) {
+    logger.log("add vehicle ausgeführt");
     const blockPromise = this.blockMap.get(vehicle.vehicleType);
 
     if (blockPromise !== undefined && !this.vehicles.has(vehicleSessionId)) {
@@ -249,6 +253,7 @@ export class SceneManager {
    * checks if vehicles are added or removed and updates the map
    */
   private updateVehicleMap() {
+    logger.log("update vehicle ausgeführt");
     for (const [key, val] of vehicleState.vehicles) {
       logger.log("Vehicle von " + key + " wurde hinzugefügt");
       if (!this.vehicles.has(key)) {
@@ -263,6 +268,7 @@ export class SceneManager {
       }
     }
   }
+
   private addTextToVehicle(
     text: string,
     vehicleType: string,
@@ -289,5 +295,10 @@ export class SceneManager {
       textmesh.quaternion.copy(camState.cam.quaternion);
       vehicle.add(textmesh);
     });
+  }
+
+  public updateData(newdata: StreetBlock[]) {
+    this.data = JSON.parse(JSON.stringify(newdata));
+    this.createGrid();
   }
 }
