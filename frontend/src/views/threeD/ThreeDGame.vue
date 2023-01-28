@@ -1,4 +1,5 @@
 <template>
+  <audio src="/assets/audio/background0.mp3" autoplay loop/>
   <Renderer
     ref="renderer"
     resize="window"
