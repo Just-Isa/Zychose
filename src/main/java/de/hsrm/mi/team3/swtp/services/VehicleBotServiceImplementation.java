@@ -40,7 +40,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     if (bot.getVehicleModel() == VehicleType.BICYCLE) {
       pos = getFreeSidewalk();
     } else {
-      getFreeStreetBlock();
+      pos = getFreeStreetBlock();
     }
 
     bot.setCurrentPos(pos[0], pos[1]);

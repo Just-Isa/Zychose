@@ -133,14 +133,14 @@ public class VehicleBot {
   public boolean isStreetblockInvalid(String blockName) {
     if (this.vehicleType.equals(VehicleType.BICYCLE)) {
       if (blockName.startsWith("road", 0)) {
-        return false;
+        return true;
       }
-      return true;
+      return false;
     } else {
       if (blockName.startsWith("sidewalk", 0)) {
-        return false;
+        return true;
       }
-      return true;
+      return false;
     }
   }
 
