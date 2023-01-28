@@ -35,11 +35,16 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   public void createBot() {
     VehicleBot bot = new VehicleBot(room);
 
-    int[] pos = this.getFreeStreetBlock();
+    bot.setVehicleModel(VehicleType.BICYCLE);
+    int[] pos = {0, 0};
+    if (bot.getVehicleModel() == VehicleType.BICYCLE) {
+      pos = getFreeSidewalk();
+    } else {
+      getFreeStreetBlock();
+    }
+
     bot.setCurrentPos(pos[0], pos[1]);
     bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
-    bot.setVehicleModel(VehicleType.VAN);
-
     this.room.setVehicleBot(bot);
   }
 
@@ -166,14 +171,29 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
                   .getStreetBlock(i, j)
                   .getBlockType()
                   .contains("road-straight")
-              && this.room.getRoadMap().getStreetBlock(i, j).getBlockRotation() == 0
-          /*
-           * || this.room
-           * .getRoadMap()
-           * .getStreetBlock(i, j)
-           * .getBlockType()
-           * .contains("sidewalk"
-           */ ) {
+              && this.room.getRoadMap().getStreetBlock(i, j).getBlockRotation() == 0) {
+            this.room.getRoadMap().getStreetBlock(i, j).isBlocked(true);
+            return new int[] {
+              i + 1, j + 1
+            }; // +1 damit die richtigen Koordinaten ins frontend kommen
+          }
+      }
+    }
+    return new int[] {};
+  }
+
+  private int[] getFreeSidewalk() {
+    if (this.room.getRoadMap().getStreetBlockMap().length > 0) {
+      for (int i = 0; i < this.room.getRoadMap().getStreetBlockMap().length; i++) {
+        for (int j = 0; j < this.room.getRoadMap().getStreetBlockMap().length; j++)
+          if (this.room.getRoadMap().getStreetBlock(i, j) != null
+              && !this.room.getRoadMap().getStreetBlock(i, j).isBlocked()
+              && this.room
+                  .getRoadMap()
+                  .getStreetBlock(i, j)
+                  .getBlockType()
+                  .contains("sidewalk-straight")
+              && this.room.getRoadMap().getStreetBlock(i, j).getBlockRotation() == 0) {
             this.room.getRoadMap().getStreetBlock(i, j).isBlocked(true);
             return new int[] {
               i + 1, j + 1
