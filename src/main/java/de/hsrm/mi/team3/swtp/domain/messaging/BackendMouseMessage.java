@@ -1,6 +1,6 @@
 package de.hsrm.mi.team3.swtp.domain.messaging;
 
-public record BackendMouseMessage(String sessionID, int roomNumber, int x, int y) {
+public record BackendMouseMessage(String sessionID, String userName, int roomNumber, int x, int y) {
 
   /**
    * Parameter for Mouse Message.
@@ -11,7 +11,8 @@ public record BackendMouseMessage(String sessionID, int roomNumber, int x, int y
    * @param y y-coordinate
    * @return BackendMouseMessage
    */
-  public static BackendMouseMessage from(String sid, int roomNumber, int x, int y) {
-    return new BackendMouseMessage(sid, roomNumber, x, y);
+  public static BackendMouseMessage from(
+      String sid, String userName, int roomNumber, int x, int y) {
+    return new BackendMouseMessage(sid, userName, roomNumber, x, y);
   }
 }

@@ -1,7 +1,7 @@
 package de.hsrm.mi.team3.swtp.controllers;
 
+import de.hsrm.mi.team3.swtp.api.dtos.GetUserResponseDTO;
 import de.hsrm.mi.team3.swtp.domain.Room;
-import de.hsrm.mi.team3.swtp.domain.User;
 import de.hsrm.mi.team3.swtp.domain.Vehicle;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendMouseMessage;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
@@ -75,22 +75,17 @@ public class RoomController {
    * @param newUser
    */
   @MessageMapping("/topic/user")
-  public void getUser(@Payload User user) {
+  public void getUser(@Payload GetUserResponseDTO user) {
     if (roomBoxService.getRoomsFromRoomBox().size() <= 4) {
       while (roomBoxService.getRoomsFromRoomBox().size() <= 4) {
         roomBoxService.addRoom();
         logger.info("RoomBox: {}", roomBoxService.getRoomsFromRoomBox());
       }
     }
-
-    if (user.getUserName() == null) {
-      user.setUserName("Raus aus meinem Kopf");
-    }
   }
 
   @MessageMapping("/topic/vehicle/delete/{roomNumber}")
   public void deleteVehicle(@DestinationVariable int roomNumber, @Payload String sessionID) {
-    logger.info("VEHICLE STOMPING: " + sessionID);
     this.roomService.deleteVehicleFromUser(roomNumber, sessionID);
     this.backservice.sendVehicle(
         "vehicle/" + roomNumber, sessionID, BackendOperation.DELETE, new Vehicle());

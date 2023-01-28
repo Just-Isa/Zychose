@@ -8,8 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
- * VehicleBotService is the interface used by python scripts saved to rooms.
- * Only python scripts
+ * VehicleBotService is the interface used by python scripts saved to rooms. Only python scripts
  * should use this.
  */
 @Service

@@ -4,6 +4,9 @@ import { useRoomBox } from "./useRoomList";
 import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
 import { Room, type IRoom } from "../model/IRoom";
 import { logger } from "@/helpers/Logger";
+import { useUser } from "./useUser";
+
+const { userState } = useUser();
 
 const webSocketUrl = `ws://${window.location.host}/stompbroker`;
 
@@ -24,7 +27,7 @@ export function useRoom() {
   return {
     roomState: readonly(roomState),
     receiveRoom,
-    swapRooms,
+    joinRoom,
     updateRoom,
     removeUserFromRoom,
     updateRoomMap,
@@ -40,13 +43,16 @@ function updateRoomMap(rMap: string): void {
 /* eslint-enable */
 
 const { getRoomList } = useRoomBox();
+const { updateUser, getCurrentUser } = useUser();
 /**
  * Subscribes to the specific Rooms topic
  *
  */
 function receiveRoom() {
   const receiveRoomStompClient = new Client({ brokerURL: webSocketUrl });
-  const DEST = "/topic/room/" + roomState.room.roomNumber;
+  const DEST = `/topic/room/${
+    location.pathname.split("/")[1] as unknown as number
+  }`;
 
   receiveRoomStompClient.onWebSocketError = (event) => {
     logger.error("WS-error", JSON.stringify(event)); /* WS-Error */
@@ -98,14 +104,16 @@ function updateRoom(roomNumber: number) {
  *
  * @param roomNumber Room number into which the user is to be swapped
  */
-function swapRooms(roomNumber: number) {
+function joinRoom(roomNumber: number) {
+  getCurrentUser();
+  const data = JSON.stringify(userState.user);
   const DEST = "/api/room/" + roomNumber;
   fetch(DEST, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ sessionId: getSessionIDFromCookie() }),
+    body: data,
   })
     .then((response) => {
       if (!response.ok) {
@@ -117,6 +125,7 @@ function swapRooms(roomNumber: number) {
     .then(() => {
       roomState.room.roomNumber = roomNumber;
       updateRoom(roomNumber);
+      updateUser();
       getRoomList();
     })
     .catch(() => {
@@ -140,14 +149,12 @@ function removeUserFromRoom() {
       if (!response.ok) {
         location.href = "/500";
       } else {
+        updateRoom(roomState.room.roomNumber);
         return response.text();
       }
-    })
-    .then(() => {
-      roomState.room.roomNumber = 0;
-      getRoomList();
     })
     .catch(() => {
       location.href = "/500";
     });
+  roomState.room.roomNumber = 0;
 }

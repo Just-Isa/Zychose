@@ -4,6 +4,8 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
 import org.python.core.PyException;
 import org.python.util.PythonInterpreter;
 import org.slf4j.Logger;
@@ -15,6 +17,8 @@ import org.slf4j.LoggerFactory;
  * Room holds RoadMap instance to prevent VehicleBots from having direct access to the map.
  */
 
+@Getter
+@Setter
 public class Room {
 
   Logger logger = LoggerFactory.getLogger(Room.class);
@@ -67,22 +71,6 @@ public class Room {
     }
   }
 
-  public String getRoomName() {
-    return roomName;
-  }
-
-  public void setRoomName(String roomName) {
-    this.roomName = roomName;
-  }
-
-  public List<User> getUserList() {
-    return userList;
-  }
-
-  public void setUserList(List<User> userList) {
-    this.userList = userList;
-  }
-
   public void addUserToList(User user) {
     this.userList.add(user);
   }
@@ -91,58 +79,28 @@ public class Room {
     this.userList.remove(user);
   }
 
-  public int getRoomNumber() {
-    return roomNumber;
-  }
-
-  public void setRoomNumber(int roomNumber) {
-    this.roomNumber = roomNumber;
-  }
-
-  public String getJythonScript() {
-    return jythonScript;
-  }
-
-  public void setJythonScript(String jythonScript) {
-    this.jythonScript = jythonScript;
-  }
-
   public void setRoomMap(String map) {
     this.roadMap = new Roadmap(map);
     this.roomMap = map;
-  }
-
-  public Roadmap getRoadMap() {
-    return this.roadMap;
-  }
-
-  public String getRoomMap() {
-    return this.roomMap;
-  }
-
-  public List<VehicleBot> getVehicleBots() {
-    return vehicleBots;
-  }
-
-  public void setVehicleBots(List<VehicleBot> vehicleBots) {
-    this.vehicleBots = vehicleBots;
   }
 
   public void setVehicleBot(VehicleBot vehicleBot) {
     this.vehicleBots.add(vehicleBot);
   }
 
-  public void updateVehicleBots(VehicleBot bot, int x, int y) {
-    // TODO prüfen ob x und y die gleichen positionen sind wie das in der liste
-    for (VehicleBot botvehicle : this.vehicleBots) {
-      if (botvehicle.getId().equals(bot.getId())) {
-        getStreetBlock(botvehicle.getCurrentPos()[0], botvehicle.getCurrentPos()[1])
-            .isBlocked(false);
-        botvehicle.setCurrentPos(x, y);
-        getStreetBlock(x, y).isBlocked(true);
-      }
-    }
-  }
+  /*
+   * public void updateVehicleBots(VehicleBot bot, int x, int y) {
+   * // TODO prüfen ob x und y die gleichen positionen sind wie das in der liste
+   * for (VehicleBot botvehicle : this.vehicleBots) {
+   * if (botvehicle.getId().equals(bot.getId())) {
+   * getStreetBlock(botvehicle.getCurrentPos()[0], botvehicle.getCurrentPos()[1])
+   * .isBlocked(false);
+   * botvehicle.setCurrentPos(x, y);
+   * getStreetBlock(x, y).isBlocked(true);
+   * }
+   * }
+   * }
+   */
 
   public StreetBlock getStreetBlock(int x, int y) {
     return this.roadMap.getStreetBlock(x, y);
@@ -161,11 +119,13 @@ public class Room {
     return -1;
   }
 
-  public boolean isJythonRunning() {
-    return jythonRunning;
-  }
-
-  public void setJythonRunning(boolean jythonRunning) {
-    this.jythonRunning = jythonRunning;
-  }
+  /*
+   * public boolean isJythonRunning() {
+   * return jythonRunning;
+   * }
+   *
+   * public void setJythonRunning(boolean jythonRunning) {
+   * this.jythonRunning = jythonRunning;
+   * }
+   */
 }

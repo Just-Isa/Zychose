@@ -37,8 +37,4 @@ public class User {
         + loginTime
         + "]");
   }
-
-  public void setVehicle(Vehicle vehicle) {
-    this.vehicle = vehicle;
-  }
 }

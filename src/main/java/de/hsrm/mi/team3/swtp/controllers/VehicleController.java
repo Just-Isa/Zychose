@@ -41,8 +41,12 @@ public class VehicleController {
       @DestinationVariable int roomNumber) {
 
     List<VehicleCommands> commands = commandVehicleMessage.commands();
+
     Vehicle vehicle =
-        roomService.getUserByID(roomNumber, commandVehicleMessage.userSessionId()).getVehicle();
+        roomService
+            .getUserByID(roomNumber, commandVehicleMessage.userSessionId())
+            .get()
+            .getVehicle();
 
     // if there is no vehicle -> skip
     if (vehicle == null) {
@@ -55,15 +59,37 @@ public class VehicleController {
     }
     if (commands.contains(VehicleCommands.FORWARD)) {
       vehicleService.moveForward(vehicle);
+      if (commands.contains(VehicleCommands.LEFT)) {
+        vehicleService.rotateLeft(vehicle);
+      } else if (commands.contains(VehicleCommands.RIGHT)) {
+        vehicleService.rotateRight(vehicle);
+      }
     }
     if (commands.contains(VehicleCommands.BACKWARD)) {
       vehicleService.moveBackward(vehicle);
+      if (commands.contains(VehicleCommands.LEFT)) {
+        vehicleService.rotateRight(vehicle);
+      } else if (commands.contains(VehicleCommands.RIGHT)) {
+        vehicleService.rotateLeft(vehicle);
+      }
     }
-    if (commands.contains(VehicleCommands.LEFT)) {
-      vehicleService.rotateLeft(vehicle);
-    }
-    if (commands.contains(VehicleCommands.RIGHT)) {
-      vehicleService.rotateRight(vehicle);
+    // Rollout special case
+    if (vehicle.getCurrentSpeed() > 0
+        && !commands.contains(VehicleCommands.FORWARD)
+        && !commands.contains(VehicleCommands.BACKWARD)) {
+      if (commands.contains(VehicleCommands.LEFT)) {
+        vehicleService.rotateLeft(vehicle);
+      } else if (commands.contains(VehicleCommands.RIGHT)) {
+        vehicleService.rotateRight(vehicle);
+      }
+    } else if (vehicle.getCurrentSpeed() < 0
+        && !commands.contains(VehicleCommands.FORWARD)
+        && !commands.contains(VehicleCommands.BACKWARD)) {
+      if (commands.contains(VehicleCommands.LEFT)) {
+        vehicleService.rotateRight(vehicle);
+      } else if (commands.contains(VehicleCommands.RIGHT)) {
+        vehicleService.rotateLeft(vehicle);
+      }
     }
     bInfoService.sendVehicle(
         "vehicle/" + roomNumber,
@@ -79,13 +105,15 @@ public class VehicleController {
       @DestinationVariable int roomNumber) {
 
     Vehicle vehicle =
-        roomService.getUserByID(roomNumber, newVehicleMessage.userSessionId()).getVehicle();
+        roomService.getUserByID(roomNumber, newVehicleMessage.userSessionId()).get().getVehicle();
     if (vehicle == null) {
       double[] vector = new double[] {newVehicleMessage.posX(), 0, newVehicleMessage.posZ()};
       roomService
           .getUserByID(roomNumber, newVehicleMessage.userSessionId())
+          .get()
           .setVehicle(new Vehicle(newVehicleMessage.vehicleType(), vector));
-      vehicle = roomService.getUserByID(roomNumber, newVehicleMessage.userSessionId()).getVehicle();
+      vehicle =
+          roomService.getUserByID(roomNumber, newVehicleMessage.userSessionId()).get().getVehicle();
     }
     bInfoService.sendVehicle(
         "vehicle/" + roomNumber,

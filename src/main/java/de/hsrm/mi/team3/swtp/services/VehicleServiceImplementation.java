@@ -15,7 +15,7 @@ public class VehicleServiceImplementation implements VehicleService {
   @Override
   public void rotateLeft(Vehicle vehicle) {
     if (vehicle.getCurrentSpeed() != 0) {
-      vehicle.setRotationY(vehicle.getRotationY() + vehicle.getHandling());
+      vehicle.setRotationY(vehicle.getRotationY() + Vehicle.HANDLING);
     }
   }
 
@@ -27,7 +27,7 @@ public class VehicleServiceImplementation implements VehicleService {
   @Override
   public void rotateRight(Vehicle vehicle) {
     if (vehicle.getCurrentSpeed() != 0) {
-      vehicle.setRotationY(vehicle.getRotationY() - vehicle.getHandling());
+      vehicle.setRotationY(vehicle.getRotationY() - Vehicle.HANDLING);
     }
   }
 
@@ -39,9 +39,9 @@ public class VehicleServiceImplementation implements VehicleService {
   @Override
   public void moveForward(Vehicle vehicle) {
     if (vehicle.getCurrentSpeed() < 0) {
-      calculateSpeed(vehicle, vehicle.getBrakeSpeed());
+      calculateSpeed(vehicle, Vehicle.BRAKE_SPEED);
     } else {
-      calculateSpeed(vehicle, vehicle.getAcceleration());
+      calculateSpeed(vehicle, Vehicle.ACCELERATION);
     }
     move(vehicle);
   }
@@ -54,9 +54,9 @@ public class VehicleServiceImplementation implements VehicleService {
   @Override
   public void moveBackward(Vehicle vehicle) {
     if (vehicle.getCurrentSpeed() > 0) {
-      calculateSpeed(vehicle, -vehicle.getBrakeSpeed());
+      calculateSpeed(vehicle, -Vehicle.BRAKE_SPEED);
     } else {
-      calculateSpeed(vehicle, -vehicle.getAcceleration());
+      calculateSpeed(vehicle, -Vehicle.ACCELERATION);
     }
     move(vehicle);
   }
@@ -69,15 +69,16 @@ public class VehicleServiceImplementation implements VehicleService {
   @Override
   public void carRunOutSpeed(Vehicle vehicle) {
     if (vehicle.getCurrentSpeed() > 0) {
-      double newSpeed = this.accelerate(vehicle, vehicle.getRunOutSpeed());
-      if (newSpeed < 0.001 && newSpeed > -0.001) {
+      double newSpeed = Math.round(this.accelerate(vehicle, Vehicle.RUN_OUT_SPEED) * 1000) / 1000.0;
+      if (newSpeed < 0.00001) {
         vehicle.setCurrentSpeed(0);
       } else {
         vehicle.setCurrentSpeed(newSpeed);
       }
     } else if (vehicle.getCurrentSpeed() < 0) {
-      double newSpeed = this.accelerate(vehicle, -vehicle.getRunOutSpeed());
-      if (newSpeed < 0.001 && newSpeed > -0.001) {
+      double newSpeed =
+          Math.round(this.accelerate(vehicle, -Vehicle.RUN_OUT_SPEED) * 1000) / 1000.0;
+      if (newSpeed > -0.00001) {
         vehicle.setCurrentSpeed(0);
       } else {
         vehicle.setCurrentSpeed(newSpeed);
@@ -109,11 +110,11 @@ public class VehicleServiceImplementation implements VehicleService {
   private void calculateSpeed(Vehicle vehicle, double acceleration) {
     double newSpeed = accelerate(vehicle, acceleration);
 
-    if (Math.abs(newSpeed) >= vehicle.getMaxSpeed()) {
+    if (Math.abs(newSpeed) >= Vehicle.MAX_SPEED) {
       if (acceleration < 0) {
-        vehicle.setCurrentSpeed(-vehicle.getMaxSpeed());
+        vehicle.setCurrentSpeed(-Vehicle.MAX_SPEED);
       } else {
-        vehicle.setCurrentSpeed(vehicle.getMaxSpeed());
+        vehicle.setCurrentSpeed(Vehicle.MAX_SPEED);
       }
     } else {
       vehicle.setCurrentSpeed(newSpeed);

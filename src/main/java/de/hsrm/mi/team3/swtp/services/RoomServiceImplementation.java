@@ -76,15 +76,9 @@ public class RoomServiceImplementation implements RoomService {
    * @return User
    */
   @Override
-  public User getUserByID(int roomNumber, String sessionID) {
+  public Optional<User> getUserByID(int roomNumber, String sessionID) {
     Room room = roomBoxService.getSpecificRoom(roomNumber);
-    Optional<User> user =
-        room.getUserList().stream().filter(u -> u.getSessionID().equals(sessionID)).findFirst();
-    if (user.isEmpty()) {
-      logger.error("User not found");
-      return null;
-    }
-    return user.get();
+    return room.getUserList().stream().filter(u -> u.getSessionID().equals(sessionID)).findFirst();
   }
 
   /**

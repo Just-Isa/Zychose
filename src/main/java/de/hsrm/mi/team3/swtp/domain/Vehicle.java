@@ -4,17 +4,19 @@ import java.util.Arrays;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter
+@Setter
 public class Vehicle {
 
-  private static final double RUN_OUT_SPEED = -0.1;
-  private static final double MAX_SPEED = 0.6;
-  private static final double HANDLING = 0.15;
-  private static final double ACCELERATION = 0.2;
-  private static final double BRAKE_SPEED = 0.3;
-  @Getter private String vehicleType;
-  @Getter @Setter private double currentSpeed;
-  @Getter @Setter private double[] rotationVector;
-  @Getter @Setter private double[] posVector;
+  public static final double RUN_OUT_SPEED = -0.023;
+  public static final double MAX_SPEED = 0.22;
+  public static final double HANDLING = 0.168;
+  public static final double ACCELERATION = 0.02;
+  public static final double BRAKE_SPEED = 0.4;
+  private String vehicleType;
+  private double currentSpeed;
+  private double[] rotationVector;
+  private double[] posVector;
 
   public Vehicle() {
     this.vehicleType = "car";
@@ -28,26 +30,6 @@ public class Vehicle {
     this.posVector = posVector;
     this.currentSpeed = 0;
     this.rotationVector = new double[] {0, 0, 0};
-  }
-
-  public double getRunOutSpeed() {
-    return RUN_OUT_SPEED;
-  }
-
-  public double getMaxSpeed() {
-    return MAX_SPEED;
-  }
-
-  public double getHandling() {
-    return HANDLING;
-  }
-
-  public double getAcceleration() {
-    return ACCELERATION;
-  }
-
-  public double getBrakeSpeed() {
-    return BRAKE_SPEED;
   }
 
   public double getRotationX() {

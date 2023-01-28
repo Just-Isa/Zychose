@@ -36,7 +36,10 @@ export class VehicleCommandMessage implements IVehicleCommandMessage {
  * @param commands
  */
 function publishVehicleCommands(commands: Direction[]) {
-  const message = new VehicleCommandMessage(commands, getSessionIDFromCookie());
+  const message = new VehicleCommandMessage(
+    commands,
+    getSessionIDFromCookie() as string
+  );
   const DEST =
     "/topic/3d/commands/" +
     (location.pathname.split("/")[1] as unknown as number);

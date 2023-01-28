@@ -28,7 +28,7 @@ function publishVehiclePosition(
   const sessionID = getSessionIDFromCookie();
 
   const vehiclePositionMessage = new VehiclePositionMessage(
-    sessionID,
+    sessionID as string,
     vehicleType,
     posX,
     posY
