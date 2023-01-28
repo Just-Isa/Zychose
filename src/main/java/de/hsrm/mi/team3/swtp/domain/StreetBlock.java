@@ -50,7 +50,6 @@ public class StreetBlock {
   }
 
   public void setExits() {
-    // TODO switch hardcoded directions for data in config
     String[] input = this.type.split("-");
     switch (input[1]) {
       case "cross":

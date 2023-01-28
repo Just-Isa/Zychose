@@ -106,13 +106,12 @@ public class RoomServiceImplementation implements RoomService {
   }
 
   /**
-   * executes python script connected to the room. PythonInterpreter Output is set to console.
+   * executes python script connected to the room. ScriptEnginge Output is set to console.
    *
    * @param room
    */
   @Override
   public void executeJython(Room room) {
-    /* try (PythonInterpreter pyInterp = new PythonInterpreter()) { */
     logger.info("executeJython Start");
     room.setJythonRunning(true);
     ScriptEngine pyInterp = new ScriptEngineManager().getEngineByName("python");

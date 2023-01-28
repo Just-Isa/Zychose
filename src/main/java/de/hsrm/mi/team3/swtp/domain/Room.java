@@ -1,13 +1,10 @@
 package de.hsrm.mi.team3.swtp.domain;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
-import org.python.core.PyException;
-import org.python.util.PythonInterpreter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,25 +49,6 @@ public class Room {
     this.jythonRunning = false;
   }
 
-  /** executes the uploaded python script */
-  public void executeJython() {
-    try (PythonInterpreter pyInterp = new PythonInterpreter()) {
-      StringWriter output = new StringWriter();
-      if (!jythonScript.isBlank()) {
-        pyInterp.setOut(output);
-        // macht den Raum im python-Skript abrufbar unter dem Variablennamen
-        // "currentRoom"
-        pyInterp.set("room", this);
-        pyInterp.exec(jythonScript);
-      } else {
-        logger.error("leeres Skript");
-      }
-      logger.info("jython Output: " + output.toString());
-    } catch (PyException e) {
-      logger.error("ERROR jythonScript", e);
-    }
-  }
-
   public void addUserToList(User user) {
     this.userList.add(user);
   }
@@ -88,20 +66,6 @@ public class Room {
     this.vehicleBots.add(vehicleBot);
   }
 
-  /*
-   * public void updateVehicleBots(VehicleBot bot, int x, int y) {
-   * // TODO prüfen ob x und y die gleichen positionen sind wie das in der liste
-   * for (VehicleBot botvehicle : this.vehicleBots) {
-   * if (botvehicle.getId().equals(bot.getId())) {
-   * getStreetBlock(botvehicle.getCurrentPos()[0], botvehicle.getCurrentPos()[1])
-   * .isBlocked(false);
-   * botvehicle.setCurrentPos(x, y);
-   * getStreetBlock(x, y).isBlocked(true);
-   * }
-   * }
-   * }
-   */
-
   public StreetBlock getStreetBlock(int x, int y) {
     return this.roadMap.getStreetBlock(x, y);
   }
@@ -118,14 +82,4 @@ public class Room {
     }
     return -1;
   }
-
-  /*
-   * public boolean isJythonRunning() {
-   * return jythonRunning;
-   * }
-   *
-   * public void setJythonRunning(boolean jythonRunning) {
-   * this.jythonRunning = jythonRunning;
-   * }
-   */
 }

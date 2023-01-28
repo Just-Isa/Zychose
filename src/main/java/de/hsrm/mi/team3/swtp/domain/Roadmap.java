@@ -8,7 +8,6 @@ import org.json.JSONObject;
 /** RoadMap rray of StreetBlocks generated from roomMap string for easy access */
 public class Roadmap {
 
-  // TODO replace mit Wert aus Config
   private static final int SIZE = 100;
   private StreetBlock[][] streetBlockMap = new StreetBlock[SIZE][SIZE];
 
@@ -74,8 +73,7 @@ public class Roadmap {
   }
 
   public StreetBlock getStreetBlock(int x, int y) {
-    // TODO size aus config
-    if (x < 0 || y < 0 || x > 99 || y > 99) {
+    if (x < 0 || y < 0 || x > SIZE - 1 || y > SIZE - 1) {
       return null;
     }
     if (this.streetBlockMap[x][y] != null) {

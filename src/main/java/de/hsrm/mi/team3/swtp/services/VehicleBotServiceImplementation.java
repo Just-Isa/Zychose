@@ -47,10 +47,9 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   }
 
   /**
-   * method to create a new VehicleBot with specific details. method is only called from pyton
-   * script
+   * method to create a new VehicleBot with a fixed route. method is only called from pyton script
    *
-   * @param route
+   * @param route String, should have this form "l,r,l,s"
    */
   @Override
   public void createBotWithRoute(String route) {
@@ -71,15 +70,16 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   }
 
   /**
-   * @param vehicleType
+   * method to create a new VehicleBot with a specific vehicle type. method is only called from
+   * pyton script
+   *
+   * @param vehicleType String input
    */
   public void createBotWithType(String vehicleType) {
-    // TODO VehicleTypes als String einlesen + richtige Methode zum Startpunkt
-    // finden nutzen
     VehicleBot bot = new VehicleBot(room);
     for (VehicleType vt : VehicleType.values()) {
       if (vt.getType().equals(vehicleType)) {
-        bot.setVehicleModel(vt);
+        bot.setVehicleType(vt);
         break;
       }
     }
@@ -97,6 +97,9 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   }
 
   /**
+   * method to create a new VehicleBot with a fixed route and a specific vehicle type. method is
+   * only called from pyton script
+   *
    * @param route
    * @param vehicleType
    */
@@ -105,7 +108,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
 
     for (VehicleType vt : VehicleType.values()) {
       if (vt.getType().equals(vehicleType)) {
-        bot.setVehicleModel(vt);
+        bot.setVehicleType(vt);
         break;
       }
     }
@@ -134,7 +137,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     while (running) {
       logger.info("driveBot Runde " + runde);
       for (VehicleBot bot : room.getVehicleBots()) {
-        this.drive(bot);
+        this.checkBlockAndDrive(bot);
         sendBot(bot);
       }
       try {
@@ -151,7 +154,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   }
 
   /** Checks and reacts to current StreetBlock-Type */
-  private void drive(VehicleBot bot) {
+  private void checkBlockAndDrive(VehicleBot bot) {
     if (bot.getCurrentStreetBlock() != null) {
       String blockName = bot.getCurrentStreetBlock().getBlockType();
       if (!bot.isStreetblockInvalid(blockName)) {
@@ -162,11 +165,11 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
             bot.turnRandom(bot.getCurrentStreetBlock().getExits());
           }
         } else if (blockName.contains("-curve")) {
-          int ownEntrence =
+          int ownEntrance =
               bot.getCurrentRotation() > 90
                   ? bot.getCurrentRotation() - 180
                   : bot.getCurrentRotation() + 180;
-          if (bot.getCurrentStreetBlock().getExits()[0] == ownEntrence) {
+          if (bot.getCurrentStreetBlock().getExits()[0] == ownEntrance) {
             bot.turn(bot.getCurrentStreetBlock().getExits()[1]);
           } else {
             bot.turn(bot.getCurrentStreetBlock().getExits()[0]);
@@ -179,6 +182,8 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   }
 
   /**
+   * sends vehicleBots to frontend
+   *
    * @param bot
    */
   @Override
@@ -191,7 +196,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
    * method iterates through StreetBlockMap of room and return the first free Streetblock
    * coordinates
    *
-   * @return
+   * @return first free StreetBlock that is straight and without rotation
    */
   private int[] getFreeStreetBlock() {
     if (this.room.getRoadMap().getStreetBlockMap().length > 0) {
@@ -212,7 +217,10 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   }
 
   /**
-   * @return
+   * method iterates through StreetBlockMap of room and return the first free Streetblock
+   * coordinates
+   *
+   * @return first free StreetBlock that is straight, without rotation is a "sidewalk"
    */
   private int[] getFreeSidewalk() {
     if (this.room.getRoadMap().getStreetBlockMap().length > 0) {

@@ -114,8 +114,7 @@ class RoomServiceTest {
   void updateRoom() {
     roomService.updateRoom(roomOne, "", "", ROOMNAME_POST_UPDATE, ROOMNUMBERONE, List.of());
     assertThat(roomService.getUserList(roomOne)).containsExactlyElementsOf(List.of());
-    // TODO mit Roadmap anpassen
-    // assertThat(roomOne.getRoomMap()).isEmpty();
+    assertThat(roomOne.getRoomMap()).isEmpty();
     assertThat(roomOne.getJythonScript()).isEmpty();
     assertThat(roomOne.getRoomName()).isEqualTo(ROOMNAME_POST_UPDATE);
     assertThat(roomOne.getRoomNumber()).isEqualTo(ROOMNUMBERONE);

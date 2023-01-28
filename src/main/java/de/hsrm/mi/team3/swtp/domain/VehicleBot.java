@@ -59,9 +59,14 @@ public class VehicleBot {
       } else if (rotation != this.currentRotation) {
         changeBlock(destination);
       }
-    } // else delete Bot?
+    }
   }
 
+  /**
+   * changes position and streetblock of VehicleBot
+   *
+   * @param destination
+   */
   private void changeBlock(StreetBlock destination) {
     this.currentPos[0] = destination.getBlockPosition()[1] + 1;
     this.currentPos[1] = destination.getBlockPosition()[0] + 1;
@@ -70,17 +75,9 @@ public class VehicleBot {
     this.currentStreetBlock.isBlocked(true);
   }
 
-  public int[] getCurrent3DPosition() {
-    int gridSize = 100;
-    int blockSize = 16;
-    int x, y, z;
-    y = 0;
-    x = (this.currentPos[0] - 1 - gridSize / 2) * blockSize;
-    z = (this.currentPos[1] - 1 - gridSize / 2) * blockSize;
-    return new int[] {x, y, z};
-  }
-
   /**
+   * changes rotation of VehicleBot and calls moveToNextBlock()
+   *
    * @param rotation direction to which VehicleBot should turn
    */
   public void turn(int rotation) {
@@ -89,6 +86,8 @@ public class VehicleBot {
   }
 
   /**
+   * changes VehicleBot rotation at random at an intersection
+   *
    * @param exits Integer Array with directions of all valid exits of current StreetBlock
    */
   public void turnRandom(int[] exits) {
@@ -101,10 +100,7 @@ public class VehicleBot {
     turn(this.getCurrentStreetBlock().getExits()[randomNumber]);
   }
 
-  /**
-   * Is called on T- or Crossraods if VehicleBot got a set route. Follows direction of first list
-   * element
-   */
+  /** Is called on T- or Crossraods if VehicleBot got a fixed route. Loops over routeList */
   public void followScript() {
     String direction = this.routeList[lastRouteIndex];
     switch (direction) {
@@ -123,25 +119,17 @@ public class VehicleBot {
       default:
         this.fixRoute = false;
     }
-    /*
-     * if (lastRouteIndex < this.routeList.length) {
-     * lastRouteIndex++;
-     * } else {
-     * lastRouteIndex = 0;
-     * }
-     */
     lastRouteIndex = (lastRouteIndex < this.routeList.length - 1) ? (lastRouteIndex + 1) : 0;
   }
 
+  /**
+   * checks if VehicleBot can drive on StreetBlock with blockName
+   *
+   * @param blockName
+   * @return true if VehicleBot with type "bicycle" want to drive on a road (which is invalid)
+   */
   public boolean isStreetblockInvalid(String blockName) {
-    if (this.vehicleType.equals(VehicleType.BICYCLE)) {
-      if (blockName.startsWith("road", 0)) {
-        return true;
-      }
-      return false;
-    } else {
-      return false;
-    }
+    return (this.vehicleType.equals(VehicleType.BICYCLE) && blockName.startsWith("road", 0));
   }
 
   public String[] getRoute() {
@@ -183,19 +171,15 @@ public class VehicleBot {
     return this.vehicleType;
   }
 
-  public void setVehicleModel(VehicleType model) {
-    this.vehicleType = model;
+  public void setVehicleType(VehicleType type) {
+    this.vehicleType = type;
   }
 
+  /** asks VehicleBots room to return VehicleBots Neighbours */
   public void refreshNeighbours() {
     this.neighbours =
         this.room.getNeighbours(
             this.currentPos[0] - 1, this.currentPos[1] - 1, this.currentRotation);
-  }
-
-  public void removeFixRoute() {
-    this.fixRoute = false;
-    this.routeList = null;
   }
 
   public boolean hasFixRoute() {
@@ -221,14 +205,25 @@ public class VehicleBot {
 
   @Override
   public String toString() {
-    return "VehicleBot [behaviour="
+    return "VehicleBot [id="
+        + id
+        + ", behaviour="
         + behaviour
         + ", currentPos="
         + Arrays.toString(currentPos)
         + ", currentRotation="
         + currentRotation
         + ", room="
-        + room;
+        + room
+        + ", currentStreetBlock="
+        + currentStreetBlock
+        + ", vehicleType="
+        + vehicleType
+        + ", fixRoute="
+        + fixRoute
+        + ", routeList="
+        + Arrays.toString(routeList)
+        + "]";
   }
 
   public Map<VehicleNeighbour, StreetBlock> getNeighbours() {
