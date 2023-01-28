@@ -65,8 +65,11 @@ public class StreetBlock {
       case "t":
         this.exits = new int[] {180, 270, 0};
         break;
-      case "dead-end":
+      case "dead":
         this.exits = new int[] {270};
+        break;
+      case "finish":
+        this.exits = new int[] {0, 180};
         break;
       default:
         this.exits = new int[] {};

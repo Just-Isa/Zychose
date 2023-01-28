@@ -2,7 +2,6 @@ package de.hsrm.mi.team3.swtp.services;
 
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.VehicleBot;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -18,11 +17,11 @@ public interface VehicleBotService {
 
   public void setRoom(Room room);
 
-  public void createBotWithRoute(List<Character> route);
+  public void createBotWithRoute(String route);
 
   public void createBotWithType(String vehicleType);
 
-  public void createBotWithRouteAndType(List<Character> route, String vehicleType);
+  public void createBotWithRouteAndType(String route, String vehicleType);
 
   public void createBot();
 

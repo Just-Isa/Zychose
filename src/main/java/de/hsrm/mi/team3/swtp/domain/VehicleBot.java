@@ -1,10 +1,6 @@
 package de.hsrm.mi.team3.swtp.domain;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Deque;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import org.slf4j.Logger;
@@ -24,20 +20,20 @@ public class VehicleBot {
   private StreetBlock currentStreetBlock;
   private VehicleType vehicleType;
   private boolean fixRoute;
-  private Deque<Character> scriptRoute = new ArrayDeque<>();
-  private List<Character> route;
+  private String[] routeList;
   private Random randomGenerator = new Random();
+  private int lastRouteIndex;
 
   public VehicleBot(Room room) {
     String idNumber = Integer.toString(room.getVehicleBots().size() + 1);
     this.id = "bot-" + idNumber;
     this.room = room;
-    this.route = new ArrayList<>();
     this.currentPos = new int[] {0, 0};
     this.currentRotation = 0;
     // choose random Model from VehicleType Enum
     int randomNumber = randomGenerator.nextInt(VehicleType.values().length);
     this.vehicleType = VehicleType.values()[randomNumber];
+    this.lastRouteIndex = 0;
   }
 
   /**
@@ -110,24 +106,31 @@ public class VehicleBot {
    * element
    */
   public void followScript() {
-    char direction = this.route.get(0);
+    String direction = this.routeList[lastRouteIndex];
     switch (direction) {
-      case 's':
+      case "s":
         moveToNextBlock();
         break;
 
-      case 'l':
-        turn(this.currentRotation < 90 ? 270 : this.currentRotation - 90);
+      case "l":
+        turn(this.currentRotation > 270 ? 0 : this.currentRotation + 90);
         break;
 
-      case 'r':
-        turn(this.currentRotation > 270 ? 0 : this.currentRotation + 90);
+      case "r":
+        turn(this.currentRotation < 90 ? 270 : this.currentRotation - 90);
         break;
 
       default:
         this.fixRoute = false;
     }
-    this.route.remove(0);
+    /*
+     * if (lastRouteIndex < this.routeList.length) {
+     * lastRouteIndex++;
+     * } else {
+     * lastRouteIndex = 0;
+     * }
+     */
+    lastRouteIndex = (lastRouteIndex < this.routeList.length - 1) ? (lastRouteIndex + 1) : 0;
   }
 
   public boolean isStreetblockInvalid(String blockName) {
@@ -137,19 +140,17 @@ public class VehicleBot {
       }
       return false;
     } else {
-      if (blockName.startsWith("sidewalk", 0)) {
-        return true;
-      }
       return false;
     }
   }
 
-  public List<Character> getRoute() {
-    return route;
+  public String[] getRoute() {
+    return routeList;
   }
 
-  public void setRoute(List<Character> route) {
-    this.route = route;
+  public void setRoute(String[] route) {
+    this.routeList = route;
+    this.fixRoute = true;
   }
 
   public int[] getCurrentPos() {
@@ -194,7 +195,7 @@ public class VehicleBot {
 
   public void removeFixRoute() {
     this.fixRoute = false;
-    this.scriptRoute.clear();
+    this.routeList = null;
   }
 
   public boolean hasFixRoute() {
@@ -227,10 +228,7 @@ public class VehicleBot {
         + ", currentRotation="
         + currentRotation
         + ", room="
-        + room
-        + ", route="
-        + route
-        + "]";
+        + room;
   }
 
   public Map<VehicleNeighbour, StreetBlock> getNeighbours() {

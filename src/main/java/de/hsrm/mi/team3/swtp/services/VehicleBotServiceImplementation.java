@@ -4,7 +4,6 @@ import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.VehicleBot;
 import de.hsrm.mi.team3.swtp.domain.VehicleType;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +53,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
    * @param route
    */
   @Override
-  public void createBotWithRoute(List<Character> route) {
+  public void createBotWithRoute(String route) {
     VehicleBot bot = new VehicleBot(room);
 
     int[] pos;
@@ -64,7 +63,8 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
       pos = getFreeStreetBlock();
     }
     bot.setCurrentPos(pos[0], pos[1]);
-    bot.setRoute(route);
+    String[] routeList = route.split(",");
+    bot.setRoute(routeList);
     bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
 
     this.room.setVehicleBot(bot);
@@ -80,6 +80,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     for (VehicleType vt : VehicleType.values()) {
       if (vt.getType().equals(vehicleType)) {
         bot.setVehicleModel(vt);
+        break;
       }
     }
     int[] pos;
@@ -99,12 +100,13 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
    * @param route
    * @param vehicleType
    */
-  public void createBotWithRouteAndType(List<Character> route, String vehicleType) {
+  public void createBotWithRouteAndType(String route, String vehicleType) {
     VehicleBot bot = new VehicleBot(room);
 
     for (VehicleType vt : VehicleType.values()) {
       if (vt.getType().equals(vehicleType)) {
         bot.setVehicleModel(vt);
+        break;
       }
     }
     int[] pos;
@@ -114,7 +116,8 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
       pos = getFreeStreetBlock();
     }
     bot.setCurrentPos(pos[0], pos[1]);
-    bot.setRoute(route);
+    String[] routeList = route.split(",");
+    bot.setRoute(routeList);
     bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
 
     this.room.setVehicleBot(bot);
@@ -196,11 +199,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
         for (int j = 0; j < this.room.getRoadMap().getStreetBlockMap().length; j++)
           if (this.room.getRoadMap().getStreetBlock(i, j) != null
               && !this.room.getRoadMap().getStreetBlock(i, j).isBlocked()
-              && this.room
-                  .getRoadMap()
-                  .getStreetBlock(i, j)
-                  .getBlockType()
-                  .contains("road-straight")
+              && this.room.getRoadMap().getStreetBlock(i, j).getBlockType().contains("straight")
               && this.room.getRoadMap().getStreetBlock(i, j).getBlockRotation() == 0) {
             this.room.getRoadMap().getStreetBlock(i, j).isBlocked(true);
             return new int[] {
