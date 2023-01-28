@@ -22,15 +22,15 @@ public class Vehicle {
   public Vehicle() {
     this.vehicleType = "car";
     this.currentSpeed = 0;
-    this.rotationVector = new double[] { 0, 0, 0 };
-    this.posVector = new double[] { 0, 0, 0 };
+    this.rotationVector = new double[] {0, 0, 0};
+    this.posVector = new double[] {0, 0, 0};
   }
 
   public Vehicle(String vehicleType, double[] posVector) {
     this.vehicleType = vehicleType;
     this.posVector = posVector;
     this.currentSpeed = 0;
-    this.rotationVector = new double[] { 0, 0, 0 };
+    this.rotationVector = new double[] {0, 0, 0};
   }
 
   public double getRotationX() {
