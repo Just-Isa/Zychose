@@ -9,18 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * This class should only be used by python scripts to create and interact with the VehicleBot
+ * This class should only be used by python scripts to create and interact with
+ * the VehicleBot
  * class.
  */
 @Service
 public class VehicleBotServiceImplementation implements VehicleBotService {
 
-  @Autowired BackendInfoServiceImpl backendInfoService;
+  @Autowired
+  BackendInfoServiceImpl backendInfoService;
 
   private Room room;
 
   /**
-   * method to get current room from jython to VehicleBotService-instance. method is only called
+   * method to get current room from jython to VehicleBotService-instance. method
+   * is only called
    * from python-script.
    *
    * @param room
@@ -30,13 +33,14 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     this.room = room;
   }
 
-  /** method to create a new VehicleBot. method is only called from python script. */
+  /**
+   * method to create a new VehicleBot. method is only called from python script.
+   */
   @Override
   public void createBot() {
     VehicleBot bot = new VehicleBot(room);
 
-    bot.setVehicleModel(VehicleType.BICYCLE);
-    int[] pos = {0, 0};
+    int[] pos;
     if (bot.getVehicleModel() == VehicleType.BICYCLE) {
       pos = getFreeSidewalk();
     } else {
@@ -49,50 +53,82 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   }
 
   /**
-   * method to create a new VehicleBot with specific details. method is only called from pyton
+   * method to create a new VehicleBot with specific details. method is only
+   * called from pyton
    * script
-   *
-   * @param rotation
-   * @param position
-   * @param type
+   * 
    * @param route
    */
   @Override
   public void createBotWithRoute(List<Character> route) {
     VehicleBot bot = new VehicleBot(room);
 
-    int[] pos = this.getFreeStreetBlock();
+    int[] pos;
+    if (bot.getVehicleModel() == VehicleType.BICYCLE) {
+      pos = getFreeSidewalk();
+    } else {
+      pos = getFreeStreetBlock();
+    }
     bot.setCurrentPos(pos[0], pos[1]);
     bot.setRoute(route);
-    bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
-
-    this.room.setVehicleBot(bot);
-  }
-
-  public void createBotWithType(VehicleType vehicleType) {
-    VehicleBot bot = new VehicleBot(room);
-    int[] pos = this.getFreeStreetBlock();
-    bot.setCurrentPos(pos[0], pos[1]);
-    bot.setVehicleModel(vehicleType);
-    bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
-
-    this.room.setVehicleBot(bot);
-  }
-
-  public void createBotWithRouteAndType(List<Character> route, VehicleType vehicleType) {
-    VehicleBot bot = new VehicleBot(room);
-
-    int[] pos = this.getFreeStreetBlock();
-    bot.setCurrentPos(pos[0], pos[1]);
-    bot.setRoute(route);
-    bot.setVehicleModel(vehicleType);
     bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
 
     this.room.setVehicleBot(bot);
   }
 
   /**
-   * Main method to let VehicleBots drive. send the updated bot to the frontend with each change in
+   * @param vehicleType
+   */
+  public void createBotWithType(String vehicleType) {
+    // TODO VehicleTypes als String einlesen + richtige Methode zum Startpunkt
+    // finden nutzen
+    VehicleBot bot = new VehicleBot(room);
+    for (VehicleType vt : VehicleType.values()) {
+      if (vt.getType().equals(vehicleType)) {
+        bot.setVehicleModel(vt);
+      }
+    }
+    int[] pos;
+    if (bot.getVehicleModel() == VehicleType.BICYCLE) {
+      pos = getFreeSidewalk();
+    } else {
+      pos = getFreeStreetBlock();
+    }
+    bot.setCurrentPos(pos[0], pos[1]);
+
+    bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
+
+    this.room.setVehicleBot(bot);
+  }
+
+  /**
+   * @param route
+   * @param vehicleType
+   */
+  public void createBotWithRouteAndType(List<Character> route, String vehicleType) {
+    VehicleBot bot = new VehicleBot(room);
+
+    for (VehicleType vt : VehicleType.values()) {
+      if (vt.getType().equals(vehicleType)) {
+        bot.setVehicleModel(vt);
+      }
+    }
+    int[] pos;
+    if (bot.getVehicleModel() == VehicleType.BICYCLE) {
+      pos = getFreeSidewalk();
+    } else {
+      pos = getFreeStreetBlock();
+    }
+    bot.setCurrentPos(pos[0], pos[1]);
+    bot.setRoute(route);
+    bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
+
+    this.room.setVehicleBot(bot);
+  }
+
+  /**
+   * Main method to let VehicleBots drive. send the updated bot to the frontend
+   * with each change in
    * position. method is only called from python script
    */
   @Override
@@ -130,10 +166,9 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
             bot.turnRandom(bot.getCurrentStreetBlock().getExits());
           }
         } else if (blockName.contains("-curve")) {
-          int ownEntrence =
-              bot.getCurrentRotation() > 90
-                  ? bot.getCurrentRotation() - 180
-                  : bot.getCurrentRotation() + 180;
+          int ownEntrence = bot.getCurrentRotation() > 90
+              ? bot.getCurrentRotation() - 180
+              : bot.getCurrentRotation() + 180;
           if (bot.getCurrentStreetBlock().getExits()[0] == ownEntrence) {
             bot.turn(bot.getCurrentStreetBlock().getExits()[1]);
           } else {
@@ -143,11 +178,12 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
           bot.moveToNextBlock();
         }
       }
-      // this.room.updateVehicleBots(bot, bot.getCurrentPos()[0],
-      // bot.getCurrentPos()[1]);
     }
   }
 
+  /**
+   * @param bot
+   */
   @Override
   public void sendBot(VehicleBot bot) {
     backendInfoService.sendVehicle(
@@ -155,7 +191,8 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   }
 
   /**
-   * method iterates through StreetBlockMap of room and return the first free Streetblock
+   * method iterates through StreetBlockMap of room and return the first free
+   * Streetblock
    * coordinates
    *
    * @return
@@ -174,7 +211,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
               && this.room.getRoadMap().getStreetBlock(i, j).getBlockRotation() == 0) {
             this.room.getRoadMap().getStreetBlock(i, j).isBlocked(true);
             return new int[] {
-              i + 1, j + 1
+                i + 1, j + 1
             }; // +1 damit die richtigen Koordinaten ins frontend kommen
           }
       }
@@ -182,6 +219,10 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     return new int[] {};
   }
 
+  /**
+   * 
+   * @return
+   */
   private int[] getFreeSidewalk() {
     if (this.room.getRoadMap().getStreetBlockMap().length > 0) {
       for (int i = 0; i < this.room.getRoadMap().getStreetBlockMap().length; i++) {
@@ -196,7 +237,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
               && this.room.getRoadMap().getStreetBlock(i, j).getBlockRotation() == 0) {
             this.room.getRoadMap().getStreetBlock(i, j).isBlocked(true);
             return new int[] {
-              i + 1, j + 1
+                i + 1, j + 1
             }; // +1 damit die richtigen Koordinaten ins frontend kommen
           }
       }
