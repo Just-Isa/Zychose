@@ -112,7 +112,6 @@ public class RoomServiceImplementation implements RoomService {
    */
   @Override
   public void executeJython(Room room) {
-    logger.info("executeJython Start");
     room.setJythonRunning(true);
     ScriptEngine pyInterp = new ScriptEngineManager().getEngineByName("python");
     try {
@@ -134,7 +133,6 @@ public class RoomServiceImplementation implements RoomService {
     }
     room.setJythonRunning(false);
     room.getVehicleBots().clear();
-    logger.info("jython skript Ende");
   }
 
   @Override

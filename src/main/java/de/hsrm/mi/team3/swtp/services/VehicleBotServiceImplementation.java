@@ -133,9 +133,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   @Override
   public void driveBot() {
     boolean running = !room.getUserList().isEmpty();
-    int runde = 0;
     while (running) {
-      logger.info("driveBot Runde " + runde);
       for (VehicleBot bot : room.getVehicleBots()) {
         this.checkBlockAndDrive(bot);
         sendBot(bot);
@@ -146,11 +144,9 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
         e.printStackTrace();
       }
       running = !room.getUserList().isEmpty();
-      runde++;
     }
     room.setJythonRunning(false);
     room.getVehicleBots().clear();
-    logger.info("driveBot beendet");
   }
 
   /** Checks and reacts to current StreetBlock-Type */
