@@ -124,12 +124,6 @@ public class VehicleServiceImplementation implements VehicleService {
 
     vehicle.setPosX(moveTo[0]);
     vehicle.setPosZ(moveTo[2]);
-    // vehicle.setPosX(
-    // (DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()))
-    // + vehicle.getPosX());
-    // vehicle.setPosZ(
-    // (DISTANCE * vehicle.getCurrentSpeed() * Math.cos(vehicle.getRotationY()))
-    // + vehicle.getPosZ());
   }
 
   /**
