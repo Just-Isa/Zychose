@@ -51,20 +51,21 @@ public class StreetBlock {
 
   public void setExits() {
     // TODO switch hardcoded directions for data in config
-    switch (this.type) {
-      case "road-cross":
+    String[] input = this.type.split("-");
+    switch (input[1]) {
+      case "cross":
         this.exits = new int[] {0, 90, 180, 270};
         break;
-      case "road-straight":
+      case "straight":
         this.exits = new int[] {90, 270};
         break;
-      case "road-curve":
+      case "curve":
         this.exits = new int[] {270, 0};
         break;
-      case "road-t":
+      case "t":
         this.exits = new int[] {180, 270, 0};
         break;
-      case "road-dead-end":
+      case "dead-end":
         this.exits = new int[] {270};
         break;
       default:
@@ -79,6 +80,6 @@ public class StreetBlock {
   }
 
   public boolean isCrossroad() {
-    return (this.type.equals("road-t") || this.type.equals("road-cross"));
+    return (this.type.contains("-t") || this.type.contains("-cross"));
   }
 }
