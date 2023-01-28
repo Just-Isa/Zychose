@@ -13,6 +13,7 @@ public class Vehicle {
   public static final double HANDLING = 0.168;
   public static final double ACCELERATION = 0.02;
   public static final double BRAKE_SPEED = 0.4;
+  public static final double COLLISION_WIDTH = 1.5;
   private String vehicleType;
   private double currentSpeed;
   private double[] rotationVector;
@@ -21,15 +22,15 @@ public class Vehicle {
   public Vehicle() {
     this.vehicleType = "car";
     this.currentSpeed = 0;
-    this.rotationVector = new double[] {0, 0, 0};
-    this.posVector = new double[] {0, 0, 0};
+    this.rotationVector = new double[] { 0, 0, 0 };
+    this.posVector = new double[] { 0, 0, 0 };
   }
 
   public Vehicle(String vehicleType, double[] posVector) {
     this.vehicleType = vehicleType;
     this.posVector = posVector;
     this.currentSpeed = 0;
-    this.rotationVector = new double[] {0, 0, 0};
+    this.rotationVector = new double[] { 0, 0, 0 };
   }
 
   public double getRotationX() {

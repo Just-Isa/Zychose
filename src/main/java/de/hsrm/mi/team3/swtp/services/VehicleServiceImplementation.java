@@ -1,11 +1,23 @@
 package de.hsrm.mi.team3.swtp.services;
 
+import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.Vehicle;
+
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class VehicleServiceImplementation implements VehicleService {
+
+  Logger logger = LoggerFactory.getLogger(VehicleService.class);
+
   static final float DISTANCE = 8;
+  @Autowired
+  RoomService roomService;
 
   /**
    * rotates the given vehicle to the left
@@ -14,8 +26,13 @@ public class VehicleServiceImplementation implements VehicleService {
    */
   @Override
   public void rotateLeft(Vehicle vehicle) {
-    if (vehicle.getCurrentSpeed() != 0) {
+    if (vehicle.getCurrentSpeed() == 0) {
+      return;
+    }
+    if (vehicle.getCurrentSpeed() > 0) {
       vehicle.setRotationY(vehicle.getRotationY() + Vehicle.HANDLING);
+    } else {
+      vehicle.setRotationY(vehicle.getRotationY() - Vehicle.HANDLING);
     }
   }
 
@@ -26,8 +43,13 @@ public class VehicleServiceImplementation implements VehicleService {
    */
   @Override
   public void rotateRight(Vehicle vehicle) {
-    if (vehicle.getCurrentSpeed() != 0) {
+    if (vehicle.getCurrentSpeed() == 0) {
+      return;
+    }
+    if (vehicle.getCurrentSpeed() > 0) {
       vehicle.setRotationY(vehicle.getRotationY() - Vehicle.HANDLING);
+    } else {
+      vehicle.setRotationY(vehicle.getRotationY() + Vehicle.HANDLING);
     }
   }
 
@@ -37,13 +59,13 @@ public class VehicleServiceImplementation implements VehicleService {
    * @param vehicle
    */
   @Override
-  public void moveForward(Vehicle vehicle) {
+  public void moveForward(Vehicle vehicle, Room room) {
     if (vehicle.getCurrentSpeed() < 0) {
       calculateSpeed(vehicle, Vehicle.BRAKE_SPEED);
     } else {
       calculateSpeed(vehicle, Vehicle.ACCELERATION);
     }
-    move(vehicle);
+    move(vehicle, room);
   }
 
   /**
@@ -52,13 +74,13 @@ public class VehicleServiceImplementation implements VehicleService {
    * @param vehicle
    */
   @Override
-  public void moveBackward(Vehicle vehicle) {
+  public void moveBackward(Vehicle vehicle, Room room) {
     if (vehicle.getCurrentSpeed() > 0) {
       calculateSpeed(vehicle, -Vehicle.BRAKE_SPEED);
     } else {
       calculateSpeed(vehicle, -Vehicle.ACCELERATION);
     }
-    move(vehicle);
+    move(vehicle, room);
   }
 
   /**
@@ -67,7 +89,7 @@ public class VehicleServiceImplementation implements VehicleService {
    * @param vehicle
    */
   @Override
-  public void carRunOutSpeed(Vehicle vehicle) {
+  public void carRunOutSpeed(Vehicle vehicle, Room room) {
     if (vehicle.getCurrentSpeed() > 0) {
       double newSpeed = Math.round(this.accelerate(vehicle, Vehicle.RUN_OUT_SPEED) * 1000) / 1000.0;
       if (newSpeed < 0.00001) {
@@ -76,15 +98,14 @@ public class VehicleServiceImplementation implements VehicleService {
         vehicle.setCurrentSpeed(newSpeed);
       }
     } else if (vehicle.getCurrentSpeed() < 0) {
-      double newSpeed =
-          Math.round(this.accelerate(vehicle, -Vehicle.RUN_OUT_SPEED) * 1000) / 1000.0;
+      double newSpeed = Math.round(this.accelerate(vehicle, -Vehicle.RUN_OUT_SPEED) * 1000) / 1000.0;
       if (newSpeed > -0.00001) {
         vehicle.setCurrentSpeed(0);
       } else {
         vehicle.setCurrentSpeed(newSpeed);
       }
     }
-    move(vehicle);
+    move(vehicle, room);
   }
 
   /**
@@ -92,13 +113,21 @@ public class VehicleServiceImplementation implements VehicleService {
    *
    * @param vehicle
    */
-  private void move(Vehicle vehicle) {
-    vehicle.setPosX(
-        (DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()))
-            + vehicle.getPosX());
-    vehicle.setPosZ(
-        (DISTANCE * vehicle.getCurrentSpeed() * Math.cos(vehicle.getRotationY()))
-            + vehicle.getPosZ());
+  private void move(Vehicle vehicle, Room room) {
+    double[] moveTo = { 0, 0, 0 };
+    moveTo[0] = (DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY())) + vehicle.getPosX();
+    moveTo[2] = (DISTANCE * vehicle.getCurrentSpeed() * Math.cos(vehicle.getRotationY())) + vehicle.getPosZ();
+
+    checkCollosion(vehicle, moveTo, room);
+
+    vehicle.setPosX(moveTo[0]);
+    vehicle.setPosZ(moveTo[2]);
+    // vehicle.setPosX(
+    // (DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()))
+    // + vehicle.getPosX());
+    // vehicle.setPosZ(
+    // (DISTANCE * vehicle.getCurrentSpeed() * Math.cos(vehicle.getRotationY()))
+    // + vehicle.getPosZ());
   }
 
   /**
@@ -130,5 +159,44 @@ public class VehicleServiceImplementation implements VehicleService {
    */
   private double accelerate(Vehicle vehicle, double acceleration) {
     return vehicle.getCurrentSpeed() + acceleration;
+  }
+
+  /**
+   * checks if the vehicle collides with something
+   * 
+   * @param vehicle
+   * @param moveTo
+   * @param room
+   */
+  private void checkCollosion(Vehicle vehicle, double[] moveTo, Room room) {
+    checkPlayerVehicleCollosion(vehicle, moveTo, room);
+    // TODO: check other collisions
+  }
+
+  /**
+   * checks if the vehicle collides with another Player vehicle
+   * 
+   * @param vehicle
+   * @param moveTo
+   * @param room
+   */
+  private void checkPlayerVehicleCollosion(Vehicle vehicle, double[] moveTo, Room room) {
+    List<Vehicle> vehicles = roomService.getVehicleList(room);
+    for (Vehicle v : vehicles) {
+      if (v != vehicle) {
+        double distance = Math.sqrt(Math.pow(moveTo[0] - v.getPosX(), 2) + Math.pow(moveTo[2] - v.getPosZ(), 2));
+        if (distance < (vehicle.COLLISION_WIDTH + v.COLLISION_WIDTH)) {
+
+          double moveOtherX = ((DISTANCE * 2) * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()))
+              + v.getPosX();
+          double moveOtherZ = ((DISTANCE * 2) * vehicle.getCurrentSpeed() * Math.cos(vehicle.getRotationY()))
+              + v.getPosZ();
+          v.setPosX(moveOtherX);
+          v.setPosZ(moveOtherZ);
+
+          vehicle.setCurrentSpeed(0);
+        }
+      }
+    }
   }
 }
