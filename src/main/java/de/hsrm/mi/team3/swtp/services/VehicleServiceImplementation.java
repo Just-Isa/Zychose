@@ -76,7 +76,8 @@ public class VehicleServiceImplementation implements VehicleService {
         vehicle.setCurrentSpeed(newSpeed);
       }
     } else if (vehicle.getCurrentSpeed() < 0) {
-      double newSpeed = Math.round(this.accelerate(vehicle, -Vehicle.RUN_OUT_SPEED) * 1000) / 1000.0;
+      double newSpeed =
+          Math.round(this.accelerate(vehicle, -Vehicle.RUN_OUT_SPEED) * 1000) / 1000.0;
       if (newSpeed > -0.001) {
         vehicle.setCurrentSpeed(0);
       } else {

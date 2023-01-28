@@ -12,6 +12,5 @@ public enum VehicleCommands {
   LEFT("LEFT"),
   RIGHT("RIGHT");
 
-  @NonNull
-  private String command;
+  @NonNull private String command;
 }

@@ -2,7 +2,6 @@ package de.hsrm.mi.team3.swtp.domain;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
 

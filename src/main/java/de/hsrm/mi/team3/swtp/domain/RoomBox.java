@@ -2,10 +2,9 @@ package de.hsrm.mi.team3.swtp.domain;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Getter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
-
-import lombok.Getter;
 
 /*
  * The RoomBox class handles all rooms. The class itself exists only once.
