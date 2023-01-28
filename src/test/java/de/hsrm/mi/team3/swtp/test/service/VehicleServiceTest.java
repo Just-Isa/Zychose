@@ -15,11 +15,11 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 class VehicleServiceTest {
-  @Autowired VehicleService vehicleService;
+  @Autowired
+  VehicleService vehicleService;
 
   private Vehicle vehicle;
 
-  private final double MAX_SPEED = 0.6;
   private final double NO_SPEED = 0;
   private final float DISTANCE = 8;
 
@@ -42,7 +42,7 @@ class VehicleServiceTest {
   @DisplayName("Vehicle: Rotate moving vehicle left")
   void testLeftRotationWithSpeed() {
     double rotationYBefore = vehicle.getRotationY();
-    vehicle.setCurrentSpeed(MAX_SPEED);
+    vehicle.setCurrentSpeed(Vehicle.MAX_SPEED);
     assertThat(vehicle.getCurrentSpeed()).isPositive();
     vehicleService.rotateLeft(vehicle);
     assertThat(vehicle.getRotationY()).isGreaterThan(rotationYBefore);
@@ -62,7 +62,7 @@ class VehicleServiceTest {
   @DisplayName("Vehicle: Rotate moving vehicle Right")
   void testRightRotationWithSpeed() {
     double rotationYBefore = vehicle.getRotationY();
-    vehicle.setCurrentSpeed(MAX_SPEED);
+    vehicle.setCurrentSpeed(Vehicle.MAX_SPEED);
     assertThat(vehicle.getCurrentSpeed()).isPositive();
     vehicleService.rotateRight(vehicle);
     assertThat(vehicle.getRotationY()).isLessThan(rotationYBefore);
@@ -75,8 +75,7 @@ class VehicleServiceTest {
     double zPosBefore = vehicle.getPosZ();
     vehicle.setCurrentSpeed(NO_SPEED);
     vehicleService.moveForward(vehicle);
-    double xPosAfter =
-        DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
+    double xPosAfter = DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
     assertThat(vehicle.getPosX()).isEqualTo(xPosAfter);
     assertThat(vehicle.getPosZ())
         .isEqualTo(
@@ -88,10 +87,9 @@ class VehicleServiceTest {
   void testMoveVehicleForwardDrivingBackwards() {
     double xPosBefore = vehicle.getPosX();
     double zPosBefore = vehicle.getPosZ();
-    vehicle.setCurrentSpeed(-MAX_SPEED);
+    vehicle.setCurrentSpeed(-Vehicle.MAX_SPEED);
     vehicleService.moveForward(vehicle);
-    double xPosAfter =
-        DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
+    double xPosAfter = DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
     assertThat(vehicle.getPosX()).isEqualTo(xPosAfter);
     assertThat(vehicle.getPosZ())
         .isEqualTo(
@@ -105,8 +103,7 @@ class VehicleServiceTest {
     double zPosBefore = vehicle.getPosZ();
     vehicle.setCurrentSpeed(NO_SPEED);
     vehicleService.moveBackward(vehicle);
-    double xPosAfter =
-        DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
+    double xPosAfter = DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
     assertThat(vehicle.getPosX()).isEqualTo(xPosAfter);
     assertThat(vehicle.getPosZ())
         .isEqualTo(
@@ -118,10 +115,9 @@ class VehicleServiceTest {
   void testMoveVehicleBackwardsDrivingForwards() {
     double xPosBefore = vehicle.getPosX();
     double zPosBefore = vehicle.getPosZ();
-    vehicle.setCurrentSpeed(-MAX_SPEED);
+    vehicle.setCurrentSpeed(-Vehicle.MAX_SPEED);
     vehicleService.moveBackward(vehicle);
-    double xPosAfter =
-        DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
+    double xPosAfter = DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
     assertThat(vehicle.getPosX()).isEqualTo(xPosAfter);
     assertThat(vehicle.getPosZ())
         .isEqualTo(
@@ -133,34 +129,22 @@ class VehicleServiceTest {
   void testVehicleRunOutOfSpeed() {
 
     // Numbers represent detailed Speed values after slowing down
-    vehicle.setCurrentSpeed(MAX_SPEED);
-    assertThat(vehicle.getCurrentSpeed()).isEqualTo(MAX_SPEED);
+    vehicle.setCurrentSpeed(Vehicle.MAX_SPEED);
+    assertThat(vehicle.getCurrentSpeed()).isEqualTo(Vehicle.MAX_SPEED);
     vehicleService.carRunOutSpeed(vehicle);
-    assertThat(vehicle.getCurrentSpeed()).isEqualTo(0.5);
-    vehicleService.carRunOutSpeed(vehicle);
-    assertThat(vehicle.getCurrentSpeed()).isBetween(0.4, 0.401);
-    vehicleService.carRunOutSpeed(vehicle);
-    assertThat(vehicle.getCurrentSpeed()).isBetween(0.3, 0.301);
-    vehicleService.carRunOutSpeed(vehicle);
-    assertThat(vehicle.getCurrentSpeed()).isBetween(0.2, 0.201);
-    vehicleService.carRunOutSpeed(vehicle);
-    assertThat(vehicle.getCurrentSpeed()).isBetween(0.1, 0.101);
-    vehicleService.carRunOutSpeed(vehicle);
+    assertThat(vehicle.getCurrentSpeed()).isEqualTo(Vehicle.MAX_SPEED + Vehicle.RUN_OUT_SPEED);
+    while (vehicle.getCurrentSpeed() != 0) {
+      vehicleService.carRunOutSpeed(vehicle);
+    }
     assertThat(vehicle.getCurrentSpeed()).isZero();
 
-    vehicle.setCurrentSpeed(-MAX_SPEED);
-    assertThat(vehicle.getCurrentSpeed()).isEqualTo(-MAX_SPEED);
+    vehicle.setCurrentSpeed(-Vehicle.MAX_SPEED);
+    assertThat(vehicle.getCurrentSpeed()).isEqualTo(-Vehicle.MAX_SPEED);
     vehicleService.carRunOutSpeed(vehicle);
-    assertThat(vehicle.getCurrentSpeed()).isEqualTo(-0.5);
-    vehicleService.carRunOutSpeed(vehicle);
-    assertThat(vehicle.getCurrentSpeed()).isBetween(-0.401, -0.4);
-    vehicleService.carRunOutSpeed(vehicle);
-    assertThat(vehicle.getCurrentSpeed()).isBetween(-0.301, -0.3);
-    vehicleService.carRunOutSpeed(vehicle);
-    assertThat(vehicle.getCurrentSpeed()).isBetween(-0.201, -0.2);
-    vehicleService.carRunOutSpeed(vehicle);
-    assertThat(vehicle.getCurrentSpeed()).isBetween(-0.101, -0.1);
-    vehicleService.carRunOutSpeed(vehicle);
+    assertThat(vehicle.getCurrentSpeed()).isEqualTo(-Vehicle.MAX_SPEED - Vehicle.RUN_OUT_SPEED);
+    while (vehicle.getCurrentSpeed() != 0) {
+      vehicleService.carRunOutSpeed(vehicle);
+    }
     assertThat(vehicle.getCurrentSpeed()).isZero();
   }
 }

@@ -3,8 +3,7 @@ import config from "../../../../swtp.config.json";
 
 export class VehicleCameraContext {
   private states: CameraState[];
-  private curstateCount = 0;
-
+  private currentStateCount = 0;
   constructor(camera: THREE.PerspectiveCamera) {
     this.states = [new FirstPersonState(camera), new ThirdPersonState(camera)];
   }
@@ -15,13 +14,13 @@ export class VehicleCameraContext {
    * @param vehicle
    */
   request(speed: number, vehicleType: string, vehicle: THREE.Group) {
-    this.states[this.curstateCount].update(speed, vehicleType, vehicle);
+    this.states[this.currentStateCount].update(speed, vehicleType, vehicle);
   }
   /**
    * switches the camera state
    */
   switchCameraState() {
-    this.curstateCount = (this.curstateCount + 1) % 2;
+    this.currentStateCount = (this.currentStateCount + 1) % 2;
   }
 }
 
@@ -81,12 +80,12 @@ class FirstPersonState extends CameraState {
       ?.firstPersonCameraLookat as number[];
 
     const idealOffset = super.calcVectorsOfVehiclePos(
-      new THREE.Vector3(offset[0], offset[1], offset[2]), //vector for camera offset in realtion to vehicle
+      new THREE.Vector3(offset[0], offset[1], offset[2]), //vector for camera offset in relation to vehicle
       vehicleSpeed,
       vehicle
     );
     const idealLookat = super.calcVectorsOfVehiclePos(
-      new THREE.Vector3(lookAt[0], lookAt[1], lookAt[2]), //vector for camera lookat in realtion to vehicle
+      new THREE.Vector3(lookAt[0], lookAt[1], lookAt[2]), //vector for camera lookat in relation to vehicle
       vehicleSpeed,
       vehicle
     );
@@ -100,6 +99,7 @@ class FirstPersonState extends CameraState {
 }
 
 class ThirdPersonState extends CameraState {
+  _prevVehicleSpeed = 0;
   /**
    * Fixes camera to vehicle by updating camera position with an offset and a lookAt direction.
    * @param vehicleSpeed
@@ -109,12 +109,10 @@ class ThirdPersonState extends CameraState {
     vehicleType: string,
     vehicle: THREE.Group
   ): void {
-    const lerpDuration = 0.5;
-
     const offset = config.allVehicleTypes.find((v) => v.name === vehicleType)
       ?.thirdPersonCameraOffset as number[];
     const idealOffset = super.calcVectorsOfVehiclePos(
-      new THREE.Vector3(offset[0], offset[1], offset[2]), //vector for camera offset in realtion to vehicle
+      new THREE.Vector3(offset[0], offset[1], offset[2]), //vector for camera offset in relation to vehicle
       vehicleSpeed,
       vehicle
     );
@@ -122,15 +120,24 @@ class ThirdPersonState extends CameraState {
       ?.thridPersonCameraLookat as number[];
 
     const idealLookat = super.calcVectorsOfVehiclePos(
-      new THREE.Vector3(lookAt[0], lookAt[1], lookAt[2]), //vector for camera lookat in realtion to vehicle
+      new THREE.Vector3(lookAt[0], lookAt[1], lookAt[2]), //vector for camera lookat in relation to vehicle
       vehicleSpeed,
       vehicle
     );
 
+    let lerpDuration = 0.1;
+    if (
+      (this._prevVehicleSpeed < 0 && vehicleSpeed > 0) ||
+      (this._prevVehicleSpeed > 0 && vehicleSpeed < 0) ||
+      vehicleSpeed === 0
+    ) {
+      lerpDuration = 1;
+    }
     this._currentCameraPos.lerp(idealOffset, lerpDuration);
     this._currentCameraLookAt.lerp(idealLookat, lerpDuration);
 
     this._camera.position.copy(this._currentCameraPos);
     this._camera.lookAt(this._currentCameraLookAt);
+    this._prevVehicleSpeed = vehicleSpeed;
   }
 }
