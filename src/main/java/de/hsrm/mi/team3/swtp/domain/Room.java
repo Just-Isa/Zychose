@@ -3,10 +3,16 @@ package de.hsrm.mi.team3.swtp.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /*
  * Room class that is used within the RoomBox.
  * This class has two different constructors.
  */
+
+@Getter
+@Setter
 public class Room {
 
   private String roomName;
@@ -31,51 +37,11 @@ public class Room {
     this.roomMap = "";
   }
 
-  public String getRoomName() {
-    return roomName;
-  }
-
-  public void setRoomName(String roomName) {
-    this.roomName = roomName;
-  }
-
-  public List<User> getUserList() {
-    return userList;
-  }
-
   public void addUserToList(User user) {
     this.userList.add(user);
   }
 
   public void removeUserFromList(User user) {
     this.userList.remove(user);
-  }
-
-  public int getRoomNumber() {
-    return roomNumber;
-  }
-
-  public void setRoomNumber(int roomNumber) {
-    this.roomNumber = roomNumber;
-  }
-
-  public String getJythonScript() {
-    return jythonScript;
-  }
-
-  public void setJythonScript(String jythonScript) {
-    this.jythonScript = jythonScript;
-  }
-
-  public void setUserList(List<User> userList) {
-    this.userList = userList;
-  }
-
-  public String getRoomMap() {
-    return roomMap;
-  }
-
-  public void setRoomMap(String roomMap) {
-    this.roomMap = roomMap;
   }
 }
