@@ -186,7 +186,67 @@
       "thridPersonCameraLookat": [0, 5, 20]
     }
   ],
+  "botVehicles": [
+    {
+      "name": "jeep",
+      "glbPath": "/assets/models/vehicles/jeep.glb",
+      "textHightOverVehicle": 5
+    },
+    {
+      "name": "limo",
+      "glbPath": "/assets/models/vehicles/limo.glb",
+      "textHightOverVehicle": 5
+    },
+    {
+      "name": "mini",
+      "glbPath": "/assets/models/vehicles/mini.glb",
+      "textHightOverVehicle": 5
+    },
+    {
+      "name": "muscle",
+      "glbPath": "/assets/models/vehicles/muscle.glb",
+      "textHightOverVehicle": 5
+    },
+    {
+      "name": "pickup",
+      "glbPath": "/assets/models/vehicles/pickup.glb",
+      "textHightOverVehicle": 5
+    },
+    {
+      "name": "sedan",
+      "glbPath": "/assets/models/vehicles/sedan.glb",
+      "textHightOverVehicle": 5
+    },
+    {
+      "name": "sport",
+      "glbPath": "/assets/models/vehicles/sport.glb",
+      "textHightOverVehicle": 5
+    },
+    {
+      "name": "suv",
+      "glbPath": "/assets/models/vehicles/suv.glb",
+      "textHightOverVehicle": 5
+    },
+    {
+      "name": "toon",
+      "glbPath": "/assets/models/vehicles/toon.glb",
+      "textHightOverVehicle": 5
+    },
+    {
+      "name": "van",
+      "glbPath": "/assets/models/vehicles/van.glb",
+      "textHightOverVehicle": 5
+    },
+    {
+      "name": "bike",
+      "glbPath": "/assets/models/vehicles/bike.glb",
+      "textHightOverVehicle": 5
+    }
+  ],
   "fontPath": "/fonts/poppins-semiBold.ttf",
   "fontSize": 0.3,
-  "VehilceLerpSpeed": 0.075
+  "botIdentifier": "bot",
+  "VehicleLerpSpeed": 0.075,
+  "botVehicleLerpSpeed": 0.05
+
 }
