@@ -15,9 +15,7 @@ const stateStreetBlock = reactive({
   },
 });
 
-const bulldozerActive = reactive({
-  isActive: false,
-});
+const bulldozerActive = ref(false);
 
 const menuTabs = swtpConfigJSON.menuTabs;
 
@@ -30,12 +28,25 @@ const menuTabState = reactive({
 const isRotationTriggeredState = ref(false);
 
 export function useStreetBlock() {
-  function changeCurrentStreetType(s: StreetBlock) {
-    stateStreetBlock.streetBlock = s;
+  function changeCurrentStreetType(s: StreetBlock | null) {
+    // if input is null reset the active Block in stateStreetBlock
+    if (s === null) {
+      const resetBlock: StreetBlock = {
+        name: "",
+        currentRotation: 0,
+        imgPath: "",
+        possibleRotations: [],
+        possibleVehicleTypes: [],
+      };
+      stateStreetBlock.streetBlock = resetBlock;
+      // else override it with the new selected active Block
+    } else {
+      stateStreetBlock.streetBlock = s;
+    }
   }
 
   function toggleBulldozer(b: boolean) {
-    bulldozerActive.isActive = b;
+    bulldozerActive.value = b;
   }
 
   function changeCurrentTab(s: string) {

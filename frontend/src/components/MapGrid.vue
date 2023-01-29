@@ -49,7 +49,6 @@ import { use3DVehiclePosition } from "@/services/use3DVehiclePosition";
 import { useStreetBlock } from "@/services/useStreetBlock";
 import { useRoom } from "@/services/useRoom";
 import { jsonToState } from "@/services/JSONparser";
-import type { StreetBlock } from "@/model/IStreetBlock";
 
 /**
  * @param {number} gridSize defines the size of the grid component
@@ -185,14 +184,7 @@ watch(isRotationTriggeredState, () => {
   }
 });
 watch(bulldozerActive, () => {
-  let newActiveBlock: StreetBlock = {
-    name: "",
-    currentRotation: 0,
-    imgPath: "",
-    possibleRotations: [],
-    possibleVehicleTypes: [],
-  };
-  changeCurrentStreetType(newActiveBlock);
+  changeCurrentStreetType(null);
 });
 /**
  * cellClicked handles the click event for cells.

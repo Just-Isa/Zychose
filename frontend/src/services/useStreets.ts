@@ -66,7 +66,7 @@ export function useStreets() {
    * @param {IStreetInformation} onGridClickObject - IStreetInformation Object that needs to be saved or deleted
    */
   function updateStreetState(onGridClickObject: IStreetInformation): void {
-    if (bulldozerActive.isActive) {
+    if (bulldozerActive.value) {
       state.streets = state.streets.filter(
         (street) =>
           street.posX !== onGridClickObject.posX ||
