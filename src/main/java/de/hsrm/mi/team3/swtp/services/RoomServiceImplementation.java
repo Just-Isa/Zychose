@@ -16,10 +16,12 @@ public class RoomServiceImplementation implements RoomService {
 
   Logger logger = LoggerFactory.getLogger(RoomServiceImplementation.class);
 
-  @Autowired RoomBoxServiceImplementation roomBoxService;
+  @Autowired
+  RoomBoxServiceImplementation roomBoxService;
 
   /**
-   * This method adds a new user to a room, and changed the users currentRoomNumber respectively.
+   * This method adds a new user to a room, and changed the users
+   * currentRoomNumber respectively.
    *
    * @param room
    * @param user
@@ -76,12 +78,12 @@ public class RoomServiceImplementation implements RoomService {
   /**
    * Updates Room with new Variables
    *
-   * @param room Room that is to be updated
+   * @param room         Room that is to be updated
    * @param jythonScript new jythonScript for room
-   * @param roomMap new roomMap for room
-   * @param roomName new roomName for room
-   * @param roomNumber new roomNumber for room
-   * @param userList new userList for room
+   * @param roomMap      new roomMap for room
+   * @param roomName     new roomName for room
+   * @param roomNumber   new roomNumber for room
+   * @param userList     new userList for room
    */
   public void updateRoom(
       Room room,
@@ -101,12 +103,13 @@ public class RoomServiceImplementation implements RoomService {
    * Method that deletes the vehicle from a specific user
    *
    * @param roomNumber The roomnumber from the specific room
-   * @param sessionID The sessionID from the specific user
+   * @param sessionID  The sessionID from the specific user
    */
   @Override
   public void deleteVehicleFromUser(int roomNumber, String sessionID) {
-    if (getUserByID(roomNumber, sessionID).isPresent()) {
-      getUserByID(roomNumber, sessionID).get().setVehicle(null);
+    Optional<User> user = getUserByID(roomNumber, sessionID);
+    if (user.isPresent()) {
+      user.get().setVehicle(null);
     }
   }
 }
