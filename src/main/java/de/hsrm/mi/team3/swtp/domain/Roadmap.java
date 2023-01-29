@@ -8,7 +8,7 @@ import org.json.JSONObject;
 /** RoadMap rray of StreetBlocks generated from roomMap string for easy access */
 public class Roadmap {
 
-  private static final int SIZE = 100;
+  private static final int SIZE = 50;
   private StreetBlock[][] streetBlockMap = new StreetBlock[SIZE][SIZE];
 
   public Roadmap(String mapstring) {
