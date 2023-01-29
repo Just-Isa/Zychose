@@ -8,7 +8,7 @@ import {
 } from "../model/IVehicle";
 import { MessageOperator } from "../model/MessageOperators";
 import config from "../../../swtp.config.json";
-const webSocketUrl = `ws://${window.location.host}/stompbroker`;
+const webSocketUrl = `ws://${window.location.host}/stomp-broker`;
 const stompClient = new Client({ brokerURL: webSocketUrl });
 
 export interface IVehicleState {

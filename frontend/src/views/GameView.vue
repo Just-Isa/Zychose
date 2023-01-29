@@ -19,7 +19,7 @@ import { Client } from "@stomp/stompjs";
 import { logger } from "@/helpers/Logger";
 const { roomState } = useRoom();
 
-const webSocketUrl = `ws://${window.location.host}/stompbroker`;
+const webSocketUrl = `ws://${window.location.host}/stomp-broker`;
 const stompVehicleClient = new Client({ brokerURL: webSocketUrl });
 
 const publishVehicleStompClientConnection = setInterval(function () {

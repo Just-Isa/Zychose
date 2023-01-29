@@ -5,7 +5,7 @@ import {
   VehiclePositionMessage,
   type IVehiclePositionMessage,
 } from "../model/IVehiclePositionMessage";
-const webSocketUrl = `ws://${window.location.host}/stompbroker`;
+const webSocketUrl = `ws://${window.location.host}/stomp-broker`;
 const positionMessageClient = new Client({ brokerURL: webSocketUrl });
 
 export function use3DVehiclePosition() {

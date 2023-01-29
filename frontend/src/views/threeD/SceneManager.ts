@@ -11,10 +11,12 @@ import { logger } from "@/helpers/Logger";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 import { TTFLoader } from "three/examples/jsm/loaders/TTFLoader.js";
+import { useRoom } from "@/services/useRoom";
 import config from "../../../../swtp.config.json";
 
 const { camState, switchCamera } = useCamera();
 const { vehicleState } = use3DVehicle();
+const { roomState } = useRoom();
 type StreetBlock = IStreetInformation;
 const testObjectName = "text";
 /**
@@ -166,7 +168,13 @@ export class SceneManager {
           if (vehicleSessionId === getSessionIDFromCookie()) {
             this.vehicleCamera.request(vehicle.speed, vehicle.vehicleType, car);
           } else {
-            this.addTextToVehicle(vehicleSessionId, vehicle.vehicleType, car);
+            this.addTextToVehicle(
+              roomState.room.userList.find(
+                (x) => x.sessionID == vehicleSessionId
+              )!.userName,
+              vehicle.vehicleType,
+              car
+            );
           }
 
           vehicleMap.set(vehicleSessionId, car);

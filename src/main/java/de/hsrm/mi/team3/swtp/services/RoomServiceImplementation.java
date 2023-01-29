@@ -2,8 +2,9 @@ package de.hsrm.mi.team3.swtp.services;
 
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
+import de.hsrm.mi.team3.swtp.domain.Vehicle;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.script.ScriptContext;
@@ -22,12 +23,15 @@ public class RoomServiceImplementation implements RoomService {
 
   Logger logger = LoggerFactory.getLogger(RoomServiceImplementation.class);
 
-  @Autowired RoomBoxServiceImplementation roomBoxService;
+  @Autowired
+  RoomBoxServiceImplementation roomBoxService;
 
-  @Autowired VehicleBotService vehicleBotService;
+  @Autowired
+  VehicleBotService vehicleBotService;
 
   /**
-   * This method adds a new user to a room, and changed the users currentRoomNumber respectively.
+   * This method adds a new user to a room, and changed the users
+   * currentRoomNumber respectively.
    *
    * @param room
    * @param user
@@ -84,12 +88,12 @@ public class RoomServiceImplementation implements RoomService {
   /**
    * Updates Room with new Variables
    *
-   * @param room Room that is to be updated
+   * @param room         Room that is to be updated
    * @param jythonScript new jythonScript for room
-   * @param roomMap new roomMap for room
-   * @param roomName new roomName for room
-   * @param roomNumber new roomNumber for room
-   * @param userList new userList for room
+   * @param roomMap      new roomMap for room
+   * @param roomName     new roomName for room
+   * @param roomNumber   new roomNumber for room
+   * @param userList     new userList for room
    */
   public void updateRoom(
       Room room,
@@ -106,7 +110,8 @@ public class RoomServiceImplementation implements RoomService {
   }
 
   /**
-   * executes python script connected to the room. ScriptEnginge Output is set to console.
+   * executes python script connected to the room. ScriptEnginge Output is set to
+   * console.
    *
    * @param room
    */
@@ -144,5 +149,21 @@ public class RoomServiceImplementation implements RoomService {
         break;
       }
     }
+  }
+
+  /**
+   * This method provides a list of all vehicles in a room.
+   *
+   * @param room
+   * @return
+   */
+  public List<Vehicle> getVehicleList(Room room) {
+    List<Vehicle> vehicleList = new ArrayList<>();
+    for (User u : room.getUserList()) {
+      if (u.getVehicle() != null) {
+        vehicleList.add(u.getVehicle());
+      }
+    }
+    return vehicleList;
   }
 }

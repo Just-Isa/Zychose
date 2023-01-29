@@ -8,7 +8,6 @@
       <h1 class="font-bold text-6xl text-white font-sans self-center uppercase">
         Servers
       </h1>
-      <AddButton class="drop-shadow-md place-self-end" />
     </div>
 
     <div
@@ -57,7 +56,6 @@
 import { useRoomBox } from "@/services/useRoomList";
 import { onMounted, computed } from "vue";
 import { useUser } from "@/services/useUser";
-import AddButton from "../components/AddButton.vue";
 import GoBackButton from "../components/GoBackButton.vue";
 import ButtonJythonUpload from "@/components/ButtonJythonUpload.vue";
 
