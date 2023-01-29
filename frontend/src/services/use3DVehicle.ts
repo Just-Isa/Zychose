@@ -6,7 +6,7 @@ import {
   type IVehicle,
   type IVehicleMessage,
 } from "../model/IVehicle";
-const webSocketUrl = `ws://${window.location.host}/stompbroker`;
+const webSocketUrl = `ws://${window.location.host}/stomp-broker`;
 const stompClient = new Client({ brokerURL: webSocketUrl });
 import { MessageOperator } from "../model/MessageOperators";
 

@@ -27,7 +27,7 @@ const vehicleTypes = swtpJSON.allVehicleTypes;
 const { currentVehicle } = useVehicle();
 const { roomState } = useRoom();
 
-const webSocketUrl = `ws://${window.location.host}/stompbroker`;
+const webSocketUrl = `ws://${window.location.host}/stomp-broker`;
 const stompVehicleClient = new Client({ brokerURL: webSocketUrl });
 
 const publishVehicleStompClientConnection = setInterval(function () {

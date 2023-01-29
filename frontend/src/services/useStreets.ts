@@ -2,8 +2,10 @@ import { gridToJson } from "./JSONparser";
 import { reactive, readonly } from "vue";
 import { useRoom } from "./useRoom";
 import { logger } from "@/helpers/Logger";
+import { useStreetBlock } from "./useStreetBlock";
 
 const { updateRoomMap } = useRoom();
+const { bulldozerActive } = useStreetBlock();
 
 /**
  * Interface to save street information
@@ -17,7 +19,6 @@ export interface IStreetInformation {
   rotation: number;
   posX: number;
   posY: number;
-  isBulldozer: boolean;
 }
 /**
  * State that saves the information about the streets in an Array of IStreetInformation Objects
@@ -65,31 +66,35 @@ export function useStreets() {
    * @param {IStreetInformation} onGridClickObject - IStreetInformation Object that needs to be saved or deleted
    */
   function updateStreetState(onGridClickObject: IStreetInformation): void {
-    if (onGridClickObject.isBulldozer) {
+    if (bulldozerActive.value) {
       state.streets = state.streets.filter(
         (street) =>
           street.posX !== onGridClickObject.posX ||
           street.posY !== onGridClickObject.posY
       );
+      logger.log("STREETS STATE: ", state.streets);
+      gridToJson(state.streets);
     } else {
-      if (state.streets.length) {
-        const foundStreet = state.streets.find(
-          (street) =>
-            street.posX === onGridClickObject.posX &&
-            street.posY === onGridClickObject.posY
-        );
-        if (foundStreet) {
-          foundStreet.rotation = onGridClickObject.rotation;
-          foundStreet.streetType = onGridClickObject.streetType;
+      if (onGridClickObject.streetType !== "") {
+        if (state.streets.length) {
+          const foundStreet = state.streets.find(
+            (street) =>
+              street.posX === onGridClickObject.posX &&
+              street.posY === onGridClickObject.posY
+          );
+          if (foundStreet) {
+            foundStreet.rotation = onGridClickObject.rotation;
+            foundStreet.streetType = onGridClickObject.streetType;
+          } else {
+            state.streets.push(onGridClickObject);
+          }
         } else {
           state.streets.push(onGridClickObject);
         }
-      } else {
-        state.streets.push(onGridClickObject);
+        logger.log("STREETS STATE: ", state.streets);
+        gridToJson(state.streets);
       }
     }
-    logger.log("STREETS STATE: ", state.streets);
-    gridToJson(state.streets);
   }
 
   /**

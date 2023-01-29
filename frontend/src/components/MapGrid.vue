@@ -153,8 +153,13 @@ const checkedGridSize = computed(() => {
 const { updateStreetState, placedStreet, streetsState, initializeStreetState } =
   useStreets();
 const { currentVehicle } = useVehicle();
-const { activeBlock, isRotationTriggeredState, changeRotationTriggered } =
-  useStreetBlock();
+const {
+  activeBlock,
+  isRotationTriggeredState,
+  changeRotationTriggered,
+  bulldozerActive,
+  changeCurrentStreetType,
+} = useStreetBlock();
 const streetTypes = swtpConfigJSON.streetTypes;
 const { publishVehiclePosition } = use3DVehiclePosition();
 const config = swtpConfigJSON;
@@ -174,12 +179,13 @@ watch(isRotationTriggeredState, () => {
       rotation: activeBlock.streetBlock.currentRotation,
       posX: hoverX.value,
       posY: hoverY.value,
-      isBulldozer: activeBlock.streetBlock.isBulldozer,
     });
     changeRotationTriggered(false);
   }
 });
-
+watch(bulldozerActive, () => {
+  changeCurrentStreetType(null);
+});
 /**
  * cellClicked handles the click event for cells.
  * Data like Typestreet and rotation of the selected Street are passed in through a state.
@@ -191,13 +197,11 @@ function cellClicked(posX: number, posY: number): void {
   logger.log("(posX,posY): ", [posX, posY]);
   const table = document.getElementById("gridTable") as HTMLTableElement;
   const cell = table.rows[posX - 1].cells[posY - 1];
-  /* testInput has to be hard coded as long as we're not able to get the informations from the states of the streetTileMenu */
   let activeStreet: IStreetInformation = {
     streetType: activeBlock.streetBlock.name,
     rotation: activeBlock.streetBlock.currentRotation,
     posX: posX,
     posY: posY,
-    isBulldozer: activeBlock.streetBlock.isBulldozer,
   };
   setCellBackgroundStyle(cell, activeStreet);
   updateStreetState(activeStreet);
@@ -209,7 +213,6 @@ function cellClicked(posX: number, posY: number): void {
  * @param {number} posY position on y axis (click)
  */
 function onDrop(posX: number, posY: number) {
-  //TODO posX und posY müssen statt geloggt zu werden, ans backend gesendet werden an dieser Stelle
   logger.log("Vehicle-Position: ", posX, posY);
   const vehicleType = currentVehicle.type;
   changeTo3DView(posX, posY, vehicleType);
@@ -219,6 +222,8 @@ function onDrop(posX: number, posY: number) {
  * Changes the View to the 3D-View
  */
 function changeTo3DView(posX: number, posY: number, vehicleType: string) {
+  const entireDoc = document.documentElement;
+  entireDoc.style.cursor = "default";
   let wrapper = document.getElementById("wrapper");
   if (wrapper != null) {
     wrapper.classList.remove("opacity-70");
@@ -232,10 +237,6 @@ function changeTo3DView(posX: number, posY: number, vehicleType: string) {
       "z-30"
     );
   }
-  //TODO die 800ms sind gesetzt, weil es sonst keine richtige fade-to-white transition gibt !
-  //TODO manchmal wechselt der router die seite nicht!
-  //--> außerdem wird ein *[Violation]'requestAnimationFrame' handler took XYZms* Hinweis geworfen
-  //--> die Performance der 3D-View ist also nicht so toll!
   //Calculating correct position in 3D World
   posX = (posX - 1 - config.gridSize / 2) * config.blocksize;
   posY = (posY - 1 - config.gridSize / 2) * config.blocksize;
@@ -304,7 +305,6 @@ function onHover(x: number, y: number): void {
     rotation: activeBlock.streetBlock.currentRotation,
     posX: x,
     posY: y,
-    isBulldozer: activeBlock.streetBlock.isBulldozer,
   });
 }
 

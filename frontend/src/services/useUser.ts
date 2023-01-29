@@ -9,7 +9,7 @@ import {
 import { logger } from "@/helpers/Logger";
 import { getNameFromCookie } from "@/helpers/UsernameHelper";
 
-const webSocketUrl = `ws://${window.location.host}/stompbroker`;
+const webSocketUrl = `ws://${window.location.host}/stomp-broker`;
 const publishUserStompClient = new Client({ brokerURL: webSocketUrl });
 const receiveMouseStompClient = new Client({ brokerURL: webSocketUrl });
 const publishMouseStompClient = new Client({ brokerURL: webSocketUrl });
