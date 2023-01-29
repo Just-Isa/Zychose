@@ -2,7 +2,7 @@
   <main>
     <audio id="honk" />
     <audio id="engine" loop />
-    <audio src="/assets/audio/background1.mp3" autoplay loop />
+    <audio id="backgroundMusic" loop />
     <FadeToWhiteOverlay :isActive="showOverlay" />
     <Exit3DButton @click="changeTo2DView()" />
     <PlayerList />
@@ -60,6 +60,7 @@ const handleKeydown = (e: KeyboardEvent) => {
   ) {
     const vehicle = vehicleTypes.find((e) => currentVehicle.type === e.name);
     if (vehicle !== undefined) {
+      engine.volume = 0.05;
       engine.src = vehicle.engineAudioPath;
       engine.play();
     }
@@ -68,6 +69,7 @@ const handleKeydown = (e: KeyboardEvent) => {
 
 const handleKeyup = (e: KeyboardEvent) => {
   const engine = document.getElementById("engine") as HTMLAudioElement;
+  const backgroundMusic = document.getElementById("backgroundMusic") as HTMLAudioElement;
   if (
     e.key === "ArrowUp" ||
     e.key === "ArrowDown" ||
@@ -76,6 +78,21 @@ const handleKeyup = (e: KeyboardEvent) => {
   ) {
     engine.pause();
     engine.currentTime = 0;
+  }
+
+  if(e.key === "1") {
+    backgroundMusic.src = swtpJSON.bgMusic[0];
+  } else if(e.key === "2") {
+    backgroundMusic.src = swtpJSON.bgMusic[1];
+  }
+
+  if(e.key === "p") {
+    if(backgroundMusic.duration > 0 && !backgroundMusic.paused) {
+      backgroundMusic.pause();
+    } else {
+      backgroundMusic.volume = 0.02;
+      backgroundMusic.play();
+    }
   }
 };
 

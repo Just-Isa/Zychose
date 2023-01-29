@@ -297,5 +297,9 @@
   ],
   "fontPath": "/fonts/poppins-semiBold.ttf",
   "fontSize": 0.3,
-  "VehilceLerpSpeed": 0.075
+  "VehilceLerpSpeed": 0.075,
+  "bgMusic": [
+    "/assets/audio/background0.mp3",
+    "/assets/audio/background1.mp3"
+  ]
 }
