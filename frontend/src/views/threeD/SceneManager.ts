@@ -28,6 +28,10 @@ export class SceneManager {
   data: StreetBlock[];
   private renderer: THREE.Renderer;
   private vehicles: Map<string, THREE.Group> = new Map<string, THREE.Group>(); // list of all Object u should update every frame.
+  private botVehicles: Map<string, THREE.Group> = new Map<
+    string,
+    THREE.Group
+  >();
   private vehicleCamera: VehicleCameraContext =
     camState.vehicleCam as VehicleCameraContext;
 
@@ -133,14 +137,22 @@ export class SceneManager {
   /**
    * adds new car
    */
-  addVehicle(vehicle: IVehicle, vehicleSessionId: string) {
+  addVehicle(
+    vehicle: IVehicle,
+    vehicleSessionId: string,
+    vehicleMap: Map<string, THREE.Group>
+  ) {
     const blockPromise = this.blockMap.get(vehicle.vehicleType);
-
-    if (blockPromise !== undefined && !this.vehicles.has(vehicleSessionId)) {
+    logger.log("Type", this.blockMap.get(vehicle.vehicleType));
+    logger.log("Block", blockPromise);
+    if (blockPromise !== undefined && !vehicleMap.has(vehicleSessionId)) {
       blockPromise
         ?.then((block) => {
           const car = block.clone();
 
+          if (vehicleSessionId.includes("bot")) {
+            logger.log("add Bot");
+          }
           car.position.set(
             vehicle.postitionX,
             vehicle.postitionY,
@@ -155,7 +167,7 @@ export class SceneManager {
 
           if (vehicleSessionId === getSessionIDFromCookie()) {
             this.vehicleCamera.request(vehicle.speed, vehicle.vehicleType, car);
-          } else {
+          } else if (!vehicleSessionId.includes(config.botIdentifier)) {
             this.addTextToVehicle(
               roomState.room.userList.find(
                 (x) => x.sessionID == vehicleSessionId
@@ -164,8 +176,7 @@ export class SceneManager {
               car
             );
           }
-
-          this.vehicles.set(vehicleSessionId, car);
+          vehicleMap.set(vehicleSessionId, car);
         })
         .catch((error) => {
           this.getErrorBlock(0, 0, 0);
@@ -196,16 +207,35 @@ export class SceneManager {
    */
   handleRender() {
     const animate = () => {
-      this.updateVehicleMap();
+      this.updateVehicleMap(
+        vehicleState.vehicles as Map<string, IVehicle>,
+        this.vehicles
+      );
       for (const [key, val] of this.vehicles) {
         this.updateVehicle(
           val,
           vehicleState.vehicles.get(key) as IVehicle,
-          key
+          key,
+          config.VehicleLerpSpeed
+        );
+      }
+      this.updateVehicleMap(
+        vehicleState.botVehicle as Map<string, IVehicle>,
+        this.botVehicles
+      );
+      for (const [key, val] of this.botVehicles) {
+        this.updateVehicle(
+          val,
+          vehicleState.botVehicle.get(key) as IVehicle,
+          key,
+          config.botVehicleLerpSpeed
         );
       }
       //every vehicle gets rendered
       this.renderer.render(this.scene, camState.cam as THREE.PerspectiveCamera);
+      console.log("3D:", this.botVehicles);
+      console.log(vehicleState.botVehicle.get("bot-1")?.postitionX);
+      console.log(vehicleState.botVehicle.get("bot-1")?.postitionZ);
       requestAnimationFrame(animate);
     };
     animate();
@@ -220,7 +250,8 @@ export class SceneManager {
   private updateVehicle(
     threeVehicle: THREE.Group,
     vehicle: IVehicle,
-    sessionID: string
+    sessionID: string,
+    lerpSpeed: number
   ) {
     const quaternion = new THREE.Quaternion();
     const destination = new THREE.Vector3(
@@ -237,8 +268,8 @@ export class SceneManager {
     );
 
     const newQuaterion = quaternion.setFromEuler(newRotation);
-    threeVehicle.quaternion.slerp(newQuaterion, config.VehilceLerpSpeed);
-    threeVehicle.position.lerp(destination, config.VehilceLerpSpeed);
+    threeVehicle.quaternion.slerp(newQuaterion, lerpSpeed);
+    threeVehicle.position.lerp(destination, lerpSpeed);
 
     if (sessionID === getSessionIDFromCookie()) {
       this.vehicleCamera.request(
@@ -256,18 +287,21 @@ export class SceneManager {
   /**
    * checks if vehicles are added or removed and updates the map
    */
-  private updateVehicleMap() {
-    for (const [key, val] of vehicleState.vehicles) {
+  private updateVehicleMap(
+    vehicleMap: Map<string, IVehicle>,
+    threeDvehicles: Map<string, THREE.Group>
+  ) {
+    for (const [key, val] of vehicleMap) {
       logger.log("Vehicle von " + key + " wurde hinzugefügt");
-      if (!this.vehicles.has(key)) {
-        this.addVehicle(val, key);
+      if (!threeDvehicles.has(key)) {
+        this.addVehicle(val, key, threeDvehicles);
       }
     }
-    for (const [key, val] of this.vehicles) {
-      if (!vehicleState.vehicles.has(key)) {
+    for (const [key, val] of threeDvehicles) {
+      if (!vehicleMap.has(key)) {
         logger.log("Vehicle von " + key + " wurde gelöscht");
         this.scene.remove(val);
-        this.vehicles.delete(key);
+        threeDvehicles.delete(key);
       }
     }
   }

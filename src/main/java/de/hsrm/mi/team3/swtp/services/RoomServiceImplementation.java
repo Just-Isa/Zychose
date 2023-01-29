@@ -4,9 +4,15 @@ import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
 import de.hsrm.mi.team3.swtp.domain.Vehicle;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.script.ScriptContext;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import org.python.core.PyException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +25,8 @@ public class RoomServiceImplementation implements RoomService {
   Logger logger = LoggerFactory.getLogger(RoomServiceImplementation.class);
 
   @Autowired RoomBoxServiceImplementation roomBoxService;
+
+  @Autowired VehicleBotService vehicleBotService;
 
   /**
    * This method adds a new user to a room, and changed the users currentRoomNumber respectively.
@@ -97,6 +105,37 @@ public class RoomServiceImplementation implements RoomService {
     room.setRoomName(roomName);
     room.setRoomNumber(roomNumber);
     room.setUserList(userList);
+  }
+
+  /**
+   * executes python script connected to the room. ScriptEnginge Output is set to console.
+   *
+   * @param room
+   */
+  @Override
+  public void executeJython(Room room) {
+    room.setJythonRunning(true);
+    ScriptEngine pyInterp = new ScriptEngineManager().getEngineByName("python");
+    try {
+      if (!room.getJythonScript().isBlank()) {
+        ScriptContext context = pyInterp.getContext();
+        context.setWriter(new PrintWriter(System.out));
+        context.setErrorWriter(new PrintWriter(System.err));
+        pyInterp.put(
+            "room",
+            room); // macht den Raum im python-Skript abrufbar unter dem Variablennamen "room"
+        pyInterp.put(
+            "botAPI", vehicleBotService); // macht den VehicleBotService nutzbar im python-Skript
+        pyInterp.eval("botAPI.setRoom(room)");
+        pyInterp.eval(room.getJythonScript());
+      } else {
+        logger.error("leeres Skript");
+      }
+    } catch (PyException | ScriptException e) {
+      logger.error("ERROR jythonScript", e);
+    }
+    room.setJythonRunning(false);
+    room.getVehicleBots().clear();
   }
 
   /**

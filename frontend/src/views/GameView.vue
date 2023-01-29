@@ -91,7 +91,7 @@ const handleKeyup = (e: KeyboardEvent) => {
     if (backgroundMusic.duration > 0 && !backgroundMusic.paused) {
       backgroundMusic.pause();
     } else {
-      backgroundMusic.volume = 0.02;
+      backgroundMusic.volume = 0.1;
       backgroundMusic.play();
     }
   }

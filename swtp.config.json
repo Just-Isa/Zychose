@@ -202,7 +202,7 @@
       "glbPath": "/assets/models/other/landscape.glb"
     }
   ],
-  "gridSize": 100,
+  "gridSize": 50,
   "menuTabs": [
     {
       "name": "car",
@@ -281,9 +281,57 @@
       ]
     }
   ],
+  "botVehicles": [
+    {
+      "name": "jeep",
+      "glbPath": "/assets/models/vehicles/jeep.glb"
+    },
+    {
+      "name": "limo",
+      "glbPath": "/assets/models/vehicles/limo.glb"
+    },
+    {
+      "name": "mini",
+      "glbPath": "/assets/models/vehicles/mini.glb"
+    },
+    {
+      "name": "muscle",
+      "glbPath": "/assets/models/vehicles/muscle.glb"
+    },
+    {
+      "name": "pickup",
+      "glbPath": "/assets/models/vehicles/pickup.glb"
+    },
+    {
+      "name": "sedan",
+      "glbPath": "/assets/models/vehicles/sedan.glb"
+    },
+    {
+      "name": "sport",
+      "glbPath": "/assets/models/vehicles/sport.glb"
+    },
+    {
+      "name": "suv",
+      "glbPath": "/assets/models/vehicles/suv.glb"
+    },
+    {
+      "name": "toon",
+      "glbPath": "/assets/models/vehicles/toon.glb"
+    },
+    {
+      "name": "van",
+      "glbPath": "/assets/models/vehicles/van.glb"
+    },
+    {
+      "name": "bike",
+      "glbPath": "/assets/models/vehicles/bike.glb"
+    }
+  ],
   "fontPath": "/fonts/poppins-semiBold.ttf",
   "fontSize": 0.3,
-  "VehilceLerpSpeed": 0.075,
+  "botIdentifier": "bot",
+  "VehicleLerpSpeed": 0.075,
+  "botVehicleLerpSpeed": 0.05,
   "bgMusic": [
     "/assets/audio/background0.mp3",
     "/assets/audio/background1.mp3"
