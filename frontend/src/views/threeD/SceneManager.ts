@@ -167,7 +167,7 @@ export class SceneManager {
 
           if (vehicleSessionId === getSessionIDFromCookie()) {
             this.vehicleCamera.request(vehicle.speed, vehicle.vehicleType, car);
-          } else {
+          } else if (!vehicleSessionId.includes(config.botIdentifier)) {
             this.addTextToVehicle(
               roomState.room.userList.find(
                 (x) => x.sessionID == vehicleSessionId
@@ -176,7 +176,6 @@ export class SceneManager {
               car
             );
           }
-
           vehicleMap.set(vehicleSessionId, car);
         })
         .catch((error) => {

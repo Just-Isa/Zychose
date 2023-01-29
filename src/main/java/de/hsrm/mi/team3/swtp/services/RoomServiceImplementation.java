@@ -126,6 +126,7 @@ public class RoomServiceImplementation implements RoomService {
             room); // macht den Raum im python-Skript abrufbar unter dem Variablennamen "room"
         pyInterp.put(
             "botAPI", vehicleBotService); // macht den VehicleBotService nutzbar im python-Skript
+        pyInterp.eval("botAPI.setRoom(room)");
         pyInterp.eval(room.getJythonScript());
       } else {
         logger.error("leeres Skript");
