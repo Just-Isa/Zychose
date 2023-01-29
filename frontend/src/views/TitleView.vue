@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import NameInput from "@/components/NameInput.vue";
-</script>
-
 <template>
   <div
     class="bg-back-folder-gray w- bg-blend-overlay h-screen text-white pt-20 flex justify-center items-center bg-[url('/assets/img/alt-title-bg.jpg')] bg-center bg-cover"
@@ -12,3 +8,7 @@ import NameInput from "@/components/NameInput.vue";
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import NameInput from "@/components/NameInput.vue";
+</script>
