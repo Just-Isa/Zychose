@@ -69,7 +69,9 @@ const handleKeydown = (e: KeyboardEvent) => {
 
 const handleKeyup = (e: KeyboardEvent) => {
   const engine = document.getElementById("engine") as HTMLAudioElement;
-  const backgroundMusic = document.getElementById("backgroundMusic") as HTMLAudioElement;
+  const backgroundMusic = document.getElementById(
+    "backgroundMusic"
+  ) as HTMLAudioElement;
   if (
     e.key === "ArrowUp" ||
     e.key === "ArrowDown" ||
@@ -80,14 +82,14 @@ const handleKeyup = (e: KeyboardEvent) => {
     engine.currentTime = 0;
   }
 
-  if(e.key === "1") {
+  if (e.key === "1") {
     backgroundMusic.src = swtpJSON.bgMusic[0];
-  } else if(e.key === "2") {
+  } else if (e.key === "2") {
     backgroundMusic.src = swtpJSON.bgMusic[1];
   }
 
-  if(e.key === "p") {
-    if(backgroundMusic.duration > 0 && !backgroundMusic.paused) {
+  if (e.key === "p") {
+    if (backgroundMusic.duration > 0 && !backgroundMusic.paused) {
       backgroundMusic.pause();
     } else {
       backgroundMusic.volume = 0.02;
