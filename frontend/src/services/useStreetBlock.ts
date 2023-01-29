@@ -12,7 +12,6 @@ const stateStreetBlock = reactive({
     imgPath: "",
     possibleRotations: new Array<number>(),
     possibleVehicleTypes: new Array<string>(),
-    isBulldozer: false,
   },
 });
 
@@ -37,7 +36,6 @@ export function useStreetBlock() {
 
   function toggleBulldozer(b: boolean) {
     bulldozerActive.isActive = b;
-    stateStreetBlock.streetBlock.isBulldozer = b;
   }
 
   function changeCurrentTab(s: string) {
