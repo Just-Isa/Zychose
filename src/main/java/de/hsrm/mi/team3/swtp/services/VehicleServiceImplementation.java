@@ -14,8 +14,7 @@ public class VehicleServiceImplementation implements VehicleService {
   Logger logger = LoggerFactory.getLogger(VehicleService.class);
 
   public static final float DRIVE_DISTANCE = 8;
-  @Autowired
-  RoomService roomService;
+  @Autowired RoomService roomService;
 
   /**
    * rotates the given vehicle to the left
@@ -96,7 +95,8 @@ public class VehicleServiceImplementation implements VehicleService {
         vehicle.setCurrentSpeed(newSpeed);
       }
     } else if (vehicle.getCurrentSpeed() < 0) {
-      double newSpeed = Math.round(this.accelerate(vehicle, -Vehicle.RUN_OUT_SPEED) * 1000) / 1000.0;
+      double newSpeed =
+          Math.round(this.accelerate(vehicle, -Vehicle.RUN_OUT_SPEED) * 1000) / 1000.0;
       if (newSpeed > -0.00001) {
         vehicle.setCurrentSpeed(0);
       } else {
@@ -112,11 +112,13 @@ public class VehicleServiceImplementation implements VehicleService {
    * @param vehicle
    */
   private void move(Vehicle vehicle, Room room) {
-    double[] moveTo = { 0, 0, 0 };
-    moveTo[0] = (DRIVE_DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()))
-        + vehicle.getPosX();
-    moveTo[2] = (DRIVE_DISTANCE * vehicle.getCurrentSpeed() * Math.cos(vehicle.getRotationY()))
-        + vehicle.getPosZ();
+    double[] moveTo = {0, 0, 0};
+    moveTo[0] =
+        (DRIVE_DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()))
+            + vehicle.getPosX();
+    moveTo[2] =
+        (DRIVE_DISTANCE * vehicle.getCurrentSpeed() * Math.cos(vehicle.getRotationY()))
+            + vehicle.getPosZ();
 
     checkCollision(vehicle, moveTo, room);
 
@@ -178,16 +180,16 @@ public class VehicleServiceImplementation implements VehicleService {
     List<Vehicle> vehicles = roomService.getVehicleList(room);
     for (Vehicle v : vehicles) {
       if (v != vehicle) {
-        double distanceBetweenVehicles = Math
-            .sqrt(Math.pow(moveTo[0] - v.getPosX(), 2) + Math.pow(moveTo[2] - v.getPosZ(), 2));
+        double distanceBetweenVehicles =
+            Math.sqrt(Math.pow(moveTo[0] - v.getPosX(), 2) + Math.pow(moveTo[2] - v.getPosZ(), 2));
         if (distanceBetweenVehicles < (vehicle.COLLISION_WIDTH + v.COLLISION_WIDTH)) {
 
-          double moveOtherVehicleToX = ((DRIVE_DISTANCE * 2) * vehicle.getCurrentSpeed()
-              * Math.sin(vehicle.getRotationY()))
-              + v.getPosX();
-          double moveOtherVehicleToZ = ((DRIVE_DISTANCE * 2) * vehicle.getCurrentSpeed()
-              * Math.cos(vehicle.getRotationY()))
-              + v.getPosZ();
+          double moveOtherVehicleToX =
+              ((DRIVE_DISTANCE * 2) * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()))
+                  + v.getPosX();
+          double moveOtherVehicleToZ =
+              ((DRIVE_DISTANCE * 2) * vehicle.getCurrentSpeed() * Math.cos(vehicle.getRotationY()))
+                  + v.getPosZ();
           v.setPosX(moveOtherVehicleToX);
           v.setPosZ(moveOtherVehicleToZ);
 
