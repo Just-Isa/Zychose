@@ -8,6 +8,7 @@
       <h1 class="font-bold text-6xl text-white font-sans self-center uppercase">
         Servers
       </h1>
+      <div class="w-16"></div>
     </div>
 
     <div
