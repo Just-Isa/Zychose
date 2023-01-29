@@ -228,6 +228,8 @@
       "name": "car",
       "iconPath": "/assets/img/vehicles/car.png",
       "glbPath": "/assets/models/vehicles/toon.glb",
+      "honkAudioPath": "/assets/audio/honk.wav",
+      "engineAudioPath": "/assets/audio/engine-loop.wav",
       "textHightOverVehicle": 4,
       "firstPersonCameraOffset": [
         0,
@@ -254,6 +256,8 @@
       "name": "bicycle",
       "iconPath": "/assets/img/vehicles/bicycle.png",
       "glbPath": "/assets/models/vehicles/bike.glb",
+      "honkAudioPath": "/assets/audio/bell.wav",
+      "engineAudioPath": "/assets/audio/bike-loop.wav",
       "textHightOverVehicle": 3,
       "firstPersonCameraOffset": [
         0,
@@ -279,5 +283,9 @@
   ],
   "fontPath": "/fonts/poppins-semiBold.ttf",
   "fontSize": 0.3,
-  "VehilceLerpSpeed": 0.075
+  "VehilceLerpSpeed": 0.075,
+  "bgMusic": [
+    "/assets/audio/background0.mp3",
+    "/assets/audio/background1.mp3"
+  ]
 }
