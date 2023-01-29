@@ -51,6 +51,7 @@ dependencies {
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.1'
 	implementation 'org.python:jython-slim:2.7.3'
 	implementation 'commons-io:commons-io:2.6'
+	implementation 'org.json:json:20220924'
 }
 
 tasks.named('test') {

@@ -136,4 +136,16 @@ class RoomServiceTest {
         roomBoxService.getUserBySessionID(NOTPRESENTSESSIONID);
     assertThat(getUserBySessionIdNotPresent).isEmpty();
   }
+
+  @Test
+  @DisplayName("RoomService: executeJython(Room room)")
+  void executeJythonTest() {
+
+    roomService.saveScriptToRoom(FIRST_JYTHON_FILE, roomOne);
+    assertThat(roomOne.getJythonScript()).isNotNull();
+
+    roomService.executeJython(roomOne);
+    assertThat(roomOne.isJythonRunning()).isFalse();
+    assertThat(roomOne.getVehicleBots()).isEmpty();
+  }
 }
