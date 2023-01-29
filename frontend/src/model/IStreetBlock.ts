@@ -7,7 +7,6 @@ export interface IStreetBlock {
   possibleRotations: number[];
   possibleVehicleTypes: string[];
   imgPath: string;
-  isBulldozer: boolean;
 }
 
 export class StreetBlock implements IStreetBlock {
@@ -16,7 +15,6 @@ export class StreetBlock implements IStreetBlock {
   imgPath = "";
   possibleRotations = new Array<number>();
   possibleVehicleTypes = new Array<string>();
-  isBulldozer = false;
 
   /**
    *
@@ -25,21 +23,18 @@ export class StreetBlock implements IStreetBlock {
    * @param possibleRotations array with possible rotations of this StreetBlock
    * @param possibleVehicleTypes array that specifies which vehicle types this StreetBlock is used for
    * @param imgPath path to 2D-image to show in StreetMenu
-   * @param isBulldozer boolean, if StreetBlock is bulldozer
    */
   constructor(
     name: string,
     currentRotation: number,
     imgPath: string,
     possibleRotations: number[],
-    possibleVehicleTypes: string[],
-    isBulldozer: boolean
+    possibleVehicleTypes: string[]
   ) {
     this.name = name;
     this.currentRotation = currentRotation;
     this.imgPath = imgPath;
     this.possibleRotations = possibleRotations;
     this.possibleVehicleTypes = possibleVehicleTypes;
-    this.isBulldozer = isBulldozer;
   }
 }
