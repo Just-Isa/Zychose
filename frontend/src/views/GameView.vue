@@ -60,7 +60,6 @@ const handleKeydown = (e: KeyboardEvent) => {
   ) {
     const vehicle = vehicleTypes.find((e) => currentVehicle.type === e.name);
     if (vehicle !== undefined) {
-      engine.volume = 0.05;
       engine.src = vehicle.engineAudioPath;
       engine.play();
     }
