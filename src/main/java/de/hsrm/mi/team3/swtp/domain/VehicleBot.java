@@ -50,7 +50,7 @@ public class VehicleBot {
         || (this.currentStreetBlock.getType().contains("dead-end")
             && this.currentRotation != this.currentStreetBlock.getExits()[0])
         || isStreetblockInvalid(destination.getType())) {
-      turn(this.currentRotation >= 180 ? this.currentRotation - 180 : this.currentRotation + 180);
+      turn(this.currentRotation == 270 ? this.currentRotation = 0 : this.currentRotation + 90);
     } else if (!destination.isBlocked() && !isStreetblockInvalid(destination.getType())) {
       changeBlock(destination);
     } else if (!isStreetblockInvalid(destination.getType())) {
@@ -95,11 +95,11 @@ public class VehicleBot {
    * @param exits Integer Array with directions of all valid exits of current StreetBlock
    */
   public void turnRandom(int[] exits) {
-    int randomNumber = randomGenerator.nextInt(exits.length - 1);
+    int randomNumber = randomGenerator.nextInt(exits.length);
     int ownExit =
         this.currentRotation > 90 ? this.currentRotation - 180 : this.currentRotation + 180;
-    while (randomNumber == ownExit) {
-      randomNumber = randomGenerator.nextInt(exits.length - 1);
+    while (this.getCurrentStreetBlock().getExits()[randomNumber] == ownExit) {
+      randomNumber = randomGenerator.nextInt(exits.length);
     }
     turn(this.getCurrentStreetBlock().getExits()[randomNumber]);
   }
