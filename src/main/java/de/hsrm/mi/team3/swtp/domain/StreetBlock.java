@@ -1,9 +1,14 @@
 package de.hsrm.mi.team3.swtp.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Tile repraesentiert das einzelne Strassenstueck Es beinhaltet alle Informationen, die fuer die
  * Bot Fahrzeuge relevant sind Tiles landen in der RoadMap
  */
+@Getter
+@Setter
 public class StreetBlock {
 
   private String type;
@@ -21,33 +26,10 @@ public class StreetBlock {
     setExits();
   }
 
-  public String getBlockType() {
-    return this.type;
-  }
-
-  public int getBlockRotation() {
-    return this.rotation;
-  }
-
-  public int[] getBlockPosition() {
-    return this.position;
-  }
-
   /*
    * blocked und isBlocked geben an,
    * ob sich ein anderes Fahrzeug auf dem Feld befindet
    */
-  public void isBlocked(boolean hasVehicle) {
-    this.blocked = hasVehicle;
-  }
-
-  public boolean isBlocked() {
-    return this.blocked;
-  }
-
-  public int[] getExits() {
-    return this.exits;
-  }
 
   public void setExits() {
     String[] input = this.type.split("-");

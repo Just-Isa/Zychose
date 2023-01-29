@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /*
  * Room class that is used within the RoomBox.
@@ -17,8 +15,6 @@ import org.slf4j.LoggerFactory;
 @Getter
 @Setter
 public class Room {
-
-  Logger logger = LoggerFactory.getLogger(Room.class);
 
   private String roomName;
   private int roomNumber;

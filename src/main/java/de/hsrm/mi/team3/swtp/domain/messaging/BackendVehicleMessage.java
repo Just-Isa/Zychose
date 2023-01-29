@@ -38,7 +38,7 @@ public record BackendVehicleMessage(
     return new BackendVehicleMessage(
         operator,
         botID,
-        vehicle.getVehicleModel().getType(),
+        vehicle.getVehicleType().getType(),
         vehicle.getCurrentPos()[0],
         0,
         vehicle.getCurrentPos()[1],

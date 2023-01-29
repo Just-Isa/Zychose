@@ -3,15 +3,19 @@ package de.hsrm.mi.team3.swtp.domain;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Random;
+import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/** VehicleBot class holds the VehicleBots information and manages how they move. */
+@Getter
+@Setter
 public class VehicleBot {
 
   Logger logger = LoggerFactory.getLogger(VehicleBot.class);
 
   private String id;
-  private VehicleBehaviour behaviour;
   private int[] currentPos;
   private int currentRotation;
   private Map<VehicleNeighbour, StreetBlock> neighbours;
@@ -21,7 +25,7 @@ public class VehicleBot {
   private VehicleType vehicleType;
   private boolean fixRoute;
   private String[] routeList;
-  private Random randomGenerator = new Random();
+  private final Random randomGenerator = new Random();
   private int lastRouteIndex;
 
   public VehicleBot(Room room) {
@@ -43,18 +47,18 @@ public class VehicleBot {
     refreshNeighbours();
     StreetBlock destination = this.neighbours.get(VehicleNeighbour.VEHICLETOP);
     if (destination == null
-        || (this.currentStreetBlock.getBlockType().contains("dead-end")
+        || (this.currentStreetBlock.getType().contains("dead-end")
             && this.currentRotation != this.currentStreetBlock.getExits()[0])
-        || isStreetblockInvalid(destination.getBlockType())) {
+        || isStreetblockInvalid(destination.getType())) {
       turn(this.currentRotation >= 180 ? this.currentRotation - 180 : this.currentRotation + 180);
-    } else if (!destination.isBlocked() && !isStreetblockInvalid(destination.getBlockType())) {
+    } else if (!destination.isBlocked() && !isStreetblockInvalid(destination.getType())) {
       changeBlock(destination);
-    } else if (!isStreetblockInvalid(destination.getBlockType())) {
+    } else if (!isStreetblockInvalid(destination.getType())) {
       int rotation =
           this.room.getVehicleBotRotation(
-              destination.getBlockPosition()[0], destination.getBlockPosition()[1]);
+              destination.getPosition()[0], destination.getPosition()[1]);
       if (rotation == -1) {
-        destination.isBlocked(false);
+        destination.setBlocked(false);
         changeBlock(destination);
       } else if (rotation != this.currentRotation) {
         changeBlock(destination);
@@ -68,11 +72,11 @@ public class VehicleBot {
    * @param destination
    */
   private void changeBlock(StreetBlock destination) {
-    this.currentPos[0] = destination.getBlockPosition()[1] + 1;
-    this.currentPos[1] = destination.getBlockPosition()[0] + 1;
-    this.currentStreetBlock.isBlocked(false);
+    this.currentPos[0] = destination.getPosition()[1] + 1;
+    this.currentPos[1] = destination.getPosition()[0] + 1;
+    this.currentStreetBlock.setBlocked(false);
     this.currentStreetBlock = destination;
-    this.currentStreetBlock.isBlocked(true);
+    this.currentStreetBlock.setBlocked(true);
   }
 
   /**
@@ -132,47 +136,15 @@ public class VehicleBot {
     return (this.vehicleType.equals(VehicleType.BICYCLE) && blockName.startsWith("road", 0));
   }
 
-  public String[] getRoute() {
-    return routeList;
-  }
-
   public void setRoute(String[] route) {
     this.routeList = route;
     this.fixRoute = true;
-  }
-
-  public int[] getCurrentPos() {
-    return currentPos;
   }
 
   public void setCurrentPos(int x, int y) {
     this.currentPos[0] = x;
     this.currentPos[1] = y;
     setCurrentStreetBlock();
-  }
-
-  public int getCurrentRotation() {
-    return this.currentRotation;
-  }
-
-  public void setCurrentRotation(int rotation) {
-    this.currentRotation = rotation;
-  }
-
-  public VehicleBehaviour getBehaviour() {
-    return this.behaviour;
-  }
-
-  public void setBehaviour(VehicleBehaviour behave) {
-    this.behaviour = behave;
-  }
-
-  public VehicleType getVehicleModel() {
-    return this.vehicleType;
-  }
-
-  public void setVehicleType(VehicleType type) {
-    this.vehicleType = type;
   }
 
   /** asks VehicleBots room to return VehicleBots Neighbours */
@@ -182,33 +154,15 @@ public class VehicleBot {
             this.currentPos[0] - 1, this.currentPos[1] - 1, this.currentRotation);
   }
 
-  public boolean hasFixRoute() {
-    return this.fixRoute;
-  }
-
   public void setCurrentStreetBlock() {
     this.currentStreetBlock =
         this.room.getStreetBlock(this.currentPos[0] - 1, this.currentPos[1] - 1);
-  }
-
-  public StreetBlock getCurrentStreetBlock() {
-    return this.currentStreetBlock;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
   }
 
   @Override
   public String toString() {
     return "VehicleBot [id="
         + id
-        + ", behaviour="
-        + behaviour
         + ", currentPos="
         + Arrays.toString(currentPos)
         + ", currentRotation="

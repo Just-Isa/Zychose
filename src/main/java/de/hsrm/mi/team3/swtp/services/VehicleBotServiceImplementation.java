@@ -35,7 +35,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     VehicleBot bot = new VehicleBot(room);
 
     int[] pos;
-    if (bot.getVehicleModel() == VehicleType.BICYCLE) {
+    if (bot.getVehicleType() == VehicleType.BICYCLE) {
       pos = getFreeSidewalk();
     } else {
       pos = getFreeStreetBlock();
@@ -56,7 +56,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     VehicleBot bot = new VehicleBot(room);
 
     int[] pos;
-    if (bot.getVehicleModel() == VehicleType.BICYCLE) {
+    if (bot.getVehicleType() == VehicleType.BICYCLE) {
       pos = getFreeSidewalk();
     } else {
       pos = getFreeStreetBlock();
@@ -84,7 +84,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
       }
     }
     int[] pos;
-    if (bot.getVehicleModel() == VehicleType.BICYCLE) {
+    if (bot.getVehicleType() == VehicleType.BICYCLE) {
       pos = getFreeSidewalk();
     } else {
       pos = getFreeStreetBlock();
@@ -113,7 +113,7 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
       }
     }
     int[] pos;
-    if (bot.getVehicleModel() == VehicleType.BICYCLE) {
+    if (bot.getVehicleType() == VehicleType.BICYCLE) {
       pos = getFreeSidewalk();
     } else {
       pos = getFreeStreetBlock();
@@ -152,10 +152,10 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   /** Checks and reacts to current StreetBlock-Type */
   private void checkBlockAndDrive(VehicleBot bot) {
     if (bot.getCurrentStreetBlock() != null) {
-      String blockName = bot.getCurrentStreetBlock().getBlockType();
+      String blockName = bot.getCurrentStreetBlock().getType();
       if (!bot.isStreetblockInvalid(blockName)) {
         if (blockName.contains("-t") || blockName.contains("-cross")) {
-          if (bot.hasFixRoute()) {
+          if (bot.isFixRoute()) {
             bot.followScript();
           } else {
             bot.turnRandom(bot.getCurrentStreetBlock().getExits());
@@ -200,9 +200,9 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
         for (int j = 0; j < this.room.getRoadMap().getStreetBlockMap().length; j++)
           if (this.room.getRoadMap().getStreetBlock(i, j) != null
               && !this.room.getRoadMap().getStreetBlock(i, j).isBlocked()
-              && this.room.getRoadMap().getStreetBlock(i, j).getBlockType().contains("straight")
-              && this.room.getRoadMap().getStreetBlock(i, j).getBlockRotation() == 0) {
-            this.room.getRoadMap().getStreetBlock(i, j).isBlocked(true);
+              && this.room.getRoadMap().getStreetBlock(i, j).getType().contains("straight")
+              && this.room.getRoadMap().getStreetBlock(i, j).getRotation() == 0) {
+            this.room.getRoadMap().getStreetBlock(i, j).setBlocked(true);
             return new int[] {
               i + 1, j + 1
             }; // +1 damit die richtigen Koordinaten ins frontend kommen
@@ -224,13 +224,9 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
         for (int j = 0; j < this.room.getRoadMap().getStreetBlockMap().length; j++)
           if (this.room.getRoadMap().getStreetBlock(i, j) != null
               && !this.room.getRoadMap().getStreetBlock(i, j).isBlocked()
-              && this.room
-                  .getRoadMap()
-                  .getStreetBlock(i, j)
-                  .getBlockType()
-                  .contains("sidewalk-straight")
-              && this.room.getRoadMap().getStreetBlock(i, j).getBlockRotation() == 0) {
-            this.room.getRoadMap().getStreetBlock(i, j).isBlocked(true);
+              && this.room.getRoadMap().getStreetBlock(i, j).getType().contains("sidewalk-straight")
+              && this.room.getRoadMap().getStreetBlock(i, j).getRotation() == 0) {
+            this.room.getRoadMap().getStreetBlock(i, j).setBlocked(true);
             return new int[] {
               i + 1, j + 1
             }; // +1 damit die richtigen Koordinaten ins frontend kommen

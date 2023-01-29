@@ -87,7 +87,7 @@ class VehicleBotTest {
   @DisplayName("VehicleBot: RoadMap init")
   void roadMapInit() {
     roadMap = new Roadmap(jsonmap);
-    assertThat(roadMap.getStreetBlock(1, 1).getBlockType()).isEqualTo("road-straight");
+    assertThat(roadMap.getStreetBlock(1, 1).getType()).isEqualTo("road-straight");
   }
 
   @Test
@@ -102,7 +102,7 @@ class VehicleBotTest {
     testBot1.setCurrentPos(1, 2);
     assertThat(testBot1.getNeighbours()).isNotNull();
     testBot1.refreshNeighbours();
-    assertThat(testBot1.getNeighbours().get(VehicleNeighbour.VEHICLETOP).getBlockType())
+    assertThat(testBot1.getNeighbours().get(VehicleNeighbour.VEHICLETOP).getType())
         .isEqualTo("road-straight");
   }
 
@@ -112,7 +112,7 @@ class VehicleBotTest {
     testRoom = new Room(0);
     testRoom.setRoomMap(jsonmap);
     testBot1 = new VehicleBot(testRoom);
-    assertThat(testBot1.getVehicleModel()).isNotNull();
+    assertThat(testBot1.getVehicleType()).isNotNull();
   }
 
   @Test
@@ -123,13 +123,5 @@ class VehicleBotTest {
     testBot1 = new VehicleBot(testRoom);
     testBot1.setCurrentRotation(90);
     testBot1.setCurrentPos(2, 2);
-    /*
-     * testBot1.drive();
-     * assertThat(testBot1.getCurrentPos()[0]).isEqualTo(3);
-     * assertThat(testBot1.getCurrentPos()[1]).isEqualTo(2);
-     * testBot1.drive();
-     * assertThat(testBot1.getCurrentPos()[0]).isEqualTo(3);
-     * assertThat(testBot1.getCurrentPos()[1]).isEqualTo(3);
-     */
   }
 }

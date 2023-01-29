@@ -1,5 +1,8 @@
 package de.hsrm.mi.team3.swtp.domain;
 
+import lombok.Getter;
+
+@Getter
 public enum VehicleType {
   SPORTS_CAR("sport"),
   TRUCK("pickup"),
@@ -16,9 +19,5 @@ public enum VehicleType {
 
   private VehicleType(String type) {
     this.type = type;
-  }
-
-  public String getType() {
-    return this.type;
   }
 }
