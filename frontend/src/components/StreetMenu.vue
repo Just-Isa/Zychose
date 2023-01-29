@@ -53,8 +53,7 @@ const filteredStreetBlocks = computed(() => {
         0,
         street.imgPath,
         street.possibleRotations,
-        street.vehicleTypes,
-        false //hardcoded false, da alle Straßentypen im Menü kein Bulldozer sein können.
+        street.vehicleTypes
       )
   );
   return streetBlocks;
