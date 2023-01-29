@@ -8,7 +8,7 @@ import { useUser } from "./useUser";
 
 const { userState } = useUser();
 
-const webSocketUrl = `ws://${window.location.host}/stompbroker`;
+const webSocketUrl = `ws://${window.location.host}/stomp-broker`;
 
 export interface IRoomState {
   room: IRoom;

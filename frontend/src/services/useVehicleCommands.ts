@@ -3,7 +3,7 @@ import { getSessionIDFromCookie } from "@/helpers/SessionIDHelper";
 import type { Direction } from "@/model/DirektionCommands";
 import { Client } from "@stomp/stompjs";
 
-const webSocketUrl = `ws://${window.location.host}/stompbroker`;
+const webSocketUrl = `ws://${window.location.host}/stomp-broker`;
 const stompClient = new Client({ brokerURL: webSocketUrl });
 
 const stompClientConnect = setInterval(function () {
