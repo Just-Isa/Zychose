@@ -1,7 +1,7 @@
 <template>
   <main>
-    <audio id="honk"/>
-    <audio id="engine" loop/>
+    <audio id="honk" />
+    <audio id="engine" loop />
     <audio src="/assets/audio/background1.mp3" autoplay loop />
     <FadeToWhiteOverlay :isActive="showOverlay" />
     <Exit3DButton @click="changeTo2DView()" />
@@ -46,41 +46,51 @@ const handleKeydown = (e: KeyboardEvent) => {
 
   if (e.key === "h") {
     const vehicle = vehicleTypes.find((e) => currentVehicle.type === e.name);
-    if(vehicle !== undefined) {
+    if (vehicle !== undefined) {
       honk.src = vehicle.honkAudioPath;
       honk.play();
     }
   }
 
-  if (e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "w" || e.key === "s") {
+  if (
+    e.key === "ArrowUp" ||
+    e.key === "ArrowDown" ||
+    e.key === "w" ||
+    e.key === "s"
+  ) {
     const vehicle = vehicleTypes.find((e) => currentVehicle.type === e.name);
-    if(vehicle !== undefined) {
+    if (vehicle !== undefined) {
       engine.src = vehicle.engineAudioPath;
       engine.play();
     }
   }
-}
+};
 
 const handleKeyup = (e: KeyboardEvent) => {
   const engine = document.getElementById("engine") as HTMLAudioElement;
-  if (e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "w" || e.key === "s") {
-    engine.pause()
+  if (
+    e.key === "ArrowUp" ||
+    e.key === "ArrowDown" ||
+    e.key === "w" ||
+    e.key === "s"
+  ) {
+    engine.pause();
     engine.currentTime = 0;
   }
-}
+};
 
 onMounted(() => {
   showOverlay.value = true;
   // Zahl variiert nach Hardware
   setTimeout(() => (showOverlay.value = false), 3000);
-  document.addEventListener("keydown", handleKeydown)
-  document.addEventListener("keyup", handleKeyup)
+  document.addEventListener("keydown", handleKeydown);
+  document.addEventListener("keyup", handleKeyup);
 });
 
 onUnmounted(() => {
-      document.removeEventListener("keydown", handleKeydown)
-      document.removeEventListener("keyup", handleKeyup)
-    })
+  document.removeEventListener("keydown", handleKeydown);
+  document.removeEventListener("keyup", handleKeyup);
+});
 
 window.addEventListener("keyup", (event) => {
   if (event.key === "Escape") {
