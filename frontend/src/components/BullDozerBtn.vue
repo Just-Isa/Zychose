@@ -53,20 +53,16 @@
 </template>
 
 <script setup lang="ts">
-import { StreetBlock } from "@/model/IStreetBlock";
 import { useStreetBlock } from "@/services/useStreetBlock";
 import { watch } from "vue";
-import swtpConfigJSON from "../../../swtp.config.json";
 
-const { bulldozerActive, toggleBulldozer, changeCurrentStreetType } =
-  useStreetBlock();
+const { bulldozerActive, toggleBulldozer } = useStreetBlock();
 
 const props = defineProps<{
   cursorSrc: string;
 }>();
 
 const bulldozerGray = "#4B5357";
-const bulldozer = swtpConfigJSON.bulldozer;
 /**
  * changes BulldozerState and sets currentTileType to an empty StreetBlock
  */
@@ -76,9 +72,6 @@ function changeBulldozerState() {
   if (entireDoc) {
     if (!bulldozerActive.isActive) {
       toggleBulldozer(true);
-      changeCurrentStreetType(
-        new StreetBlock(bulldozer.name, 0, "", [], [""], true)
-      );
     } else {
       toggleBulldozer(false);
     }
