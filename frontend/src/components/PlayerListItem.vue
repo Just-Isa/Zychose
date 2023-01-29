@@ -33,7 +33,7 @@ onMounted(() => {
       Math.abs(new Date().getTime() - prop.userLoginTime)
     );
     // Hours -1 because timezone of central europe is +1
-    playedHoursString.value = `${playedTime.getHours()}h`;
+    playedHoursString.value = `${playedTime.getHours() - 1}h`;
     playedMinutesString.value = addLeadingZeros({
       value: playedTime.getMinutes(),
       label: "min",
