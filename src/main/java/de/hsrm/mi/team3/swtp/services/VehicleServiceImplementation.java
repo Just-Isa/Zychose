@@ -1,6 +1,7 @@
 package de.hsrm.mi.team3.swtp.services;
 
 import de.hsrm.mi.team3.swtp.domain.Room;
+import de.hsrm.mi.team3.swtp.domain.StreetBlock;
 import de.hsrm.mi.team3.swtp.domain.Vehicle;
 import java.util.List;
 import org.slf4j.Logger;
@@ -13,7 +14,16 @@ public class VehicleServiceImplementation implements VehicleService {
 
   Logger logger = LoggerFactory.getLogger(VehicleService.class);
 
-  public static final float DRIVE_DISTANCE = 8;
+  public static final double DRIVE_DISTANCE = 8;
+  // TODO: get gridsize from config
+  public static final double GRIDSIZE = 50;
+  // TODO: get blocksize from config
+  public static final double BLOCKSIZE = 16;
+  // TODO: get getCollisionList from config
+  String[] collisionList = {"cream_sky_scraper", "red_sky_scraper", "brown-house"};
+  // TODO: get getCollisionList from config
+  String[] offroadList = {"trees"};
+  public static final double OFFROAD_SLOWING_FACTOR = 0.8;
   @Autowired RoomService roomService;
 
   /**
@@ -165,7 +175,14 @@ public class VehicleServiceImplementation implements VehicleService {
    * @param room
    */
   private void checkCollision(Vehicle vehicle, double[] moveTo, Room room) {
+    if (room.getRoadMap() == null) {
+      return;
+    }
+
+    checkOutOfGrid(vehicle, moveTo);
+    checkOffRoad(vehicle, moveTo, room);
     checkPlayerVehicleCollision(vehicle, moveTo, room);
+    checkObstacleCollision(vehicle, moveTo, room);
     // TODO: check other collisions
   }
 
@@ -182,7 +199,7 @@ public class VehicleServiceImplementation implements VehicleService {
       if (v != vehicle) {
         double distanceBetweenVehicles =
             Math.sqrt(Math.pow(moveTo[0] - v.getPosX(), 2) + Math.pow(moveTo[2] - v.getPosZ(), 2));
-        if (distanceBetweenVehicles < (vehicle.COLLISION_WIDTH + v.COLLISION_WIDTH)) {
+        if (distanceBetweenVehicles < (Vehicle.COLLISION_WIDTH + Vehicle.COLLISION_WIDTH)) {
 
           double moveOtherVehicleToX =
               ((DRIVE_DISTANCE * 2) * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()))
@@ -197,5 +214,71 @@ public class VehicleServiceImplementation implements VehicleService {
         }
       }
     }
+  }
+
+  private void checkOutOfGrid(Vehicle vehicle, double[] moveTo) {
+    int[] gridPosition = getGridPosition(moveTo);
+    if (gridPosition[0] < 1
+        || gridPosition[0] > GRIDSIZE - 1
+        || gridPosition[1] < 1
+        || gridPosition[1] > GRIDSIZE - 1) {
+      vehicle.setCurrentSpeed(0);
+      moveTo[0] = vehicle.getPosX();
+      moveTo[2] = vehicle.getPosZ();
+    }
+  }
+
+  private void checkOffRoad(Vehicle vehicle, double[] moveTo, Room room) {
+    int[] gridPosition = getGridPosition(moveTo);
+    StreetBlock block = room.getStreetBlock(gridPosition[1], gridPosition[0]);
+
+    if (block == null) {
+      // wenn man auf nichts fährt ist man langsamer
+      vehicle.setCurrentSpeed(vehicle.getCurrentSpeed() * OFFROAD_SLOWING_FACTOR);
+      return;
+    }
+    // wenn man offroad fährt ist man langsamer
+    for (String ele : offroadList) {
+      if (ele.equals(block.getType())) {
+        vehicle.setCurrentSpeed(vehicle.getCurrentSpeed() * OFFROAD_SLOWING_FACTOR);
+        return;
+      }
+    }
+  }
+
+  private void checkObstacleCollision(Vehicle vehicle, double[] moveTo, Room room) {
+    double[] checkCollision = {0, 0, 0};
+    checkCollision[0] =
+        ((DRIVE_DISTANCE + Vehicle.COLLISION_WIDTH * 2)
+                * vehicle.getCurrentSpeed()
+                * Math.sin(vehicle.getRotationY()))
+            + vehicle.getPosX();
+    checkCollision[2] =
+        ((DRIVE_DISTANCE + Vehicle.COLLISION_WIDTH * 2)
+                * vehicle.getCurrentSpeed()
+                * Math.cos(vehicle.getRotationY()))
+            + vehicle.getPosZ();
+
+    int[] gridPosition = getGridPosition(checkCollision);
+    StreetBlock block = room.getStreetBlock(gridPosition[1], gridPosition[0]);
+    if (block == null) {
+      return;
+    }
+    for (String ele : collisionList) {
+      if (ele.equals(block.getType())) {
+        vehicle.setCurrentSpeed(0);
+        moveTo[0] = vehicle.getPosX();
+        moveTo[2] = vehicle.getPosZ();
+      }
+    }
+  }
+
+  private int[] getGridPosition(double[] moveTo) {
+
+    int[] gridPosition = new int[2];
+    // (moveTo[0] - BLOCKSIZE / 2): to get the car to middle of the block
+    gridPosition[0] = (int) (((moveTo[0] - BLOCKSIZE / 2) / BLOCKSIZE) + 1.0 + (GRIDSIZE / 2));
+    gridPosition[1] = (int) (((moveTo[2] - BLOCKSIZE / 2) / BLOCKSIZE) + 1.0 + (GRIDSIZE / 2));
+    return gridPosition;
   }
 }

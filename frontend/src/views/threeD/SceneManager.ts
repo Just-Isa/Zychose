@@ -166,7 +166,7 @@ export class SceneManager {
           this.scene.add(car);
 
           if (vehicleSessionId === getSessionIDFromCookie()) {
-            this.vehicleCamera.request(vehicle.speed, vehicle.vehicleType, car);
+            this.vehicleCamera.request(vehicle, car);
           } else if (!vehicleSessionId.includes(config.botIdentifier)) {
             this.addTextToVehicle(
               roomState.room.userList.find(
@@ -272,11 +272,7 @@ export class SceneManager {
     threeVehicle.position.lerp(destination, lerpSpeed);
 
     if (sessionID === getSessionIDFromCookie()) {
-      this.vehicleCamera.request(
-        vehicle.speed,
-        vehicle.vehicleType,
-        threeVehicle
-      );
+      this.vehicleCamera.request(vehicle, threeVehicle);
     } else {
       threeVehicle
         .getObjectByName(testObjectName)
