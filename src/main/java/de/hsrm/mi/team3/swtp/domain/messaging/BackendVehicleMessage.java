@@ -32,7 +32,7 @@ public record BackendVehicleMessage(
         vehicle.getRotationY(),
         vehicle.getRotationZ(),
         vehicle.getCurrentSpeed(),
-        vehicle.MAX_SPEED);
+        Vehicle.MAX_SPEED);
   }
 
   public static BackendVehicleMessage from(

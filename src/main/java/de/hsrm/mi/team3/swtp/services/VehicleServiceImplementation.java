@@ -199,7 +199,7 @@ public class VehicleServiceImplementation implements VehicleService {
       if (v != vehicle) {
         double distanceBetweenVehicles =
             Math.sqrt(Math.pow(moveTo[0] - v.getPosX(), 2) + Math.pow(moveTo[2] - v.getPosZ(), 2));
-        if (distanceBetweenVehicles < (vehicle.COLLISION_WIDTH + v.COLLISION_WIDTH)) {
+        if (distanceBetweenVehicles < (Vehicle.COLLISION_WIDTH + Vehicle.COLLISION_WIDTH)) {
 
           double moveOtherVehicleToX =
               ((DRIVE_DISTANCE * 2) * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()))
@@ -249,12 +249,12 @@ public class VehicleServiceImplementation implements VehicleService {
   private void checkObstacleCollision(Vehicle vehicle, double[] moveTo, Room room) {
     double[] checkCollision = {0, 0, 0};
     checkCollision[0] =
-        ((DRIVE_DISTANCE + vehicle.COLLISION_WIDTH * 2)
+        ((DRIVE_DISTANCE + Vehicle.COLLISION_WIDTH * 2)
                 * vehicle.getCurrentSpeed()
                 * Math.sin(vehicle.getRotationY()))
             + vehicle.getPosX();
     checkCollision[2] =
-        ((DRIVE_DISTANCE + vehicle.COLLISION_WIDTH * 2)
+        ((DRIVE_DISTANCE + Vehicle.COLLISION_WIDTH * 2)
                 * vehicle.getCurrentSpeed()
                 * Math.cos(vehicle.getRotationY()))
             + vehicle.getPosZ();
