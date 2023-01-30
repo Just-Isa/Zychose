@@ -4,8 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Tile repraesentiert das einzelne Strassenstueck Es beinhaltet alle
- * Informationen, die fuer die
+ * Tile repraesentiert das einzelne Strassenstueck Es beinhaltet alle Informationen, die fuer die
  * Bot Fahrzeuge relevant sind Tiles landen in der RoadMap
  */
 @Getter
@@ -14,7 +13,7 @@ public class StreetBlock {
 
   private String type;
   private int rotation;
-  private int[] position = { 0, 0 };
+  private int[] position = {0, 0};
   private boolean blocked;
   private int[] exits;
 
@@ -39,22 +38,22 @@ public class StreetBlock {
     }
     switch (input[1]) {
       case "cross":
-        this.exits = new int[] { 0, 90, 180, 270 };
+        this.exits = new int[] {0, 90, 180, 270};
         break;
       case "straight":
-        this.exits = new int[] { 90, 270 };
+        this.exits = new int[] {90, 270};
         break;
       case "curve":
-        this.exits = new int[] { 270, 0 };
+        this.exits = new int[] {270, 0};
         break;
       case "t":
-        this.exits = new int[] { 180, 270, 0 };
+        this.exits = new int[] {180, 270, 0};
         break;
       case "dead":
-        this.exits = new int[] { 270 };
+        this.exits = new int[] {270};
         break;
       case "finish":
-        this.exits = new int[] { 0, 180 };
+        this.exits = new int[] {0, 180};
         break;
       default:
         this.exits = new int[] {};
