@@ -35,20 +35,6 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
     VehicleBot bot = new VehicleBot(room);
     setStartPosition(bot);
 
-    /*
-     * int[] pos;
-     * if (bot.getVehicleType() == VehicleType.BICYCLE) {
-     * pos = getFreeSidewalk();
-     * } else {
-     * pos = getFreeStreetBlock();
-     * }
-     * if (pos.length == 2) {
-     * bot.setCurrentPos(pos[0], pos[1]);
-     * bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
-     * bot.setPlaced(true);
-     * }
-     */
-
     this.room.setVehicleBot(bot);
   }
 
