@@ -11,4 +11,12 @@
 
 <script setup lang="ts">
 import NameInput from "@/components/NameInput.vue";
+import { checkIfNameCookieExists } from "@/helpers/UsernameHelper";
+import { onMounted } from "vue";
+
+onMounted(() => {
+  if (checkIfNameCookieExists()) {
+    location.href = "/rooms";
+  }
+});
 </script>
