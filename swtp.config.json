@@ -222,7 +222,7 @@
     }
   ],
   "blocksize": 16,
-  "debugConsole": true,
+  "debugConsole": false,
   "allVehicleTypes": [
     {
       "name": "car",
