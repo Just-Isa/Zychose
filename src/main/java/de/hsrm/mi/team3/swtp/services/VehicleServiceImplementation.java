@@ -175,6 +175,10 @@ public class VehicleServiceImplementation implements VehicleService {
    * @param room
    */
   private void checkCollision(Vehicle vehicle, double[] moveTo, Room room) {
+    if (room.getRoadMap() == null) {
+      return;
+    }
+
     checkOutOfGrid(vehicle, moveTo);
     checkPlayerVehicleCollision(vehicle, moveTo, room);
     checkObstacleCollision(vehicle, moveTo, room);
