@@ -25,7 +25,7 @@ public interface VehicleBotService {
 
   public void createBot();
 
-  public void driveBot();
+  public void start();
 
   public void sendBot(VehicleBot bot);
 }

@@ -132,7 +132,7 @@ public class RoomServiceImplementation implements RoomService {
         logger.error("leeres Skript");
       }
     } catch (PyException | ScriptException e) {
-      logger.error("ERROR jythonScript", e);
+      logger.info("ScriptEngine: non-critical jython-error");
     }
     room.setJythonRunning(false);
     room.getVehicleBots().clear();
