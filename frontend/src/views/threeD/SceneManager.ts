@@ -14,7 +14,6 @@ import { TTFLoader } from "three/examples/jsm/loaders/TTFLoader.js";
 import { useRoom } from "@/services/useRoom";
 import config from "../../../../swtp.config.json";
 import { useStreets } from "@/services/useStreets";
-import { watch } from "vue";
 
 const { camState, switchCamera } = useCamera();
 const { vehicleState } = use3DVehicle();

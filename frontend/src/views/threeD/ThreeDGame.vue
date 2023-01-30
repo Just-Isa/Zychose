@@ -30,7 +30,6 @@ import { use3DVehicle } from "@/services/use3DVehicle";
 import { useVehicleCommands } from "../../services/useVehicleCommands";
 import { useKeyInput } from "./keyInputHandler";
 import { useStreets } from "@/services/useStreets";
-import { logger } from "@/helpers/Logger";
 import { useRoom } from "@/services/useRoom";
 import { jsonToState } from "@/services/JSONparser";
 
