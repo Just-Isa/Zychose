@@ -30,6 +30,7 @@ export class SceneManager {
   scene: Scene;
   blockMap: Map<string, Promise<THREE.Group>>;
   data: StreetBlock[];
+  streets: THREE.Group[];
   private renderer: THREE.Renderer;
   private vehicles: Map<string, THREE.Group> = new Map<string, THREE.Group>(); // list of all Object u should update every frame.
   private botVehicles: Map<string, THREE.Group> = new Map<
@@ -46,6 +47,7 @@ export class SceneManager {
   ) {
     this.scene = scene;
     this.blockMap = blockMap;
+    this.streets = [];
     this.data = JSON.parse(JSON.stringify(streetsState.streets as any));
     this.renderer = renderer;
   }
@@ -85,6 +87,9 @@ export class SceneManager {
           clonedBlock.position.set(posX, posY, posZ);
           clonedBlock.rotateY(rotation);
           this.scene.add(clonedBlock);
+          if (objectKey != "landscape") {
+            this.streets.push(clonedBlock);
+          }
         })
         .catch((error) => {
           this.getErrorBlock(posX, posY, posZ);
@@ -120,6 +125,10 @@ export class SceneManager {
    * generates the objects according to the (json-)array
    */
   createGrid() {
+    this.streets.forEach((block: THREE.Group) => {
+      this.scene.remove(block);
+    });
+    this.streets = [];
     this.data.forEach((streetBlock: StreetBlock) => {
       this.addBlockToScene(
         streetBlock.streetType,
@@ -236,9 +245,6 @@ export class SceneManager {
       }
       //every vehicle gets rendered
       this.renderer.render(this.scene, camState.cam as THREE.PerspectiveCamera);
-      console.log("3D:", this.botVehicles);
-      console.log(vehicleState.botVehicle.get("bot-1")?.postitionX);
-      console.log(vehicleState.botVehicle.get("bot-1")?.postitionZ);
       requestAnimationFrame(animate);
     };
     animate();

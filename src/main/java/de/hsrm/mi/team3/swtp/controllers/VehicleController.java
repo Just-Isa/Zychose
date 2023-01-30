@@ -5,6 +5,7 @@ import de.hsrm.mi.team3.swtp.domain.Vehicle;
 import de.hsrm.mi.team3.swtp.domain.VehicleCommands;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackenVehicleCommandMessage;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
+import de.hsrm.mi.team3.swtp.domain.messaging.BackendRoomMessage;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendVehiclePositionMessage;
 import de.hsrm.mi.team3.swtp.services.BackendInfoService;
 import de.hsrm.mi.team3.swtp.services.RoomBoxService;
@@ -22,13 +23,17 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class VehicleController {
   Logger logger = LoggerFactory.getLogger(VehicleController.class);
-  @Autowired VehicleService vehicleService;
+  @Autowired
+  VehicleService vehicleService;
 
-  @Autowired BackendInfoService bInfoService;
+  @Autowired
+  BackendInfoService bInfoService;
 
-  @Autowired RoomBoxService roomBoxService;
+  @Autowired
+  RoomBoxService roomBoxService;
 
-  @Autowired RoomService roomService;
+  @Autowired
+  RoomService roomService;
 
   /**
    * Receives a command from client to execute vehicleservice Methods
@@ -43,11 +48,10 @@ public class VehicleController {
 
     List<VehicleCommands> commands = commandVehicleMessage.commands();
 
-    Vehicle vehicle =
-        roomService
-            .getUserByID(roomNumber, commandVehicleMessage.userSessionId())
-            .get()
-            .getVehicle();
+    Vehicle vehicle = roomService
+        .getUserByID(roomNumber, commandVehicleMessage.userSessionId())
+        .get()
+        .getVehicle();
     Room room = roomBoxService.getSpecificRoom(roomNumber);
     // if there is no vehicle -> skip
     if (vehicle == null) {
@@ -74,6 +78,15 @@ public class VehicleController {
         commandVehicleMessage.userSessionId(),
         BackendOperation.UPDATE,
         vehicle);
+    bInfoService.sendRoom(
+        "room/" + roomNumber,
+        BackendOperation.UPDATE,
+        BackendRoomMessage.from(
+            room.getRoomName(),
+            room.getRoomNumber(),
+            room.getUserList(),
+            room.getJythonScript(),
+            room.getRoomMap()));
   }
 
   /** Creates new vehicle at drop position */
@@ -82,16 +95,14 @@ public class VehicleController {
       @Payload BackendVehiclePositionMessage newVehicleMessage,
       @DestinationVariable int roomNumber) {
 
-    Vehicle vehicle =
-        roomService.getUserByID(roomNumber, newVehicleMessage.userSessionId()).get().getVehicle();
+    Vehicle vehicle = roomService.getUserByID(roomNumber, newVehicleMessage.userSessionId()).get().getVehicle();
     if (vehicle == null) {
-      double[] vector = new double[] {newVehicleMessage.posX(), 0, newVehicleMessage.posZ()};
+      double[] vector = new double[] { newVehicleMessage.posX(), 0, newVehicleMessage.posZ() };
       roomService
           .getUserByID(roomNumber, newVehicleMessage.userSessionId())
           .get()
           .setVehicle(new Vehicle(newVehicleMessage.vehicleType(), vector));
-      vehicle =
-          roomService.getUserByID(roomNumber, newVehicleMessage.userSessionId()).get().getVehicle();
+      vehicle = roomService.getUserByID(roomNumber, newVehicleMessage.userSessionId()).get().getVehicle();
     }
     bInfoService.sendVehicle(
         "vehicle/" + roomNumber,
