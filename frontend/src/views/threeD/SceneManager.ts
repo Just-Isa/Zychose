@@ -13,12 +13,15 @@ import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 import { TTFLoader } from "three/examples/jsm/loaders/TTFLoader.js";
 import { useRoom } from "@/services/useRoom";
 import config from "../../../../swtp.config.json";
+import { useStreets } from "@/services/useStreets";
 
 const { camState, switchCamera } = useCamera();
 const { vehicleState } = use3DVehicle();
+const { streetsState } = useStreets();
 const { roomState } = useRoom();
 type StreetBlock = IStreetInformation;
 const testObjectName = "text";
+
 /**
  * Manages Scene with all Objects
  */
@@ -26,6 +29,7 @@ export class SceneManager {
   scene: Scene;
   blockMap: Map<string, Promise<THREE.Group>>;
   data: StreetBlock[];
+  streets: THREE.Group[];
   private renderer: THREE.Renderer;
   private vehicles: Map<string, THREE.Group> = new Map<string, THREE.Group>(); // list of all Object u should update every frame.
   private botVehicles: Map<string, THREE.Group> = new Map<
@@ -38,12 +42,12 @@ export class SceneManager {
   constructor(
     scene: Scene,
     blockMap: Map<string, Promise<THREE.Group>>,
-    data: StreetBlock[],
     renderer: THREE.Renderer
   ) {
     this.scene = scene;
     this.blockMap = blockMap;
-    this.data = JSON.parse(JSON.stringify(data));
+    this.streets = [];
+    this.data = JSON.parse(JSON.stringify(streetsState.streets as any));
     this.renderer = renderer;
   }
   /**
@@ -82,6 +86,9 @@ export class SceneManager {
           clonedBlock.position.set(posX, posY, posZ);
           clonedBlock.rotateY(rotation);
           this.scene.add(clonedBlock);
+          if (objectKey != "landscape") {
+            this.streets.push(clonedBlock);
+          }
         })
         .catch((error) => {
           this.getErrorBlock(posX, posY, posZ);
@@ -117,6 +124,10 @@ export class SceneManager {
    * generates the objects according to the (json-)array
    */
   createGrid() {
+    this.streets.forEach((block: THREE.Group) => {
+      this.scene.remove(block);
+    });
+    this.streets = [];
     this.data.forEach((streetBlock: StreetBlock) => {
       this.addBlockToScene(
         streetBlock.streetType,
@@ -233,9 +244,6 @@ export class SceneManager {
       }
       //every vehicle gets rendered
       this.renderer.render(this.scene, camState.cam as THREE.PerspectiveCamera);
-      console.log("3D:", this.botVehicles);
-      console.log(vehicleState.botVehicle.get("bot-1")?.postitionX);
-      console.log(vehicleState.botVehicle.get("bot-1")?.postitionZ);
       requestAnimationFrame(animate);
     };
     animate();
@@ -301,6 +309,7 @@ export class SceneManager {
       }
     }
   }
+
   private addTextToVehicle(
     text: string,
     vehicleType: string,
@@ -327,5 +336,10 @@ export class SceneManager {
       textmesh.quaternion.copy(camState.cam.quaternion);
       vehicle.add(textmesh);
     });
+  }
+
+  public updateData(newdata: StreetBlock[]) {
+    this.data = JSON.parse(JSON.stringify(newdata));
+    this.createGrid();
   }
 }

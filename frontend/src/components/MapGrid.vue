@@ -166,8 +166,10 @@ const config = swtpConfigJSON;
 const { roomState } = useRoom();
 
 watch(roomState, () => {
-  jsonToState(roomState.room.roomMap);
-  stateToGrid();
+  if (roomState.room.roomMap != JSON.stringify(streetsState.streets)) {
+    jsonToState(roomState.room.roomMap);
+    stateToGrid();
+  }
 });
 
 watch(isRotationTriggeredState, () => {

@@ -5,6 +5,7 @@ import de.hsrm.mi.team3.swtp.domain.Vehicle;
 import de.hsrm.mi.team3.swtp.domain.VehicleCommands;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackenVehicleCommandMessage;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendOperation;
+import de.hsrm.mi.team3.swtp.domain.messaging.BackendRoomMessage;
 import de.hsrm.mi.team3.swtp.domain.messaging.BackendVehiclePositionMessage;
 import de.hsrm.mi.team3.swtp.services.BackendInfoService;
 import de.hsrm.mi.team3.swtp.services.RoomBoxService;
@@ -74,6 +75,15 @@ public class VehicleController {
         commandVehicleMessage.userSessionId(),
         BackendOperation.UPDATE,
         vehicle);
+    bInfoService.sendRoom(
+        "room/" + roomNumber,
+        BackendOperation.UPDATE,
+        BackendRoomMessage.from(
+            room.getRoomName(),
+            room.getRoomNumber(),
+            room.getUserList(),
+            room.getJythonScript(),
+            room.getRoomMap()));
   }
 
   /** Creates new vehicle at drop position */
