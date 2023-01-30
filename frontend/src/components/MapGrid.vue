@@ -92,6 +92,26 @@ onMounted(() => {
   offsetY = yCenter;
 });
 
+/**
+ * Achtet auf Gridgröße und hält die Grenzen ein, damit man beim Draggen stets im Bild bleibt.
+ * @param mousePos aktuelle event.client Mausposition
+ * @param offsetPos aktuelle, letzte Position vom Drag - hier neu reingegeben damit für X & Y nicht
+ * extra Funktionen geschrieben werden müssen.
+ */
+function calculateDragPosition(mousePos: number, offsetPos: number) {
+  const grid = document.getElementById("gridTable") as HTMLTableElement;
+  let currPos: number;
+  currPos = mousePos - offsetPos;
+  if (currPos <= 0) {
+    currPos = 0;
+  } else if (currPos >= grid.offsetWidth) {
+    currPos = grid.offsetWidth;
+  } else {
+    currPos = mousePos - offsetPos;
+  }
+  return currPos;
+}
+
 function startDragThroughGrid(event: MouseEvent) {
   event.preventDefault();
 
@@ -102,8 +122,8 @@ function startDragThroughGrid(event: MouseEvent) {
       initX = offsetX + event.clientX;
       initY = offsetY + event.clientY;
     } else {
-      initX = event.clientX - offsetX;
-      initY = event.clientY - offsetY;
+      initX = calculateDragPosition(event.clientX, offsetX);
+      initY = calculateDragPosition(event.clientY, offsetY);
     }
     isDragging = true;
   }
