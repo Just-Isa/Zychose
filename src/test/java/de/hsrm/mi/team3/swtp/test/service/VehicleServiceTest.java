@@ -2,6 +2,7 @@ package de.hsrm.mi.team3.swtp.test.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.Vehicle;
 import de.hsrm.mi.team3.swtp.services.VehicleService;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +19,7 @@ class VehicleServiceTest {
   @Autowired VehicleService vehicleService;
 
   private Vehicle vehicle;
-
+  Room room = new Room(0);
   private final double NO_SPEED = 0;
   private final float DISTANCE = 8;
 
@@ -73,7 +74,7 @@ class VehicleServiceTest {
     double xPosBefore = vehicle.getPosX();
     double zPosBefore = vehicle.getPosZ();
     vehicle.setCurrentSpeed(NO_SPEED);
-    vehicleService.moveForward(vehicle);
+    vehicleService.moveForward(vehicle, room);
     double xPosAfter =
         DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
     assertThat(vehicle.getPosX()).isEqualTo(xPosAfter);
@@ -88,7 +89,7 @@ class VehicleServiceTest {
     double xPosBefore = vehicle.getPosX();
     double zPosBefore = vehicle.getPosZ();
     vehicle.setCurrentSpeed(-Vehicle.MAX_SPEED);
-    vehicleService.moveForward(vehicle);
+    vehicleService.moveForward(vehicle, room);
     double xPosAfter =
         DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
     assertThat(vehicle.getPosX()).isEqualTo(xPosAfter);
@@ -103,7 +104,7 @@ class VehicleServiceTest {
     double xPosBefore = vehicle.getPosX();
     double zPosBefore = vehicle.getPosZ();
     vehicle.setCurrentSpeed(NO_SPEED);
-    vehicleService.moveBackward(vehicle);
+    vehicleService.moveBackward(vehicle, room);
     double xPosAfter =
         DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
     assertThat(vehicle.getPosX()).isEqualTo(xPosAfter);
@@ -118,7 +119,7 @@ class VehicleServiceTest {
     double xPosBefore = vehicle.getPosX();
     double zPosBefore = vehicle.getPosZ();
     vehicle.setCurrentSpeed(-Vehicle.MAX_SPEED);
-    vehicleService.moveBackward(vehicle);
+    vehicleService.moveBackward(vehicle, room);
     double xPosAfter =
         DISTANCE * vehicle.getCurrentSpeed() * Math.sin(vehicle.getRotationY()) + xPosBefore;
     assertThat(vehicle.getPosX()).isEqualTo(xPosAfter);
@@ -134,19 +135,19 @@ class VehicleServiceTest {
     // Numbers represent detailed Speed values after slowing down
     vehicle.setCurrentSpeed(Vehicle.MAX_SPEED);
     assertThat(vehicle.getCurrentSpeed()).isEqualTo(Vehicle.MAX_SPEED);
-    vehicleService.carRunOutSpeed(vehicle);
+    vehicleService.carRunOutSpeed(vehicle, room);
     assertThat(vehicle.getCurrentSpeed()).isEqualTo(Vehicle.MAX_SPEED + Vehicle.RUN_OUT_SPEED);
     while (vehicle.getCurrentSpeed() != 0) {
-      vehicleService.carRunOutSpeed(vehicle);
+      vehicleService.carRunOutSpeed(vehicle, room);
     }
     assertThat(vehicle.getCurrentSpeed()).isZero();
 
     vehicle.setCurrentSpeed(-Vehicle.MAX_SPEED);
     assertThat(vehicle.getCurrentSpeed()).isEqualTo(-Vehicle.MAX_SPEED);
-    vehicleService.carRunOutSpeed(vehicle);
+    vehicleService.carRunOutSpeed(vehicle, room);
     assertThat(vehicle.getCurrentSpeed()).isEqualTo(-Vehicle.MAX_SPEED - Vehicle.RUN_OUT_SPEED);
     while (vehicle.getCurrentSpeed() != 0) {
-      vehicleService.carRunOutSpeed(vehicle);
+      vehicleService.carRunOutSpeed(vehicle, room);
     }
     assertThat(vehicle.getCurrentSpeed()).isZero();
   }

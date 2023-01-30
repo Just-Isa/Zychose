@@ -6,17 +6,20 @@ import {
   type IVehicle,
   type IVehicleMessage,
 } from "../model/IVehicle";
-const webSocketUrl = `ws://${window.location.host}/stompbroker`;
-const stompClient = new Client({ brokerURL: webSocketUrl });
 import { MessageOperator } from "../model/MessageOperators";
+import config from "../../../swtp.config.json";
+const webSocketUrl = `ws://${window.location.host}/stomp-broker`;
+const stompClient = new Client({ brokerURL: webSocketUrl });
 
 export interface IVehicleState {
   vehicles: Map<string, IVehicle>;
+  botVehicle: Map<string, IVehicle>;
   errorMessage: string;
 }
 
 const vehicleState = reactive<IVehicleState>({
   vehicles: new Map<string, IVehicle>(),
+  botVehicle: new Map<string, IVehicle>(),
   errorMessage: "",
 });
 
@@ -46,11 +49,26 @@ function receiveVehicle() {
   };
   stompClient.onConnect = () => {
     stompClient.subscribe(DEST, (message) => {
-      handleMessage(JSON.parse(message.body));
+      checkIfVehicleIsBot(JSON.parse(message.body));
     });
   };
 }
-function handleMessage(jsonObject: IVehicleMessage) {
+
+function checkIfVehicleIsBot(vehicle: IVehicleMessage) {
+  if (vehicle.userSessionId.includes(config.botIdentifier)) {
+    handleMessage(vehicleState.botVehicle, vehicle);
+  } else {
+    handleMessage(vehicleState.vehicles, vehicle);
+  }
+}
+
+function handleMessage(
+  vehiclemap: Map<string, IVehicle>,
+  jsonObject: IVehicleMessage
+) {
+  if (jsonObject.operator === MessageOperator.DELETE) {
+    vehiclemap.delete(jsonObject.userSessionId);
+  }
   if (jsonObject.operator !== MessageOperator.UPDATE)
     logger.log("HANDLE MESSAGE: ", jsonObject);
   if (jsonObject.operator === MessageOperator.DELETE) {
@@ -67,18 +85,36 @@ function handleMessage(jsonObject: IVehicleMessage) {
     jsonObject.operator === MessageOperator.CREATE ||
     jsonObject.operator === MessageOperator.UPDATE
   ) {
-    vehicleState.vehicles.set(
-      jsonObject.userSessionId,
-      new Vehicle(
-        jsonObject.vehicleType,
-        jsonObject.postitionX,
-        jsonObject.postitionY,
-        jsonObject.postitionZ,
-        jsonObject.rotationX,
-        jsonObject.rotationY,
-        jsonObject.rotationZ,
-        jsonObject.speed
-      )
-    );
+    if (jsonObject.userSessionId.includes(config.botIdentifier)) {
+      vehiclemap.set(
+        jsonObject.userSessionId,
+        new Vehicle(
+          jsonObject.vehicleType,
+          (jsonObject.postitionZ - 1 - config.gridSize / 2) * config.blocksize,
+          jsonObject.postitionY,
+          (jsonObject.postitionX - 1 - config.gridSize / 2) * config.blocksize,
+          jsonObject.rotationX,
+          (((jsonObject.rotationY - 90) % 360) * Math.PI) / 180,
+          jsonObject.rotationZ,
+          jsonObject.speed,
+          jsonObject.maxSpeed
+        )
+      );
+    } else {
+      vehiclemap.set(
+        jsonObject.userSessionId,
+        new Vehicle(
+          jsonObject.vehicleType,
+          jsonObject.postitionX,
+          jsonObject.postitionY,
+          jsonObject.postitionZ,
+          jsonObject.rotationX,
+          jsonObject.rotationY,
+          jsonObject.rotationZ,
+          jsonObject.speed,
+          jsonObject.maxSpeed
+        )
+      );
+    }
   }
 }

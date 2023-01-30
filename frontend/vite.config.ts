@@ -25,7 +25,7 @@ export default defineConfig({
         ws: true,
         changeOrigin: true,
       },
-      "/stompbroker": {
+      "/stomp-broker": {
         target: "http://localhost:8080",
         ws: true,
         changeOrigin: true,

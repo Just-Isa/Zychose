@@ -1,6 +1,7 @@
 package de.hsrm.mi.team3.swtp.domain.messaging;
 
 import de.hsrm.mi.team3.swtp.domain.Vehicle;
+import de.hsrm.mi.team3.swtp.domain.VehicleBot;
 
 /*
  * record for sending and receiving Vehicles
@@ -15,7 +16,8 @@ public record BackendVehicleMessage(
     double rotationX,
     double rotationY,
     double rotationZ,
-    double speed) {
+    double speed,
+    double maxSpeed) {
 
   public static BackendVehicleMessage from(
       BackendOperation operator, String userSessionId, Vehicle vehicle) {
@@ -29,6 +31,23 @@ public record BackendVehicleMessage(
         vehicle.getRotationX(),
         vehicle.getRotationY(),
         vehicle.getRotationZ(),
-        vehicle.getCurrentSpeed());
+        vehicle.getCurrentSpeed(),
+        Vehicle.MAX_SPEED);
+  }
+
+  public static BackendVehicleMessage from(
+      BackendOperation operator, String botID, VehicleBot vehicle) {
+    return new BackendVehicleMessage(
+        operator,
+        botID,
+        vehicle.getVehicleType().getType(),
+        vehicle.getCurrentPos()[0],
+        0,
+        vehicle.getCurrentPos()[1],
+        0,
+        vehicle.getCurrentRotation(),
+        0,
+        0,
+        0);
   }
 }

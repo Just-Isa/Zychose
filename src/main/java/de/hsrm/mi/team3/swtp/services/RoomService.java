@@ -2,6 +2,7 @@ package de.hsrm.mi.team3.swtp.services;
 
 import de.hsrm.mi.team3.swtp.domain.Room;
 import de.hsrm.mi.team3.swtp.domain.User;
+import de.hsrm.mi.team3.swtp.domain.Vehicle;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,11 @@ public interface RoomService {
       int roomNumber,
       List<User> userList);
 
+  public void executeJython(Room room);
+
   public Optional<User> getUserByID(int roomNumber, String sessionID);
 
   public void deleteVehicleFromUser(int roomNumber, String sessionID);
+
+  public List<Vehicle> getVehicleList(Room room);
 }

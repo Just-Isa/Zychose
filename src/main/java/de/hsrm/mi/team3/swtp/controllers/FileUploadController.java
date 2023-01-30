@@ -6,7 +6,6 @@ import de.hsrm.mi.team3.swtp.domain.messaging.BackendRoomMessage;
 import de.hsrm.mi.team3.swtp.services.BackendInfoService;
 import de.hsrm.mi.team3.swtp.services.RoomBoxService;
 import de.hsrm.mi.team3.swtp.services.RoomService;
-import org.python.util.PythonInterpreter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,11 +50,6 @@ public class FileUploadController {
             room.getUserList(),
             new String(room.getJythonScript().getBytes()),
             room.getRoomMap()));
-
-    // just for testing-purposes, to show that you can execute the received file
-    try (PythonInterpreter pyInt = new PythonInterpreter()) {
-      pyInt.exec(room.getJythonScript());
-    }
   }
 
   @GetMapping("/api/upload/{roomNumber}")

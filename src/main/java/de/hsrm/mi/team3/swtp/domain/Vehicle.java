@@ -13,6 +13,7 @@ public class Vehicle {
   public static final double HANDLING = 0.168;
   public static final double ACCELERATION = 0.02;
   public static final double BRAKE_SPEED = 0.4;
+  public static final double COLLISION_WIDTH = 1.5;
   private String vehicleType;
   private double currentSpeed;
   private double[] rotationVector;
