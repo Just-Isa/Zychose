@@ -97,8 +97,4 @@ export default {
     }, sendInterval);
   },
 };
-
-setInterval(() => {
-  logger.log(JSON.stringify(streetsState.streets));
-}, sendInterval);
 </script>
