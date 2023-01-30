@@ -16,7 +16,8 @@ public record BackendVehicleMessage(
     double rotationX,
     double rotationY,
     double rotationZ,
-    double speed) {
+    double speed,
+    double maxSpeed) {
 
   public static BackendVehicleMessage from(
       BackendOperation operator, String userSessionId, Vehicle vehicle) {
@@ -30,7 +31,8 @@ public record BackendVehicleMessage(
         vehicle.getRotationX(),
         vehicle.getRotationY(),
         vehicle.getRotationZ(),
-        vehicle.getCurrentSpeed());
+        vehicle.getCurrentSpeed(),
+        vehicle.MAX_SPEED);
   }
 
   public static BackendVehicleMessage from(
@@ -44,6 +46,7 @@ public record BackendVehicleMessage(
         vehicle.getCurrentPos()[1],
         0,
         vehicle.getCurrentRotation(),
+        0,
         0,
         0);
   }

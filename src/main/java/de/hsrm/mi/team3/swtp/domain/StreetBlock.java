@@ -33,6 +33,9 @@ public class StreetBlock {
 
   public void setExits() {
     String[] input = this.type.split("-");
+    if (input.length <= 1) {
+      return;
+    }
     switch (input[1]) {
       case "cross":
         this.exits = new int[] {0, 90, 180, 270};
