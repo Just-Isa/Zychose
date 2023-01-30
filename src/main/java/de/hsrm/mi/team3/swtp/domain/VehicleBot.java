@@ -135,7 +135,10 @@ public class VehicleBot {
    * @return true if VehicleBot with type "bicycle" want to drive on a road (which is invalid)
    */
   public boolean isStreetblockInvalid(String blockName) {
-    return (this.vehicleType.equals(VehicleType.BICYCLE) && blockName.startsWith("road", 0));
+    if (blockName.contains("road") || blockName.contains("sidewalk")) {
+      return (this.vehicleType.equals(VehicleType.BICYCLE) && blockName.startsWith("road", 0));
+    }
+    return true;
   }
 
   public void setRoute(String[] route) {
