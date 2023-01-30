@@ -94,9 +94,10 @@ function handleMessage(
           jsonObject.postitionY,
           (jsonObject.postitionX - 1 - config.gridSize / 2) * config.blocksize,
           jsonObject.rotationX,
-          (((jsonObject.rotationY - 90) % 360) * Math.PI) / 180, // wehe das rührt einer an!!! dann gibts haue
+          (((jsonObject.rotationY - 90) % 360) * Math.PI) / 180,
           jsonObject.rotationZ,
-          jsonObject.speed
+          jsonObject.speed,
+          jsonObject.maxSpeed
         )
       );
     } else {
@@ -110,7 +111,8 @@ function handleMessage(
           jsonObject.rotationX,
           jsonObject.rotationY,
           jsonObject.rotationZ,
-          jsonObject.speed
+          jsonObject.speed,
+          jsonObject.maxSpeed
         )
       );
     }

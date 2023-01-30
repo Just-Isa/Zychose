@@ -9,6 +9,7 @@ export interface IVehicle {
   rotationY: number;
   rotationZ: number;
   speed: number;
+  maxSpeed: number;
 }
 export class Vehicle implements IVehicle {
   vehicleType: string;
@@ -19,6 +20,7 @@ export class Vehicle implements IVehicle {
   rotationY: number;
   rotationZ: number;
   speed: number;
+  maxSpeed: number;
   constructor(
     vehicleType: string,
     postitionX: number,
@@ -27,7 +29,8 @@ export class Vehicle implements IVehicle {
     rotationX: number,
     rotationY: number,
     rotationZ: number,
-    speed: number
+    speed: number,
+    maxSpeed: number
   ) {
     this.vehicleType = vehicleType;
     this.postitionX = postitionX;
@@ -37,6 +40,7 @@ export class Vehicle implements IVehicle {
     this.rotationY = rotationY;
     this.rotationZ = rotationZ;
     this.speed = speed;
+    this.maxSpeed = maxSpeed;
   }
 }
 export interface IVehicleMessage {
@@ -50,4 +54,5 @@ export interface IVehicleMessage {
   rotationY: number;
   rotationZ: number;
   speed: number;
+  maxSpeed: number;
 }
