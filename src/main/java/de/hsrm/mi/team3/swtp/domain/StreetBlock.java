@@ -26,35 +26,40 @@ public class StreetBlock {
     setExits();
   }
 
-  /*
-   * blocked und isBlocked geben an,
-   * ob sich ein anderes Fahrzeug auf dem Feld befindet
+  /**
+   * Set Exits for StreetBlocks. Catches IndexOutOfBoundsException if StreetBlock type name does not
+   * conform to format "street-type".
    */
-
   public void setExits() {
     String[] input = this.type.split("-");
-    switch (input[1]) {
-      case "cross":
-        this.exits = new int[] {0, 90, 180, 270};
-        break;
-      case "straight":
-        this.exits = new int[] {90, 270};
-        break;
-      case "curve":
-        this.exits = new int[] {270, 0};
-        break;
-      case "t":
-        this.exits = new int[] {180, 270, 0};
-        break;
-      case "dead":
-        this.exits = new int[] {270};
-        break;
-      case "finish":
-        this.exits = new int[] {0, 180};
-        break;
-      default:
-        this.exits = new int[] {};
+    try {
+      switch (input[1]) {
+        case "cross":
+          this.exits = new int[] {0, 90, 180, 270};
+          break;
+        case "straight":
+          this.exits = new int[] {90, 270};
+          break;
+        case "curve":
+          this.exits = new int[] {270, 0};
+          break;
+        case "t":
+          this.exits = new int[] {180, 270, 0};
+          break;
+        case "dead":
+          this.exits = new int[] {270};
+          break;
+        case "finish":
+          this.exits = new int[] {0, 180};
+          break;
+        default:
+          this.exits = new int[] {};
+          return;
+      }
+    } catch (IndexOutOfBoundsException e) {
+      return;
     }
+
     if (this.rotation > 0 && this.exits.length > 0 && this.exits.length < 4) {
       for (int i = 0; i < exits.length; i++) {
         int newRotation = this.exits[i] + this.rotation;

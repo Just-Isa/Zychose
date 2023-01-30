@@ -17,6 +17,7 @@ public class VehicleBot {
 
   private String id;
   private int[] currentPos;
+  private boolean placed;
   private int currentRotation;
   private Map<VehicleNeighbour, StreetBlock> neighbours;
   private Room room = null;
@@ -33,6 +34,7 @@ public class VehicleBot {
     this.id = "bot-" + idNumber;
     this.room = room;
     this.currentPos = new int[] {0, 0};
+    this.placed = false;
     this.currentRotation = 0;
     // choose random Model from VehicleType Enum
     int randomNumber = randomGenerator.nextInt(VehicleType.values().length);

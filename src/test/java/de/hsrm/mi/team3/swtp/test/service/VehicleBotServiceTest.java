@@ -132,7 +132,7 @@ class VehicleBotServiceTest {
   void driveBotTest() {
     assertThat(room.getUserList()).isEmpty();
     vehicleBotService.createBot();
-    vehicleBotService.driveBot();
+    vehicleBotService.start();
     assertThat(room.getVehicleBots()).isEmpty();
     assertThat(room.isJythonRunning()).isFalse();
 
@@ -150,7 +150,7 @@ class VehicleBotServiceTest {
           }
         },
         500);
-    vehicleBotService.driveBot();
+    vehicleBotService.start();
     assertThat(room.getUserList()).isEmpty();
   }
 }

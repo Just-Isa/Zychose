@@ -33,16 +33,22 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   @Override
   public void createBot() {
     VehicleBot bot = new VehicleBot(room);
+    setStartPosition(bot);
 
-    int[] pos;
-    if (bot.getVehicleType() == VehicleType.BICYCLE) {
-      pos = getFreeSidewalk();
-    } else {
-      pos = getFreeStreetBlock();
-    }
+    /*
+     * int[] pos;
+     * if (bot.getVehicleType() == VehicleType.BICYCLE) {
+     * pos = getFreeSidewalk();
+     * } else {
+     * pos = getFreeStreetBlock();
+     * }
+     * if (pos.length == 2) {
+     * bot.setCurrentPos(pos[0], pos[1]);
+     * bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
+     * bot.setPlaced(true);
+     * }
+     */
 
-    bot.setCurrentPos(pos[0], pos[1]);
-    bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
     this.room.setVehicleBot(bot);
   }
 
@@ -54,17 +60,10 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   @Override
   public void createBotWithRoute(String route) {
     VehicleBot bot = new VehicleBot(room);
+    setStartPosition(bot);
 
-    int[] pos;
-    if (bot.getVehicleType() == VehicleType.BICYCLE) {
-      pos = getFreeSidewalk();
-    } else {
-      pos = getFreeStreetBlock();
-    }
-    bot.setCurrentPos(pos[0], pos[1]);
     String[] routeList = route.split(",");
     bot.setRoute(routeList);
-    bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
 
     this.room.setVehicleBot(bot);
   }
@@ -83,15 +82,6 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
         break;
       }
     }
-    int[] pos;
-    if (bot.getVehicleType() == VehicleType.BICYCLE) {
-      pos = getFreeSidewalk();
-    } else {
-      pos = getFreeStreetBlock();
-    }
-    bot.setCurrentPos(pos[0], pos[1]);
-
-    bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
 
     this.room.setVehicleBot(bot);
   }
@@ -112,16 +102,9 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
         break;
       }
     }
-    int[] pos;
-    if (bot.getVehicleType() == VehicleType.BICYCLE) {
-      pos = getFreeSidewalk();
-    } else {
-      pos = getFreeStreetBlock();
-    }
-    bot.setCurrentPos(pos[0], pos[1]);
+
     String[] routeList = route.split(",");
     bot.setRoute(routeList);
-    bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
 
     this.room.setVehicleBot(bot);
   }
@@ -131,12 +114,16 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
    * position. method is only called from python script
    */
   @Override
-  public void driveBot() {
+  public void start() {
     boolean running = !room.getUserList().isEmpty();
     while (running) {
       for (VehicleBot bot : room.getVehicleBots()) {
-        this.checkBlockAndDrive(bot);
-        sendBot(bot);
+        if (bot.isPlaced()) {
+          this.checkBlockAndDrive(bot);
+          sendBot(bot);
+        } else {
+          setStartPosition(bot);
+        }
       }
       try {
         Thread.sleep(750);
@@ -186,6 +173,20 @@ public class VehicleBotServiceImplementation implements VehicleBotService {
   public void sendBot(VehicleBot bot) {
     backendInfoService.sendVehicle(
         "vehicle/" + this.room.getRoomNumber(), bot.getId(), BackendOperation.UPDATE, bot);
+  }
+
+  private void setStartPosition(VehicleBot bot) {
+    int[] pos;
+    if (bot.getVehicleType() == VehicleType.BICYCLE) {
+      pos = getFreeSidewalk();
+    } else {
+      pos = getFreeStreetBlock();
+    }
+    if (pos.length == 2) {
+      bot.setCurrentPos(pos[0], pos[1]);
+      bot.setCurrentRotation(bot.getCurrentStreetBlock().getExits()[0]);
+      bot.setPlaced(true);
+    }
   }
 
   /**
