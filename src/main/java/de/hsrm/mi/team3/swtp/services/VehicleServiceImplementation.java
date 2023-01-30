@@ -180,6 +180,7 @@ public class VehicleServiceImplementation implements VehicleService {
     }
 
     checkOutOfGrid(vehicle, moveTo);
+    checkOffRoad(vehicle, moveTo, room);
     checkPlayerVehicleCollision(vehicle, moveTo, room);
     checkObstacleCollision(vehicle, moveTo, room);
     // TODO: check other collisions
@@ -227,6 +228,24 @@ public class VehicleServiceImplementation implements VehicleService {
     }
   }
 
+  private void checkOffRoad(Vehicle vehicle, double[] moveTo, Room room) {
+    int[] gridPosition = getGridPosition(moveTo);
+    StreetBlock block = room.getStreetBlock(gridPosition[1], gridPosition[0]);
+
+    if (block == null) {
+      // wenn man auf nichts fährt ist man langsamer
+      vehicle.setCurrentSpeed(vehicle.getCurrentSpeed() * OFFROAD_SLOWING_FACTOR);
+      return;
+    }
+    // wenn man offroad fährt ist man langsamer
+    for (String ele : offroadList) {
+      if (ele.equals(block.getType())) {
+        vehicle.setCurrentSpeed(vehicle.getCurrentSpeed() * OFFROAD_SLOWING_FACTOR);
+        return;
+      }
+    }
+  }
+
   private void checkObstacleCollision(Vehicle vehicle, double[] moveTo, Room room) {
     double[] checkCollision = {0, 0, 0};
     checkCollision[0] =
@@ -242,20 +261,9 @@ public class VehicleServiceImplementation implements VehicleService {
 
     int[] gridPosition = getGridPosition(checkCollision);
     StreetBlock block = room.getStreetBlock(gridPosition[1], gridPosition[0]);
-
     if (block == null) {
-      // wenn man auf nichts fährt ist man langsamer
-      vehicle.setCurrentSpeed(vehicle.getCurrentSpeed() * OFFROAD_SLOWING_FACTOR);
       return;
     }
-    // wenn man offroad fährt ist man langsamer
-    for (String ele : offroadList) {
-      if (ele.equals(block.getType())) {
-        vehicle.setCurrentSpeed(vehicle.getCurrentSpeed() * OFFROAD_SLOWING_FACTOR);
-        return;
-      }
-    }
-
     for (String ele : collisionList) {
       if (ele.equals(block.getType())) {
         vehicle.setCurrentSpeed(0);
