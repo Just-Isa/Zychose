@@ -1,22 +1,21 @@
 <template>
   <form @submit.prevent="submitForm">
-    <label for="nameInput">Wie dürfen wir Dich nennen?</label><br />
-    <input
-      class="text-black p-2 mt-2 w-60 rounded"
-      v-model="nameInput"
-      placeholder="Name"
-      type="text"
-      name="name"
-      id="name"
-    />
-    <br />
-    <p class="mt-2 text-error-message-pink">{{ message }}</p>
-    <button
-      type="submit"
-      class="bg-button-green font-semibold rounded py-4 px-8 text-4xl mt-10 mb-10"
-    >
-      Play
-    </button>
+    <div class="flex w-full justify-center mb-5">
+      <input
+        class="font-semibold text-inactive-folder-gray py-2 px-4 w-1/2 mr-5 text-3xl rounded placeholder:opacity-50 placeholder:font-light"
+        v-model="nameInput"
+        placeholder="Username"
+        type="text"
+        name="name"
+      />
+      <button
+        type="submit"
+        class="bg-button-green font-semibold rounded py-4 px-8 text-4xl"
+      >
+        Play
+      </button>
+    </div>
+    <p class="text-error-message-pink">{{ message }}</p>
   </form>
 </template>
 

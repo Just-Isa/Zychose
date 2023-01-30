@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-back-folder-gray w- bg-blend-overlay h-screen text-white pt-20 flex justify-center items-center bg-[url('/assets/img/alt-title-bg.jpg')] bg-center bg-cover"
+    class="bg-back-folder-gray bg-blend-overlay h-screen text-white pt-20 flex justify-center items-center bg-[url('/assets/img/bg-menu.png')] bg-center bg-cover"
   >
     <div class="text-center">
       <h1 class="font-bold text-[10rem] uppercase">Zychose</h1>
