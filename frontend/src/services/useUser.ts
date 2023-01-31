@@ -1,6 +1,7 @@
 import { logger } from "@/helpers/Logger";
 import {
-  checkIfSessionIDCookieExists, getSessionIDFromCookie
+  checkIfSessionIDCookieExists,
+  getSessionIDFromCookie,
 } from "@/helpers/SessionIDHelper";
 import { getNameFromCookie } from "@/helpers/UsernameHelper";
 import { Client } from "@stomp/stompjs";
