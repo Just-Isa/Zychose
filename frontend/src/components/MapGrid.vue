@@ -102,10 +102,10 @@ function calculateDragPosition(mousePos: number, offsetPos: number) {
   const grid = document.getElementById("gridTable") as HTMLTableElement;
   let currPos: number;
   currPos = mousePos - offsetPos;
-  if (currPos <= 0) {
-    currPos = 0;
-  } else if (currPos >= grid.offsetWidth) {
-    currPos = grid.offsetWidth;
+  if (currPos <= mousePos) {
+    currPos = mousePos;
+  } else if (currPos >= grid.offsetWidth - mousePos) {
+    currPos = grid.offsetWidth - mousePos;
   } else {
     currPos = mousePos - offsetPos;
   }
