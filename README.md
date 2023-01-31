@@ -43,6 +43,7 @@ or
 | `ArrowLeft`  | Move left        |
 | `ArrowDown`  | Move backward    |
 | `ArrowRight` | Move right       |
+| `C`          | Switch camera    |
 | `H`          | Honk/Bell        |
 | `1`          | Select 1. song   |
 | `2`          | Select 2. song   |
