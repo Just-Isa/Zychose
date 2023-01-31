@@ -276,7 +276,7 @@ function zoomOnWheel(event: WheelEvent) {
   event.preventDefault();
   scale += event.deltaY * -0.01;
   scale = Math.min(Math.max(1, scale), 4);
-  const element = document.getElementById("wrapper");
+  const element = document.getElementById("gridTable");
 
   if (element) {
     element.classList.add("origin-left-top");
