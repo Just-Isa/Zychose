@@ -1,13 +1,13 @@
+import { logger } from "@/helpers/Logger";
+import {
+  checkIfSessionIDCookieExists, getSessionIDFromCookie
+} from "@/helpers/SessionIDHelper";
+import { getNameFromCookie } from "@/helpers/UsernameHelper";
 import { Client } from "@stomp/stompjs";
+import { v4 as uuidv4 } from "uuid";
 import { reactive, readonly } from "vue";
 import { Mouse, type IMouse } from "../model/IMouse";
 import { User, type IUser } from "../model/IUser";
-import {
-  getSessionIDFromCookie,
-  checkIfSessionIDCookieExists,
-} from "@/helpers/SessionIDHelper";
-import { logger } from "@/helpers/Logger";
-import { getNameFromCookie } from "@/helpers/UsernameHelper";
 
 const webSocketUrl = `ws://${window.location.host}/stomp-broker`;
 const publishUserStompClient = new Client({ brokerURL: webSocketUrl });
@@ -144,7 +144,7 @@ function receiveMouse(roomNumber: number) {
  */
 function createUser() {
   if (!checkIfSessionIDCookieExists()) {
-    document.cookie = "sid=" + crypto.randomUUID();
+    document.cookie = "sid=" + uuidv4();
     userState.user.currentRoomNumber = 0;
     userState.user.sessionID = getSessionIDFromCookie() as string;
     userState.user.userName = getNameFromCookie() as string;
