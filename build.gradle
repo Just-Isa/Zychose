@@ -114,3 +114,6 @@ node {
     download = true
 }
 
+tasks.named("bootJar"){
+	requiresUnpack '**/jython*.jar'
+}

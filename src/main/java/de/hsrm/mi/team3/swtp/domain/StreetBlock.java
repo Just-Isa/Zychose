@@ -61,7 +61,7 @@ public class StreetBlock {
           return;
       }
     } catch (IndexOutOfBoundsException e) {
-      logger.info("type name does not conform to format \"type-name\"");
+      // logger.info("type name does not conform to format \"type-name\"");
       return;
     }
 
